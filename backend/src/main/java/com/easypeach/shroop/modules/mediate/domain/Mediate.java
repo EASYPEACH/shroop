@@ -1,5 +1,7 @@
 package com.easypeach.shroop.modules.mediate.domain;
 
+import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,8 +16,13 @@ public class Mediate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Todo : transaction_id
-    //Todo : member_id
+    @ManyToOne
+    @JoinColumn(name = "transaction_id", nullable = false)
+    private Transaction transaction;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(length = 255, nullable = false)
     private String title;
