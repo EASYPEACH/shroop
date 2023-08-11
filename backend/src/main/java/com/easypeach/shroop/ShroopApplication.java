@@ -1,4 +1,4 @@
-package com.easypeach.backend;
+package com.easypeach.shroop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
