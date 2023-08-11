@@ -15,7 +15,9 @@ public class MediateImg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Todo: meditate_id
+    @ManyToOne
+    @JoinColumn(name = "mediate_id", nullable = false)
+    private Mediate mediate;
 
     @Column(name = "img_url", length = 255, nullable = false)
     private String ImgUrl;
