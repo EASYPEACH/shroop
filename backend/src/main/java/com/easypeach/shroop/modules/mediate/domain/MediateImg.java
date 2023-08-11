@@ -6,25 +6,18 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "mediate_img")
 @EntityListeners(AuditingEntityListener.class)
-public class Mediate {
+public class MediateImg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Todo : transaction_id
-    //Todo : member_id
+    //Todo: meditate_id
 
-    @Column(length = 255, nullable = false)
-    private String title;
-
-    @Column(length = 255, nullable = false)
-    private String content;
-
-    @Column(nullable = false)
-    private MediateStatus status;
+    @Column(name = "img_url", length = 255, nullable = false)
+    private String ImgUrl;
 
     @Column(name = "create_date")
     @CreatedDate
