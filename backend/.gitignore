@@ -38,4 +38,4 @@ out/
 
 ## DB 정보##
 *.properties
-*.yaml
+*.yml
