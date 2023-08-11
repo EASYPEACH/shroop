@@ -20,6 +20,7 @@ const lightTheme = {
     success: "#4CAF50",
     warning: "#FB8C00",
     mainGray: "#2C3333",
+    subBlue: "#1D5D9B",
   },
 };
 
