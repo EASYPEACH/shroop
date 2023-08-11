@@ -6,7 +6,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity(name = "mediate_img")
+@Table(name = "mediate_img")
+@Entity
 @EntityListeners(AuditingEntityListener.class)
 public class MediateImg {
 
