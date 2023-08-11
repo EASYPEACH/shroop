@@ -1,5 +1,7 @@
 package com.easypeach.shroop.modules.report.domain;
 
+import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.product.domain.Product;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,12 +16,13 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Todd
-//    @Column(name = "reporter_id", nullable = false, unique = true)
-//    private Long reporterId;
-   //Todo
-//    @Column(name = "product_id", length = 50, nullable = false, unique = true)
-//    private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Column(length = 255, nullable = false)
     private String title;
