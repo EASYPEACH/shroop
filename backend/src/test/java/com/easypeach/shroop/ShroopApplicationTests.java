@@ -1,4 +1,4 @@
-package com.easypeach.backend;
+package com.easypeach.shroop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
