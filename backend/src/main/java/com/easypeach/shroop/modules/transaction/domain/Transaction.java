@@ -1,5 +1,8 @@
 package com.easypeach.shroop.modules.transaction.domain;
 
+import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.product.domain.Product;
+import com.easypeach.shroop.modules.report.domain.Report;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,13 +17,24 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Todo : buyer_id
 
-    //Todo : seller_id
+    @ManyToOne
+    @JoinColumn(name = "buyer_id", nullable = false)
+    private Member buyer;
 
-    //Todo : product_id
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Member seller;
 
-    //Todo : delivery_id
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+
+    @OneToOne
+    @JoinColumn(name = "delivery_id", nullable = false)
+    private Delivery delivery;
 
     @Column(name = "payment_date")
     private LocalDate paymentDate;
