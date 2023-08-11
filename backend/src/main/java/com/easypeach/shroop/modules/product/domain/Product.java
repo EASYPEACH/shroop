@@ -1,5 +1,6 @@
 package com.easypeach.shroop.modules.product.domain;
 
+import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,9 +18,13 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // TODO: saller_id
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Member seller;
 
-    // TODO: category_id
+    @ManyToOne
+    @JoinColumn(name = "buyer_id", nullable = false)
+    private Member buyer;
 
     @Column(length = 100, nullable = false)
     private String title;
