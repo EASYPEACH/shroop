@@ -13,7 +13,7 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private Member member
+    private Member member;
 
     @Column(length = 255, nullable = false)
     private String title;
