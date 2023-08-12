@@ -13,8 +13,14 @@ h6 {
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 li {
   list-style: none;
+}
+
+button {
+  padding: 0;
+  margin: 0;
 }
