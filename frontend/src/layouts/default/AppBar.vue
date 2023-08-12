@@ -5,7 +5,7 @@
       <router-link to="/">
         <div class="logo">
           <img src="@/assets/image/logo.png" />
-          <h2>shroop</h2>
+          <h2>슈룹</h2>
         </div>
       </router-link>
     </v-app-bar-title>
@@ -81,7 +81,7 @@ header {
   overflow: visible;
 }
 .logo {
-  width: 50px;
+  width: 30px;
   aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
@@ -94,7 +94,7 @@ header {
   }
 
   h2 {
-    margin-top: -7px;
+    margin-top: -4px;
     color: rgb(var(--v-theme-mainGray));
     font-weight: 600;
   }
