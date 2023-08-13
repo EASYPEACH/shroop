@@ -1,6 +1,8 @@
 package com.easypeach.shroop.modules.auth.controller;
 
+import com.easypeach.shroop.modules.auth.dto.request.SignInRequest;
 import com.easypeach.shroop.modules.auth.dto.request.SignUpRequest;
+import com.easypeach.shroop.modules.auth.dto.response.AccessTokenResponse;
 import com.easypeach.shroop.modules.auth.dto.response.SignUpCompletedResponse;
 import com.easypeach.shroop.modules.auth.service.AuthService;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -23,5 +25,11 @@ public class AuthController {
     public ResponseEntity<SignUpCompletedResponse> signUp(@Validated @RequestBody SignUpRequest signUpRequest){
         Member savedMember = authService.saveMember(signUpRequest);
         return ResponseEntity.ok(new SignUpCompletedResponse(savedMember.getId(), savedMember.getNickname()));
+    }
+
+    @PostMapping(value = "/sign-in")
+    public ResponseEntity<AccessTokenResponse> signIn(@Validated @RequestBody SignInRequest signInRequest){
+        AccessTokenResponse accessTokenResponse = authService.login(signInRequest);
+        return ResponseEntity.ok(accessTokenResponse);
     }
 }
