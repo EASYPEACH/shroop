@@ -17,4 +17,8 @@ public class SignUpRequest {
 
     @NotBlank
     private String phoneNumber;
+
+    public SignUpRequest(){
+
+    }
 }
