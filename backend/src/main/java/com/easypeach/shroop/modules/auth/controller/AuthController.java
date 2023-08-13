@@ -21,7 +21,7 @@ public class AuthController {
 
     @PostMapping(value = "/sign-up")
     public ResponseEntity<SignUpCompletedResponse> signUp(@Validated @RequestBody SignUpRequest signUpRequest){
-        Long memberId = authService.saveMember(signUpRequest);
-        return ResponseEntity.ok(new SignUpCompletedResponse(memberId));
+        Member savedMember = authService.saveMember(signUpRequest);
+        return ResponseEntity.ok(new SignUpCompletedResponse(savedMember.getId(), savedMember.getNickname()));
     }
 }

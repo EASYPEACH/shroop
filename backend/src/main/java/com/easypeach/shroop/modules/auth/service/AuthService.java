@@ -13,7 +13,7 @@ public class AuthService {
 
     private final MemberRepository memberRepository;
 
-    public Long saveMember(SignUpRequest signUpRequest) {
+    public Member saveMember(SignUpRequest signUpRequest) {
         Member member = Member.createMember(signUpRequest.getLoginId()
                 , signUpRequest.getPassword()
                 , signUpRequest.getNickname()
@@ -22,6 +22,6 @@ public class AuthService {
                 , 0L);
 
         Member savedMember = memberRepository.save(member);
-        return savedMember.getId();
+        return savedMember;
     }
 }
