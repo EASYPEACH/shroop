@@ -14,13 +14,14 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public Member saveMember(SignUpRequest signUpRequest) {
         Member member = Member.createMember(signUpRequest.getLoginId()
                 , signUpRequest.getPassword()
                 , signUpRequest.getNickname()
                 , signUpRequest.getPhoneNumber()
-                , Role.USER
+                , Role.ROLE_USER
                 , 0L);
 
         Member savedMember = memberRepository.save(member);
@@ -36,7 +37,8 @@ public class AuthService {
             throw new RuntimeException("비밀번호 불일치");
         }
 
-        AccessTokenResponse accessTokenResponse = new AccessTokenResponse("abcdfqdcqwd.dcqwdcqwdc.dcqwqwdcqw");
+        AccessTokenResponse accessTokenResponse
+                = new AccessTokenResponse(jwtTokenProvider.createToken(member.getLoginId(),member.getNickname(),member.getRole()));
         return accessTokenResponse;
     }
 }
