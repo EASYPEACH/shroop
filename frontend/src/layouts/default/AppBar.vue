@@ -88,18 +88,15 @@ header {
   align-items: end;
   justify-content: center;
   transform: translateX(20px);
-
   img {
     width: 15px;
   }
-
   h2 {
     margin-top: -4px;
     color: rgb(var(--v-theme-mainGray));
     font-weight: 600;
   }
 }
-
 /* 헤더 오른쪽 메뉴 */
 .header__list {
   display: flex;
@@ -147,7 +144,7 @@ header {
 article {
   position: fixed;
   top: 0;
-  right: -100%;
+  right: -120%;
   width: 400px;
   height: 100vh;
   background: #fff;
