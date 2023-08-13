@@ -25,14 +25,6 @@ const lightTheme = {
 };
 
 export default createVuetify({
-  icons: {
-    defaultSet: "mdi",
-    aliases,
-    sets: {
-      mdi,
-      md,
-    },
-  },
   theme: {
     defaultTheme: "lightTheme",
     themes: {
