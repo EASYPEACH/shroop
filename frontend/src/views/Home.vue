@@ -18,8 +18,8 @@
       <Title title="최근 거래" />
       <div class="products">
         <ul class="products__list">
-          <li v-for="(item, idx) in 6" :key="idx">
-            <product-card-main />
+          <li v-for="(ProductCardData, idx) in productCardDummyData" :key="idx">
+            <product-card-main :id="idx" :ProductCardData="ProductCardData" />
           </li>
         </ul>
         <v-btn class="plusbtn" variant="text"
@@ -33,6 +33,33 @@
 <script setup>
 import Title from "@/components/Title.vue";
 import ProductCardMain from "@/components/ProductCardMain.vue";
+
+const productCardDummyData = [
+  {
+    title: `제목1`,
+    price: 1000,
+    content: `내용1`,
+    createDate: `2023-08-09`,
+  },
+  {
+    title: `제목2`,
+    price: 2000,
+    content: `내용2`,
+    createDate: `2023-08-10`,
+  },
+  {
+    title: `제목3`,
+    price: 3000,
+    content: `내용3`,
+    createDate: `2023-08-11`,
+  },
+  {
+    title: `제목4`,
+    price: 4000,
+    content: `내용4`,
+    createDate: `2023-08-12`,
+  },
+];
 </script>
 
 <style lang="scss" scoped>

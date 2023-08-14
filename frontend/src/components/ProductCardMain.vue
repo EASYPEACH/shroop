@@ -9,9 +9,13 @@
       <v-card-title>Top 10 Australian beaches</v-card-title>
     </v-img>
 
-    <v-card-subtitle class="pt-4"> 게시물 제목 </v-card-subtitle>
-    <v-card-subtitle class="pt-3"> 1000원 </v-card-subtitle>
-    <v-card-text class="pt-3"> 2023-08-12 </v-card-text>
+    <v-card-subtitle class="pt-4">
+      {{ ProductCardData.title }}
+    </v-card-subtitle>
+    <v-card-subtitle class="pt-3">
+      {{ ProductCardData.price }}
+    </v-card-subtitle>
+    <v-card-text class="pt-3"> {{ ProductCardData.createDate }} </v-card-text>
     <v-card-actions class="">
       <v-btn-toggle multiple variant="outlined" divided>
         <v-btn @click="HandleChangeHeart()">
@@ -30,6 +34,7 @@
 import { ref } from "vue";
 defineProps({
   id: Number,
+  ProductCardData: Object,
 });
 
 const alignment = ref(false);
