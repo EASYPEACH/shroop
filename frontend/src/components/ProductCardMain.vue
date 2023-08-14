@@ -14,13 +14,13 @@
     <v-card-text class="pt-3"> 2023-08-12 </v-card-text>
     <v-card-actions class="">
       <v-btn-toggle multiple variant="outlined" divided>
-        <v-btn @click="() => (alignment = !alignment)">
+        <v-btn @click="HandleChangeHeart()">
           <v-icon v-if="!alignment" icon="mdi-cards-heart-outline"></v-icon>
           <v-icon v-else icon="mdi-cards-heart"></v-icon>
         </v-btn>
       </v-btn-toggle>
       <v-btn color="orange">
-        <router-link to="/detail"> 상세보기 </router-link>
+        <router-link :to="`/detail/${id}`"> 상세보기 </router-link>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -28,8 +28,15 @@
 
 <script setup>
 import { ref } from "vue";
+defineProps({
+  id: Number,
+});
 
 const alignment = ref(false);
+
+const HandleChangeHeart = () => {
+  alignment.value = !alignment.value;
+};
 </script>
 
 <style lang="scss" scoped>
