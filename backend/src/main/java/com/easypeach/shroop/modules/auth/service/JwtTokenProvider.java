@@ -68,7 +68,7 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         }catch (JwtException | IllegalArgumentException e){ //JwtException 에 시그니처 예외도 포함
-            throw new InvalidTokenException();
+            throw new InvalidTokenException("유효하지 않은 토큰입니다");
         }
     }
 }
