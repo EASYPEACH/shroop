@@ -13,9 +13,10 @@
     <v-card-subtitle class="pt-3"> 1000원 </v-card-subtitle>
     <v-card-text class="pt-3"> 2023-08-12 </v-card-text>
     <v-card-actions class="">
-      <v-btn-toggle v-model="formatting" multiple variant="outlined" divided>
-        <v-btn>
-          <v-icon icon="mdi-thumb-up"></v-icon>
+      <v-btn-toggle multiple variant="outlined" divided>
+        <v-btn @click="() => (alignment = !alignment)">
+          <v-icon v-if="!alignment" icon="mdi-cards-heart-outline"></v-icon>
+          <v-icon v-else icon="mdi-cards-heart"></v-icon>
         </v-btn>
       </v-btn-toggle>
       <v-btn color="orange">
@@ -28,8 +29,7 @@
 <script setup>
 import { ref } from "vue";
 
-const alignment = ref(1);
-const formatting = ref([]);
+const alignment = ref(false);
 </script>
 
 <style lang="scss" scoped>
