@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.14'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	//Rest docs
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.easypeach'
@@ -15,6 +17,8 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	//Rest docs
+	asciidoctorExt
 }
 
 repositories {
@@ -35,11 +39,41 @@ dependencies {
 	//jwt 설정
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+
+
 	//security 설정
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//Rest docs
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+//Rest docs
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+test {
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor // (1)
+	from("${asciidoctor.outputDir}") { // (2)
+		into 'static/docs'
+	}
 }
