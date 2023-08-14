@@ -9,19 +9,47 @@
       <v-card-title>Top 10 Australian beaches</v-card-title>
     </v-img>
 
-    <v-card-subtitle class="pt-4"> Number 10 </v-card-subtitle>
-    <v-card-text>
-      <div>Whitehaven Beach</div>
-
-      <div>Whitsunday Island, Whitsunday Islands</div>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn color="orange"> Share </v-btn>
-      <v-btn color="orange"> Explore </v-btn>
+    <v-card-subtitle class="pt-4"> 게시물 제목 </v-card-subtitle>
+    <v-card-subtitle class="pt-3"> 1000원 </v-card-subtitle>
+    <v-card-text class="pt-3"> 2023-08-12 </v-card-text>
+    <v-card-actions class="">
+      <v-btn-toggle v-model="formatting" multiple variant="outlined" divided>
+        <v-btn>
+          <v-icon icon="mdi-thumb-up"></v-icon>
+        </v-btn>
+      </v-btn-toggle>
+      <v-btn color="orange">
+        <router-link to="/detail"> 상세보기 </router-link>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
 
-<style lang="scss" scoped></style>
+const alignment = ref(1);
+const formatting = ref([]);
+</script>
+
+<style lang="scss" scoped>
+.v-card-subtitle {
+  color: black;
+  opacity: 1;
+  font-size: large;
+}
+
+.v-card-text {
+  padding-bottom: 0;
+  padding-left: 1rem;
+}
+
+.v-card-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.v-btn {
+  font-size: medium;
+}
+</style>
