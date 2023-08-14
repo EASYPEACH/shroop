@@ -23,3 +23,19 @@ export const nickNameRule = {
     return pattern.test(value) || "특수문자는 사용할 수 없습니다";
   },
 };
+
+export const agreeRule = {
+  require: (value) => !!value || "필수 동의사항 입니다",
+};
+
+export const selectRule = {
+  require: (value) => !!value || "필수 선택사항",
+};
+
+export const phoneNumberRule = {
+  require: (value) => !!value || "휴대폰번호를 입력해주세요",
+  check: (value) => {
+    const pattern = /^0\d{1,2}\d{3,4}\d{4}$/;
+    return pattern.test(value) || "형식에 맞지 않습니다";
+  },
+};
