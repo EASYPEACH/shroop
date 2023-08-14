@@ -23,8 +23,8 @@ public class AuthController {
 
     @PostMapping(value = "/sign-up")
     public ResponseEntity<SignUpCompletedResponse> signUp(@Validated @RequestBody SignUpRequest signUpRequest){
-        Member savedMember = authService.saveMember(signUpRequest);
-        return ResponseEntity.ok(new SignUpCompletedResponse(savedMember.getId(), savedMember.getNickname()));
+        SignUpCompletedResponse signUpCompletedResponse = authService.saveMember(signUpRequest);
+        return ResponseEntity.ok(signUpCompletedResponse);
     }
 
     @PostMapping(value = "/sign-in")
