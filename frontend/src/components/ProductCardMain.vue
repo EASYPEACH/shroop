@@ -19,7 +19,7 @@
     <v-card-actions class="">
       <v-btn-toggle multiple variant="outlined" divided>
         <v-btn @click="HandleChangeHeart()">
-          <v-icon v-if="!alignment" icon="mdi-cards-heart-outline"></v-icon>
+          <v-icon v-if="!likeToggle" icon="mdi-cards-heart-outline"></v-icon>
           <v-icon v-else icon="mdi-cards-heart"></v-icon>
         </v-btn>
       </v-btn-toggle>
@@ -37,10 +37,10 @@ defineProps({
   ProductCardData: Object,
 });
 
-const alignment = ref(false);
+const likeToggle = ref(false);
 
 const HandleChangeHeart = () => {
-  alignment.value = !alignment.value;
+  likeToggle.value = !likeToggle.value;
 };
 </script>
 
