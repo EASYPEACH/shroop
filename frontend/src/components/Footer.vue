@@ -5,8 +5,9 @@
 </template>
 
 <style lang="scss" scoped>
-footer {
+.v-footer {
   border-top: 1px solid rgba(var(--v-theme-mainGray), 0.2);
+  padding: 50px 0;
   p {
     flex: 1;
     width: 100%;
