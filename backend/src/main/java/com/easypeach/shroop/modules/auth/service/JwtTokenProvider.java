@@ -23,7 +23,9 @@ public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String secretKey;
-    private final long accessTokenValidTime = 1800000L ;
+
+    @Value("${spring.jwt.access-token.exp}")
+    private long accessTokenValidTime;
     private final UserDetailsService userDetailsService;
 
     public String generateAccessToken(String loginId,String nickname, Role role){
