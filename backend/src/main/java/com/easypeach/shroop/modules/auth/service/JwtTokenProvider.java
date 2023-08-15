@@ -1,6 +1,7 @@
 package com.easypeach.shroop.modules.auth.service;
 
 import com.easypeach.shroop.modules.auth.exception.InvalidTokenException;
+import com.easypeach.shroop.modules.auth.exception.TokenExpirationException;
 import com.easypeach.shroop.modules.member.domain.Role;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,9 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+@Slf4j
 @Component
-@RequiredArgsConstructor @Slf4j
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
@@ -62,12 +64,14 @@ public class JwtTokenProvider {
         }
         return null;
     }
-    public boolean validateToken(String jwtToken){
+    public void validateToken(String jwtToken){
         try {
             log.info("jwtToken "+jwtToken);
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        }catch (JwtException | IllegalArgumentException e){ //JwtException 에 시그니처 예외도 포함
+            if(!claims.getBody().getExpiration().before(new Date())){
+                throw new TokenExpirationException("토큰의 유효기간이 만료되었습니다.");
+            }
+        }catch (JwtException | IllegalArgumentException e){
             throw new InvalidTokenException("유효하지 않은 토큰입니다");
         }
     }
