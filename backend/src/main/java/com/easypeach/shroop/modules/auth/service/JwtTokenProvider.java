@@ -1,7 +1,6 @@
 package com.easypeach.shroop.modules.auth.service;
 
 import com.easypeach.shroop.modules.auth.exception.InvalidTokenException;
-import com.easypeach.shroop.modules.auth.exception.TokenExpirationException;
 import com.easypeach.shroop.modules.member.domain.Role;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -64,13 +63,11 @@ public class JwtTokenProvider {
         }
         return null;
     }
-    public void validateToken(String jwtToken){
+    public boolean validateToken(String jwtToken){
         try {
             log.info("jwtToken "+jwtToken);
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            if(!claims.getBody().getExpiration().before(new Date())){
-                throw new TokenExpirationException("토큰의 유효기간이 만료되었습니다.");
-            }
+            return !claims.getBody().getExpiration().before(new Date());
         }catch (JwtException | IllegalArgumentException e){
             throw new InvalidTokenException("유효하지 않은 토큰입니다");
         }

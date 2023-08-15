@@ -24,10 +24,4 @@ public class ExceptionControllerAdvice {
 
         return ResponseEntity.badRequest().body(errorResponse);
     }
-
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException e){
-        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-    }
 }
