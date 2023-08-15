@@ -9,19 +9,59 @@
       <v-card-title>Top 10 Australian beaches</v-card-title>
     </v-img>
 
-    <v-card-subtitle class="pt-4"> Number 10 </v-card-subtitle>
-    <v-card-text>
-      <div>Whitehaven Beach</div>
-
-      <div>Whitsunday Island, Whitsunday Islands</div>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn color="orange"> Share </v-btn>
-      <v-btn color="orange"> Explore </v-btn>
+    <v-card-subtitle class="pt-4">
+      {{ ProductCardData.title }}
+    </v-card-subtitle>
+    <v-card-subtitle class="pt-3">
+      {{ ProductCardData.price }}
+    </v-card-subtitle>
+    <v-card-text class="pt-3"> {{ ProductCardData.createDate }} </v-card-text>
+    <v-card-actions class="">
+      <v-btn-toggle multiple variant="outlined" divided>
+        <v-btn @click="HandleChangeHeart()">
+          <v-icon v-if="!likeToggle" icon="mdi-cards-heart-outline"></v-icon>
+          <v-icon v-else icon="mdi-cards-heart"></v-icon>
+        </v-btn>
+      </v-btn-toggle>
+      <v-btn color="orange">
+        <router-link :to="`/detail/${id}`"> 상세보기 </router-link>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+defineProps({
+  id: Number,
+  ProductCardData: Object,
+});
 
-<style lang="scss" scoped></style>
+const likeToggle = ref(false);
+
+const HandleChangeHeart = () => {
+  likeToggle.value = !likeToggle.value;
+};
+</script>
+
+<style lang="scss" scoped>
+.v-card-subtitle {
+  color: black;
+  opacity: 1;
+  font-size: large;
+}
+
+.v-card-text {
+  padding-bottom: 0;
+  padding-left: 1rem;
+}
+
+.v-card-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.v-btn {
+  font-size: medium;
+}
+</style>
