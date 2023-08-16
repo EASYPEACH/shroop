@@ -11,15 +11,22 @@ import java.security.NoSuchAlgorithmException;
 
 public class PhoneAuthService {
     @Value("${spring.phone.accessKey}")
-    private String accessKey;
+    private final String accessKey;
 
     @Value("${spring.phone.secretKey}")
-    private String secretKey;
+    private final String secretKey;
 
     @Value("${spring.phone.serviceId}")
-    private String serviceId;
+    private final String serviceId;
 
     String time = String.valueOf(System.currentTimeMillis());
+
+    public PhoneAuthService(String accessKey, String secretKey, String serviceId) {
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+        this.serviceId = serviceId;
+    }
+
     public String makeSignature() throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException {
         String space = " ";					// one space
         String newLine = "\n";					// new line
