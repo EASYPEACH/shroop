@@ -1,9 +1,5 @@
 package com.easypeach.shroop.infra.security;
 
-import com.easypeach.shroop.infra.security.filter.AuthExceptionHandlerFilter;
-import com.easypeach.shroop.infra.security.filter.JwtAuthFilter;
-import com.easypeach.shroop.modules.auth.service.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,35 +8,38 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.easypeach.shroop.infra.security.filter.AuthExceptionHandlerFilter;
+import com.easypeach.shroop.infra.security.filter.JwtAuthFilter;
+import com.easypeach.shroop.modules.auth.service.JwtTokenProvider;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig  {
+public class SecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/auth/sign-up","/api/auth/sign-in").permitAll()
-                .antMatchers(HttpMethod.GET,"/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .cors()
-                .and()
-                .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new AuthExceptionHandlerFilter(),JwtAuthFilter.class);
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+			.httpBasic().disable()
+			.csrf().disable()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.authorizeRequests()
+			.antMatchers("/api/auth/sign-up", "/api/auth/sign-in").permitAll()
+			.antMatchers(HttpMethod.GET, "/**").permitAll()
+			.anyRequest().authenticated()
+			.and()
+			.cors()
+			.and()
+			.addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new AuthExceptionHandlerFilter(), JwtAuthFilter.class);
 
-        return http.build();
-    }
+		return http.build();
+	}
 
 }
