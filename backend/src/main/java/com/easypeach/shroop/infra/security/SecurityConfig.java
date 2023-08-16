@@ -1,5 +1,6 @@
 package com.easypeach.shroop.infra.security;
 
+import com.easypeach.shroop.infra.security.filter.AuthExceptionHandlerFilter;
 import com.easypeach.shroop.infra.security.filter.JwtAuthFilter;
 import com.easypeach.shroop.modules.auth.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig  {
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -29,9 +33,13 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/auth/sign-up","/api/auth/sign-in").permitAll()
                 .antMatchers(HttpMethod.GET,"/**").permitAll()
-                .anyRequest().hasRole("USER") // ADMIN 과 우선 순위 설정 필요
+                .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .cors()
+                .and()
+                .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthExceptionHandlerFilter(),JwtAuthFilter.class);
+
         return http.build();
     }
 

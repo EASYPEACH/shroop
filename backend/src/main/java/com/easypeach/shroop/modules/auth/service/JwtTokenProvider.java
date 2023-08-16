@@ -16,13 +16,16 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+@Slf4j
 @Component
-@RequiredArgsConstructor @Slf4j
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String secretKey;
-    private final long accessTokenValidTime = 1800000L ;
+
+    @Value("${spring.jwt.access-token.exp}")
+    private long accessTokenValidTime;
     private final UserDetailsService userDetailsService;
 
     public String generateAccessToken(String loginId,String nickname, Role role){
@@ -67,7 +70,7 @@ public class JwtTokenProvider {
             log.info("jwtToken "+jwtToken);
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
-        }catch (JwtException | IllegalArgumentException e){ //JwtException 에 시그니처 예외도 포함
+        }catch (JwtException | IllegalArgumentException e){
             throw new InvalidTokenException("유효하지 않은 토큰입니다");
         }
     }
