@@ -1,23 +1,24 @@
 <template>
   <v-card class="mx-auto" max-width="400">
-    <v-img
-      class="align-end text-white"
-      height="200"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-      cover
-    >
-      <v-card-title>Top 10 Australian beaches</v-card-title>
-    </v-img>
+    <router-link :to="`/detail/${id}`">
+      <v-img
+        class="align-end text-white"
+        height="200"
+        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        cover
+      >
+      </v-img>
+    </router-link>
 
-    <v-card-subtitle class="pt-4">
+    <v-card-subtitle class="pt-4 text-h5">
       {{ ProductCardData.title }}
     </v-card-subtitle>
     <v-card-subtitle class="pt-3">
-      {{ ProductCardData.price }}
+      {{ ProductCardData.price.toLocaleString() }} 원
     </v-card-subtitle>
     <v-card-text class="pt-3"> {{ ProductCardData.createDate }} </v-card-text>
     <v-card-actions class="">
-      <v-btn-toggle multiple variant="outlined" divided>
+      <v-btn-toggle multiple variant="text" divided>
         <v-btn @click="HandleChangeHeart()">
           <v-icon v-if="!likeToggle" icon="mdi-cards-heart-outline"></v-icon>
           <v-icon v-else icon="mdi-cards-heart"></v-icon>
