@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-	private static final String BEARER = "bearer ";
+	private static final String BEARER = "Bearer ";
 	private static final String AUTHORIZATION_HEADER = "Authorization";
 	private static final String ROLE = "role";
 	private static final String NICKNAME = "nickname";
