@@ -301,6 +301,7 @@ section {
 
 .v-card-actions {
   justify-content: space-between;
+
   .v-btn-toggle {
     height: 36px;
     border: thin solid currentColor;
@@ -312,10 +313,12 @@ section {
   display: flex;
   flex-direction: column;
   margin-top: 100px;
+
   .productDetail__alert {
     margin-bottom: 30px;
     display: flex;
     justify-content: space-around;
+
     .v-alert {
       width: 600px;
       font-size: 20px;
@@ -333,9 +336,11 @@ section {
 
   .productDetail__defect {
     margin-top: 60px;
+
     div {
       margin-top: 30px;
     }
+
     .productDetail__defect {
       margin-top: 0px;
       display: flex;
