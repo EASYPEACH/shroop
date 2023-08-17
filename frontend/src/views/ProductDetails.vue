@@ -13,7 +13,9 @@
         <v-card-item>
           <div>
             <div class="productContent__item-title">
-              <div class="text-h5 pt-2">{{ productContent.title }}</div>
+              <div class="text-h5 pt-2 font-weight-bold">
+                {{ productContent.title }}
+              </div>
               <div class="productContent__side-tooltips">
                 <v-menu>
                   <template v-slot:activator="{ props }">
@@ -80,12 +82,12 @@
         <v-card-actions>
           <v-btn-toggle multiple>
             <v-btn @click="HandleChangeHeart()">
-              <span class="font-weight-bold pb-1">{{ likeCount }}</span>
               <v-icon
                 v-if="!likeToggle"
                 icon="mdi-cards-heart-outline"
               ></v-icon>
               <v-icon v-else icon="mdi-cards-heart"></v-icon>
+              <span class="font-weight-bold pb-1">{{ likeCount }}</span>
             </v-btn>
           </v-btn-toggle>
           <v-btn variant="outlined"> 구매하기 </v-btn>
@@ -119,15 +121,15 @@
           </thead>
           <tbody>
             <tr>
-              <td>구입시기</td>
+              <td class="font-weight-bold">구입시기</td>
               <td>{{ productContent.purchaseDate }}</td>
             </tr>
             <tr>
-              <td>브랜드명/모델명</td>
+              <td class="font-weight-bold">브랜드명/모델명</td>
               <td>{{ productContent.brand }}</td>
             </tr>
             <tr>
-              <td>상태</td>
+              <td class="font-weight-bold">상태</td>
               <td>{{ productContent.grade }}</td>
             </tr>
           </tbody>
