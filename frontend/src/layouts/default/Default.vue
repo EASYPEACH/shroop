@@ -9,5 +9,5 @@
 <script setup>
 import DefaultBar from "./AppBar.vue";
 import DefaultView from "./View.vue";
-import Footer from "@/components/Footer.vue";
+import Footer from "./Footer.vue";
 </script>
