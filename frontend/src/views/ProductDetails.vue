@@ -88,7 +88,7 @@
     <div class="productDetail">
       <div class="productDetail__alert">
         <div>
-          <v-alert color="green" variant="outlined">
+          <v-alert color="red" variant="outlined">
             <div class="text-h5">
               <v-icon icon="mdi-alert-decagram"></v-icon> 구매 주의 사항
             </div>
