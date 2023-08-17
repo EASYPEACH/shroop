@@ -13,8 +13,10 @@
     <ul class="header__list">
       <li>
         <v-btn class="header__button-sell">
-          <v-icon icon="mdi-currency-usd"></v-icon>
-          <span>판매하기</span>
+          <router-link to="/register">
+            <v-icon icon="mdi-currency-usd"></v-icon>
+            <span>판매하기</span>
+          </router-link>
         </v-btn>
       </li>
       <li>
@@ -34,7 +36,10 @@
               <router-link to="/login">로그인</router-link>
             </li>
             <li>
-              <router-link to="/mypage">마이페이지</router-link>
+              <router-link to="/signup">회원가입</router-link>
+            </li>
+            <li>
+              <router-link to="/">마이페이지</router-link>
             </li>
           </ul>
         </v-menu>
@@ -64,14 +69,10 @@
 import { ref } from "vue";
 import NotificationCard from "@/components/NotificationCard.vue";
 
-const isShowTooltips = ref(false);
 const isShowNotification = ref(false);
-const handleShowTooltips = () => {
-  isShowTooltips.value = !isShowTooltips.value;
-};
+
 const handleShowNotification = () => {
   isShowNotification.value = !isShowNotification.value;
-  isShowTooltips.value = false;
 };
 </script>
 
@@ -108,7 +109,6 @@ header {
     align-items: center;
     button {
       min-width: fit-content;
-      padding: 0;
       padding: 5px;
     }
     span {
@@ -117,7 +117,6 @@ header {
   }
   .mdi {
     font-size: 25px;
-    width: 100%;
   }
 }
 .header__button-sell {
@@ -132,10 +131,14 @@ header {
   border-radius: 10px;
   > li {
     width: 100px;
-    padding: 5px;
     text-align: center;
     color: #fff;
     font-weight: 600;
+    a {
+      width: 100%;
+      padding: 5px;
+      display: inline-block;
+    }
   }
 }
 
