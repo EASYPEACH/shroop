@@ -16,7 +16,6 @@ import com.easypeach.shroop.modules.auth.exception.InvalidTokenException;
 import com.easypeach.shroop.modules.member.domain.Role;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,6 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+
+	private static final String BEARER = "Bearer ";
+	private static final String AUTHORIZATION_HEADER = "Authorization";
+	private static final String ROLE = "role";
+	private static final String NICKNAME = "nickname";
 
 	@Value("${spring.jwt.secret}")
 	private String secretKey;
@@ -41,19 +45,18 @@ public class JwtTokenProvider {
 
 	public String createToken(String loginId, String nickname, Role role) {
 		Claims claims = Jwts.claims().setSubject(loginId);
-		claims.put("nickname", nickname);
-		claims.put("role", role);
+		claims.put(NICKNAME, nickname);
+		claims.put(ROLE, role);
 
 		Date nowDate = new Date();
-		Long expirationDate = nowDate.getTime() + accessTokenValidTime;
+		long expirationDate = nowDate.getTime() + accessTokenValidTime;
 
-		String token = Jwts.builder()
+		return Jwts.builder()
 			.setClaims(claims)
 			.setIssuedAt(nowDate)
 			.setExpiration(new Date(expirationDate))
 			.signWith(SignatureAlgorithm.HS256, secretKey)
 			.compact();
-		return token;
 	}
 
 	public Authentication getAuthentication(String token) {
@@ -66,20 +69,25 @@ public class JwtTokenProvider {
 	}
 
 	public String resolveToken(HttpServletRequest request) {
-		String bearerToken = request.getHeader("Authorization");
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-			return bearerToken.substring(7);
+		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER)) {
+			return bearerToken.substring(BEARER.length());
 		}
 		return null;
 	}
 
-	public boolean validateToken(String jwtToken) {
+	public boolean isValidToken(String jwtToken) {
 		try {
-			log.info("jwtToken " + jwtToken);
-			Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-			return !claims.getBody().getExpiration().before(new Date());
+			log.info("jwtToken: {} ", jwtToken);
+			return !Jwts.parser()
+				.setSigningKey(secretKey)
+				.parseClaimsJws(jwtToken)
+				.getBody()
+				.getExpiration()
+				.before(new Date());
 		} catch (JwtException | IllegalArgumentException e) {
 			throw new InvalidTokenException("유효하지 않은 토큰입니다");
 		}
 	}
+
 }
