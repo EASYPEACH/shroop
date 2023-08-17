@@ -28,17 +28,17 @@
   </div>
 </template>
 <script setup>
-  defineProps({
-    modelValue: String,
-    visible: Boolean,
-    rules: Object,
-    isNeedSearchState: Boolean,
-  });
-  defineEmits(["update:modelValue"]);
+defineProps({
+  modelValue: String,
+  visible: Boolean,
+  rules: Object,
+  isNeedSearchState: Boolean,
+});
+defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>
-  .guide_button {
-    color: rgb(var(--v-theme-subBlue));
-  }
+.guide_button {
+  color: rgb(var(--v-theme-subBlue));
+}
 </style>
