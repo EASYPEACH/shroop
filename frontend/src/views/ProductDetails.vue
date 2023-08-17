@@ -13,7 +13,7 @@
         <v-card-item>
           <div>
             <div class="productContent__item-title">
-              <div class="text-h5 pt-2">냉장고 팔아요</div>
+              <div class="text-h5 pt-2">{{ productContent.title }}</div>
               <div class="productContent__side-tooltips">
                 <v-menu>
                   <template v-slot:activator="{ props }">
@@ -21,7 +21,7 @@
                   </template>
                   <v-list>
                     <v-list-item
-                      v-for="(item, index) in items"
+                      v-for="(item, index) in menuItems"
                       :key="index"
                       :value="index"
                     >
@@ -34,8 +34,16 @@
               </div>
             </div>
             <div class="productContent__price">
-              <div class="text-h5 mb-1">1000원</div>
-              <div class="text-caption mb-1">배송비 포함</div>
+              <div class="text-h5 mb-1">
+                {{ productContent.price.toLocaleString() }}원
+              </div>
+              <div
+                v-if="productContent.hasDeliveryPrice"
+                class="text-caption mb-1"
+              >
+                배송비 포함
+              </div>
+              <div v-else class="text-caption mb-1">배송비 미포함</div>
             </div>
             <v-table class="mt-2">
               <tbody>
@@ -64,15 +72,15 @@
                 alt="John"
               ></v-img>
             </v-avatar>
-            <div class="text-h5">따식이행님</div>
+            <div class="text-h5">{{ profile.name }}</div>
           </div>
-          <div class="text-h5">등급 30점</div>
+          <div class="text-h5">등급 {{ profile.score }}점</div>
         </div>
 
         <v-card-actions>
           <v-btn-toggle multiple>
             <v-btn @click="HandleChangeHeart()">
-              <span class="font-weight-bold pb-1">103</span>
+              <span class="font-weight-bold pb-1">{{ likeCount }}</span>
               <v-icon
                 v-if="!likeToggle"
                 icon="mdi-cards-heart-outline"
@@ -110,17 +118,28 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in desserts" :key="item.name">
-              <td>{{ item.title }}</td>
-              <td>{{ item.content }}</td>
+            <tr>
+              <td>구입시기</td>
+              <td>{{ productContent.purchaseDate }}</td>
+            </tr>
+            <tr>
+              <td>브랜드명/모델명</td>
+              <td>{{ productContent.brand }}</td>
+            </tr>
+            <tr>
+              <td>상태</td>
+              <td>{{ productContent.grade }}</td>
             </tr>
           </tbody>
         </v-table>
       </div>
       <div class="productDetail__defect">
         <div class="text-h5 mb-6 font-weight-bold">상품 결함 정보</div>
-        <div class="text-h6">경함 여부 : 있음</div>
-        <div class="productDetail__defect">
+        <div v-if="!productContent.hasDefect" class="text-h6">
+          경함 여부 : 없음
+        </div>
+        <div v-else class="text-h6">경함 여부 : 있음</div>
+        <div v-if="productContent.hasDefect" class="productDetail__defect">
           <v-img
             width="300"
             v-for="(defectImg, idx) in defectImgs"
@@ -132,19 +151,7 @@
       <div class="productDetail__content">
         <div class="text-h5 mb-6 font-weight-bold">상품 기타 상세 정보</div>
         <div class="text-h6">
-          정보과학에서 더미 데이터는 유용한 데이터가 포함되지 않지만 공간을
-          예비해두어 실제 데이터가 명목상 존재하는 것처럼 다루는 유순한 정보를
-          의미한다. 더미 데이터는 테스트 및 운영 목적을 위해 플레이스홀더로
-          사용할 수 있다. 정보과학에서 더미 데이터는 유용한 데이터가 포함되지
-          않지만 공간을 예비해두어 실제 데이터가 명목상 존재하는 것처럼 다루는
-          유순한 정보를 의미한다. 더미 데이터는 테스트 및 운영 목적을 위해
-          플레이스홀더로 사용할 수 있다. 정보과학에서 더미 데이터는 유용한
-          데이터가 포함되지 않지만 공간을 예비해두어 실제 데이터가 명목상
-          존재하는 것처럼 다루는 유순한 정보를 의미한다. 더미 데이터는 테스트 및
-          운영 목적을 위해 플레이스홀더로 사용할 수 있다. 정보과학에서 더미
-          데이터는 유용한 데이터가 포함되지 않지만 공간을 예비해두어 실제
-          데이터가 명목상 존재하는 것처럼 다루는 유순한 정보를 의미한다. 더미
-          데이터는 테스트 및 운영 목적을 위해 플레이스홀더로 사용할 수 있다.
+          {{ productContent.content }}
         </div>
       </div>
     </div>
@@ -182,27 +189,39 @@ const defectImgs = [
   { imgUrl: `https://cdn.vuetifyjs.com/images/cards/sunshine.jpg` },
 ];
 
-const items = [{ title: `삭제하기` }, { title: `신고하기` }];
-
-const productContent = {
-  category: `전자제품`,
-  createDate: `2023-07-14`,
+const profile = {
+  name: `따식이행님`,
+  score: 70,
 };
 
-const desserts = [
-  {
-    title: `구입시기`,
-    content: `2023-08-10`,
-  },
-  {
-    title: `브랜드명/모델명`,
-    content: `삼성/갤럭시 플립5`,
-  },
-  {
-    title: `상태`,
-    content: `중`,
-  },
-];
+const menuItems = [{ title: `삭제하기` }, { title: `신고하기` }];
+
+const productContent = ref({
+  title: `최신 노트북 팔아요`,
+  price: 100000,
+  hasDeliveryPrice: true,
+  category: `전자제품`,
+  createDate: `2023-07-14`,
+  purchaseDate: `2023-08-10`,
+  brand: `삼성/갤럭시 플립5`,
+  grade: `중`,
+  hasDefect: true,
+  content: `정보과학에서 더미 데이터는 유용한 데이터가 포함되지 않지만 공간을
+          예비해두어 실제 데이터가 명목상 존재하는 것처럼 다루는 유순한 정보를
+          의미한다. 더미 데이터는 테스트 및 운영 목적을 위해 플레이스홀더로
+          사용할 수 있다. 정보과학에서 더미 데이터는 유용한 데이터가 포함되지
+          않지만 공간을 예비해두어 실제 데이터가 명목상 존재하는 것처럼 다루는
+          유순한 정보를 의미한다. 더미 데이터는 테스트 및 운영 목적을 위해
+          플레이스홀더로 사용할 수 있다. 정보과학에서 더미 데이터는 유용한
+          데이터가 포함되지 않지만 공간을 예비해두어 실제 데이터가 명목상
+          존재하는 것처럼 다루는 유순한 정보를 의미한다. 더미 데이터는 테스트 및
+          운영 목적을 위해 플레이스홀더로 사용할 수 있다. 정보과학에서 더미
+          데이터는 유용한 데이터가 포함되지 않지만 공간을 예비해두어 실제
+          데이터가 명목상 존재하는 것처럼 다루는 유순한 정보를 의미한다. 더미
+          데이터는 테스트 및 운영 목적을 위해 플레이스홀더로 사용할 수 있다.`,
+});
+
+const likeCount = ref(103);
 </script>
 
 <style lang="scss" scoped>
