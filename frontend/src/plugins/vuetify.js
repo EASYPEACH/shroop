@@ -2,9 +2,6 @@ import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 
 import { createVuetify } from "vuetify";
-import { aliases, fa } from "vuetify/iconsets/fa";
-import { md } from "vuetify/iconsets/md";
-import { mdi } from "vuetify/iconsets/mdi";
 
 const lightTheme = {
   dark: false,

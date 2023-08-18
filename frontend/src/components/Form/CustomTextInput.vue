@@ -14,14 +14,14 @@
 </template>
 
 <script setup>
-  defineProps({
-    label: String,
-    placeholderText: String,
-    modelValue: String,
-    icon: String,
-    rules: Object,
-  });
-  defineEmits(["update:modelValue"]);
+defineProps({
+  label: String,
+  placeholderText: String,
+  modelValue: String,
+  icon: String,
+  rules: Object,
+});
+defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped></style>
