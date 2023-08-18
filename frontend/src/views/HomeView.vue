@@ -31,8 +31,8 @@
 </template>
 
 <script setup>
-import Title from "@/components/Title.vue";
-import ProductCardMain from "@/components/ProductCardMain.vue";
+import Title from "@/components/Title/MainTitle.vue";
+import ProductCardMain from "@/components/Card/ProductCardMain.vue";
 
 const productCardDummyData = [
   {

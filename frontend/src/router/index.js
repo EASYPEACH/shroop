@@ -4,22 +4,22 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    component: () => import("@/layouts/default/Default.vue"),
+    component: () => import("@/layouts/default/DefaultLayout.vue"),
     children: [
       {
         path: "",
         name: "Home",
-        component: () => import("@/views/Home.vue"),
+        component: () => import("@/views/HomeView.vue"),
       },
       {
         path: "/login",
         name: "Login",
-        component: () => import("@/views/Login.vue"),
+        component: () => import("@/views/LoginView.vue"),
       },
       {
         path: "/signup",
         name: "Signup",
-        component: () => import("@/views/Signup.vue"),
+        component: () => import("@/views/SignupView.vue"),
       },
       {
         path: "/mypage",
@@ -29,17 +29,17 @@ const routes = [
       {
         path: "/regist",
         name: "Regist",
-        component: () => import("@/views/RegistProduct.vue"),
+        component: () => import("@/views/RegistProductView.vue"),
       },
       {
         path: "/edit/:id(\\d+)",
         name: "Edit",
-        component: () => import("@/views/RegistProduct.vue"),
+        component: () => import("@/views/RegistProductView.vue"),
       },
       {
         path: "/detail/:id(\\d+)",
         name: "Detail",
-        component: () => import("@/views/ProductDetails.vue"),
+        component: () => import("@/views/ProductDetailsView.vue"),
       },
     ],
   },
