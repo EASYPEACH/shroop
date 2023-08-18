@@ -5,7 +5,8 @@
       density="compact"
       :placeholder="placeholderText"
       :value="modelValue"
-      :prepend-inner-icon="icon"
+      :prepend-inner-icon="preppendIcon"
+      :append-inner-icon="appendIcon"
       :rules="rules"
       @input="$emit('update:modelValue', $event.target.value)"
       variant="filled"
@@ -18,7 +19,8 @@ defineProps({
   label: String,
   placeholderText: String,
   modelValue: String,
-  icon: String,
+  preppendIcon: String,
+  appendIcon: String,
   rules: Object,
 });
 defineEmits(["update:modelValue"]);
