@@ -27,17 +27,17 @@ const routes = [
         // component: () => import("@/views/Mypage.vue"),
       },
       {
-        path: "/register",
-        name: "Register",
-        component: () => import("@/views/RegisterProduct.vue"),
+        path: "/regist",
+        name: "Regist",
+        component: () => import("@/views/RegistProduct.vue"),
       },
       {
-        path: "/edit:id",
+        path: "/edit/:id(\\d+)",
         name: "Edit",
-        component: () => import("@/views/RegisterProduct.vue"),
+        component: () => import("@/views/RegistProduct.vue"),
       },
       {
-        path: "/detail/:id",
+        path: "/detail/:id(\\d+)",
         name: "Detail",
         component: () => import("@/views/ProductDetails.vue"),
       },

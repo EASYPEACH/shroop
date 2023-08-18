@@ -25,17 +25,28 @@ export const nickNameRule = {
 };
 
 export const agreeRule = {
-  require: (value) => !!value || "필수 동의사항 입니다",
-};
-
-export const selectRule = {
-  require: (value) => !!value || "필수 선택사항",
+  required: (value) => !!value || "필수 동의사항 입니다",
 };
 
 export const phoneNumberRule = {
-  require: (value) => !!value || "휴대폰번호를 입력해주세요",
+  required: (value) => !!value || "휴대폰번호를 입력해주세요",
   check: (value) => {
     const pattern = /^0\d{1,2}\d{3,4}\d{4}$/;
     return pattern.test(value) || "형식에 맞지 않습니다";
   },
+};
+
+export const defaultTextRule = {
+  required: (value) => !!value || "필수 사항 입니다",
+  min: (value) => value.length >= 2 || "최소 2자 이상 입력해주세요",
+};
+
+export const priceRule = {
+  required: (value) => !!value || "필수 사항 입니다",
+  min: (value) => value >= 100 || "100원 이상 입력해주세요",
+};
+
+export const productDetailRule = {
+  required: (value) => !!value || "필수 사항 입니다",
+  min: (value) => value.length >= 50 || "50자 이상 입력해주세요",
 };

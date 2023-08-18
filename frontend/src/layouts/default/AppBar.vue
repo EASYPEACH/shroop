@@ -13,7 +13,7 @@
     <ul class="header__list">
       <li>
         <v-btn class="header__button-sell">
-          <router-link to="/register">
+          <router-link to="/regist">
             <v-icon icon="mdi-currency-usd"></v-icon>
             <span>판매하기</span>
           </router-link>
