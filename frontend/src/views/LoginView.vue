@@ -48,7 +48,7 @@
 
 <script setup>
 import { ref } from "vue";
-import Title from "@/components/Title.vue";
+import Title from "@/components/Title/MainTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import PasswordInput from "@/components/Form/PasswordInput.vue";
 import { idRule, passwordRule } from "@/components/Form/data/formRules";

@@ -27,13 +27,13 @@
             <v-select
               v-model="mobileCarrier"
               :items="phoneItems"
-              :rules="[selectRule.require]"
+              :rules="[defaultTextRule.required]"
               density="compact"
               label="통신사"
             ></v-select>
             <PhoneInput
               v-model="phoneNumber"
-              :rules="[phoneNumberRule.require, phoneNumberRule.check]"
+              :rules="[phoneNumberRule.required, phoneNumberRule.check]"
             />
           </div>
         </div>
@@ -43,7 +43,7 @@
           v-model="agreement[item.id]"
           @show-dialog="dialog[item.id] = true"
           :agreement-statement="item.title"
-          :rules="[agreeRule.require]"
+          :rules="[agreeRule.required]"
         />
         <v-divider></v-divider>
         <v-card-actions>
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import Title from "@/components/Title.vue";
+import Title from "@/components/Title/MainTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import PasswordInput from "@/components/Form/PasswordInput.vue";
 import PhoneInput from "@/components/Form/PhoneInput.vue";
@@ -79,8 +79,8 @@ import {
   passwordRule,
   nickNameRule,
   agreeRule,
-  selectRule,
   phoneNumberRule,
+  defaultTextRule,
 } from "@/components/Form/data/formRules";
 import { AGREE } from "@/consts/agree";
 import { ref } from "vue";

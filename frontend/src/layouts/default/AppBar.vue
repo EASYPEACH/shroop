@@ -67,7 +67,7 @@
 
 <script setup>
 import { ref } from "vue";
-import NotificationCard from "@/components/NotificationCard.vue";
+import NotificationCard from "@/components/Card/NotificationCard.vue";
 
 const isShowNotification = ref(false);
 

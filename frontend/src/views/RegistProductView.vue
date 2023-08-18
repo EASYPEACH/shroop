@@ -162,8 +162,8 @@ import {
 import changeFiles from "@/utils/changeFiles";
 import deleteImage from "@/utils/deleteImage";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import Title from "@/components/Title.vue";
-import ProductTitle from "@/components/ProductTitle.vue";
+import Title from "@/components/Title/MainTitle.vue";
+import ProductTitle from "@/components/Title/ProductTitle.vue";
 import ImageAttach from "@/components/ImageAttach.vue";
 import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import WarnAlert from "@/components/Alert/WarnAlert.vue";
