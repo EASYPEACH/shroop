@@ -4,6 +4,7 @@ import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.auth.support.LoginMemberId;
 import com.easypeach.shroop.modules.member.domain.Member;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,4 +17,10 @@ public class MemberController {
 
         return "ok";
     }
+
+    @GetMapping(value = "/jenkins")
+    public String jenkins(){
+        return "jenkins test ok";
+    }
+
 }
