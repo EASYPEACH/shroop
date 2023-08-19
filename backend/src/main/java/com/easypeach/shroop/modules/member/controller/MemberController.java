@@ -20,7 +20,7 @@ public class MemberController {
 
     @GetMapping(value = "/jenkins")
     public String jenkins(){
-        return "jenkins test ok";
+        return "jenkins test ok2";
     }
 
 }
