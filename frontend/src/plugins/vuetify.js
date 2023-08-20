@@ -18,6 +18,7 @@ const lightTheme = {
     warning: "#FB8C00",
     mainGray: "#2C3333",
     subBlue: "#1D5D9B",
+    heartRed: "rgb(172, 32, 32);",
   },
 };
 

@@ -24,7 +24,7 @@ const routes = [
       {
         path: "/mypage",
         name: "Mypage",
-        // component: () => import("@/views/Mypage.vue"),
+        component: () => import("@/views/MypageView.vue"),
       },
       {
         path: "/regist",
@@ -48,7 +48,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { top: 0 };
   },
 });
