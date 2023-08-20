@@ -73,13 +73,12 @@ defineExpose({
       }
     }
     .uploadFiles__form-thumbnail {
-      padding: 30px 20px 10px;
+      padding: 30px 0px 0px;
+      margin-left: 20px;
       display: flex;
+      flex: 1;
       gap: 20px;
       overflow-x: scroll;
-      &::-webkit-scrollbar {
-        display: none;
-      }
       > div {
         position: relative;
         .thumb {
