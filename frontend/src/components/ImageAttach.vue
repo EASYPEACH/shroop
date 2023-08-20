@@ -71,6 +71,14 @@ defineExpose({
         height: 0;
         widows: 0;
       }
+      @media (max-width: 980px) {
+        width: 100px;
+        font-size: 18px;
+        label {
+          width: 100px;
+          height: 100px;
+        }
+      }
     }
     .uploadFiles__form-thumbnail {
       padding: 30px 0px 0px;
@@ -95,6 +103,14 @@ defineExpose({
           top: -17px;
           right: -17px;
           font-size: 30px;
+        }
+      }
+      @media (max-width: 980px) {
+        > div {
+          .thumb {
+            width: 100px;
+            height: 100px;
+          }
         }
       }
     }
