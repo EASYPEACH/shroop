@@ -39,7 +39,7 @@
               <router-link to="/signup">회원가입</router-link>
             </li>
             <li>
-              <router-link to="/">마이페이지</router-link>
+              <router-link to="/mypage">마이페이지</router-link>
             </li>
           </ul>
         </v-menu>
