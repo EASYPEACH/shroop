@@ -7,7 +7,7 @@ const deleteImage = (idx, ref, imageList, data) => {
   newList.forEach((file) => dataTransfer.items.add(file));
   ref.value.input.files = dataTransfer.files;
   data.value = dataTransfer.files;
-  changeFiles(dataTransfer.files, imageList);
+  changeFiles(dataTransfer.files, ref, imageList, data, true);
 };
 
 export default deleteImage;

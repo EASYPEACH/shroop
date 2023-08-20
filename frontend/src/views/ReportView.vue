@@ -57,13 +57,12 @@ const title = ref("");
 const isMediate = ref(null);
 const product = ref("아이패드 프로 10.5");
 const productImagesThumb = ref([]);
-const imageData = ref([]);
+const imageData = ref({});
 const productRef = ref(null);
 const reportReason = ref("");
 
 const handleAttachProductImage = (files) => {
-  imageData.value = files;
-  chanageFiles(files, productImagesThumb);
+  chanageFiles(files, productRef, productImagesThumb, imageData);
 };
 const handleDeleteProductImage = (idx) => {
   deleteImage(idx, productRef, productImagesThumb, imageData);
