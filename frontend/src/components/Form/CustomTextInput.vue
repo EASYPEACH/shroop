@@ -24,7 +24,7 @@ defineProps({
   preppendIcon: String,
   appendIcon: String,
   rules: Object,
-  disabled: Boolean,
+  hideDetails: Boolean,
   hideDetails: Boolean,
   type: {
     type: String,
