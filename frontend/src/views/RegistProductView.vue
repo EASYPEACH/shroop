@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <content-layout>
     <section>
       <Title :title="isRegister ? '상품등록' : '상품수정'" />
       <v-form
@@ -41,6 +41,24 @@
             ></v-select>
           </li>
           <li>
+            <h4>구입시기</h4>
+            <custom-text-input
+              :rules="[selectRule.required]"
+              type="date"
+              v-model="purchaseDate"
+              class="info__form"
+            />
+          </li>
+          <li>
+            <h4>브랜드/모델명</h4>
+            <custom-text-input
+              placeholder-text="브랜드"
+              v-model="brandModel"
+              :rules="[defaultTextRule.required, defaultTextRule.min]"
+              class="info__form"
+            />
+          </li>
+          <li>
             <h4>가격</h4>
             <custom-text-input
               placeholder-text="가격"
@@ -80,9 +98,8 @@
           <li>
             <h4 for="isDefected">결함여부</h4>
             <v-radio-group
-              :rules="[defaultTextRule.required]"
+              :rules="[selectRule.required]"
               inline
-              column
               v-model="isDefected"
               class="info__form"
             >
@@ -113,19 +130,7 @@
         />
 
         <product-title title="상품 상세조건" />
-        <v-textarea
-          :rules="[
-            productDetailRule.required,
-            productDetailRule.min,
-            productDetailRule.max,
-          ]"
-          v-model="productDetailText"
-          variant="filled"
-          auto-grow
-          label="상세조건"
-          rows="10"
-          row-height="100"
-        ></v-textarea>
+        <custom-text-area v-model="productDetailText" label="상세조건" />
         <p>{{ productDetailText.length }} / 200</p>
         <div class="agreement">
           <label for="agree">
@@ -143,24 +148,21 @@
         <p v-if="!checkRequired" class="checkRequired">
           필수 사항을 확인 해주세요
         </p>
-        <v-btn class="form__button-submit" variant="tonal" type="submit">{{
-          isRegister ? "상품 등록" : "상품 수정"
-        }}</v-btn>
+        <submit-button :text="isRegister ? '상품 등록' : '상품 수정'" />
       </v-form>
     </section>
-  </div>
+  </content-layout>
 </template>
 
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import {
+  selectRule,
   defaultTextRule,
   priceRule,
-  productDetailRule,
-} from "@/components/Form/data/formRules";
-import changeFiles from "@/utils/changeFiles";
-import deleteImage from "@/utils/deleteImage";
+} from "@/components/Form/data/formRules.js";
+import { changeFiles, deleteImage } from "@/utils";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import Title from "@/components/Title/MainTitle.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
@@ -168,6 +170,9 @@ import ImageAttach from "@/components/ImageAttach.vue";
 import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import WarnAlert from "@/components/Alert/WarnAlert.vue";
 import GuideText from "@/components/GuideText.vue";
+import ContentLayout from "@/layouts/ContentLayout.vue";
+import CustomTextArea from "@/components/Form/CustomTextArea.vue";
+import SubmitButton from "@/components/Button/SubmitButton.vue";
 
 const { path } = useRoute();
 const isValid = ref(false);
@@ -175,7 +180,9 @@ const isRegister = ref(false);
 const agreement = ref(false);
 const checkRequired = ref(true);
 const productImages = ref([]);
+const productImagesData = ref({});
 const defectedImages = ref([]);
+const defectedImagesData = ref({});
 const productRef = ref(null);
 const defectedtRef = ref(null);
 const isDefected = ref(null);
@@ -186,6 +193,8 @@ const itemLevelValue = ref("");
 const productDetailText = ref("");
 const title = ref("");
 const price = ref("");
+const purchaseDate = ref(null);
+const brandModel = ref("");
 
 onBeforeMount(() => {
   if (path.split("/")[1] === "regist") {
@@ -200,18 +209,19 @@ const handleSubmitRegister = () => {
   } else {
     checkRequired.value = true;
   }
+  console.log(purchaseDate.value);
 };
 const handleAttachProductImage = (files) => {
-  changeFiles(files, productImages);
+  changeFiles(files, productRef, productImages, productImagesData);
 };
 const handleAttachDefectedImage = (files) => {
-  changeFiles(files, defectedImages);
+  changeFiles(files, defectedtRef, defectedImages, defectedImagesData);
 };
 const handleDeleteProductImage = (idx) => {
-  deleteImage(idx, productRef, productImages);
+  deleteImage(idx, productRef, productImages, productImagesData);
 };
 const handleDeleteDefectedImage = (idx) => {
-  deleteImage(idx, defectedtRef, defectedImages);
+  deleteImage(idx, defectedtRef, defectedImages, defectedImagesData);
 };
 const handleFormatPrice = () => {
   const checkNum = Number(price.value.replaceAll(",", ""));
@@ -226,23 +236,13 @@ const handleFormatPrice = () => {
 <style lang="scss" scoped>
 .v-form {
   padding: 30px;
-  .form__button-submit {
-    width: 100%;
-    padding: 15px 0;
-    margin: 40px 0;
-    height: auto;
-    font-weight: 600;
-    background: rgb(var(--v-theme-mainGray));
-    opacity: 1;
-    color: #fff;
-    font-size: 1.1rem;
-  }
 }
 .productInfo {
   li {
     display: flex;
     width: 100%;
     align-items: center;
+    gap: 20px;
     h4 {
       margin-top: -23px;
       flex-basis: 100px;
