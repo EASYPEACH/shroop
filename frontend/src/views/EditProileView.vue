@@ -15,7 +15,6 @@
               id="profile_image"
               name="profile_image"
               type="file"
-              v-model="profileImage"
             />
           </div>
         </div>
@@ -71,9 +70,9 @@
                 >인증 확인</v-btn
               >
             </div>
-            <strong :class="authResult ? 'auth-success' : 'auth-fail'"
-              >인증 성공/실패 여부 메세지</strong
-            >
+            <strong :class="authResult ? 'auth-success' : 'auth-fail'">{{
+              authResultMsg
+            }}</strong>
           </div>
         </div>
         <submit-button class="submit-button" text="수정 완료" />
@@ -101,6 +100,7 @@ const authNumber = ref(null);
 const oldPassword = ref(null);
 const newPassword = ref(null);
 const profileImage = ref(null);
+const authResultMsg = ref("");
 
 const handleChangeProfile = async (event) => {
   imageData.value = event.target.files[0];
@@ -109,6 +109,7 @@ const handleChangeProfile = async (event) => {
 
 const checkAuthNumber = () => {
   authResult.value = !authResult.value;
+  authResultMsg.value = "인증 성공 여부";
 };
 </script>
 
@@ -196,9 +197,9 @@ section {
 }
 
 .auth-success {
-  color: blue;
+  color: rgb(var(--v-theme-subBlue));
 }
 .auth-fail {
-  color: red;
+  color: rgb(var(--v-theme-heartRed));
 }
 </style>
