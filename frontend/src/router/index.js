@@ -71,6 +71,11 @@ const routes = [
         name: "Completed",
         component: () => import("@/views/PurchaseRequestCompleted.vue"),
       },
+      {
+        path: "/registDelivery/:id(\\d+)",
+        name: "registDelivery",
+        component: () => import("@/views/DeliveryRegistView.vue"),
+      },
     ],
   },
 ];
