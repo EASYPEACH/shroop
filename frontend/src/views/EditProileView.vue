@@ -15,6 +15,7 @@
               id="profile_image"
               name="profile_image"
               type="file"
+              v-model="profileImage"
             />
           </div>
         </div>
@@ -25,7 +26,7 @@
           <h4 class="profile__info-name">닉네임</h4>
           <custom-text-input
             class="profile__info-input"
-            placeholderText="따식이행님"
+            placeholderText="닉네임"
             v-model="nickname"
           />
         </div>
@@ -36,12 +37,12 @@
             <custom-text-input
               class="profile__info-input"
               placeholderText="기존 패스워드"
-              v-model="nickname"
+              v-model="oldPassword"
             />
             <custom-text-input
               class="profile__info-input"
               placeholderText="변경할 패스워드"
-              v-model="nickname"
+              v-model="newPassword"
             />
           </div>
         </div>
@@ -53,7 +54,7 @@
               <custom-text-input
                 class="profile__info-input"
                 placeholderText="변경할 휴대전화번호"
-                v-model="nickname"
+                v-model="newPhoneNumber"
                 hide-details
               />
               <v-btn class="profile__info-btn">인증 번호 보내기</v-btn>
@@ -63,15 +64,18 @@
               <custom-text-input
                 class="profile__info-input"
                 placeholderText="인증 번호"
-                v-model="nickname"
+                v-model="authNumber"
                 hide-details
               />
-              <v-btn class="profile__info-btn">인증 확인</v-btn>
+              <v-btn class="profile__info-btn" @click="checkAuthNumber"
+                >인증 확인</v-btn
+              >
             </div>
-            <strong class="auth-message">인증되었습니다.</strong>
+            <strong :class="authResult ? 'auth-success' : 'auth-fail'"
+              >인증 성공/실패 여부 메세지</strong
+            >
           </div>
         </div>
-
         <submit-button class="submit-button" text="수정 완료" />
       </v-form>
     </content-layout>
@@ -91,12 +95,20 @@ import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 
 const imageThumb = ref("");
 const imageData = ref(null);
+const authResult = ref(false);
+const newPhoneNumber = ref(null);
+const authNumber = ref(null);
+const oldPassword = ref(null);
+const newPassword = ref(null);
+const profileImage = ref(null);
 
 const handleChangeProfile = async (event) => {
   imageData.value = event.target.files[0];
-  console.log(imageData.value);
   imageThumb.value = await changeImageToData(imageData.value);
-  console.log(imageThumb.value);
+};
+
+const checkAuthNumber = () => {
+  authResult.value = !authResult.value;
 };
 </script>
 
@@ -168,6 +180,7 @@ section {
     }
   }
 }
+
 .identify__phoneNumber {
   margin-bottom: 20px;
   display: flex;
@@ -178,11 +191,14 @@ section {
   }
 }
 
-.auth-message {
-  color: red;
-}
-
 .submit-button {
   margin-top: 80px;
+}
+
+.auth-success {
+  color: blue;
+}
+.auth-fail {
+  color: red;
 }
 </style>
