@@ -1,7 +1,6 @@
 <template>
   <div>
     <section class="main">
-      <h1>테스트</h1>
       <div>
         <div>
           <h2><span class="color-text">슈룹</span>: 중고거래의 안심우산</h2>
