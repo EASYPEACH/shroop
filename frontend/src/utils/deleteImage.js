@@ -1,5 +1,5 @@
-import changeFiles from "./changeFiles";
-const deleteImage = (idx, ref, imageList, data) => {
+import { changeFiles } from "./changeFiles";
+export const deleteImage = (idx, ref, imageList, data) => {
   const dataTransfer = new DataTransfer();
   const fileList = ref.value.input.files;
   let newList;
@@ -9,5 +9,3 @@ const deleteImage = (idx, ref, imageList, data) => {
   data.value = dataTransfer.files;
   changeFiles(dataTransfer.files, ref, imageList, data, true);
 };
-
-export default deleteImage;

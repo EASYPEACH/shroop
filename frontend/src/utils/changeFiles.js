@@ -1,8 +1,10 @@
-const chanageFiles = (filesList, ref, images, data, isDelete = false) => {
+import { changeImageToData } from "./changeImageToData";
+
+export const changeFiles = (filesList, ref, images, data, isDelete = false) => {
   if (filesList) {
     const dataTransfer = new DataTransfer();
     const newFiles = Array.from(filesList);
-    const beforeData = Array.from(data.value);
+    // const beforeData = Array.from(data.value);
     let files = newFiles;
     if (!isDelete) {
       files = [...beforeData, ...newFiles];
@@ -12,15 +14,8 @@ const chanageFiles = (filesList, ref, images, data, isDelete = false) => {
       data.value = dataTransfer.files;
     }
     Promise.all(
-      files.map((file) => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.addEventListener("load", (ev) => {
-            resolve(ev.target.result);
-          });
-          reader.addEventListener("error", reject);
-          reader.readAsDataURL(file);
-        });
+      files.map(async (file) => {
+        return await changeImageToData(file);
       }),
     ).then(
       (files) => {
@@ -32,5 +27,3 @@ const chanageFiles = (filesList, ref, images, data, isDelete = false) => {
     );
   }
 };
-
-export default chanageFiles;
