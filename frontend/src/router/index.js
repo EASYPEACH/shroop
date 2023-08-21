@@ -46,6 +46,36 @@ const routes = [
         name: "Report",
         component: () => import("@/views/ReportView.vue"),
       },
+      {
+        path: "/return/:id(\\d+)",
+        name: "return",
+        component: () => import("@/views/ReturnRequestView.vue"),
+      },
+      {
+        path: "/profile/:id(\\d+)",
+        name: "ProfileEdit",
+        component: () => import("@/views/EditProileView.vue"),
+      },
+      {
+        path: "/products",
+        name: "Report",
+        component: () => import("@/views/ProductsView.vue"),
+      },
+      {
+        path: "/purchase/:id(\\d+)",
+        name: "Purchase",
+        component: () => import("@/views/PurchaseRequest.vue"),
+      },
+      {
+        path: "/completed/:id(\\d+)",
+        name: "Completed",
+        component: () => import("@/views/PurchaseRequestCompleted.vue"),
+      },
+      {
+        path: "/registDelivery/:id(\\d+)",
+        name: "registDelivery",
+        component: () => import("@/views/DeliveryRegistView.vue"),
+      },
     ],
   },
 ];

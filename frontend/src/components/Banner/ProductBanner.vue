@@ -19,7 +19,10 @@
               )
             "
           >
-            <mini-button text="신고하기" @click="() => handleReport(item.id)" />
+            <mini-button
+              text="신고하기"
+              @click="() => router.push(`/report/${item.id}`)"
+            />
           </li>
           <li
             v-if="
@@ -54,7 +57,7 @@
           >
             <mini-button
               text="반품신청"
-              @click="() => handleReturnRequest(item.id)"
+              @click="() => router.push(`/return/${item.id}`)"
             />
           </li>
           <li
@@ -83,6 +86,16 @@
             "
           >
             <mini-button text="반품결과" />
+          </li>
+          <li
+            v-if="
+              isSeller && item.status === TRANSACTION_STATUS.PURCHASE_REQUEST
+            "
+          >
+            <mini-button
+              text="배송등록"
+              @click="() => router.push(`/registDelivery/${item.id}`)"
+            />
           </li>
         </ul>
       </div>
@@ -150,20 +163,12 @@ const buyeInfo = ref({
   phoneNumber: "01012341234",
 });
 
-// 신고하기
-const handleReport = (id) => {
-  router.push(`/report/${id}`);
-};
 // 삭제하기
 const handleDeleteProduct = () => {};
 // 구매확정
 const handleConfirmPurchase = () => {};
 // 구매신청 취소
 const handleCanclePurchaseRequest = () => {};
-// 반품신청
-const handleReturnRequest = (id) => {
-  router.push(`/return/${id}`);
-};
 // 반품확정
 const handleReturnRequestConfirm = () => {};
 // 구매자정보보기

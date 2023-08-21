@@ -28,8 +28,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute } from "vue-router";
-import chanageFiles from "@/utils/changeFiles";
-import deleteImage from "@/utils/deleteImage";
+import { changeFiles, deleteImage } from "@/utils";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -46,7 +45,7 @@ const requestImageRef = ref(null);
 const returnReasonText = ref("");
 
 const handleAttachProductImage = (files) => {
-  chanageFiles(
+  changeFiles(
     files,
     requestImageRef,
     returnRequestThumb,
