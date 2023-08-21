@@ -4,7 +4,7 @@ export const changeFiles = (filesList, ref, images, data, isDelete = false) => {
   if (filesList) {
     const dataTransfer = new DataTransfer();
     const newFiles = Array.from(filesList);
-    // const beforeData = Array.from(data.value);
+    const beforeData = Array.from(data.value);
     let files = newFiles;
     if (!isDelete) {
       files = [...beforeData, ...newFiles];
