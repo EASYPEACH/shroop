@@ -13,7 +13,7 @@
           v-model="title"
         />
         <product-title title="신고대상 게시물" />
-        <custom-text-input v-model="product" disabled />
+        <p>{{ productName }}</p>
         <product-title title="중재신청 여부" isRequired />
         <v-radio-group
           :rules="[selectRule.required]"
@@ -54,7 +54,7 @@ import SubmitButton from "@/components/Button/SubmitButton.vue";
 
 const title = ref("");
 const isMediate = ref(null);
-const product = ref("아이패드 프로 10.5");
+const productName = ref("아이패드 프로 10.5");
 const productImagesThumb = ref([]);
 const imageData = ref({});
 const productRef = ref(null);

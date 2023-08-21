@@ -48,7 +48,7 @@ const routes = [
       },
       {
         path: "/return/:id(\\d+)",
-        name: "return",
+        name: "Return",
         component: () => import("@/views/ReturnRequestView.vue"),
       },
       {
@@ -58,7 +58,7 @@ const routes = [
       },
       {
         path: "/products",
-        name: "Report",
+        name: "Products",
         component: () => import("@/views/ProductsView.vue"),
       },
       {
