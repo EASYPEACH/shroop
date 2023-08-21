@@ -45,34 +45,17 @@
         </v-menu>
       </li>
     </ul>
-    <!-- 알림 사이드바 -->
-    <article :class="{ active: isShowNotification }">
-      <div class="article__title">
-        <v-btn class="article__button-close" @click="handleShowNotification">
-          <v-icon icon="mdi-close"></v-icon>
-        </v-btn>
-        <p>알림</p>
-      </div>
-      <ul class="article__list-notification">
-        <li v-for="item in 5" :key="item">
-          <notification-card
-            title="로그인 보안 알림"
-            content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus et porro repellat! M"
-          />
-        </li>
-      </ul>
-    </article>
   </v-app-bar>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import NotificationCard from "@/components/Card/NotificationCard.vue";
+import { useShowNotify } from "@/store/useShowNotify";
 
-const isShowNotification = ref(false);
+const notifyStore = useShowNotify();
 
 const handleShowNotification = () => {
-  isShowNotification.value = !isShowNotification.value;
+  notifyStore.setIsShowNotify();
+  console.log(notifyStore.isShowNotify);
 };
 </script>
 
@@ -139,57 +122,6 @@ header {
       padding: 5px;
       display: inline-block;
     }
-  }
-}
-
-/* 알림 사이드 바 */
-
-article {
-  position: fixed;
-  top: 0;
-  right: -120%;
-  width: 400px;
-  height: 100vh;
-  background: #fff;
-  padding: 0 15px 30px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  transition: 0.5s all;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  &.active {
-    right: 0;
-  }
-
-  .article__title {
-    position: sticky;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    background: #fff;
-    border-bottom: 1px solid rgba(var(--v-theme-mainGray), 0.2);
-    z-index: 20;
-    width: 100%;
-
-    .article__button-close {
-      min-width: 50px;
-      aspect-ratio: 1 / 1;
-      font-size: 25px;
-      transform: translateX(-14px);
-    }
-    p {
-      font-weight: 600;
-      transform: translateX(-14px);
-    }
-  }
-  .article__list-notification {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
   }
 }
 </style>
