@@ -43,8 +43,7 @@
 <script setup>
 import { ref } from "vue";
 import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
-import chanageFiles from "@/utils/changeFiles";
-import deleteImage from "@/utils/deleteImage";
+import { changeFiles, deleteImage } from "@/utils";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
@@ -62,7 +61,7 @@ const productRef = ref(null);
 const reportReason = ref("");
 
 const handleAttachProductImage = (files) => {
-  chanageFiles(files, productRef, productImagesThumb, imageData);
+  changeFiles(files, productRef, productImagesThumb, imageData);
 };
 const handleDeleteProductImage = (idx) => {
   deleteImage(idx, productRef, productImagesThumb, imageData);
