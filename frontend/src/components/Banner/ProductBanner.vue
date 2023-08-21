@@ -52,7 +52,10 @@
               )
             "
           >
-            <mini-button text="반품신청" />
+            <mini-button
+              text="반품신청"
+              @click="() => handleReturnRequest(item.id)"
+            />
           </li>
           <li
             v-if="isSeller && item.status === TRANSACTION_STATUS.RETURN_REQUEST"
@@ -157,8 +160,12 @@ const handleDeleteProduct = () => {};
 const handleConfirmPurchase = () => {};
 // 구매신청 취소
 const handleCanclePurchaseRequest = () => {};
+// 반품신청
+const handleReturnRequest = (id) => {
+  router.push(`/return/${id}`);
+};
 // 반품확정
-const handleReturnRequest = () => {};
+const handleReturnRequestConfirm = () => {};
 // 구매자정보보기
 const handleShowBuyerInfo = () => {};
 </script>
