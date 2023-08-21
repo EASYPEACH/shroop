@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import ProductCardMain from "@/components/Card/ProductCardMain.vue";
 
 const categoryList = ref([
@@ -215,10 +215,20 @@ const productCards = ref([
 const productCardsRef = ref(productCards.value);
 
 const perPage = ref(9); // 페이지당 상품 수
-const productCount = ref(productCardsRef.value.length);
+
+const productCount = computed(() => {
+  return productCardsRef.value.length;
+});
+
 const currentPage = ref(1); // 현재 페이지
-const pageCount = ref(Math.ceil(productCount.value / perPage.value)); // 페이지 수
+
+// 페이지 수
+const pageCount = computed(() => {
+  return Math.ceil(productCount.value / perPage.value);
+});
+
 const startIndex = ref(0); // 상품 시작 인덱스
+
 const endIndex = ref(perPage.value); // 상품 마지막 인덱스
 
 const handleChangePage = () => {
@@ -242,9 +252,7 @@ const handleUpdateCategory = () => {
   });
 };
 
-watch(productCardsRef, (newProductCardsRef) => {
-  productCount.value = newProductCardsRef.length;
-  pageCount.value = Math.ceil(productCount.value / perPage.value);
+watch(productCardsRef, () => {
   currentPage.value = 1;
   handleChangePage();
 });
