@@ -183,6 +183,11 @@ const sellList = ref([
     title: "아이폰 14 pro",
     status: "배송중",
   },
+  {
+    id: 4,
+    title: "아이폰 14 pro",
+    status: "구매신청",
+  },
 ]);
 const handleToggleHeart = (id) => {
   profile.value.likeProducts = profile.value.likeProducts

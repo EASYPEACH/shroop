@@ -21,7 +21,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .productTitle {
-  padding: 20px 0;
+  padding: 50px 0 20px;
   .titlebox {
     display: flex;
     align-items: center;
