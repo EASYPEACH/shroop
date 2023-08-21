@@ -41,6 +41,11 @@ const routes = [
         name: "Detail",
         component: () => import("@/views/ProductDetailsView.vue"),
       },
+      {
+        path: "/report/:id(\\d+)",
+        name: "Report",
+        component: () => import("@/views/ReportView.vue"),
+      },
     ],
   },
 ];

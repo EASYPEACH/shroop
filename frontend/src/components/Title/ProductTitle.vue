@@ -2,7 +2,7 @@
   <div class="productTitle">
     <div class="titlebox">
       <h3>{{ title }}</h3>
-      <span>*필수항목</span>
+      <span v-if="isRequired">*필수항목</span>
     </div>
     <v-divider
       :thickness="3"
@@ -15,6 +15,7 @@
 <script setup>
 defineProps({
   title: String,
+  isRequired: Boolean,
 });
 </script>
 

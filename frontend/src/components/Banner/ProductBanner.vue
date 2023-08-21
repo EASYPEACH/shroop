@@ -19,7 +19,7 @@
               )
             "
           >
-            <mini-button text="신고하기" @click="handleReport" />
+            <mini-button text="신고하기" @click="() => handleReport(item.id)" />
           </li>
           <li
             v-if="
@@ -148,8 +148,8 @@ const buyeInfo = ref({
 });
 
 // 신고하기
-const handleReport = () => {
-  router.push("/");
+const handleReport = (id) => {
+  router.push(`/report/${id}`);
 };
 // 삭제하기
 const handleDeleteProduct = () => {};
