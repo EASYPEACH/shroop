@@ -24,7 +24,7 @@
         </ul>
 
         <v-btn class="plusbtn" variant="text">
-          <router-link :to="`/products`"
+          <router-link to="/products"
             >더보기 <v-icon icon="mdi-chevron-right"></v-icon>
           </router-link>
         </v-btn>

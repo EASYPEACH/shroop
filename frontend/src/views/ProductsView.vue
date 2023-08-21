@@ -4,9 +4,9 @@
       <div class="filter__catetory">
         <v-select
           v-model="currentCategory"
-          @update:modelValue="handleCategory"
+          @update:modelValue="handleUpdateCategory"
           label="카테고리"
-          :items="categorys"
+          :items="categoryList"
           variant="solo"
         ></v-select>
       </div>
@@ -28,18 +28,25 @@
       <v-pagination
         v-model="currentPage"
         :length="pageCount"
-        @click="handlePage"
+        @click="handleChangePage"
       ></v-pagination>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ProductCardMain from "@/components/Card/ProductCardMain.vue";
-import { watch } from "vue";
 
-const categorys = ref([`가전제품`, `전자제품`, `옷`, `가구`, `신발`, `생필품`]);
+const categoryList = ref([
+  `전체`,
+  `가전제품`,
+  `전자제품`,
+  `옷`,
+  `가구`,
+  `신발`,
+  `생필품`,
+]);
 
 const productCards = ref([
   {
@@ -214,7 +221,7 @@ const pageCount = ref(Math.ceil(productCount.value / perPage.value)); // 페이�
 const startIndex = ref(0); // 상품 시작 인덱스
 const endIndex = ref(perPage.value); // 상품 마지막 인덱스
 
-const handlePage = () => {
+const handleChangePage = () => {
   startIndex.value = (currentPage.value - 1) * perPage.value;
   endIndex.value = Math.min(
     startIndex.value + perPage.value,
@@ -223,11 +230,15 @@ const handlePage = () => {
   window.scrollTo({ top: 0 });
 };
 
-const currentCategory = ref();
+const currentCategory = ref(`전체`);
 
-const handleCategory = () => {
+const handleUpdateCategory = () => {
   productCardsRef.value = productCards.value.filter((product) => {
-    return product.category === currentCategory.value;
+    if (currentCategory.value === `전체`) {
+      return true;
+    } else {
+      return product.category === currentCategory.value;
+    }
   });
 };
 
@@ -235,7 +246,7 @@ watch(productCardsRef, (newProductCardsRef) => {
   productCount.value = newProductCardsRef.length;
   pageCount.value = Math.ceil(productCount.value / perPage.value);
   currentPage.value = 1;
-  handlePage();
+  handleChangePage();
 });
 </script>
 
