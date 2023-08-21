@@ -1,8 +1,8 @@
 <template>
   <v-checkbox
-    :modelValue="modelValue"
+    :checked="checked"
     :rules="rules"
-    @change="$emit('change', $event.target.value)"
+    @change="$emit('update:checked', !checked)"
     hide-details
     color="black"
   >
@@ -18,10 +18,10 @@
 <script setup>
 defineProps({
   agreementStatement: String,
-  modelValue: Boolean,
+  checked: Boolean,
   rules: Object,
 });
-defineEmits(["show-dialog"]);
+defineEmits(["show-dialog", "update:checked"]);
 </script>
 
 <style lang="scss" scoped>
