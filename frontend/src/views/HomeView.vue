@@ -22,9 +22,12 @@
             <product-card-main :id="idx" :ProductCardData="ProductCardData" />
           </li>
         </ul>
-        <v-btn class="plusbtn" variant="text"
-          >더보기 <v-icon icon="mdi-chevron-right"></v-icon
-        ></v-btn>
+
+        <v-btn class="plusbtn" variant="text">
+          <router-link :to="`/products`"
+            >더보기 <v-icon icon="mdi-chevron-right"></v-icon>
+          </router-link>
+        </v-btn>
       </div>
     </section>
   </div>
