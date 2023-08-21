@@ -8,7 +8,8 @@
       :prepend-inner-icon="preppendIcon"
       :append-inner-icon="appendIcon"
       :rules="rules"
-      :disabled="disabled"
+      :type="type"
+      :hide-details="hideDetails"
       @input="$emit('update:modelValue', $event.target.value)"
       variant="filled"
     ></v-text-field>
@@ -24,12 +25,13 @@ defineProps({
   appendIcon: String,
   rules: Object,
   disabled: Boolean,
+  hideDetails: Boolean,
+  type: {
+    type: String,
+    default: "text",
+  },
 });
 defineEmits(["update:modelValue"]);
 </script>
 
-<style lang="scss" scoped>
-.v-text-field:disabled {
-  opacity: 1 !important;
-}
-</style>
+<style lang="scss" scoped></style>
