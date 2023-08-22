@@ -1,80 +1,87 @@
-// Composables
 import { createRouter, createWebHistory } from "vue-router";
+import DefaultLayoutView from "@/layouts/default/DefaultLayout.vue";
+import HomeView from "@/views/HomeView.vue";
+import LoginView from "@/views/LoginView.vue";
+import SignupView from "@/views/SignupView.vue";
+import MypageView from "@/views/MypageView.vue";
+import RegistProductView from "@/views/RegistProductView.vue";
+import ProductDetailsView from "@/views/ProductDetailsView.vue";
+import ReportView from "@/views/ReportView.vue";
+import ReturnRequestView from "@/views/ReturnRequestView.vue";
+import EditProileView from "@/views/EditProileView.vue";
+import ProductsView from "@/views/ProductsView.vue";
+import PurchaseRequestView from "@/views/PurchaseRequestView.vue";
+import DeliveryRegistView from "@/views/DeliveryRegistView.vue";
 
 const routes = [
   {
     path: "/",
-    component: () => import("@/layouts/default/DefaultLayout.vue"),
+    component: DefaultLayoutView,
     children: [
       {
         path: "",
         name: "Home",
-        component: () => import("@/views/HomeView.vue"),
+        component: HomeView,
       },
       {
         path: "/login",
         name: "Login",
-        component: () => import("@/views/LoginView.vue"),
+        component: LoginView,
       },
       {
         path: "/signup",
         name: "Signup",
-        component: () => import("@/views/SignupView.vue"),
+        component: SignupView,
       },
       {
         path: "/mypage",
         name: "Mypage",
-        component: () => import("@/views/MypageView.vue"),
+        component: MypageView,
       },
       {
         path: "/regist",
         name: "Regist",
-        component: () => import("@/views/RegistProductView.vue"),
+        component: RegistProductView,
       },
       {
         path: "/edit/:id(\\d+)",
         name: "Edit",
-        component: () => import("@/views/RegistProductView.vue"),
+        component: RegistProductView,
       },
       {
         path: "/detail/:id(\\d+)",
         name: "Detail",
-        component: () => import("@/views/ProductDetailsView.vue"),
+        component: ProductDetailsView,
       },
       {
         path: "/report/:id(\\d+)",
         name: "Report",
-        component: () => import("@/views/ReportView.vue"),
+        component: ReportView,
       },
       {
         path: "/return/:id(\\d+)",
         name: "Return",
-        component: () => import("@/views/ReturnRequestView.vue"),
+        component: ReturnRequestView,
       },
       {
         path: "/profile/:id(\\d+)",
         name: "ProfileEdit",
-        component: () => import("@/views/EditProileView.vue"),
+        component: EditProileView,
       },
       {
         path: "/products",
         name: "Products",
-        component: () => import("@/views/ProductsView.vue"),
+        component: ProductsView,
       },
       {
         path: "/purchase/:id(\\d+)",
         name: "Purchase",
-        component: () => import("@/views/PurchaseRequest.vue"),
+        component: PurchaseRequestView,
       },
       {
-        path: "/completed/:id(\\d+)",
-        name: "Completed",
-        component: () => import("@/views/PurchaseRequestCompleted.vue"),
-      },
-      {
-        path: "/registDelivery/:id(\\d+)",
-        name: "registDelivery",
-        component: () => import("@/views/DeliveryRegistView.vue"),
+        path: "/deliveryRegist/:id(\\d+)",
+        name: "DeliveryRegist",
+        component: DeliveryRegistView,
       },
     ],
   },
