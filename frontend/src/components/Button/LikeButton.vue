@@ -7,7 +7,7 @@
 <script setup>
 defineProps({
   product: {
-    type: Number,
+    type: Object,
     required: true,
   },
 });
