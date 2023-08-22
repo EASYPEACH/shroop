@@ -3,19 +3,25 @@
     <content-layout>
       <product-banner :product="product" />
       <v-form>
+        <product-title title="이름" isRequired />
+        <custom-text-input
+          :rules="[defaultTextRule.required]"
+          placeholderText="이름을 입력해주세요."
+          v-model="buyerName"
+        />
+        <product-title title="휴대폰 번호" isRequired />
+        <custom-text-input
+          type="number"
+          :rules="[phoneNumberRule.required, phoneNumberRule.check]"
+          placeholderText="휴대폰 번호를 입력해주세요."
+          v-model="phoneNumber"
+        />
         <product-title title="배송주소" isRequired />
         <custom-text-input
           :rules="[defaultTextRule.required]"
           placeholderText="배송주소를 입력해주세요."
           v-model="address"
         />
-        <product-title title="휴대폰 번호" isRequired />
-        <custom-text-input
-          :rules="[defaultTextRule.required]"
-          placeholderText="휴대폰 번호를 입력해주세요."
-          v-model="phoneNumber"
-        />
-
         <div class="profile__point">
           <div class="profile__point-count">
             사용 가능한 방울 : {{ profile.point }}
@@ -77,7 +83,10 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { defaultTextRule } from "@/components/Form/data/formRules";
+import {
+  defaultTextRule,
+  phoneNumberRule,
+} from "@/components/Form/data/formRules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
@@ -87,6 +96,17 @@ import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
 import CautionBlock from "@/components/CautionBlock.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
 
+const buyerName = ref("");
+const phoneNumber = ref("");
+const address = ref("");
+const product = ref({
+  title: "아이패드 프로 10.5",
+  price: 700000,
+  thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+});
+const profile = ref({
+  point: 20000,
+});
 const cautionInfoList = ref([
   {
     id: 0,
@@ -113,16 +133,6 @@ const cautionInfoList = ref([
   },
 ]);
 
-const address = ref("");
-const phoneNumber = ref("");
-const product = ref({
-  title: "아이패드 프로 10.5",
-  price: 700000,
-  thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-});
-const profile = ref({
-  point: 20000,
-});
 const showChargePointModal = ref(false);
 const allCheckboxesChecked = ref(false);
 
