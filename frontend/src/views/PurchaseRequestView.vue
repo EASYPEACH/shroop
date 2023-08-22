@@ -1,20 +1,7 @@
 <template>
   <section>
     <content-layout>
-      <v-banner color="pink-darken-1" lines="two">
-        <v-img
-          class="banner-img"
-          src="https://cdn.vuetifyjs.com/images/john.jpg"
-          width="50px"
-          height="50px"
-        ></v-img>
-        <div class="banner-content">
-          <div class="product-info">
-            <h4>{{ product }}</h4>
-            <p>{{ price }}원</p>
-          </div>
-        </div>
-      </v-banner>
+      <product-banner :product="product" />
       <v-form>
         <product-title title="배송주소" isRequired />
         <custom-text-input
@@ -41,16 +28,17 @@
           />
         </div>
 
-        <p class="payment-price">결제 금액:{{ price }} 원</p>
+        <p class="payment-price">
+          결제 금액: {{ product.price.toLocaleString() }} 원
+        </p>
 
         <div class="caution">
           <h2>주의 사항</h2>
-
           <caution-block
-            v-for="(info, index) in cautionInfoList"
+            v-for="info in cautionInfoList"
             :key="info.id"
             :caution-info="info"
-            v-model="checkboxStates[0]"
+            v-model="info.value"
           />
 
           <div class="caution__block-all-agree">
@@ -89,7 +77,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
+import { defaultTextRule } from "@/components/Form/data/formRules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
@@ -97,52 +85,51 @@ import SubmitButton from "@/components/Button/SubmitButton.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
 import CautionBlock from "@/components/CautionBlock.vue";
+import ProductBanner from "@/components/Banner/ProductBanner.vue";
 
 const cautionInfoList = ref([
   {
     id: 0,
     p1: "구매하는 상품 종류를 확인하였습니다.",
     p2: "주문자의 착오로 원하지 않는 상품이 전달된 경우 환불이 불가합니다.",
+    value: false,
   },
   {
     id: 1,
     p1: "상품의 상태를 확인하였습니다.",
     p2: "생활 기스가 있는 상품입니다.",
+    value: false,
   },
   {
     id: 2,
     p1: "부주의로 인한 파손일 경우 보상이 불가능합니다.",
+    value: false,
   },
   {
     id: 3,
     p1: "슈룹의 최신 이용정책을 모두 확인하였으며, 구매에 동의합니다.",
     p2: "사용자로서 숙지해야할 패널티, 이용 정책을 모두 확인하였습니다.",
+    value: false,
   },
 ]);
 
 const address = ref("");
 const phoneNumber = ref("");
-const price = ref("700,000");
-const product = ref("아이패드 프로 10.5");
-const imageData = ref({});
+const product = ref({
+  title: "아이패드 프로 10.5",
+  price: 700000,
+  thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+});
 const profile = ref({
   point: 20000,
 });
 const showChargePointModal = ref(false);
-
-const checkboxStates = ref([false, false, false, false]);
 const allCheckboxesChecked = ref(false);
 
-const toggleAllCheckboxes = () => {
-  const newState = allCheckboxesChecked.value;
-  for (let i = 0; i < checkboxStates.value.length; i++) {
-    checkboxStates.value[i] = newState;
-  }
-};
+const toggleAllCheckboxes = () => {};
 
-watch(checkboxStates.value, (newState) => {
-  console.log(newState);
-  const filterTrue = newState.filter((value) => value);
+watch(cautionInfoList.value, (caution) => {
+  const filterTrue = caution.filter((list) => list.value);
   if (filterTrue.length === 4) {
     allCheckboxesChecked.value = true;
   } else {
@@ -150,36 +137,32 @@ watch(checkboxStates.value, (newState) => {
   }
 });
 
-const showWarningModal = ref(false);
-
-const handleSubmitReport = () => {
-  const allCheckboxesAreChecked = checkboxStates.value.every((state) => state);
-
-  if (!allCheckboxesAreChecked) {
-    showWarningModal.value = true;
-    return;
+watch(allCheckboxesChecked, (allCheck) => {
+  if (allCheck) {
+    cautionInfoList.value = cautionInfoList.value.map((list) => {
+      list.value = true;
+      return list;
+    });
+  } else {
+    cautionInfoList.value = cautionInfoList.value.map((list) => {
+      list.value = false;
+      return list;
+    });
   }
-};
+});
+
+const showWarningModal = ref(false);
 </script>
 
 <style lang="scss" scoped>
-.banner-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding-right: 20px;
-}
-
 .product-info {
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-
   h4 {
     font-size: 1.2rem;
     font-weight: bold;
   }
-
   p {
     font-size: 16px;
     opacity: 0.7;
@@ -194,7 +177,6 @@ const handleSubmitReport = () => {
 .caution {
   display: flex;
   flex-direction: column;
-
   h2 {
     font-size: 25px;
     font-weight: bold;
@@ -218,6 +200,8 @@ const handleSubmitReport = () => {
 }
 .profile__point {
   display: flex;
+  align-items: center;
+  gap: 20px;
 
   .drop {
     color: rgb(var(--v-theme-subBlue));
