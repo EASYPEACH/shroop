@@ -317,6 +317,8 @@ const likeCount = ref(103);
     font-size: 20px;
     text-align: center;
     margin: 100px auto;
+    word-break: keep-all;
+    padding: 20px 0;
   }
   .productDetail__content {
     margin-top: 60px;
