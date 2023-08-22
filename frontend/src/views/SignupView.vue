@@ -1,7 +1,12 @@
 <template>
   <div>
     <Title title="회원가입" />
-    <v-card class="mx-auto pa-12 pb-8" max-width="540" rounded="lg">
+    <v-card
+      class="mx-auto pa-12 pb-8"
+      max-width="540"
+      rounded="lg"
+      variant="text"
+    >
       <v-form ref="form" v-model="isValid" @submit.prevent="submit">
         <custom-text-input
           label="아이디"
@@ -12,6 +17,7 @@
         />
         <password-input
           :visible="visible"
+          @toggle-visible="visible = !visible"
           v-model="password"
           :rules="[passwordRule.required, passwordRule.min, passwordRule.check]"
         />
