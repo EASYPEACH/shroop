@@ -1,11 +1,12 @@
 <template>
-  <v-btn variant="text" @click="handler"> {{ text }} </v-btn>
+  <v-btn :variant="variant" @click="handler"> {{ text }} </v-btn>
 </template>
 
 <script setup>
 defineProps({
   text: String,
   handler: Function,
+  variant: { type: String, default: "text" },
 });
 </script>
 

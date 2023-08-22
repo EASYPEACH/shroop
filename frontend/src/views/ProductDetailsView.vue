@@ -90,7 +90,11 @@
               <span class="font-weight-bold pb-1">{{ likeCount }}</span>
             </v-btn>
           </v-btn-toggle>
-          <v-btn variant="outlined"> 구매하기 </v-btn>
+          <v-btn variant="outlined">
+            <router-link :to="`/purchase/${$route.params.id}`">
+              구매하기
+            </router-link></v-btn
+          >
         </v-card-actions>
       </div>
     </div>
