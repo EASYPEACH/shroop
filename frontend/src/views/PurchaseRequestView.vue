@@ -136,19 +136,8 @@ const cautionInfoList = ref([
 const showChargePointModal = ref(false);
 const allCheckboxesChecked = ref(false);
 
-const toggleAllCheckboxes = () => {};
-
-watch(cautionInfoList.value, (caution) => {
-  const filterTrue = caution.filter((list) => list.value);
-  if (filterTrue.length === 4) {
-    allCheckboxesChecked.value = true;
-  } else {
-    allCheckboxesChecked.value = false;
-  }
-});
-
-watch(allCheckboxesChecked, (allCheck) => {
-  if (allCheck) {
+const toggleAllCheckboxes = () => {
+  if (allCheckboxesChecked.value) {
     cautionInfoList.value = cautionInfoList.value.map((list) => {
       list.value = true;
       return list;
@@ -158,6 +147,15 @@ watch(allCheckboxesChecked, (allCheck) => {
       list.value = false;
       return list;
     });
+  }
+};
+
+watch(cautionInfoList.value, (caution) => {
+  const filterTrue = caution.filter((list) => list.value);
+  if (filterTrue.length === 4) {
+    allCheckboxesChecked.value = true;
+  } else {
+    allCheckboxesChecked.value = false;
   }
 });
 
