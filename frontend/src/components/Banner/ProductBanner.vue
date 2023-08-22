@@ -6,7 +6,11 @@
     </div>
 
     <div class="banner__content">
-      <div @click="() => $router.push(`/detail/${product.id}`)">
+      <div
+        @click="
+          () => (isPurchase ? null : $router.push(`/detail/${product.id}`))
+        "
+      >
         <img :src="product.thumb" :alt="product.title" />
         <div>
           <h4>{{ product.title }}</h4>
@@ -31,6 +35,7 @@ defineProps({
     type: Object,
     required: true,
   },
+  isPurchase: Boolean,
   isHeart: Boolean,
 });
 defineEmits(["handle-click-like"]);

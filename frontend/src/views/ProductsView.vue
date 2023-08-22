@@ -121,7 +121,7 @@ section {
   justify-content: center;
   .products__list {
     display: grid;
-    grid-template-columns: repeat(3, 300px);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
   @media (max-width: 960px) {

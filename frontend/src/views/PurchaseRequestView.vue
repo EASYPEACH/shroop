@@ -1,7 +1,7 @@
 <template>
   <section>
     <content-layout>
-      <product-banner :product="product" />
+      <product-banner :product="product" isPurchase />
       <v-form>
         <product-title title="이름" isRequired />
         <custom-text-input
