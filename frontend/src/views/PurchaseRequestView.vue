@@ -10,15 +10,12 @@
         ></v-img>
         <div class="banner-content">
           <div class="product-info">
-            <div class="product-name">{{ product }}</div>
-            <div class="product-price">{{ price }}원</div>
+            <h4>{{ product }}</h4>
+            <p>{{ price }}원</p>
           </div>
         </div>
       </v-banner>
-      <v-form
-        enctype="multipart/form-data"
-        @submit.prevent="handleSubmitReport"
-      >
+      <v-form>
         <product-title title="배송주소" isRequired />
         <custom-text-input
           :rules="[defaultTextRule.required]"
@@ -44,60 +41,18 @@
           />
         </div>
 
-        <div class="payment-price">결제 금액:{{ price }} 원</div>
+        <p class="payment-price">결제 금액:{{ price }} 원</p>
 
         <div class="caution">
-          <div class="caution__head">주의 사항</div>
-          <div class="caution__block">
-            <div class="caution__block__text">
-              <div class="caution__block__text-bold">
-                구매하는 상품 종류를 확인하였습니다.
-              </div>
-              <div class="caution__block__text-gray">
-                주문자의 착오로 원하지 않는 상품이 전달된 경우 환불이
-                불가합니다.
-              </div>
-            </div>
-            <div>
-              <v-checkbox v-model="checkboxStates[0]" />
-            </div>
-          </div>
-          <div class="caution__block">
-            <div class="caution__block__text">
-              <div class="caution__block__text-bold">
-                상품의 상태를 확인하였습니다.
-              </div>
-              <div class="caution__block__text-gray">
-                생활 기스가 있는 상품입니다.
-              </div>
-            </div>
-            <div>
-              <v-checkbox v-model="checkboxStates[1]" />
-            </div>
-          </div>
-          <div class="caution__block">
-            <div class="caution__block__text">
-              <div class="caution__block__text-bold">
-                부주의로 인한 파손일 경우 보상이 불가능합니다.
-              </div>
-            </div>
-            <div>
-              <v-checkbox v-model="checkboxStates[2]" />
-            </div>
-          </div>
-          <div class="caution__block">
-            <div class="caution__block__text">
-              <div class="caution__block__text-bold">
-                슈룹의 최신 이용정책을 모두 확인하였으며, 구매에 동의합니다.
-              </div>
-              <div class="caution__block__text-gray">
-                사용자로서 숙지해야할 패널티, 이용 정책을 모두 확인하였습니다.
-              </div>
-            </div>
-            <div>
-              <v-checkbox v-model="checkboxStates[3]" />
-            </div>
-          </div>
+          <h2>주의 사항</h2>
+
+          <caution-block
+            v-for="(info, index) in cautionInfoList"
+            :key="info.id"
+            :caution-info="info"
+            v-model="checkboxStates[0]"
+          />
+
           <div class="caution__block-all-agree">
             <div class="caution__block-all-agree__text">전체 동의</div>
             <div>
@@ -141,6 +96,29 @@ import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
+import CautionBlock from "@/components/CautionBlock.vue";
+
+const cautionInfoList = ref([
+  {
+    id: 0,
+    p1: "구매하는 상품 종류를 확인하였습니다.",
+    p2: "주문자의 착오로 원하지 않는 상품이 전달된 경우 환불이 불가합니다.",
+  },
+  {
+    id: 1,
+    p1: "상품의 상태를 확인하였습니다.",
+    p2: "생활 기스가 있는 상품입니다.",
+  },
+  {
+    id: 2,
+    p1: "부주의로 인한 파손일 경우 보상이 불가능합니다.",
+  },
+  {
+    id: 3,
+    p1: "슈룹의 최신 이용정책을 모두 확인하였으며, 구매에 동의합니다.",
+    p2: "사용자로서 숙지해야할 패널티, 이용 정책을 모두 확인하였습니다.",
+  },
+]);
 
 const address = ref("");
 const phoneNumber = ref("");
@@ -196,16 +174,16 @@ const handleSubmitReport = () => {
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-}
 
-.product-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
+  h4 {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
 
-.product-price {
-  font-size: 1rem;
-  opacity: 0.7;
+  p {
+    font-size: 16px;
+    opacity: 0.7;
+  }
 }
 .payment-price {
   display: flex;
@@ -216,27 +194,14 @@ const handleSubmitReport = () => {
 .caution {
   display: flex;
   flex-direction: column;
+
+  h2 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
 }
-.caution__head {
-  font-size: 25px;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
-.caution__block {
-  display: flex;
-  justify-content: space-between;
-}
-.caution__block__text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.caution__block__text-bold {
-  font-weight: bold;
-}
-.caution__block__text-gray {
-  background-color: lightgray;
-}
+
 .caution__block-all-agree {
   padding-top: 20px;
   display: flex;
