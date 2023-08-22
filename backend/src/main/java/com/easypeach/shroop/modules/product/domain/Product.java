@@ -67,7 +67,8 @@ public class Product {
 
 	@Column(name = "sale_reason", length = 255, nullable = false)
 	private String saleReason;
-
+	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
 	private ProductStatus productStatus;
 

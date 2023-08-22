@@ -13,7 +13,7 @@ public class ProductService {
 	private final ProductRepository productRepository;
 
 	public Product findByProductId(Long productId) {
-		return productRepository.getById(productId);
+		return productRepository.findById(productId).get();
 	}
 
 }
