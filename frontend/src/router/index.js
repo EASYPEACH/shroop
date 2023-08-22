@@ -12,6 +12,7 @@ import EditProileView from "@/views/EditProileView.vue";
 import ProductsView from "@/views/ProductsView.vue";
 import PurchaseRequestView from "@/views/PurchaseRequestView.vue";
 import DeliveryRegistView from "@/views/DeliveryRegistView.vue";
+import PurchaseCompleteView from "@/views/PurchaseCompleteView.vue";
 
 const routes = [
   {
@@ -34,7 +35,10 @@ const routes = [
         component: SignupView,
       },
       {
-        path: "/mypage",
+        path: "/mypage/:index",
+        props: (route) => {
+          /^[0-2]$/.test(route.params.param) ? route.params.param : "0";
+        },
         name: "Mypage",
         component: MypageView,
       },
@@ -77,6 +81,11 @@ const routes = [
         path: "/purchase/:id(\\d+)",
         name: "Purchase",
         component: PurchaseRequestView,
+      },
+      {
+        path: "/purchaseComplete/:id(\\d+)",
+        name: "PurchaseComplete",
+        component: PurchaseCompleteView,
       },
       {
         path: "/deliveryRegist/:id(\\d+)",

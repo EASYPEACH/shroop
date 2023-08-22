@@ -120,6 +120,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
@@ -129,9 +130,11 @@ import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
 import DUMMY from "@/consts/dummy";
 
+const tabList = ["마이페이지", "구매내역", "판매내역"];
+const router = useRoute();
 const productDummyList = ref(DUMMY);
 const display = useDisplay();
-const tab = ref("마이페이지");
+const tab = ref(tabList[router.params.index]);
 const showChargePointModal = ref(false);
 const isTablet = ref(display.smAndDown);
 const profile = ref({
