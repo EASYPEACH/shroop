@@ -3,9 +3,9 @@
     <Title title="로그인" />
     <v-card
       class="mx-auto pa-12 pb-8"
-      elevation="8"
       max-width="448"
       rounded="lg"
+      variant="plain"
     >
       <v-form v-model="isValid" @submit.prevent="handleSubmitLogin">
         <custom-text-input
@@ -17,6 +17,7 @@
         />
         <password-input
           :visible="visible"
+          @toggle-visible="visible = !visible"
           v-model="password"
           :rules="[passwordRule.required, passwordRule.min, passwordRule.check]"
           isNeedSearchState

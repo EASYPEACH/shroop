@@ -52,7 +52,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
+import { defaultTextRule } from "@/components/Form/data/formRules";
 import { useRoute } from "vue-router";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";

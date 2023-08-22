@@ -1,14 +1,16 @@
 <template>
-  <section>
+  <content-layout class="layout">
     <div class="imgSlide">
-      <v-carousel>
-        <v-carousel-item
-          v-for="(productImg, idx) in productImgs"
-          :key="idx"
-          :src="productImg.imgUrl"
-          cover
-        ></v-carousel-item>
-      </v-carousel>
+      <v-responsive :aspect-ratio="1 / 1">
+        <v-carousel>
+          <v-carousel-item
+            v-for="(productImg, idx) in productImgs"
+            :key="idx"
+            :src="productImg.imgUrl"
+            cover
+          ></v-carousel-item>
+        </v-carousel>
+      </v-responsive>
       <div class="productContent">
         <v-card-item>
           <div>
@@ -81,7 +83,7 @@
 
         <v-card-actions>
           <v-btn-toggle multiple>
-            <v-btn @click="HandleChangeHeart()">
+            <v-btn @click="HandleChangeHeart">
               <v-icon
                 v-if="!likeToggle"
                 icon="mdi-cards-heart-outline"
@@ -100,20 +102,16 @@
     </div>
 
     <div class="productDetail">
-      <div class="productDetail__alert">
-        <div>
-          <v-alert color="red" variant="outlined">
-            <div class="text-h5">
-              <v-icon icon="mdi-alert-decagram"></v-icon> 구매 주의 사항
-            </div>
-            <div>
-              상품 정보를 꼼꼼히 확인해주세요! <br />
-              중고상품이므로 상품 정보 미확인으로 인한 피해는 <br />
-              구매자에게 부담이 있습니다.
-            </div>
-          </v-alert>
+      <v-alert color="red" variant="outlined">
+        <div class="text-h5">
+          <v-icon icon="mdi-alert-decagram"></v-icon> 구매 주의 사항
         </div>
-      </div>
+        <div>
+          상품 정보를 꼼꼼히 확인해주세요! <br />
+          중고상품이므로 상품 정보 미확인으로 인한 피해는 <br />
+          구매자에게 부담이 있습니다.
+        </div>
+      </v-alert>
       <div class="productDetail__content">
         <div class="text-h5 mb-6 font-weight-bold">상품 정보</div>
         <v-table>
@@ -161,17 +159,12 @@
         </div>
       </div>
     </div>
-  </section>
+  </content-layout>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
-
-const { params } = useRoute();
-
-console.log(params);
-
 import { ref } from "vue";
+import ContentLayout from "@/layouts/ContentLayout.vue";
 
 const likeToggle = ref(false);
 
@@ -231,48 +224,38 @@ const likeCount = ref(103);
 </script>
 
 <style lang="scss" scoped>
-section {
+.layout {
   margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .imgSlide {
   display: flex;
   justify-content: center;
   gap: 50px;
-
   .productContent {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     width: 400px;
-
     .productContent__price {
       margin-top: 15px;
       display: flex;
       align-items: flex-end;
       gap: 20px;
     }
-
     .v-card-item {
       .productContent__item-title {
         display: flex;
         justify-content: space-between;
       }
-
       .productContent__side-tooltips {
         width: 48px;
-
         .v-btn {
           box-shadow: none;
         }
       }
-
       .v-table {
         width: 70%;
-
         td {
           padding: 0;
           border: none;
@@ -280,7 +263,6 @@ section {
         }
       }
     }
-
     .productContent__profile {
       padding: 0.625rem 1rem;
       display: flex;
@@ -293,21 +275,32 @@ section {
         gap: 20px;
       }
     }
-
     .v-btn {
       width: 180px;
+    }
+  }
+  @media (max-width: 960px) {
+    flex-direction: column;
+    align-items: center;
+    .productContent {
+      width: 100%;
     }
   }
 }
 
 .v-carousel {
-  width: 500px;
   border-radius: 25px;
+  .v-carousel-item {
+    aspect-ratio: 1 / 1;
+  }
+  @media (max-width: 960px) {
+    width: 100%;
+  }
 }
 
 .v-card-actions {
   justify-content: space-between;
-
+  gap: 20px;
   .v-btn-toggle {
     height: 36px;
     border: thin solid currentColor;
@@ -319,40 +312,37 @@ section {
   display: flex;
   flex-direction: column;
   margin-top: 100px;
-
-  .productDetail__alert {
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-around;
-
-    .v-alert {
-      width: 600px;
-      font-size: 20px;
-      text-align: center;
-    }
+  .v-alert {
+    width: 600px;
+    font-size: 20px;
+    text-align: center;
+    margin: 100px auto;
+    word-break: keep-all;
+    padding: 20px 0;
   }
-
   .productDetail__content {
     margin-top: 60px;
-
     .v-table {
       font-size: 20px;
     }
   }
-
   .productDetail__defect {
     margin-top: 60px;
-
     div {
       margin-top: 30px;
     }
-
     .productDetail__defect {
       margin-top: 0px;
       display: flex;
       gap: 20px;
       overflow: auto;
       white-space: nowrap;
+    }
+  }
+  @media (max-width: 960px) {
+    width: 100%;
+    .v-alert {
+      width: 100%;
     }
   }
 }

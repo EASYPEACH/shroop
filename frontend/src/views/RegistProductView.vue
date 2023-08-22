@@ -69,6 +69,18 @@
               class="info__form"
             />
           </li>
+          <li>
+            <h4>배송비포함</h4>
+            <v-radio-group
+              :rules="[selectRule.required]"
+              inline
+              v-model="isContainDeliveryFee"
+              class="info__form"
+            >
+              <v-radio :value="true" label="예"></v-radio>
+              <v-radio :value="false" label="아니오"></v-radio>
+            </v-radio-group>
+          </li>
           <guide-text
             title="상태 기준 가이드"
             :guide-list="[
@@ -179,13 +191,15 @@ const isValid = ref(false);
 const isRegister = ref(false);
 const agreement = ref(false);
 const checkRequired = ref(true);
+const isContainDeliveryFee = ref(null);
+const productRef = ref(null);
+const defectedtRef = ref(null);
+const isDefected = ref(null);
+const purchaseDate = ref(null);
 const productImages = ref([]);
 const productImagesData = ref({});
 const defectedImages = ref([]);
 const defectedImagesData = ref({});
-const productRef = ref(null);
-const defectedtRef = ref(null);
-const isDefected = ref(null);
 const category = ref(["가전", "전자제품", "의류"]);
 const itemLevel = ref(["상", "중", "하"]);
 const categoryValue = ref("");
@@ -193,7 +207,6 @@ const itemLevelValue = ref("");
 const productDetailText = ref("");
 const title = ref("");
 const price = ref("");
-const purchaseDate = ref(null);
 const brandModel = ref("");
 
 onBeforeMount(() => {
@@ -234,9 +247,6 @@ const handleFormatPrice = () => {
 </script>
 
 <style lang="scss" scoped>
-.v-form {
-  padding: 30px;
-}
 .productInfo {
   li {
     display: flex;

@@ -18,9 +18,7 @@
             />
           </div>
         </div>
-
         <product-title title="프로필 정보" />
-
         <div class="profile__info">
           <h4 class="profile__info-name">닉네임</h4>
           <custom-text-input
@@ -29,7 +27,6 @@
             v-model="nickname"
           />
         </div>
-
         <div class="profile__info">
           <h4 class="profile__info-name">패스워드</h4>
           <div class="info__input-box">
@@ -45,7 +42,6 @@
             />
           </div>
         </div>
-
         <div class="profile__info">
           <h4 class="profile__info-name">휴대전화</h4>
           <div class="info__input-box">
@@ -83,7 +79,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
 import { changeImageToData } from "@/utils";
 
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -99,7 +94,6 @@ const newPhoneNumber = ref(null);
 const authNumber = ref(null);
 const oldPassword = ref(null);
 const newPassword = ref(null);
-const profileImage = ref(null);
 const authResultMsg = ref("");
 
 const handleChangeProfile = async (event) => {
@@ -140,7 +134,6 @@ section {
       width: 0;
       height: 0;
     }
-
     .profile__info-img {
       width: 200px;
       position: relative;

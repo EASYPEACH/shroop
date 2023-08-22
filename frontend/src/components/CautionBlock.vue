@@ -1,38 +1,38 @@
 <template>
-  <div class="caution__block">
-    <div class="caution__block-text">
-      <p>{{ cautionInfo.p1 }}</p>
-      <p>{{ cautionInfo.p2 || "" }}</p>
-    </div>
-    <div>
-      <v-checkbox
-        :checked="checked"
-        @change="$emit('update:checked', !checked)"
-      />
-    </div>
-  </div>
+  <v-checkbox
+    :id="`agree${cautionInfo.id}`"
+    :checked="checked"
+    @change="$emit('update:checked', !checked)"
+  >
+    <template v-slot:label>
+      <div class="caution__block">
+        <p>{{ cautionInfo.p1 }}</p>
+        <p>{{ cautionInfo.p2 || "" }}</p>
+      </div>
+    </template>
+  </v-checkbox>
 </template>
 
 <script setup>
 defineProps({ cautionInfo: Object, checked: Boolean });
 defineEmits(["update:checked"]);
 </script>
-₩
 <style lang="scss" scoped>
 .caution__block {
   display: flex;
   justify-content: space-between;
-  .caution__block-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    p {
-      &:nth-child(1) {
-        font-weight: bold;
-      }
-      &:nth-child(2) {
-        background-color: lightgray;
-      }
+  display: flex;
+  flex-basis: 85%;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10px;
+  p {
+    word-break: keep-all;
+    &:nth-child(1) {
+      font-weight: bold;
+    }
+    &:nth-child(2) {
+      color: rgb(var(--v-theme-subBlue));
     }
   }
 }

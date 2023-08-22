@@ -3,66 +3,62 @@
     <section class="main">
       <div>
         <div>
-          <h2><span class="color-text">슈룹</span>: 중고거래의 안심우산</h2>
+          <h2>
+            <span class="color-text">슈룹</span>: <br />중고거래의 안심우산
+          </h2>
           <br />
           <p><span class="color-text">슈룹</span>은 우산의 순 우리말 입니다</p>
           <p>중고거래가 불안한 여러분께</p>
           <p>안전한 우산이 되어드리겠습니다</p>
         </div>
       </div>
-      <div>
+      <div v-if="isLaptop">
         <img src="@/assets/image/white_logo.png" alt="슈룹 로고" />
       </div>
     </section>
-    <section>
+    <content-layout>
       <Title title="최근 거래" />
       <div class="products">
         <ul class="products__list">
-          <li v-for="(ProductCardData, idx) in productCardDummyData" :key="idx">
-            <product-card-main :id="idx" :ProductCardData="ProductCardData" />
+          <li
+            v-for="productCardData in productCardDummyData"
+            :key="productCardData.id"
+          >
+            <product-card
+              v-if="isLaptop"
+              :productCardData="productCardData"
+              @handle-click-like="productCardData.like = !productCardData.like"
+            />
+            <product-banner
+              v-else
+              :product="productCardData"
+              @handle-click-like="productCardData.like = !productCardData.like"
+              isHeart
+            />
           </li>
+          <v-btn class="plusbtn" variant="text">
+            <router-link to="/products"
+              >더보기 <v-icon icon="mdi-chevron-right"></v-icon>
+            </router-link>
+          </v-btn>
         </ul>
-
-        <v-btn class="plusbtn" variant="text">
-          <router-link to="/products"
-            >더보기 <v-icon icon="mdi-chevron-right"></v-icon>
-          </router-link>
-        </v-btn>
       </div>
-    </section>
+    </content-layout>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
+import { useDisplay } from "vuetify";
+import DUMMY from "@/consts/dummy";
 import Title from "@/components/Title/MainTitle.vue";
-import ProductCardMain from "@/components/Card/ProductCardMain.vue";
+import ProductCard from "@/components/Card/ProductCard.vue";
+import ContentLayout from "@/layouts/ContentLayout.vue";
+import ProductBanner from "@/components/Banner/ProductBanner.vue";
 
-const productCardDummyData = [
-  {
-    title: `제목1`,
-    price: 1000,
-    content: `내용1`,
-    createDate: `2023-08-09`,
-  },
-  {
-    title: `제목2`,
-    price: 2000,
-    content: `내용2`,
-    createDate: `2023-08-10`,
-  },
-  {
-    title: `제목3`,
-    price: 3000,
-    content: `내용3`,
-    createDate: `2023-08-11`,
-  },
-  {
-    title: `제목4`,
-    price: 4000,
-    content: `내용4`,
-    createDate: `2023-08-12`,
-  },
-];
+const productCardDummyData = ref(DUMMY);
+const display = useDisplay();
+const isLaptop = ref(display.mdAndUp);
 </script>
 
 <style lang="scss" scoped>
@@ -82,7 +78,6 @@ h2 {
     font-weight: 600;
     font-size: 36px;
   }
-
   > div:nth-child(1) {
     flex-basis: 50%;
     display: flex;
@@ -111,37 +106,44 @@ h2 {
       }
     }
   }
-
   .color-text {
     color: rgb(var(--v-theme-info));
   }
+  @media (max-width: 960px) {
+    padding: 50px 30px;
+    h2 {
+      word-break: keep-all;
+      margin: 0;
+      margin-bottom: 30px;
+      font-size: 40px;
+    }
+    > div:nth-child(1) {
+      flex-basis: 100%;
+      justify-content: center;
+    }
+  }
 }
 .products {
-  width: fit-content;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   .products__list {
     display: grid;
-    grid-template-columns: repeat(3, 300px);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
   .plusbtn {
     color: rgb(var(--v-theme-subBlue));
     place-self: flex-end;
-    margin-right: -20px;
     margin-top: 11px;
+    grid-column: 1 / -1;
   }
-}
-@media (max-width: 700px) {
-  .main {
-    > div:nth-child(1) {
-      flex: 1;
-    }
-    > div:nth-child(2) {
-      display: none;
+  @media (max-width: 960px) {
+    .products__list {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
     }
   }
 }
