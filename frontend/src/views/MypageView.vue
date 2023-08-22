@@ -54,7 +54,10 @@
                   <div class="profile__info-name">
                     {{ profile.nickName }} 님
                   </div>
-                  <mini-button text="프로필수정" />
+                  <mini-button
+                    text="프로필수정"
+                    @click="() => $router.push(`/profileEdit/${0}`)"
+                  />
                 </div>
               </div>
               <div class="profile__point">

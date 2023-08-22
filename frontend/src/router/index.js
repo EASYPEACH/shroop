@@ -64,7 +64,7 @@ const routes = [
         component: ReturnRequestView,
       },
       {
-        path: "/profile/:id(\\d+)",
+        path: "/profileEdit/:id(\\d+)",
         name: "ProfileEdit",
         component: EditProileView,
       },
