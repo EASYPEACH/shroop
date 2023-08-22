@@ -10,17 +10,14 @@
           :direction="isTablet ? 'horizontal' : 'vertical'"
           color="subBlue"
         >
-          <v-tab value="마이페이지">
-            <v-icon start> mdi-account </v-icon>
-            마이페이지
-          </v-tab>
-          <v-tab value="구매내역">
-            <v-icon start> mdi-archive </v-icon>
-            구매내역
-          </v-tab>
-          <v-tab value="판매내역">
-            <v-icon start> mdi-currency-krw</v-icon>
-            판매내역
+          <v-tab
+            v-for="t in tabList"
+            :key="t.id"
+            :value="t.title"
+            @click="() => $router.push(`/mypage/${t.id}`)"
+          >
+            <v-icon start> {{ t.icon }} </v-icon>
+            {{ t.title }}
           </v-tab>
         </v-tabs>
         <v-window v-model="tab">
@@ -130,11 +127,27 @@ import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
 import DUMMY from "@/consts/dummy";
 
-const tabList = ["마이페이지", "구매내역", "판매내역"];
+const tabList = ref([
+  {
+    id: 0,
+    title: "마이페이지",
+    icon: "mdi-account ",
+  },
+  {
+    id: 1,
+    title: "구매내역",
+    icon: "mdi-archive",
+  },
+  {
+    id: 2,
+    title: "판매내역",
+    icon: "mdi-currency-krw",
+  },
+]);
 const router = useRoute();
 const productDummyList = ref(DUMMY);
 const display = useDisplay();
-const tab = ref(tabList[router.params.index]);
+const tab = ref(tabList.value[router.params.index].title);
 const showChargePointModal = ref(false);
 const isTablet = ref(display.smAndDown);
 const profile = ref({

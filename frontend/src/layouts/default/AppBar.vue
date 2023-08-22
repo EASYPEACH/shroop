@@ -35,6 +35,7 @@
             <li>
               <router-link to="/login">로그인</router-link>
             </li>
+            <li>로그아웃</li>
             <li>
               <router-link to="/signup">회원가입</router-link>
             </li>
