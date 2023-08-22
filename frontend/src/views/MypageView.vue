@@ -68,13 +68,16 @@
               <h3>좋아요 <v-icon icon="mdi-heart" class="like-icon" /></h3>
               <ul>
                 <info-alert
-                  v-if="profile.likeProducts.length === 0"
+                  v-if="
+                    productDummyList.filter((list) => list.like).length === 0
+                  "
                   title="'좋아요' 상품이 없습니다"
                 />
-                <li v-for="item in profile.likeProducts" :key="item.id">
-                  <product-banner
-                    :item="item"
-                    @toggle-heart="handleToggleHeart"
+                <li v-for="product in productDummyList" :key="product.id">
+                  <mypage-product-banner
+                    :product="product"
+                    :is-heart="true"
+                    @handle-click-like="() => handleToggleHeart(product.id)"
                   />
                 </li>
               </ul>
@@ -86,8 +89,8 @@
                 v-if="purchaseList.length === 0"
                 title="구매내역이 없습니다"
               />
-              <li v-for="item in purchaseList" :key="item.id">
-                <product-banner :item="item" isStatus />
+              <li v-for="product in purchaseList" :key="product.id">
+                <mypage-product-banner :product="product" isStatus />
               </li>
             </ul>
           </v-window-item>
@@ -97,8 +100,8 @@
                 v-if="sellList.length === 0"
                 title="판매내역이 없습니다"
               />
-              <li v-for="item in sellList" :key="item.id">
-                <product-banner :item="item" isStatus isSeller />
+              <li v-for="product in sellList" :key="product.id">
+                <mypage-product-banner :product="product" isStatus isSeller />
               </li>
             </ul>
           </v-window-item>
@@ -114,14 +117,16 @@
 
 <script setup>
 import { ref } from "vue";
+import { useDisplay } from "vuetify";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
 import InfoAlert from "@/components/Alert/InfoAlert.vue";
-import ProductBanner from "@/components/Banner/ProductBanner.vue";
+import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
-import { useDisplay } from "vuetify";
+import DUMMY from "@/consts/dummy";
 
+const productDummyList = ref(DUMMY);
 const display = useDisplay();
 const tab = ref("마이페이지");
 const showChargePointModal = ref(false);
@@ -131,18 +136,6 @@ const profile = ref({
   nickName: "김뿅뿅",
   rank: "mdi-umbrella-beach-outline",
   point: 20000,
-  likeProducts: [
-    {
-      id: 1,
-      title: "아이폰 14 pro",
-      like: true,
-    },
-    {
-      id: 2,
-      title: "아이폰 14 pro",
-      like: true,
-    },
-  ],
 });
 
 const purchaseList = ref([
@@ -150,21 +143,32 @@ const purchaseList = ref([
     id: 1,
     title: "아이폰 14 pro",
     status: "반품신청",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    createDate: `2023-08-10`,
+    price: 4000,
   },
   {
     id: 2,
     title: "아이폰 14 pro",
     status: "배송중",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    createDate: `2023-08-10`,
+    price: 4000,
   },
   {
     id: 3,
     title: "아이폰 14 pro",
     status: "구매신청",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    createDate: `2023-08-10`,
+    price: 4000,
   },
   {
     id: 4,
     title: "아이폰 14 pro",
     status: "반품완료",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    price: 4000,
   },
 ]);
 const sellList = ref([
@@ -172,25 +176,37 @@ const sellList = ref([
     id: 1,
     title: "아이폰 14 pro",
     status: "판매중",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    createDate: `2023-08-10`,
+    price: 4000,
   },
   {
     id: 2,
     title: "아이폰 14 pro",
     status: "반품신청",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    createDate: `2023-08-10`,
+    price: 4000,
   },
   {
     id: 3,
     title: "아이폰 14 pro",
     status: "배송중",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    createDate: `2023-08-10`,
+    price: 4000,
   },
   {
     id: 4,
     title: "아이폰 14 pro",
     status: "구매신청",
+    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+    createDate: `2023-08-10`,
+    price: 4000,
   },
 ]);
 const handleToggleHeart = (id) => {
-  profile.value.likeProducts = profile.value.likeProducts
+  productDummyList.value = productDummyList.value
     .map((item) => {
       if (item.id === id) {
         item.like = false;
@@ -199,14 +215,11 @@ const handleToggleHeart = (id) => {
     })
     .filter((item) => item.id != id);
 };
-const handleChargePoint = () => {};
 </script>
 
 <style lang="scss" scoped>
 .mypage {
   opacity: 1;
-  height: 100vh;
-  margin-top: 100px;
   .myapge__content {
     display: flex;
     @media (max-width: 960px) {
