@@ -75,5 +75,9 @@ public class Member {
 		return member;
 	}
 
+	public void updateMember(Long updatedPoint) {
+		this.point = updatedPoint;
+	}
+
 }
 
