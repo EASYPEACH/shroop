@@ -1,5 +1,6 @@
 <template>
   <v-checkbox
+    :rules="[defaultTextRule.required]"
     :id="`agree${cautionInfo.id}`"
     :checked="checked"
     @change="$emit('update:checked', !checked)"
@@ -14,6 +15,7 @@
 </template>
 
 <script setup>
+import { defaultTextRule } from "./Form/data/formRules";
 defineProps({ cautionInfo: Object, checked: Boolean });
 defineEmits(["update:checked"]);
 </script>
