@@ -25,7 +25,7 @@ public class S3UploadService {
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 
-	public String saveFile(MultipartFile multipartFile) throws IOException {
+	public String saveFile(final MultipartFile multipartFile) throws IOException {
 		String originalFilename = multipartFile.getOriginalFilename();
 
 		ObjectMetadata metadata = new ObjectMetadata();
@@ -42,7 +42,7 @@ public class S3UploadService {
 		return amazonS3Client.getUrl(bucket, originalFilename).toString();
 	}
 
-	public ResponseEntity<UrlResource> downloadImage(String originalFilename) {
+	public ResponseEntity<UrlResource> downloadImage(final String originalFilename) {
 
 		UrlResource urlResource = new UrlResource(amazonS3Client.getUrl(bucket, originalFilename));
 
@@ -55,7 +55,7 @@ public class S3UploadService {
 
 	}
 
-	public void deleteImage(String originalFilename) {
+	public void deleteImage(final String originalFilename) {
 		amazonS3Client.deleteObject(bucket, originalFilename);
 	}
 }
