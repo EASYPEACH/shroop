@@ -1,6 +1,6 @@
 package com.easypeach.shroop.modules.report.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +19,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.product.domain.Product;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Report {
 
 	@Id
@@ -28,11 +34,13 @@ public class Report {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "member_id", nullable = false)
+	// @JoinColumn(name = "member_id", nullable = false)
+	@JoinColumn(name = "member_id") // TODO: 임시로 NULL 허용
 	private Member member;
 
 	@ManyToOne
-	@JoinColumn(name = "product_id", nullable = false)
+	// @JoinColumn(name = "product_id", nullable = false)
+	@JoinColumn(name = "product_id") // TODO: 임시로 NULL 허용
 	private Product product;
 
 	@Column(length = 255, nullable = false)
@@ -42,11 +50,37 @@ public class Report {
 	private String content;
 
 	@Column(nullable = false)
+	private boolean isMediate;
+
+	@Column(nullable = false)
 	@Enumerated(value = EnumType.STRING)
-	private ReportStatus role;
+	private ReportStatus status;
 
 	@Column(name = "create_date")
 	@CreatedDate
-	private LocalDate createDate;
+	private LocalDateTime createDate;
+
+	public static Report createReport(
+		final Member member,
+		// final Product product,
+		final String title,
+		final String content,
+		final boolean isMediate,
+		final ReportStatus status
+	) {
+		Report report = new Report();
+		report.member = member;
+		// report.product = product;
+		report.title = title;
+		report.content = content;
+		report.isMediate = isMediate;
+		report.status = status;
+
+		return report;
+	}
+
+	public static Report forTestCodeReport() {
+		return new Report();
+	}
 
 }
