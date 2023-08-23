@@ -14,3 +14,14 @@ include::{snippets}/auth/sign-up/http-request.adoc[]
 === Response
 
 include::{snippets}/auth/sign-up/http-response.adoc[]
+
+== 신고하기
+
+=== Request
+
+include::{snippets}/reports/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/reports/response-fields.adoc[]
+include::{snippets}/reports/http-response.adoc[]
