@@ -24,6 +24,7 @@ public class AuthController {
 
 	@PostMapping(value = "/sign-up")
 	public ResponseEntity<BasicResponse> signUp(@Validated @RequestBody final SignUpRequest signUpRequest) {
+		authService.saveMember(signUpRequest);
 		return ResponseEntity.ok(new BasicResponse("회원가입에 성공하였습니다."));
 	}
 
