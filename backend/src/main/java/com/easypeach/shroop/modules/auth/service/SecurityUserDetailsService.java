@@ -11,9 +11,9 @@ import com.easypeach.shroop.modules.member.domain.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Service("securityUserDetailsService")
 @RequiredArgsConstructor
-public class SecurityMemberService implements UserDetailsService {
+public class SecurityUserDetailsService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
 
