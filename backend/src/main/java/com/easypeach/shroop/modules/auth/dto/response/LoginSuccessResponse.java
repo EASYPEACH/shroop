@@ -5,12 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SignUpCompletedResponse {
-	private Long memberId;
+public class LoginSuccessResponse {
+	private String loginId;
 	private String nickname;
 
-	public SignUpCompletedResponse(final Long memberId, final String nickname) {
-		this.memberId = memberId;
+	public LoginSuccessResponse(final String loginId, final String nickname) {
+		this.loginId = loginId;
 		this.nickname = nickname;
 	}
 }
