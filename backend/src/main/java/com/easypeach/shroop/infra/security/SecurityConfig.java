@@ -9,13 +9,15 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.easypeach.shroop.infra.security.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,13 +35,14 @@ public class SecurityConfig {
 	private final AuthenticationFailureHandler loginFailureHandler;
 	private final AuthenticationEntryPoint authenticationEntryPoint;
 	private final PasswordEncoder passwordEncoder;
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
 			.httpBasic().disable()
-			.csrf().disable()
-			.formLogin().disable();
+			.csrf().disable().cors().configurationSource(corsConfigurationSource()).
+			and().formLogin().disable();
 
 		http
 			.sessionManagement()
@@ -65,10 +68,12 @@ public class SecurityConfig {
 
 	@Bean
 	public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
-		JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler);
+		JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter(
+			objectMapper, loginSuccessHandler, loginFailureHandler);
 		jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
 		return jsonUsernamePasswordAuthenticationFilter;
 	}
+
 	@Bean
 	public AuthenticationManager authenticationManager() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -79,4 +84,15 @@ public class SecurityConfig {
 		return new ProviderManager(provider);
 	}
 
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.addAllowedMethod("*");
+		corsConfiguration.setAllowCredentials(true);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return source;
+	}
 }
