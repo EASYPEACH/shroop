@@ -50,7 +50,6 @@ public class SecurityConfig {
 			.authorizeRequests()
 			.antMatchers("/api/auth/sign-up", "/api/auth/sign-in").permitAll()
 			.antMatchers(HttpMethod.GET, "/**").permitAll()
-			.antMatchers("/check/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.cors()
