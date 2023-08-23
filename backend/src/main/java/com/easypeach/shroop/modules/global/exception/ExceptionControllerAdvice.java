@@ -12,10 +12,10 @@ import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
 public class ExceptionControllerAdvice {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
+		final MethodArgumentNotValidException e) {
 		FieldError firstFieldError = e.getFieldErrors().get(0);
 		String errorMessage = firstFieldError.getDefaultMessage();
-
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 
 		return ResponseEntity.badRequest().body(errorResponse);
