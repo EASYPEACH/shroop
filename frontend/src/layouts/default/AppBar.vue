@@ -35,11 +35,12 @@
             <li>
               <router-link to="/login">로그인</router-link>
             </li>
+            <li>로그아웃</li>
             <li>
               <router-link to="/signup">회원가입</router-link>
             </li>
             <li>
-              <router-link to="/mypage">마이페이지</router-link>
+              <router-link to="/mypage/0">마이페이지</router-link>
             </li>
           </ul>
         </v-menu>
