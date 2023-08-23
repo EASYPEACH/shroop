@@ -23,6 +23,7 @@
           <h4 class="profile__info-name">닉네임</h4>
           <custom-text-input
             class="profile__info-input"
+            :rules="[defaultTextRule.required, defaultTextRule.min]"
             placeholderText="닉네임"
             v-model="nickname"
           />
@@ -32,11 +33,21 @@
           <div class="info__input-box">
             <custom-text-input
               class="profile__info-input"
+              :rules="[
+                passwordRule.required,
+                passwordRule.check,
+                passwordRule.min,
+              ]"
               placeholderText="기존 패스워드"
               v-model="oldPassword"
             />
             <custom-text-input
               class="profile__info-input"
+              :rules="[
+                passwordRule.required,
+                passwordRule.check,
+                passwordRule.min,
+              ]"
               placeholderText="변경할 패스워드"
               v-model="newPassword"
             />
@@ -48,13 +59,17 @@
             <div class="identify__phoneNumber">
               <custom-text-input
                 class="profile__info-input"
-                placeholderText="변경할 휴대전화번호"
+                :rules="[phoneNumberRule.required, phoneNumberRule.check]"
+                type="newPhoneNumber"
+                placeholderText="휴대전화번호"
                 v-model="newPhoneNumber"
                 hide-details
               />
-              <v-btn class="profile__info-btn">인증 번호 보내기</v-btn>
+              <v-btn class="profile__info-btn"
+                >인증번호<br />
+                전송</v-btn
+              >
             </div>
-
             <div class="identify__phoneNumber">
               <custom-text-input
                 class="profile__info-input"
@@ -80,7 +95,11 @@
 <script setup>
 import { ref } from "vue";
 import { changeImageToData } from "@/utils";
-
+import {
+  defaultTextRule,
+  phoneNumberRule,
+  passwordRule,
+} from "@/components/Form/data/formRules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
@@ -117,6 +136,15 @@ section {
     display: flex;
     margin: 20px 0;
     position: relative;
+    .identify__phoneNumber {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      .profile__info-input {
+        flex-basis: 50%;
+      }
+    }
     &.profile__info-imgbox {
       justify-content: center;
     }
@@ -165,23 +193,6 @@ section {
     .profile__info-input {
       flex: 1;
     }
-    .profile__info-btn {
-      width: 100%;
-      justify-self: center;
-      margin-top: 0px;
-      margin-left: 10px;
-      flex-basis: 20%;
-    }
-  }
-}
-
-.identify__phoneNumber {
-  margin-bottom: 20px;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  .profile__info-input {
-    flex: 1;
   }
 }
 
