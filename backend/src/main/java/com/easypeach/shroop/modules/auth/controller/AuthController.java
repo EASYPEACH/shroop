@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.easypeach.shroop.modules.auth.dto.request.SignInRequest;
 import com.easypeach.shroop.modules.auth.dto.request.SignUpRequest;
-import com.easypeach.shroop.modules.auth.dto.response.AccessTokenResponse;
+import com.easypeach.shroop.modules.auth.dto.response.LoginSuccessResponse;
 import com.easypeach.shroop.modules.auth.dto.response.SignUpCompletedResponse;
 import com.easypeach.shroop.modules.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping("/api/auth")
 @RestController
 @RequiredArgsConstructor
@@ -23,14 +25,9 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping(value = "/sign-up")
-	public ResponseEntity<SignUpCompletedResponse> signUp(@Validated @RequestBody SignUpRequest signUpRequest) {
+	public ResponseEntity<SignUpCompletedResponse> signUp(@Validated @RequestBody final SignUpRequest signUpRequest) {
 		SignUpCompletedResponse signUpCompletedResponse = authService.saveMember(signUpRequest);
 		return ResponseEntity.ok(signUpCompletedResponse);
 	}
 
-	@PostMapping(value = "/sign-in")
-	public ResponseEntity<AccessTokenResponse> signIn(@Validated @RequestBody SignInRequest signInRequest) {
-		AccessTokenResponse accessTokenResponse = authService.login(signInRequest);
-		return ResponseEntity.ok(accessTokenResponse);
-	}
 }
