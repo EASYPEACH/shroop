@@ -1,5 +1,8 @@
 package com.easypeach.shroop.infra.security;
 
+import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
+import org.apache.tomcat.util.http.SameSiteCookies;
+import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -79,5 +82,14 @@ public class SecurityConfig {
 		provider.setUserDetailsService(userDetailsService);
 
 		return new ProviderManager(provider);
+	}
+
+	@Bean
+	public TomcatContextCustomizer sameSiteCookiesConfig() {
+		return context -> {
+			final Rfc6265CookieProcessor cookieProcessor = new Rfc6265CookieProcessor();
+			cookieProcessor.setSameSiteCookies(SameSiteCookies.NONE.getValue());
+			context.setCookieProcessor(cookieProcessor);
+		};
 	}
 }
