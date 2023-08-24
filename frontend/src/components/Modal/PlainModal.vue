@@ -9,9 +9,7 @@
       <v-icon icon="mdi-close" />
     </v-btn>
     <v-card>
-      <v-card-text>
-        {{ modalText }}
-      </v-card-text>
+      <v-card-text v-html="modalText" />
       <v-card-actions>
         <v-btn color="subBlue" block @click="$emit('handleConfirm')"
           >확인</v-btn
@@ -34,5 +32,9 @@ defineEmits(["handleConfirm", "handleCancle"]);
   font-size: 20px;
   place-self: flex-end;
   margin-right: -51px;
+}
+
+.v-card-text {
+  text-align: center;
 }
 </style>
