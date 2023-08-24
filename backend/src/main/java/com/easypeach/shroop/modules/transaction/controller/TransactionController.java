@@ -14,7 +14,6 @@ import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
-import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
@@ -35,6 +34,7 @@ public class TransactionController {
 
 		Product product = productService.findByProductId(productId);
 		Member member = memberService.findById(memberId);
+		
 		return new TransactionInfoResponse(product.getTitle(),
 			product.getPrice(), member.getPoint());
 	}
@@ -46,18 +46,14 @@ public class TransactionController {
 
 		Product product = productService.findByProductId(productId);
 		Member buyer = memberService.findById(memberId);
-		Transaction transaction = Transaction.createTransaction(buyer, product.getSeller(), product,
-			TransactionStatus.TRANSACTION_PROGRESS, transactionCreateRequest.getBuyerName(),
-			transactionCreateRequest.getBuyerLocation(),
-			transactionCreateRequest.getBuyerPhoneNumber());
-		transactionService.saveTransaction(transaction);
 
-		long updatedPoint = buyer.getPoint() - product.getPrice();
-		buyer.updateMember(updatedPoint);
+		Transaction transaction = transactionService.saveTransaction(product, buyer, transactionCreateRequest);
+		transactionService.subtractPoint(product, buyer);
 
 		return new TransactionCreatedResponse(transaction.getId(),
 			product.getTitle(),
 			product.getPrice(), transactionCreateRequest.getBuyerName(), transactionCreateRequest.getBuyerLocation(),
 			transactionCreateRequest.getBuyerPhoneNumber());
 	}
+
 }
