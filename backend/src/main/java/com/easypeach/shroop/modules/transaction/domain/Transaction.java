@@ -1,6 +1,6 @@
 package com.easypeach.shroop.modules.transaction.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +18,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.product.domain.Product;
 
+import lombok.Getter;
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 public class Transaction {
 
 	@Id
@@ -39,17 +42,38 @@ public class Transaction {
 	private Product product;
 
 	@OneToOne
-	@JoinColumn(name = "delivery_id", nullable = false)
+	@JoinColumn(name = "delivery_id")
 	private Delivery delivery;
-
-	@Column(name = "payment_date")
-	private LocalDate paymentDate;
 
 	@Column(nullable = false)
 	private TransactionStatus status;
 
+	@Column(name = "buyer_name", length = 255, nullable = false)
+	private String buyerName;
+
+	@Column(name = "buyer_phone_number", length = 255, nullable = false)
+	private String buyerPhoneNumber;
+
+	@Column(name = "buyer_location", length = 255, nullable = false)
+	private String buyerLocation;
+
 	@Column(name = "create_date")
 	@CreatedDate
-	private LocalDate createDate;
+	private LocalDateTime createDate;
 
+	public static Transaction createTransaction(final Member buyer, final Member seller, final Product product,
+		final TransactionStatus status, final String buyerName, final String buyerPhoneNumber,
+		final String buyerLocation
+	) {
+		Transaction transaction = new Transaction();
+		transaction.buyer = buyer;
+		transaction.seller = seller;
+		transaction.product = product;
+		transaction.status = status;
+		transaction.buyerName = buyerName;
+		transaction.buyerPhoneNumber = buyerPhoneNumber;
+		transaction.buyerLocation = buyerLocation;
+
+		return transaction;
+	}
 }

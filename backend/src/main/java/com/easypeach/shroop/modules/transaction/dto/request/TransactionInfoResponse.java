@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionCreateRequest {
-	private String buyerName;
-	private String buyerPhoneNumber;
-	private String buyerLocation;
+public class TransactionInfoResponse {
+	private String title;
+	private Long price;
+	private Long point;
+
 }

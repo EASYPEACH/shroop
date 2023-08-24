@@ -20,8 +20,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Getter;
+
 @EntityListeners(AuditingEntityListener.class)
 @Entity
+@Getter
 public class Product {
 
 	@Id
@@ -47,7 +50,7 @@ public class Product {
 	private String brand;
 
 	@Column(nullable = false)
-	private int price;
+	private Long price;
 
 	@Column(name = "is_checked_delivery_fee", nullable = false)
 	private boolean isCheckedDeliveryFee;
@@ -64,7 +67,8 @@ public class Product {
 
 	@Column(name = "sale_reason", length = 255, nullable = false)
 	private String saleReason;
-
+	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
 	private ProductStatus productStatus;
 

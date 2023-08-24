@@ -15,7 +15,7 @@ public class Delivery {
 
 	@Column(name = "tracking_number", unique = true, nullable = false)
 	private Long trackingNumber;
-
-	@Column(name = "location", length = 255, nullable = false)
-	private String location;
+	
+	@Column(name = "parcel", length = 255, nullable = false)
+	private String parcel;
 }
