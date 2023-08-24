@@ -64,7 +64,7 @@ const isValid = ref(false);
 const handleSubmitLogin = async () => {
   try {
     await postApi({
-      url: "https://shroop-backend.shop/api/auth/sign-in",
+      url: "/api/auth/sign-in",
       data: {
         loginId: id.value,
         password: password.value,
