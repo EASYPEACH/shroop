@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.easypeach.shroop.modules.auth.support.LoginMemberId;
+import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.product.domain.Product;
@@ -30,22 +30,22 @@ public class TransactionController {
 	private final TransactionService transactionService;
 
 	@GetMapping("/{productId}")
-	public TransactionInfoResponse getBuyingForm(@PathVariable Long productId, @LoginMemberId Long memberId) {
+	public TransactionInfoResponse getBuyingForm(@PathVariable Long productId, @LoginMember Member member) {
 
 		Product product = productService.findByProductId(productId);
-		Member member = memberService.findById(memberId);
-		
+		Member findedMember = memberService.findById(member.getId());
+
 		return new TransactionInfoResponse(product.getTitle(),
-			product.getPrice(), member.getPoint());
+			product.getPrice(), findedMember.getPoint());
 	}
 
 	@Transactional
 	@PostMapping("/{productId}")
 	public TransactionCreatedResponse buyingProduct(@RequestBody TransactionCreateRequest transactionCreateRequest,
-		@PathVariable Long productId, @LoginMemberId Long memberId) {
+		@PathVariable Long productId, @LoginMember Member member) {
 
 		Product product = productService.findByProductId(productId);
-		Member buyer = memberService.findById(memberId);
+		Member buyer = memberService.findById(member.getId());
 
 		Transaction transaction = transactionService.saveTransaction(product, buyer, transactionCreateRequest);
 		transactionService.subtractPoint(product, buyer);
