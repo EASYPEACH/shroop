@@ -12,11 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public Member findById(Long memberId) {
+	public Member findById(final Long memberId) {
 		return memberRepository.findById(memberId).get();
-	}
-
-	public void saveMember(Member member) {
-		memberRepository.save(member);
 	}
 }
