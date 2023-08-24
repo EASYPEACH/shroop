@@ -53,7 +53,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
-import { changeFiles, deleteImage } from "@/utils";
+import { changeFiles, deleteImage, multipartFormData } from "@/utils";
 import { multipartPostApi } from "@/api/modules";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -74,33 +74,6 @@ const imageData = ref({});
 const productRef = ref(null);
 const reportReason = ref("");
 
-const dialogList = ref([
-  {
-    id: 1,
-    text: "신고를 진행하시겠습니까?<br>신고는 신중히 부탁드립니다.",
-    isShow: false,
-    callback: handleSubmitReport,
-  },
-  {
-    id: 2,
-    text: "신고 접수가 완료되었습니다.",
-    isShow: false,
-    callback: completeSubmitRport,
-  },
-  {
-    id: 3,
-    text: "입력값을 확인하세요.",
-    isShow: false,
-    callback: handleErrorInput,
-  },
-  {
-    id: 4,
-    text: "오류 : 관리자에게 문의하세요",
-    isShow: false,
-    callback: handleErrorEtc,
-  },
-]);
-
 const handleAttachProductImage = (files) => {
   changeFiles(files, productRef, productImagesThumb, imageData);
 };
@@ -111,28 +84,16 @@ const handleSubmit = () => {
   dialogList.value[0].isShow = true;
 };
 const handleSubmitReport = async () => {
-  const formData = new FormData();
-  formData.append(
+  const formData = multipartFormData(
     "reportRequest",
-    new Blob(
-      [
-        JSON.stringify({
-          title: title.value,
-          content: reportReason.value,
-          isMediate: isMediate.value,
-        }),
-      ],
-      {
-        type: "application/json",
-      },
-    ),
+    {
+      title: title.value,
+      content: reportReason.value,
+      isMediate: isMediate.value,
+    },
+    productRef.value,
   );
 
-  if (productRef.value !== null) {
-    productRef.value.input.files.array.forEach((file) => {
-      formData.append("multipartFileList", file);
-    });
-  }
   try {
     await multipartPostApi({
       url: "/api/reports",
@@ -165,6 +126,33 @@ const handleErrorInput = () => {
 const handleErrorEtc = () => {
   dialogList.value[3].isShow = false;
 };
+
+const dialogList = ref([
+  {
+    id: 1,
+    text: "신고를 진행하시겠습니까?<br>신고는 신중히 부탁드립니다.",
+    isShow: false,
+    callback: handleSubmitReport,
+  },
+  {
+    id: 2,
+    text: "신고 접수가 완료되었습니다.",
+    isShow: false,
+    callback: completeSubmitRport,
+  },
+  {
+    id: 3,
+    text: "입력값을 확인하세요.",
+    isShow: false,
+    callback: handleErrorInput,
+  },
+  {
+    id: 4,
+    text: "오류 : 관리자에게 문의하세요",
+    isShow: false,
+    callback: handleErrorEtc,
+  },
+]);
 </script>
 
 <style lang="scss" scoped></style>
