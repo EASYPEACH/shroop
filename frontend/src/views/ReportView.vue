@@ -129,25 +129,25 @@ const handleErrorEtc = () => {
 
 const dialogList = ref([
   {
-    id: 1,
+    id: 0,
     text: "신고를 진행하시겠습니까?<br>신고는 신중히 부탁드립니다.",
     isShow: false,
     callback: handleSubmitReport,
   },
   {
-    id: 2,
+    id: 1,
     text: "신고 접수가 완료되었습니다.",
     isShow: false,
     callback: completeSubmitRport,
   },
   {
-    id: 3,
+    id: 2,
     text: "입력값을 확인하세요.",
     isShow: false,
     callback: handleErrorInput,
   },
   {
-    id: 4,
+    id: 3,
     text: "오류 : 관리자에게 문의하세요",
     isShow: false,
     callback: handleErrorEtc,
