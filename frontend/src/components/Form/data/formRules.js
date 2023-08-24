@@ -48,7 +48,7 @@ export const priceRule = {
 
 export const productDetailRule = {
   required: (value) => !!value || "필수 사항 입니다",
-  min: (value) => value.length >= 50 || "50자 이상 입력해주세요",
+  min: (value) => value.length >= 30 || "30자 이상 입력해주세요",
 };
 
 export const selectRule = {
