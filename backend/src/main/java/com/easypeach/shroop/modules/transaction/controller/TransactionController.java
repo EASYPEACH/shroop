@@ -32,8 +32,8 @@ public class TransactionController {
 	private final TransactionService transactionService;
 
 	@GetMapping("/{productId}")
-	public ResponseEntity<TransactionInfoResponse> getBuyingForm(@PathVariable Long productId,
-		@LoginMember Member member) {
+	public ResponseEntity<TransactionInfoResponse> getBuyingForm(final @PathVariable Long productId,
+		final @LoginMember Member member) {
 
 		Product product = productService.findByProductId(productId);
 		Member findedMember = memberService.findById(member.getId());
@@ -43,8 +43,9 @@ public class TransactionController {
 	}
 
 	@PostMapping("/{productId}")
-	public ResponseEntity<BasicResponse> buyingProduct(@RequestBody TransactionCreateRequest transactionCreateRequest,
-		@PathVariable Long productId, @LoginMember Member member) {
+	public ResponseEntity<BasicResponse> buyingProduct(
+		final @RequestBody TransactionCreateRequest transactionCreateRequest,
+		final @PathVariable Long productId, final @LoginMember Member member) {
 
 		Product product = productService.findByProductId(productId);
 		Member buyer = memberService.findById(member.getId());
@@ -57,7 +58,7 @@ public class TransactionController {
 	}
 
 	@GetMapping("/completed/{productId}")
-	public ResponseEntity<TransactionCreatedResponse> getBuyingCompletedForm(@PathVariable Long productId) {
+	public ResponseEntity<TransactionCreatedResponse> getBuyingCompletedForm(final @PathVariable Long productId) {
 		Product product = productService.findByProductId(productId);
 		Transaction transaction = transactionService.findById(productId);
 
