@@ -40,8 +40,7 @@ public class TransactionService {
 	}
 
 	@Transactional
-	public void updateProduct(Product product, Member buyer) {
-		product.setBuyer(buyer);
+	public void updateProductStatus(Product product) {
 		product.setProductStatus(ProductStatus.PURCHASE_REQUEST);
 	}
 

@@ -51,7 +51,7 @@ public class TransactionController {
 		Member buyer = memberService.findById(member.getId());
 
 		transactionService.saveTransaction(product, buyer, transactionCreateRequest);
-		transactionService.updateProduct(product, buyer);
+		transactionService.updateProductStatus(product);
 		transactionService.subtractPoint(product, buyer);
 
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("결제가 완료되었습니다."));
@@ -60,8 +60,9 @@ public class TransactionController {
 
 	@GetMapping("/completed/{productId}")
 	public ResponseEntity<TransactionCreatedResponse> getBuyingCompletedForm(final @PathVariable Long productId) {
+
 		Product product = productService.findByProductId(productId);
-		Transaction transaction = transactionService.findById(productId);
+		Transaction transaction = product.getTransaction();
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(new TransactionCreatedResponse(transaction.getId(), product.getTitle(), product.getPrice(),

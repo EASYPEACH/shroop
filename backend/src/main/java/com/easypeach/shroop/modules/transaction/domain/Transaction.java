@@ -39,7 +39,7 @@ public class Transaction {
 	@JoinColumn(name = "seller_id", nullable = false)
 	private Member seller;
 
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
