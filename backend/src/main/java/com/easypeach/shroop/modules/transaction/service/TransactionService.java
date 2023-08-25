@@ -1,6 +1,7 @@
 package com.easypeach.shroop.modules.transaction.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.service.MemberService;
@@ -15,22 +16,29 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TransactionService {
 	private final TransactionRepository transactionRepository;
 	private final ProductService productService;
 	private final MemberService memberService;
 
-	public Transaction saveTransaction(Product product, Member buyer,
-		TransactionCreateRequest transactionCreateRequest) {
+	@Transactional
+	public void saveTransaction(final Product product, final Member buyer,
+		final TransactionCreateRequest transactionCreateRequest) {
 		Transaction transaction = Transaction.createTransaction(buyer, product.getSeller(), product,
 			TransactionStatus.TRANSACTION_PROGRESS, transactionCreateRequest.getBuyerName(),
 			transactionCreateRequest.getBuyerLocation(),
 			transactionCreateRequest.getBuyerPhoneNumber());
-		return transactionRepository.save(transaction);
+		transactionRepository.save(transaction);
 	}
 
-	public void subtractPoint(Product product, Member buyer) {
+	@Transactional
+	public void subtractPoint(final Product product, final Member buyer) {
 		long updatedPoint = buyer.getPoint() - product.getPrice();
 		buyer.updateMember(updatedPoint);
+	}
+
+	public Transaction findById(final Long productId) {
+		return transactionRepository.findById(productId).get();
 	}
 }

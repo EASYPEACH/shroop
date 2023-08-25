@@ -10,4 +10,5 @@ public enum ProductGrade {
     ProductGrade(String grade) {
         this.grade = grade;
     }
+
 }

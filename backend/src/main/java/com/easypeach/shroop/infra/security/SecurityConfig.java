@@ -51,7 +51,7 @@ public class SecurityConfig {
 
 		http
 			.authorizeRequests()
-			.antMatchers("/api/auth/sign-up", "/api/auth/sign-in").permitAll()
+			.antMatchers("/api/auth/sign-up", "/api/auth/sign-in", "/check/**").permitAll()
 			.antMatchers(HttpMethod.GET, "/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
