@@ -2,7 +2,7 @@
   <section>
     <content-layout>
       <product-banner :product="product" isPurchase />
-      <v-form>
+      <v-form @submit.prevent="handleRequestPurchase">
         <product-title title="이름" isRequired />
         <custom-text-input
           :rules="[defaultTextRule.required]"
@@ -64,25 +64,11 @@
         @handle-cancle="showChargePointModal = false"
       />
     </content-layout>
-
-    <v-dialog v-model="showWarningModal" max-width="500">
-      <v-card>
-        <v-card-title class="headline">경고</v-card-title>
-        <v-card-text>
-          모든 주의 사항에 동의해야 결제할 수 있습니다.
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" text @click="showWarningModal = false"
-            >확인</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </section>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onBeforeMount } from "vue";
 import {
   defaultTextRule,
   phoneNumberRule,
@@ -95,7 +81,11 @@ import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
 import CautionBlock from "@/components/CautionBlock.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
-
+import { useRoute, useRouter } from "vue-router";
+import { getApi } from "@/api/modules/getApi";
+import { postApi } from "@/api/modules";
+const router = useRouter();
+const route = useRoute();
 const buyerName = ref("");
 const phoneNumber = ref("");
 const address = ref("");
@@ -150,6 +140,20 @@ const toggleAllCheckboxes = () => {
   }
 };
 
+onBeforeMount(async () => {
+  try {
+    const response = await getApi({
+      url: `/api/buying/${route.params.id}`,
+    });
+    console.log(response);
+    product.value.title = response.title;
+    product.value.price = response.price;
+    profile.value.point = response.point;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 watch(cautionInfoList.value, (caution) => {
   const filterTrue = caution.filter((list) => list.value);
   if (filterTrue.length === 4) {
@@ -159,7 +163,17 @@ watch(cautionInfoList.value, (caution) => {
   }
 });
 
-const showWarningModal = ref(false);
+const handleRequestPurchase = () => {
+  postApi({
+    url: `/api/buying/${route.params.id}`,
+    data: {
+      buyerName: buyerName.value,
+      buyerPhoneNumber: phoneNumber.value,
+      buyerLocation: address.value,
+    },
+  });
+  router.push(`/PurchaseComplete/${route.params.id}`);
+};
 </script>
 
 <style lang="scss" scoped>
