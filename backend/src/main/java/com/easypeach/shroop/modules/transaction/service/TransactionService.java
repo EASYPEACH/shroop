@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.product.domain.Product;
+import com.easypeach.shroop.modules.product.domain.ProductStatus;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
@@ -36,6 +37,12 @@ public class TransactionService {
 	public void subtractPoint(final Product product, final Member buyer) {
 		long updatedPoint = buyer.getPoint() - product.getPrice();
 		buyer.updateMember(updatedPoint);
+	}
+
+	@Transactional
+	public void updateProduct(Product product, Member buyer) {
+		product.setBuyer(buyer);
+		product.setProductStatus(ProductStatus.PURCHASE_REQUEST);
 	}
 
 	public Transaction findById(final Long productId) {

@@ -1,4 +1,4 @@
-package com.easypeach.shroop.modules.transaction.dto.request;
+package com.easypeach.shroop.modules.transaction.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

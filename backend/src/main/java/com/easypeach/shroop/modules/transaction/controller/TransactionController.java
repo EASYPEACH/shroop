@@ -17,8 +17,8 @@ import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
-import com.easypeach.shroop.modules.transaction.dto.request.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
+import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +51,7 @@ public class TransactionController {
 		Member buyer = memberService.findById(member.getId());
 
 		transactionService.saveTransaction(product, buyer, transactionCreateRequest);
+		transactionService.updateProduct(product, buyer);
 		transactionService.subtractPoint(product, buyer);
 
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("결제가 완료되었습니다."));
