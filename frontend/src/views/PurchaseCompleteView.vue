@@ -5,7 +5,7 @@
     <product-title title="결제내역" />
     <div class="infobox">
       <h4>총 결제금액</h4>
-      <p>{{ product.price.toLocaleString() }}</p>
+      <p>{{ product.price.toLocaleString() }}원</p>
     </div>
     <product-title title="배송정보" />
     <ul>
@@ -36,7 +36,11 @@ import { ref } from "vue";
 import ContentLayout from "../layouts/ContentLayout.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
+import { onBeforeMount } from "vue";
+import { useRoute } from "vue-router";
+import { getApi } from "@/api/modules/getApi";
 
+const route = useRoute();
 const product = ref({
   title: "아이패드 프로 10.5",
   price: 700000,
@@ -46,6 +50,22 @@ const buyeInfo = ref({
   name: "김뿅뿅",
   address: "경기도 고양시 덕양구 신원3로 20",
   phoneNumber: "01012341234",
+});
+
+onBeforeMount(async () => {
+  try {
+    const response = await getApi({
+      url: `/api/buying/completed/${route.params.id}`,
+    });
+    console.log(response);
+    product.value.title = response.productTitle;
+    product.value.price = response.productPrice;
+    buyeInfo.value.name = response.buyerName;
+    buyeInfo.value.phoneNumber = response.buyerPhoneNumber;
+    buyeInfo.value.address = response.buyerLocation;
+  } catch (error) {
+    console.log(error);
+  }
 });
 </script>
 
