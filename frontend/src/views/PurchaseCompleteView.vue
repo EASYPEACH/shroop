@@ -11,15 +11,15 @@
     <ul>
       <li class="infobox">
         <h4>받는사람</h4>
-        <p>{{ buyeInfo.name }}</p>
+        <p>{{ buyerInfo.name }}</p>
       </li>
       <li class="infobox">
         <h4>휴대폰번호</h4>
-        <p>{{ buyeInfo.phoneNumber }}</p>
+        <p>{{ buyerInfo.phoneNumber }}</p>
       </li>
       <li class="infobox">
         <h4>배송주소</h4>
-        <p>{{ buyeInfo.address }}</p>
+        <p>{{ buyerInfo.address }}</p>
       </li>
     </ul>
     <v-btn
@@ -32,24 +32,24 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
-import { useRoute } from "vue-router";
-import { getApi } from "@/api/modules/getApi";
+import { ref } from "vue";
 import ContentLayout from "../layouts/ContentLayout.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
-import ProductBanner from "@/components/Banner/ProductBanner.vue";
+import { onBeforeMount } from "vue";
+import { useRoute } from "vue-router";
+import { getApi } from "@/api/modules/getApi";
 
 const route = useRoute();
 const product = ref({
-  title: "",
-  price: 0,
-  thumb: "",
+  title: "아이패드 프로 10.5",
+  price: 700000,
+  thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
 });
-const buyeInfo = ref({
-  name: "",
-  address: "",
-  phoneNumber: "",
+const buyerInfo = ref({
+  name: "김뿅뿅",
+  address: "경기도 고양시 덕양구 신원3로 20",
+  phoneNumber: "01012341234",
 });
 
 onBeforeMount(async () => {
@@ -58,12 +58,11 @@ onBeforeMount(async () => {
       url: `/api/buying/completed/${route.params.id}`,
     });
     console.log(response);
-    product.value.thumb = response.productImgURl;
     product.value.title = response.productTitle;
     product.value.price = response.productPrice;
-    buyeInfo.value.name = response.buyerName;
-    buyeInfo.value.phoneNumber = response.buyerPhoneNumber;
-    buyeInfo.value.address = response.buyerLocation;
+    buyerInfo.value.name = response.buyerName;
+    buyerInfo.value.phoneNumber = response.buyerPhoneNumber;
+    buyerInfo.value.address = response.buyerLocation;
   } catch (error) {
     console.log(error);
   }
