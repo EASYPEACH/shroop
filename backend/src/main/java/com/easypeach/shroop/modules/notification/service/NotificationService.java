@@ -52,7 +52,8 @@ public class NotificationService {
 	}
 
 	public Notification findById(final Long notificationId) {
-		return notificationRepository.findById(notificationId).orElseThrow();
+		return notificationRepository.findById(notificationId)
+			.orElseThrow(() -> new RuntimeException("알림이 존재하지 않습니다."));
 	}
 
 	public List<NotificationResponse> toNotificationResponse(List<Notification> notificationList) {
