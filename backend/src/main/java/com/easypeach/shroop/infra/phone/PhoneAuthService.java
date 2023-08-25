@@ -3,58 +3,68 @@ package com.easypeach.shroop.infra.phone;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
+import com.easypeach.shroop.infra.phone.dto.MessageRequest;
+import com.easypeach.shroop.infra.phone.dto.PhoneAuthResponse;
+import com.easypeach.shroop.infra.phone.dto.SmsRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
 public class PhoneAuthService {
-	@Value("${spring.phone.accessKey}")
-	private final String accessKey;
 
-	@Value("${spring.phone.secretKey}")
-	private final String secretKey;
+	private final PhoneAuthClient phoneAuthClient;
 
-	@Value("${spring.phone.serviceId}")
-	private final String serviceId;
+	public String sendSms(final String to, final String content) throws
+		UnsupportedEncodingException,
+		NoSuchAlgorithmException,
+		InvalidKeyException, JsonProcessingException {
 
-	String time = String.valueOf(System.currentTimeMillis());
+		PhoneAuthResponse phoneAuthResponse = phoneAuthClient.makeSignature();
+		String accessKey = phoneAuthResponse.getAccessKey();
+		String serviceId = phoneAuthResponse.getServiceId();
+		String sender = phoneAuthResponse.getSender();
+		String signature = phoneAuthResponse.getSignature();
+		String time = phoneAuthResponse.getTime();
 
-	public PhoneAuthService(String accessKey, String secretKey, String serviceId) {
-		this.accessKey = accessKey;
-		this.secretKey = secretKey;
-		this.serviceId = serviceId;
-	}
+		List<MessageRequest> messageRequestList = new ArrayList<>();
+		messageRequestList.add(new MessageRequest(to, content));
+		log.info("time : " + time);
 
-	public String makeSignature() throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException {
-		String space = " ";                    // one space
-		String newLine = "\n";                    // new line
-		String method = "POST";                    // method
-		String url = "/sms/v2/services/" + serviceId + "/messages";
-		String timestamp = time;
-		String accessKey = this.accessKey;
-		String secretKey = this.secretKey;
+		SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", sender, "내용", messageRequestList);
+		log.info("smsRequest : " + smsRequest.toString());
 
-		String message = new StringBuilder()
-			.append(method)
-			.append(space)
-			.append(url)
-			.append(newLine)
-			.append(timestamp)
-			.append(newLine)
-			.append(accessKey)
-			.toString();
+		ObjectMapper objectMapper = new ObjectMapper();
+		String body = objectMapper.writeValueAsString(smsRequest);
+		log.info("body : " + body);
+		log.info("makeSignature() : " + signature);
 
-		SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
-		Mac mac = Mac.getInstance("HmacSHA256");
-		mac.init(signingKey);
+		WebClient webClient = WebClient.builder()
+			.baseUrl("https://sens.apigw.ntruss.com/sms/v2/services")
+			.build();
 
-		byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
-		String encodeBase64String = Base64.encodeBase64String(rawHmac);
-
-		return encodeBase64String;
+		return webClient
+			.post()
+			.uri("/" + serviceId + "/messages")
+			.contentType(MediaType.APPLICATION_JSON)
+			.header("x-ncp-apigw-timestamp", time)
+			.header("x-ncp-iam-access-key", accessKey)
+			.header("x-ncp-apigw-signature-v2", signature)
+			.bodyValue(body)
+			.retrieve()
+			.bodyToMono(String.class)
+			.block();
 	}
 
 }
