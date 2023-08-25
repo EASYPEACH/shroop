@@ -44,7 +44,7 @@ public class Product {
 
 	@Column(nullable = false)
 	@Enumerated(value = EnumType.STRING)
-	private Grade grade;
+	private ProductGrade grade;
 
 	@Column(length = 50, nullable = false)
 	private String brand;
@@ -67,7 +67,7 @@ public class Product {
 
 	@Column(name = "sale_reason", length = 255, nullable = false)
 	private String saleReason;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
 	private ProductStatus productStatus;

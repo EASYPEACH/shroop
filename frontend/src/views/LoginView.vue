@@ -49,18 +49,32 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Title from "@/components/Title/MainTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import PasswordInput from "@/components/Form/PasswordInput.vue";
 import { idRule, passwordRule } from "@/components/Form/data/formRules";
+import { postApi } from "@/api/modules";
 
+const router = useRouter();
 const visible = ref(false);
 const id = ref("");
 const password = ref("");
 const isValid = ref(false);
-const handleSubmitLogin = () => {
-  console.log(id.value);
-  console.log(password.value);
+const handleSubmitLogin = async () => {
+  try {
+    await postApi({
+      url: "/api/auth/sign-in",
+      data: {
+        loginId: id.value,
+        password: password.value,
+      },
+    });
+
+    router.push("/");
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 
