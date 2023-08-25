@@ -90,12 +90,12 @@ const buyerName = ref("");
 const phoneNumber = ref("");
 const address = ref("");
 const product = ref({
-  title: "아이패드 프로 10.5",
-  price: 700000,
-  thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
+  title: "",
+  price: 0,
+  thumb: "",
 });
 const profile = ref({
-  point: 20000,
+  point: 0,
 });
 const cautionInfoList = ref([
   {
@@ -146,6 +146,7 @@ onBeforeMount(async () => {
       url: `/api/buying/${route.params.id}`,
     });
     console.log(response);
+    product.value.thumb = response.productImgUrl;
     product.value.title = response.title;
     product.value.price = response.price;
     profile.value.point = response.point;
@@ -163,16 +164,20 @@ watch(cautionInfoList.value, (caution) => {
   }
 });
 
-const handleRequestPurchase = () => {
-  postApi({
-    url: `/api/buying/${route.params.id}`,
-    data: {
-      buyerName: buyerName.value,
-      buyerPhoneNumber: phoneNumber.value,
-      buyerLocation: address.value,
-    },
-  });
-  router.push(`/PurchaseComplete/${route.params.id}`);
+const handleRequestPurchase = async () => {
+  try {
+    await postApi({
+      url: `/api/buying/${route.params.id}`,
+      data: {
+        buyerName: buyerName.value,
+        buyerPhoneNumber: phoneNumber.value,
+        buyerLocation: address.value,
+      },
+    });
+    router.push(`/PurchaseComplete/${route.params.id}`);
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 
