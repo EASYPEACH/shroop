@@ -2,11 +2,9 @@ package com.easypeach.shroop.modules.product.controller;
 
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.member.domain.Member;
-import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
 import com.easypeach.shroop.modules.product.dto.response.ProductCreatedResponse;
-import com.easypeach.shroop.modules.product.service.CategoryService;
 import com.easypeach.shroop.modules.product.service.ProductImgService;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +26,6 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final ProductImgService productImgService;
-    private final CategoryService categoryService;
 
     @PostMapping
     public ResponseEntity<ProductCreatedResponse> saveProduct(
@@ -37,8 +34,7 @@ public class ProductController {
             @RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
             @RequestPart ProductRequest productRequest
     ) {
-        Category category = categoryService.saveCategory(productRequest.getCategoryName());
-        Product product = productService.saveProduct(member.getId(), productRequest, category);
+        Product product = productService.saveProduct(member.getId(), productRequest);
         productImgService.saveProductImg(product, productImgList);
         log.info("get brand {}", productRequest.getBrand());
         if (product.isDefect()) {

@@ -7,27 +7,30 @@ import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductGrade;
 import com.easypeach.shroop.modules.product.domain.ProductStatus;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
+import com.easypeach.shroop.modules.product.respository.CategoryRepository;
 import com.easypeach.shroop.modules.product.respository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 @Slf4j
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
-    public Product saveProduct(Long memberId, ProductRequest productRequest, Category category) {
-
-        log.info("product service {}", productRequest.getProductGrade());
+    public Product saveProduct(Long memberId, ProductRequest productRequest) {
 
         Member member = memberRepository.findById(memberId).get();
+        Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
+
         String title = productRequest.getTitle();
         ProductStatus productStatus = productRequest.getProductStatus();
         String brand = productRequest.getBrand();

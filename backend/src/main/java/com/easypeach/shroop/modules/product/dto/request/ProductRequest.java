@@ -15,30 +15,41 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 public class ProductRequest {
+
     @NotBlank
     @Size(min = 5, max = 255, message = "최소 5자 이상 입력주세요")
     private String title;
+
     @NotBlank
     @Size(min = 2, max = 255)
     private ProductStatus productStatus;
+
     @NotBlank
-    private String categoryName;
+    private Long categoryId;
+
     @NotBlank
     @Size(min = 2, max = 255, message = "최소 2자 이상 입력해주세요")
     private String brand;
+
     @NotNull
     private Long price;
+
     @NotNull
     private boolean isCheckedDeliveryFee;
+
     @NotNull
     private LocalDate purchaseDate;
+
     @NotNull
     private ProductGrade productGrade;
+
     @NotNull
     private boolean isDefect;
+
     @NotBlank
     @Size(min = 5, max = 255, message = "최소 5자 이상 입력주세요")
     private String saleReason;
+
     @NotBlank
     @Size(min = 30, max = 255, message = "최소 30자 이상 입력주세요")
     private String content;
@@ -46,7 +57,7 @@ public class ProductRequest {
     public ProductRequest(
             final String title,
             final ProductStatus productStatus,
-            final String categoryName,
+            final Long categoryId,
             final String brand,
             final Long price,
             final boolean isCheckedDeliveryFee,
@@ -57,7 +68,7 @@ public class ProductRequest {
             final String content) {
         this.title = title;
         this.productStatus = productStatus;
-        this.categoryName = categoryName;
+        this.categoryId = categoryId;
         this.brand = brand;
         this.price = price;
         this.isCheckedDeliveryFee = isCheckedDeliveryFee;
