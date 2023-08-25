@@ -1,6 +1,5 @@
 package com.easypeach.shroop.modules.transaction.controller;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,21 +38,26 @@ public class TransactionController {
 			product.getPrice(), findedMember.getPoint());
 	}
 
-	@Transactional
 	@PostMapping("/{productId}")
-	public TransactionCreatedResponse buyingProduct(@RequestBody TransactionCreateRequest transactionCreateRequest,
+	public void buyingProduct(@RequestBody TransactionCreateRequest transactionCreateRequest,
 		@PathVariable Long productId, @LoginMember Member member) {
 
 		Product product = productService.findByProductId(productId);
 		Member buyer = memberService.findById(member.getId());
 
-		Transaction transaction = transactionService.saveTransaction(product, buyer, transactionCreateRequest);
+		transactionService.saveTransaction(product, buyer, transactionCreateRequest);
 		transactionService.subtractPoint(product, buyer);
 
-		return new TransactionCreatedResponse(transaction.getId(),
-			product.getTitle(),
-			product.getPrice(), transactionCreateRequest.getBuyerName(), transactionCreateRequest.getBuyerLocation(),
-			transactionCreateRequest.getBuyerPhoneNumber());
+	}
+
+	@GetMapping("/completed/{productId}")
+	public TransactionCreatedResponse getBuyingCompletedForm(@PathVariable Long productId) {
+		Product product = productService.findByProductId(productId);
+		Transaction transaction = transactionService.findById(productId);
+
+		return new TransactionCreatedResponse(transaction.getId(), product.getTitle(), product.getPrice(),
+			transaction.getBuyerName(), transaction.getBuyerLocation(), transaction.getBuyerPhoneNumber());
 	}
 
 }
+
