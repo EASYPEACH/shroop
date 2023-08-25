@@ -13,6 +13,6 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	public Member findById(final Long memberId) {
-		return memberRepository.findById(memberId).get();
+		return memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다"));
 	}
 }

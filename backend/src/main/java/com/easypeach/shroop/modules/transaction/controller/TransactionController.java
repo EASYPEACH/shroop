@@ -14,6 +14,7 @@ import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.product.domain.Product;
+import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
@@ -22,7 +23,9 @@ import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResp
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/buying")
@@ -34,11 +37,12 @@ public class TransactionController {
 	@GetMapping("/{productId}")
 	public ResponseEntity<TransactionInfoResponse> getBuyingForm(final @PathVariable Long productId,
 		final @LoginMember Member member) {
-
 		Product product = productService.findByProductId(productId);
+		ProductImg productImg = productService.getProductImg(product);
+		String productImgUrl = productImg.getProductImgUrl();
 		Member findedMember = memberService.findById(member.getId());
 
-		return ResponseEntity.status(HttpStatus.OK).body(new TransactionInfoResponse(product.getTitle(),
+		return ResponseEntity.status(HttpStatus.OK).body(new TransactionInfoResponse(productImgUrl, product.getTitle(),
 			product.getPrice(), findedMember.getPoint()));
 	}
 
@@ -51,7 +55,6 @@ public class TransactionController {
 		Member buyer = memberService.findById(member.getId());
 
 		transactionService.saveTransaction(product, buyer, transactionCreateRequest);
-		transactionService.updateProductStatus(product);
 		transactionService.subtractPoint(product, buyer);
 
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("결제가 완료되었습니다."));
@@ -63,10 +66,14 @@ public class TransactionController {
 
 		Product product = productService.findByProductId(productId);
 		Transaction transaction = product.getTransaction();
+		ProductImg productImg = productService.getProductImg(product);
+		String productImgUrl = productImg.getProductImgUrl();
 
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(new TransactionCreatedResponse(transaction.getId(), product.getTitle(), product.getPrice(),
-				transaction.getBuyerName(), transaction.getBuyerLocation(), transaction.getBuyerPhoneNumber()));
+			.body(
+				new TransactionCreatedResponse(transaction.getId(), productImgUrl, product.getTitle(),
+					product.getPrice(),
+					transaction.getBuyerName(), transaction.getBuyerLocation(), transaction.getBuyerPhoneNumber()));
 	}
 
 }

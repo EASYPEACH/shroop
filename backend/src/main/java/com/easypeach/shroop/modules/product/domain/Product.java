@@ -58,7 +58,7 @@ public class Product {
 	@Enumerated(value = EnumType.STRING)
 	private ProductGrade productGrade;
 
-	@OneToMany(mappedBy = "productImgUrl", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductImg> productImgList;
 
 	@Column(length = 50, nullable = false)
@@ -129,14 +129,6 @@ public class Product {
 
 	public static Product forTestCodeProduct() {
 		return new Product();
-	}
-
-	public void setProductStatus(ProductStatus productStatus) {
-		this.productStatus = productStatus;
-	}
-
-	public void setTransaction(Transaction transaction) {
-		this.transaction = transaction;
 	}
 
 }

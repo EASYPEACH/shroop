@@ -4,10 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.member.domain.Member;
-import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.product.domain.Product;
-import com.easypeach.shroop.modules.product.domain.ProductStatus;
-import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
@@ -20,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class TransactionService {
 	private final TransactionRepository transactionRepository;
-	private final ProductService productService;
-	private final MemberService memberService;
 
 	@Transactional
 	public void saveTransaction(final Product product, final Member buyer,
@@ -39,12 +34,4 @@ public class TransactionService {
 		buyer.updateMember(updatedPoint);
 	}
 
-	@Transactional
-	public void updateProductStatus(Product product) {
-		product.setProductStatus(ProductStatus.PURCHASE_REQUEST);
-	}
-
-	public Transaction findById(final Long productId) {
-		return transactionRepository.findById(productId).get();
-	}
 }
