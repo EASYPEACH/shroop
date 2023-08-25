@@ -17,8 +17,8 @@ import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
-import com.easypeach.shroop.modules.transaction.dto.request.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
+import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +51,7 @@ public class TransactionController {
 		Member buyer = memberService.findById(member.getId());
 
 		transactionService.saveTransaction(product, buyer, transactionCreateRequest);
+		transactionService.updateProductStatus(product);
 		transactionService.subtractPoint(product, buyer);
 
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("결제가 완료되었습니다."));
@@ -59,8 +60,9 @@ public class TransactionController {
 
 	@GetMapping("/completed/{productId}")
 	public ResponseEntity<TransactionCreatedResponse> getBuyingCompletedForm(final @PathVariable Long productId) {
+
 		Product product = productService.findByProductId(productId);
-		Transaction transaction = transactionService.findById(productId);
+		Transaction transaction = product.getTransaction();
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(new TransactionCreatedResponse(transaction.getId(), product.getTitle(), product.getPrice(),

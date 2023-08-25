@@ -12,7 +12,7 @@ public class TransactionCreatedResponse {
 	private String productTitle;
 	private Long productPrice;
 	private String buyerName;
-	private String buyerPhoneName;
+	private String buyerPhoneNumber;
 	private String buyerLocation;
 
 }
