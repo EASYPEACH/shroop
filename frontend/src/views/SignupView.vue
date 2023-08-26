@@ -14,7 +14,12 @@
           v-model="id"
           :rules="[idRule.required, idRule.min, idRule.check]"
           icon="mdi-account-outline"
+          :hide-details="isDuplId"
+          :blur="checkDuplicateID"
         />
+        <div v-if="isDuplId" class="duplicate-message">
+          <div>중복된 아이디 입니다</div>
+        </div>
         <password-input
           :visible="visible"
           @toggle-visible="visible = !visible"
@@ -26,21 +31,24 @@
           placeholder-text="닉네임을 입력해주세요"
           v-model="nickname"
           :rules="[nickNameRule.required, nickNameRule.min, nickNameRule.check]"
+          :hide-details="isDuplNickname"
+          :blur="checkDuplicateNickname"
         />
+        <div v-if="isDuplNickname" class="duplicate-message">
+          <div>중복된 닉네임 입니다</div>
+        </div>
         <div>
-          <div class="text-subtitle-1 text-medium-emphasis">휴대폰번호</div>
+          <div class="text-subtitle-1 text-medium-emphasis">휴대전화번호</div>
           <div class="sigupForm__block-phoneNumber">
-            <v-select
-              v-model="mobileCarrier"
-              :items="phoneItems"
-              :rules="[defaultTextRule.required]"
-              density="compact"
-              label="통신사"
-            ></v-select>
             <PhoneInput
               v-model="phoneNumber"
               :rules="[phoneNumberRule.required, phoneNumberRule.check]"
+              :hide-details="isDuplPhone"
+              :blur="checkDuplicatePhone"
             />
+          </div>
+          <div v-if="isDuplPhone" class="duplicate-message">
+            <div>중복된 휴대전화번호 입니다</div>
           </div>
         </div>
         <agreement-check-box
@@ -90,7 +98,10 @@ import {
 } from "@/components/Form/data/formRules";
 import { AGREE } from "@/consts/agree";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { postApi } from "@/api/modules";
 
+const router = useRouter();
 const phoneItems = ref(["LGT", "SKT", "KT"]);
 const id = ref("");
 const password = ref("");
@@ -109,6 +120,9 @@ const agreement = ref({
   [AGREE.PERSONAL]: false,
   [AGREE.IDENTIFY]: false,
 });
+const isDuplId = ref(false);
+const isDuplNickname = ref(false);
+const isDuplPhone = ref(false);
 
 const changeToAgree = (id) => {
   dialog.value[id] = false;
@@ -119,10 +133,81 @@ const changeToDisagree = (id) => {
   agreement.value[id] = false;
 };
 const submit = () => {
-  console.log(id.value);
-  console.log(password.value);
-  console.log(phoneNumber.value);
-  console.log(mobileCarrier.value);
+  handleSubmitSignUp();
+};
+
+const handleSubmitSignUp = async () => {
+  try {
+    await postApi({
+      url: "/api/auth/sign-up",
+      data: {
+        loginId: id.value,
+        nickname: nickname.value,
+        password: password.value,
+        phoneNumber: phoneNumber.value,
+        agreeShroop: agreement.value[AGREE.SHROOP],
+        agreePersonal: agreement.value[AGREE.PERSONAL],
+        agreeIdentify: agreement.value[AGREE.IDENTIFY],
+      },
+    });
+
+    router.push("/phone/" + id.value);
+  } catch (error) {}
+};
+
+const checkDuplicateID = async () => {
+  try {
+    const data = await postApi({
+      url: "/check/loginId",
+      data: {
+        loginId: id.value,
+      },
+    });
+
+    if (data.result === false) {
+      isDuplId.value = true;
+      isValid.value = false;
+    } else {
+      isDuplId.value = false;
+      isValid.value = true;
+    }
+  } catch (error) {}
+};
+const checkDuplicateNickname = async () => {
+  try {
+    const data = await postApi({
+      url: "/check/nickname",
+      data: {
+        nickname: nickname.value,
+      },
+    });
+
+    if (data.result === false) {
+      isDuplNickname.value = true;
+      isValid.value = false;
+    } else {
+      isDuplNickname.value = false;
+      isValid.value = true;
+    }
+  } catch (error) {}
+};
+const checkDuplicatePhone = async () => {
+  try {
+    const data = await postApi({
+      url: "/check/phoneNumber",
+      data: {
+        phoneNumber: phoneNumber.value,
+      },
+    });
+
+    if (data.result === false) {
+      isDuplPhone.value = true;
+      isValid.value = false;
+    } else {
+      isDuplPhone.value = false;
+      isValid.value = true;
+    }
+  } catch (error) {}
 };
 </script>
 
@@ -133,6 +218,26 @@ const submit = () => {
 
   .phoneNumber-input {
     flex-basis: 70%;
+  }
+}
+
+.duplicate-message {
+  position: relative;
+
+  padding-inline-start: 16px;
+  padding-inline-end: 16px;
+
+  color: rgb(var(--v-theme-heartRed));
+  div {
+    font-size: 12px;
+    font-weight: 400;
+    grid-area: messages;
+    letter-spacing: 0.0333333333em;
+    line-height: normal;
+    min-height: 22px;
+    padding-top: 3px;
+    overflow: hidden;
+    justify-content: space-between;
   }
 }
 </style>
