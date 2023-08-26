@@ -103,12 +103,12 @@ public class Product {
 	) {
 		Product product = new Product();
 		product.seller = seller;
+		product.productStatus = ProductStatus.SELLING;
 		return setByProductRequest(product, productRequest, category);
 	}
 
 	public static Product setByProductRequest(Product product, ProductRequest productRequest, Category category) {
 		product.title = productRequest.getTitle();
-		product.productStatus = productRequest.getProductStatus();
 		product.category = category;
 		product.purchaseDate = productRequest.getPurchaseDate();
 		product.productGrade = productRequest.getProductGrade();

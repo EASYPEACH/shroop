@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.easypeach.shroop.modules.product.domain.ProductGrade;
-import com.easypeach.shroop.modules.product.domain.ProductStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
@@ -23,11 +22,7 @@ public class ProductRequest {
 	@Size(min = 5, max = 255, message = "최소 5자 이상 입력주세요")
 	private String title;
 
-	@NotBlank
-	@Size(min = 2, max = 255)
-	private ProductStatus productStatus;
-
-	@NotBlank
+	@NotNull
 	private Long categoryId;
 
 	@NotBlank
@@ -59,11 +54,10 @@ public class ProductRequest {
 	@Size(min = 30, max = 255, message = "최소 30자 이상 입력주세요")
 	private String content;
 
-	public ProductRequest(final String title, final ProductStatus productStatus, final Long categoryId,
+	public ProductRequest(final String title, final Long categoryId,
 		final String brand, final Long price, final boolean isCheckedDeliveryFee, final LocalDate purchaseDate,
 		final ProductGrade productGrade, final boolean isDefect, final String saleReason, final String content) {
 		this.title = title;
-		this.productStatus = productStatus;
 		this.categoryId = categoryId;
 		this.brand = brand;
 		this.price = price;
