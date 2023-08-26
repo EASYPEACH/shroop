@@ -1,10 +1,11 @@
 package com.easypeach.shroop.modules.auth.dto.request;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,18 @@ public class SignUpRequest {
 	@NotBlank
 	@Pattern(regexp = "^010\\d{7,8}$")
 	private String phoneNumber;
+
+	@NotNull
+	@AssertTrue(message = "약관에 동의가 필요합니다")
+	private Boolean agreeShroop;
+
+	@NotNull
+	@AssertTrue(message = "약관에 동의가 필요합니다")
+	private Boolean agreePersonal;
+
+	@NotNull
+	@AssertTrue(message = "약관에 동의가 필요합니다")
+	private Boolean agreeIdentify;
 
 	public SignUpRequest(String loginId, String password, String nickname, String phoneNumber) {
 		this.loginId = loginId;
