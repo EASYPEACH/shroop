@@ -28,7 +28,6 @@ public class CategoryController {
 
 	@GetMapping
 	public ResponseEntity<List<CategoryResponse>> getCategoryList() {
-		log.info("category service 확인");
 		List<CategoryResponse> categoryResponse = categoryService.findAll();
 		return ResponseEntity.status(HttpStatus.OK).body(categoryResponse);
 	}
