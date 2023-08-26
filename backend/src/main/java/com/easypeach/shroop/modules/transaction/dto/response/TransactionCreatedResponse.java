@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TransactionCreatedResponse {
 	private Long transactionId;
+	private String prductImgUrl;
 	private String productTitle;
 	private Long productPrice;
 	private String buyerName;

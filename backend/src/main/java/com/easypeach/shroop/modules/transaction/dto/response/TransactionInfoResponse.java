@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionInfoResponse {
+
+	private String productImgUrl;
 	private String title;
 	private Long price;
 	private Long point;
