@@ -41,16 +41,21 @@ public class InitDb {
 
 		public void dbInit1() {
 			// member
-			SignUpRequest signUpRequest1 = new SignUpRequest("test11",
-				"test11!",
-				"test11",
-				"01011111111");
-			SignUpRequest signUpRequest2 = new SignUpRequest("test22",
-				"test22!",
-				"test22",
-				"01022222222");
-			authService.saveMember(signUpRequest1);
-			authService.saveMember(signUpRequest2);
+			SignUpRequest signUpRequest1 = new SignUpRequest("test1111",
+				"test1111!",
+				"test1111",
+				"01011111111"
+				, true, true, true);
+			SignUpRequest signUpRequest2 = new SignUpRequest("test2222",
+				"test2222!",
+				"test2222",
+				"01022222222"
+				, true, true, true);
+
+			Member member1 = authService.saveMember(signUpRequest1);
+			member1.updateRole(Role.ROLE_USER);
+			Member member2 = authService.saveMember(signUpRequest2);
+			member2.updateRole(Role.ROLE_USER);
 
 			// 카테고리
 			for (String categoryName : categoryList) {
