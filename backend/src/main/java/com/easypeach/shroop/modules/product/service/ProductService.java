@@ -8,7 +8,9 @@ import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
+import com.easypeach.shroop.modules.product.domain.ProductStatus;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
+import com.easypeach.shroop.modules.product.exception.ProductDeleteException;
 import com.easypeach.shroop.modules.product.respository.CategoryRepository;
 import com.easypeach.shroop.modules.product.respository.ProductRepository;
 
@@ -50,6 +52,16 @@ public class ProductService {
 		Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
 		product.updateProduct(productRequest, category);
 		return product;
+	}
+
+	@Transactional
+	public void deleteProduct(Long productId) {
+		Product product = productRepository.findById(productId).get();
+		if (product.getProductStatus() != ProductStatus.SELLING) {
+			throw new ProductDeleteException(product.getProductStatus() + "상태에서는 삭제할 수 없습니다");
+		} else {
+			productRepository.delete(product);
+		}
 	}
 
 }
