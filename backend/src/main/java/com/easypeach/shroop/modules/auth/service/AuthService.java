@@ -42,7 +42,7 @@ public class AuthService {
 		// phoneAuthService.sendSms(member.getPhoneNumber(), member.getPhoneAuthToken());
 	}
 
-	public void saveMember(SignUpRequest signUpRequest) {
+	public Member saveMember(SignUpRequest signUpRequest) {
 		Member member = Member.createMember(signUpRequest.getLoginId()
 			, passwordEncoder.encode(signUpRequest.getPassword())
 			, signUpRequest.getNickname()
@@ -50,6 +50,6 @@ public class AuthService {
 			, Role.ROLE_NOT_AUTH_USER
 			, 0L);
 
-		Member savedMember = memberRepository.save(member);
+		return memberRepository.save(member);
 	}
 }
