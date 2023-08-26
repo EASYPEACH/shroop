@@ -1,6 +1,6 @@
 package com.easypeach.shroop.modules.product.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,18 +39,20 @@ public class ProductImg {
 
 	@Column(name = "create_date")
 	@CreatedDate
-	private LocalDate createDate;
+	private LocalDateTime createDate;
 
-	public static ProductImg createProductImg(
-		final Product product,
-		final String productImgUrl,
-		final boolean isDefect
-	) {
+	public static ProductImg createProductImg(final Product product, final String productImgUrl,
+		final boolean isDefect) {
 		ProductImg productImg = new ProductImg();
 		productImg.product = product;
 		productImg.productImgUrl = productImgUrl;
 		productImg.isDefect = isDefect;
 		return productImg;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+		product.getProductImgList().add(this);
 	}
 
 }
