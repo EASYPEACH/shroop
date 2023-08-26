@@ -20,4 +20,13 @@ public class ExceptionControllerAdvice {
 
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
+
+	@ExceptionHandler(RuntimeException.class)
+	public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException e) {
+		String errorMessage = e.getMessage();
+		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
+
 }
