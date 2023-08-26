@@ -40,5 +40,5 @@ out/
 *.properties
 *.yml
 
-## initDB ##
-**/src/main/java/com/easypeach/shroop/infra/config/initDb.java
+### initDB ##
+#**/src/main/java/com/easypeach/shroop/infra/config/initDb.java
