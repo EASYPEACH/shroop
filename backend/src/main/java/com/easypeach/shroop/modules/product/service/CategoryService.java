@@ -27,7 +27,6 @@ public class CategoryService {
 		return categoryRepository.save(category);
 	}
 
-	@Transactional
 	public List<CategoryResponse> findAll() {
 		return categoryRepository.findAll()
 			.stream()
@@ -35,7 +34,6 @@ public class CategoryService {
 			.collect(Collectors.toList());
 	}
 
-	@Transactional
 	public Category findById(Long id) {
 		return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 카테고리 입니다"));
 	}

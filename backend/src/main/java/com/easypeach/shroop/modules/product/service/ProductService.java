@@ -25,25 +25,23 @@ public class ProductService {
 	private final CategoryRepository categoryRepository;
 	private final ProductImgService productImgService;
 
+	public Product findByProductId(Long productId) {
+		Product product = productRepository.findById(productId).get();
+		return product;
+	}
+
+	public ProductImg getProductImg(Product product) {
+		Product findProduct = productRepository.findById(product.getId()).orElseThrow(() -> new RuntimeException(""));
+		findProduct.getProductImgList().get(0).getId();
+		return findProduct.getProductImgList().get(0);
+	}
+
 	@Transactional
 	public Product saveProduct(Long memberId, ProductRequest productRequest) {
 		Member seller = memberRepository.findById(memberId).get();
 		Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
 		Product product = Product.createProduct(seller, productRequest, category);
 		return productRepository.save(product);
-	}
-
-	@Transactional
-	public Product findByProductId(Long productId) {
-		Product product = productRepository.findById(productId).get();
-		return product;
-	}
-
-	@Transactional
-	public ProductImg getProductImg(Product product) {
-		Product findProduct = productRepository.findById(product.getId()).orElseThrow(() -> new RuntimeException(""));
-		findProduct.getProductImgList().get(0).getId();
-		return findProduct.getProductImgList().get(0);
 	}
 
 	@Transactional
