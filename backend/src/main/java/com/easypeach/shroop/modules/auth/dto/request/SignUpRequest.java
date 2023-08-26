@@ -46,10 +46,14 @@ public class SignUpRequest {
 	@AssertTrue(message = "약관에 동의가 필요합니다")
 	private Boolean agreeIdentify;
 
-	public SignUpRequest(String loginId, String password, String nickname, String phoneNumber) {
+	public SignUpRequest(String loginId, String password, String nickname, String phoneNumber
+		, Boolean agreeShroop, Boolean agreePersonal, Boolean agreeIdentify) {
 		this.loginId = loginId;
 		this.password = password;
 		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;
+		this.agreeShroop = agreeShroop;
+		this.agreePersonal = agreePersonal;
+		this.agreeIdentify = agreeIdentify;
 	}
 }
