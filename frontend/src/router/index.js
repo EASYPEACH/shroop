@@ -4,6 +4,7 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import SignupView from "@/views/SignupView.vue";
 import MypageView from "@/views/MypageView.vue";
+import PhoneAuthView from "@/views/PhoneAuthView.vue";
 import RegistProductView from "@/views/RegistProductView.vue";
 import ProductDetailsView from "@/views/ProductDetailsView.vue";
 import ReportView from "@/views/ReportView.vue";
@@ -91,6 +92,11 @@ const routes = [
         path: "/deliveryRegist/:id(\\d+)",
         name: "DeliveryRegist",
         component: DeliveryRegistView,
+      },
+      {
+        path: "/phone/:id",
+        name: "PhoneAuth",
+        component: PhoneAuthView,
       },
     ],
   },
