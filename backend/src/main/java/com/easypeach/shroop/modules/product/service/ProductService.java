@@ -10,8 +10,7 @@ import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.domain.ProductStatus;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
-import com.easypeach.shroop.modules.product.exception.ProductDeleteException;
-import com.easypeach.shroop.modules.product.exception.ProductUpdateException;
+import com.easypeach.shroop.modules.product.exception.ProductException;
 import com.easypeach.shroop.modules.product.respository.CategoryRepository;
 import com.easypeach.shroop.modules.product.respository.ProductRepository;
 
@@ -29,12 +28,12 @@ public class ProductService {
 	private final ProductImgService productImgService;
 
 	public Product findByProductId(Long productId) {
-		Product product = productRepository.findById(productId).get();
+		Product product = productRepository.getFindById(productId);
 		return product;
 	}
 
 	public ProductImg getProductImg(Product product) {
-		Product findProduct = productRepository.findById(product.getId()).orElseThrow(() -> new RuntimeException(""));
+		Product findProduct = productRepository.getFindById(product.getId());
 		findProduct.getProductImgList().get(0).getId();
 		return findProduct.getProductImgList().get(0);
 	}
@@ -42,22 +41,22 @@ public class ProductService {
 	@Transactional
 	public Product saveProduct(Long memberId, ProductRequest productRequest) {
 		Member seller = memberRepository.findById(memberId).get();
-		Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
+		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		Product product = Product.createProduct(seller, productRequest, category);
 		return productRepository.save(product);
 	}
 
 	@Transactional
 	public Product updateProduct(Long memberId, Long productId, ProductRequest productRequest) {
-		Product product = productRepository.findById(productId).get();
+		Product product = productRepository.getFindById(productId);
 		Member loginMember = memberRepository.findById(memberId).get();
 		Member productOwnerMember = memberRepository.findById(product.getSeller().getId()).get();
 
 		if (loginMember != productOwnerMember) {
-			throw new ProductUpdateException("수정 권한이 없습니다");
+			throw ProductException.notAuthorizationToUpdate();
 		}
 
-		Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
+		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		product.updateProduct(productRequest, category);
 		return product;
 	}
@@ -69,10 +68,10 @@ public class ProductService {
 		Member productOwnerMember = memberRepository.findById(product.getSeller().getId()).get();
 
 		if (product.getProductStatus() != ProductStatus.SELLING) {
-			throw new ProductDeleteException(product.getProductStatus() + "상태에서는 삭제할 수 없습니다");
+			throw ProductException.notStatusDelete(product.getProductStatus());
 		}
 		if (loginMember != productOwnerMember) {
-			throw new ProductDeleteException("삭제 권한이 없습니다");
+			throw ProductException.notAuthorizationToDelete();
 		}
 		productRepository.delete(product);
 	}

@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.dto.response.CategoryResponse;
-import com.easypeach.shroop.modules.product.exception.CategoryNotFoundException;
 import com.easypeach.shroop.modules.product.respository.CategoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,7 @@ public class CategoryService {
 	}
 
 	public Category findById(Long id) {
-		return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 카테고리 입니다"));
+		return categoryRepository.getById(id);
 	}
 
 }
