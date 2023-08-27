@@ -41,9 +41,6 @@ public class Member {
 	@Column(name = "phone_number", length = 50, nullable = false, unique = true)
 	private String phoneNumber;
 
-	@Column(name = "phone_auth_token")
-	private String phoneAuthToken;
-
 	@Column(nullable = false)
 	@Enumerated(value = EnumType.STRING)
 	private Role role;
@@ -79,18 +76,12 @@ public class Member {
 		member.phoneNumber = phoneNumber;
 		member.role = role;
 		member.point = point;
-		member.createRandomToken();
 		member.checkAgree = true;
 		return member;
 	}
 
 	public void updateMember(Long updatedPoint) {
 		this.point = updatedPoint;
-	}
-
-	public void createRandomToken() {
-		Random random = new Random();
-		this.phoneAuthToken = String.format("%04d", random.nextInt(10000));
 	}
 
 	public void updateRole(Role role) {

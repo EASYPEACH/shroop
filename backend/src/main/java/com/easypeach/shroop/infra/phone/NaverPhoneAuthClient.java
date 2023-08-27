@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class PhoneAuthClient {
+public class NaverPhoneAuthClient {
 	@Value("${spring.phone.accessKey}")
 	private String accessKey;
 
