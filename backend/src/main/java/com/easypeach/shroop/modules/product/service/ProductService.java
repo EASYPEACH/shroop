@@ -11,6 +11,7 @@ import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.domain.ProductStatus;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
 import com.easypeach.shroop.modules.product.exception.ProductDeleteException;
+import com.easypeach.shroop.modules.product.exception.ProductUpdateException;
 import com.easypeach.shroop.modules.product.respository.CategoryRepository;
 import com.easypeach.shroop.modules.product.respository.ProductRepository;
 
@@ -47,21 +48,33 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Product updateProduct(Long productId, ProductRequest productRequest) {
+	public Product updateProduct(Long memberId, Long productId, ProductRequest productRequest) {
 		Product product = productRepository.findById(productId).get();
+		Member loginMember = memberRepository.findById(memberId).get();
+		Member productOwnerMember = memberRepository.findById(product.getSeller().getId()).get();
+
+		if (loginMember != productOwnerMember) {
+			throw new ProductUpdateException("수정 권한이 없습니다");
+		}
+
 		Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
 		product.updateProduct(productRequest, category);
 		return product;
 	}
 
 	@Transactional
-	public void deleteProduct(Long productId) {
+	public void deleteProduct(Long memberId, Long productId) {
 		Product product = productRepository.findById(productId).get();
+		Member loginMember = memberRepository.findById(memberId).get();
+		Member productOwnerMember = memberRepository.findById(product.getSeller().getId()).get();
+
 		if (product.getProductStatus() != ProductStatus.SELLING) {
 			throw new ProductDeleteException(product.getProductStatus() + "상태에서는 삭제할 수 없습니다");
-		} else {
-			productRepository.delete(product);
 		}
+		if (loginMember != productOwnerMember) {
+			throw new ProductDeleteException("삭제 권한이 없습니다");
+		}
+		productRepository.delete(product);
 	}
 
 }
