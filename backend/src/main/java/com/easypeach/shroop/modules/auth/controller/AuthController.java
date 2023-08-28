@@ -1,5 +1,7 @@
 package com.easypeach.shroop.modules.auth.controller;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +54,16 @@ public class AuthController {
 		authService.saveMember(signUpRequest);
 
 		return ResponseEntity.ok(new BasicResponse("회원 가입이 완료되었습니다"));
+	}
+
+	@PostMapping("/test")
+	public ResponseEntity<Void> test(@RequestBody Map<String, String> map) {
+		String loginId = map.get("loginId");
+		String password = map.get("password");
+		String nickname = map.get("nickname");
+		String phoneNumber = map.get("phoneNumber");
+		authService.saveTestMember(loginId, password, nickname, phoneNumber);
+		return ResponseEntity.ok().build();
 	}
 
 }
