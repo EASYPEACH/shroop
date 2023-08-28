@@ -94,7 +94,7 @@ const routes = [
         component: DeliveryRegistView,
       },
       {
-        path: "/phone/:id",
+        path: "/phone",
         name: "PhoneAuth",
         component: PhoneAuthView,
       },
