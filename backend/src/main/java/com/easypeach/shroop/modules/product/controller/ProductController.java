@@ -51,6 +51,7 @@ public class ProductController {
 		@RequestPart(value = "productImgList") List<MultipartFile> productImgList,
 		@RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
 		@Validated @RequestPart ProductRequest productRequest) {
+		productImgService.checkImgLength(productImgList);
 		Product product = productService.saveProduct(member.getId(), productRequest);
 		productImgService.saveProductImg(productImgList, defectImgList, product, productRequest.getIsDefect());
 		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(product.getId()));
@@ -62,6 +63,7 @@ public class ProductController {
 		@RequestPart(value = "productImgList") List<MultipartFile> productImgList,
 		@RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
 		@RequestPart ProductRequest productRequest) {
+		productImgService.checkImgLength(productImgList);
 		Product product = productService.updateProduct(member.getId(), productId, productRequest);
 		productImgService.updateProductImgList(productImgList, defectImgList, productId,
 			productRequest.getIsDefect());

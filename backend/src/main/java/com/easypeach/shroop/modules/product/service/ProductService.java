@@ -35,6 +35,7 @@ public class ProductService {
 	private final CategoryRepository categoryRepository;
 	private final ProductImgRepository productImgRepository;
 	private final TransactionRepository transactionRepository;
+	private final ProductImgService productImgService;
 
 	public List<ProductResponse> findAll() {
 		List<Product> productList = productRepository.findAll();
@@ -65,6 +66,7 @@ public class ProductService {
 
 	@Transactional
 	public Product saveProduct(Long memberId, ProductRequest productRequest) {
+
 		Member seller = memberRepository.getById(memberId);
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		Product product = Product.createProduct(seller, productRequest, category);
@@ -72,7 +74,8 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Product updateProduct(Long memberId, Long productId, ProductRequest productRequest) {
+	public Product updateProduct(Long memberId, Long productId, ProductRequest productRequest
+	) {
 		Product product = productRepository.getById(productId);
 		Member loginMember = memberRepository.getById(memberId);
 		Member productOwnerMember = memberRepository.getById(product.getSeller().getId());
@@ -83,6 +86,7 @@ public class ProductService {
 
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		product.updateProduct(productRequest, category);
+
 		return product;
 	}
 
