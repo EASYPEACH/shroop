@@ -9,11 +9,9 @@ import javax.validation.constraints.Size;
 import com.easypeach.shroop.modules.product.domain.ProductGrade;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode
 @Getter
 @NoArgsConstructor
 public class ProductRequest {
