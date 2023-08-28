@@ -17,15 +17,68 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
+import com.easypeach.shroop.modules.auth.dto.request.PhoneNumber;
 import com.easypeach.shroop.modules.auth.dto.request.SignUpRequest;
 import com.easypeach.shroop.modules.common.ControllerTest;
+import com.easypeach.shroop.modules.member.domain.Member;
 
 import lombok.Getter;
 
 @MockBean(JpaMetamodelMappingContext.class)
 class AuthControllerTest extends ControllerTest {
 
-	@DisplayName("회원가입 - 1. 회원 정보를 전달한다")
+	@DisplayName("회원가입 - 1. 휴대전화인증을 진행한다")
+	@Test
+	void getAuthNumber() throws Exception {
+		// given
+		given(phoneAuthService.sendAuthNumber("01012341234")).willReturn(1L);
+		PhoneNumber phoneAuthRequest = new PhoneNumber("01012341234");
+
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/phone")
+				.accept(MediaType.APPLICATION_JSON)
+				.characterEncoding(StandardCharsets.UTF_8)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(phoneAuthRequest)))
+			.andDo(print())
+			.andDo(document("auth/sign-up",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint())))
+			.andExpect(status().isOk())
+			.andDo(document("auth/sign-up",
+				responseFields(
+					fieldWithPath("uuid").description("개인 UUID 전달")
+				)))
+			.andReturn();
+	}
+
+	@DisplayName("회원가입 - 2. 휴대 전화 인증을 완료한다")
+	@Test
+	void phoneAuth() throws Exception {
+		// given
+		PhoneAuthRequest phoneAuthRequest = new PhoneAuthRequest(1L, "01012341234", "1234");
+		doNothing().when(phoneAuthService).checkPhoneAuthNumber(any());
+
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/check").with(csrf())
+				.accept(MediaType.APPLICATION_JSON)
+				.characterEncoding(StandardCharsets.UTF_8)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(phoneAuthRequest)))
+			.andDo(print())
+			.andDo(document("auth/sign-up",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint())))
+			.andExpect(status().isOk())
+			.andDo(document("auth/sign-up",
+				responseFields(
+					fieldWithPath("message").description("인증 성공 여부")
+				)))
+			.andReturn();
+	}
+
+	@DisplayName("회원가입 - 3. 인증 완료 후 회원 정보를 전달한다")
 	@Test
 	void signUp() throws Exception {
 		// given
@@ -35,9 +88,11 @@ class AuthControllerTest extends ControllerTest {
 			, "01000001111"
 			, true
 			, true
-			, true);
-		doNothing().when(authService).saveMember(any(SignUpRequest.class));
-		doNothing().when(authService).sendPhoneAuth(anyString());
+			, true
+			, 1L
+			, "01012341234");
+		given(authService.saveMember(any(SignUpRequest.class))).willReturn(new Member());
+		doNothing().when(phoneAuthService).checkPhoneAuthNumber(any());
 
 		// when & then
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/sign-up").with(csrf())
@@ -57,31 +112,6 @@ class AuthControllerTest extends ControllerTest {
 			.andReturn();
 	}
 
-	@DisplayName("회원가입 - 2. 휴대전화인증을 진행한다")
-	@Test
-	void phone() throws Exception {
-		// given
-		PhoneAuth phoneAuth = new PhoneAuth("abc12345", "1234");
-		doNothing().when(authService).checkPhoneAuthNumber("abc12345", "1234");
-
-		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/phone")
-				.accept(MediaType.APPLICATION_JSON)
-				.characterEncoding(StandardCharsets.UTF_8)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(phoneAuth)))
-			.andDo(print())
-			.andDo(document("auth/sign-up",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint())))
-			.andExpect(status().isOk())
-			.andDo(document("auth/sign-up",
-				responseFields(
-					fieldWithPath("message").description("회원 가입 완료 메세지")
-				)))
-			.andReturn();
-	}
-
 	@DisplayName("회원가입 유효성 검사")
 	@Test
 	void signUp_Validation() throws Exception {
@@ -92,7 +122,9 @@ class AuthControllerTest extends ControllerTest {
 			, "01000001111"
 			, true
 			, true
-			, true);
+			, true
+			, 1L
+			, "01012341234");
 
 		// when & then
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/sign-up").with(csrf())
