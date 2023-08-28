@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.easypeach.shroop.infra.phone.PhoneAuthService;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -35,7 +34,7 @@ public class TransactionController {
 	private final ProductService productService;
 	private final MemberService memberService;
 	private final TransactionService transactionService;
-	private final PhoneAuthService phoneAuthService;
+	// private final PhoneAuthService phoneAuthService;
 
 	@GetMapping("/{productId}")
 	public ResponseEntity<TransactionInfoResponse> getBuyingForm(@PathVariable Long productId,
