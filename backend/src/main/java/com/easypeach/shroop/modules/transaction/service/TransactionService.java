@@ -44,7 +44,7 @@ public class TransactionService {
 		Member buyer = memberService.findById(buyerId);
 
 		long updatedPoint = buyer.getPoint() - product.getPrice();
-		buyer.updateMember(updatedPoint);
+		buyer.updatePoint(updatedPoint);
 	}
 
 	public void checkIsSeller(final Member member, final Member seller) {
