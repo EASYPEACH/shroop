@@ -45,7 +45,7 @@ public class ProductImgService {
 	@Transactional
 	public void updateProductImgList(List<MultipartFile> productImgList,
 		List<MultipartFile> defectImgList, Long productId, boolean isDefect) {
-		Product product = productRepository.findById(productId).get();
+		Product product = productRepository.getById(productId);
 		checkImgLength(productImgList);
 
 		try {

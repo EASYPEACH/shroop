@@ -43,7 +43,7 @@ public class ProductService {
 		for (Product product : productList) {
 			productResponsesList.add(setProductResponse(product));
 		}
-		
+
 		return productResponsesList;
 	}
 
@@ -65,7 +65,7 @@ public class ProductService {
 
 	@Transactional
 	public Product saveProduct(Long memberId, ProductRequest productRequest) {
-		Member seller = memberRepository.findById(memberId).get();
+		Member seller = memberRepository.getById(memberId);
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		Product product = Product.createProduct(seller, productRequest, category);
 		return productRepository.save(product);
@@ -74,8 +74,8 @@ public class ProductService {
 	@Transactional
 	public Product updateProduct(Long memberId, Long productId, ProductRequest productRequest) {
 		Product product = productRepository.getById(productId);
-		Member loginMember = memberRepository.findById(memberId).get();
-		Member productOwnerMember = memberRepository.findById(product.getSeller().getId()).get();
+		Member loginMember = memberRepository.getById(memberId);
+		Member productOwnerMember = memberRepository.getById(product.getSeller().getId());
 
 		if (loginMember != productOwnerMember) {
 			throw ProductException.notAuthorizationToUpdate();
@@ -88,9 +88,9 @@ public class ProductService {
 
 	@Transactional
 	public void deleteProduct(Long memberId, Long productId) {
-		Product product = productRepository.findById(productId).get();
-		Member loginMember = memberRepository.findById(memberId).get();
-		Member productOwnerMember = memberRepository.findById(product.getSeller().getId()).get();
+		Product product = productRepository.getById(productId);
+		Member loginMember = memberRepository.getById(memberId);
+		Member productOwnerMember = memberRepository.getById(memberId);
 
 		if (product.getTransaction() != null) {
 			throw ProductException.notStatusDelete(product.getTransaction().getStatus());
