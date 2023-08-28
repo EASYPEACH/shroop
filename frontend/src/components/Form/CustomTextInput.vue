@@ -12,6 +12,7 @@
       :hide-details="hideDetails"
       @input="$emit('update:modelValue', $event.target.value)"
       variant="filled"
+      @blur="blur"
     ></v-text-field>
   </div>
 </template>
@@ -25,6 +26,7 @@ defineProps({
   appendIcon: String,
   rules: Object,
   hideDetails: Boolean,
+  blur: Function,
   type: {
     type: String,
     default: "text",
