@@ -11,6 +11,7 @@ import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
+import com.easypeach.shroop.modules.transaction.dto.response.BuyerResponse;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,19 @@ public class TransactionService {
 		if (seller.getId() == member.getId()) {
 			throw SellerPurchaseException.SellerBuyingMyProduct();
 		}
+	}
+
+	public BuyerResponse getBuyer(final Long productId) {
+		Transaction transaction = findByProductId(productId);
+		return new BuyerResponse(
+			transaction.getBuyerName(),
+			transaction.getBuyerLocation(),
+			transaction.getBuyerPhoneNumber()
+		);
+	}
+
+	public Transaction findByProductId(final Long productId) {
+		return transactionRepository.getByProductId(productId);
 	}
 
 }
