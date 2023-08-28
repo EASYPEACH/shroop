@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.infra.phone.NaverPhoneAuthService;
 import com.easypeach.shroop.modules.auth.dto.request.SignUpRequest;
+import com.easypeach.shroop.modules.auth.dto.response.LoginCheckResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.member.domain.Role;
@@ -43,5 +44,18 @@ public class AuthService {
 			, 0L);
 		memberRepository.save(member);
 		return;
+	}
+
+	public LoginCheckResponse checkLogin(Member member) {
+		if (member == null) {
+			return new LoginCheckResponse(-1L, "", "", false);
+		}
+
+		return new LoginCheckResponse(
+			member.getId(),
+			member.getLoginId(),
+			member.getNickname(),
+			true);
+
 	}
 }
