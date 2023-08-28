@@ -16,8 +16,8 @@ const hasNewNotification = ref(false);
 const notifyStore = useShowNotify();
 const notifyListStore = useNotifyList();
 const router = useRouter();
-router.beforeEach(async () => handleGetNotification());
-onBeforeMount(async () => handleGetNotification());
+router.beforeEach(async () => await handleGetNotification());
+onBeforeMount(async () => await handleGetNotification());
 
 const handleGetNotification = async () => {
   try {

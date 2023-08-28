@@ -43,11 +43,11 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount, watch } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 import { useShowNotify } from "@/store/useShowNotify";
-import { getApi, patchApi } from "@/api/modules";
+import { patchApi } from "@/api/modules";
 import { useNotifyList } from "@/store/useNotifyList";
 
 const display = useDisplay();
