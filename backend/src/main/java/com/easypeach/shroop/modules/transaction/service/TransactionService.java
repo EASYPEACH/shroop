@@ -47,7 +47,7 @@ public class TransactionService {
 		buyer.updatePoint(updatedPoint);
 	}
 
-	public void checkIsSeller(final Member member, final Member seller) {
+	public void checkSeller(final Member member, final Member seller) {
 		if (seller.getId() == member.getId()) {
 			throw SellerPurchaseException.SellerBuyingMyProduct();
 		}

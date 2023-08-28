@@ -54,7 +54,7 @@ public class TransactionController {
 		@PathVariable Long productId, final @LoginMember Member member) {
 
 		Product product = productService.findByProductId(productId);
-		transactionService.checkIsSeller(member, product.getSeller());
+		transactionService.checkSeller(member, product.getSeller());
 
 		transactionService.saveTransaction(productId, member.getId(), transactionCreateRequest);
 		transactionService.subtractPoint(productId, member.getId());
