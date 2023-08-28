@@ -19,6 +19,7 @@ import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
+import com.easypeach.shroop.modules.transaction.dto.response.BuyerResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
@@ -81,6 +82,12 @@ public class TransactionController {
 				new TransactionCreatedResponse(transaction.getId(), productImgUrl, product.getTitle(),
 					product.getPrice(),
 					transaction.getBuyerName(), transaction.getBuyerLocation(), transaction.getBuyerPhoneNumber()));
+	}
+
+	@GetMapping("/buyer/{productId}")
+	public ResponseEntity<BuyerResponse> getBuyer(final @PathVariable Long productId) {
+		BuyerResponse buyerResponse = transactionService.getBuyer(productId);
+		return ResponseEntity.status(HttpStatus.OK).body(buyerResponse);
 	}
 
 }
