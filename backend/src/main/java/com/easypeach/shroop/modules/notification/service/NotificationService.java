@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.easypeach.shroop.infra.phone.PhoneAuthService;
+import com.easypeach.shroop.infra.phone.NaverPhoneAuthService;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.notification.domain.Notification;
@@ -24,7 +24,7 @@ public class NotificationService {
 
 	private final MemberService memberService;
 
-	private final PhoneAuthService phoneAuthService;
+	private final NaverPhoneAuthService phoneAuthService;
 
 	@Transactional
 	public void saveNotification(final Long memberId, final String title, final String link,
