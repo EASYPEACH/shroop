@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
-import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.dto.response.BuyerResponse;
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
@@ -27,9 +26,6 @@ class TransactionControllerTest extends ControllerTest {
 
 	@MockBean
 	ProductService productService;
-
-	@MockBean
-	MemberService memberService;
 
 	@DisplayName("구매자정보 조회")
 	@Test
