@@ -36,7 +36,7 @@ public class AuthController {
 		return ResponseEntity.ok(new PhoneAuthUUID(UUID)); // uuid 전달
 	}
 
-	@PostMapping(value = "check") // 포커스 아웃시 폰 인증 검사
+	@PostMapping(value = "/check") // 포커스 아웃시 폰 인증 검사
 	public ResponseEntity<BasicResponse> authenticate(@RequestBody PhoneAuthRequest phoneAuthRequest) {
 		log.info("인증 요청 {}", phoneAuthRequest.getUuid());
 		phoneAuthService.checkPhoneAuthNumber(phoneAuthRequest);
