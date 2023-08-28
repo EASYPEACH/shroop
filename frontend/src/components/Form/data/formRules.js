@@ -54,3 +54,8 @@ export const productDetailRule = {
 export const selectRule = {
   required: (value) => value !== null || "필수 사항 입니다",
 };
+
+export const phoneAuthRule = {
+  required: (value) => !!value || "인증번호를 입력해주세요",
+  length: (value) => value.length === 4 || "인증번호는 4자리입니다",
+};

@@ -11,8 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.easypeach.shroop.modules.auth.controller.AuthController;
 import com.easypeach.shroop.modules.auth.service.AuthService;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
-
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
+import com.easypeach.shroop.modules.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @MockBean(JpaMetamodelMappingContext.class)
@@ -32,6 +32,8 @@ public abstract class ControllerTest {
 	@MockBean
 	protected MemberRepository memberRepository;
 
+	@MockBean
+	protected MemberService memberService;
 	@MockBean
 	protected PhoneAuthService phoneAuthService;
 

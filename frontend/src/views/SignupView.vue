@@ -14,7 +14,12 @@
           v-model="id"
           :rules="[idRule.required, idRule.min, idRule.check]"
           icon="mdi-account-outline"
+          :hide-details="isDuplId"
+          :blur="checkDuplicateID"
         />
+        <div v-if="isDuplId" class="duplicate-message">
+          <div>중복된 아이디 입니다</div>
+        </div>
         <password-input
           :visible="visible"
           @toggle-visible="visible = !visible"
@@ -26,21 +31,24 @@
           placeholder-text="닉네임을 입력해주세요"
           v-model="nickname"
           :rules="[nickNameRule.required, nickNameRule.min, nickNameRule.check]"
+          :hide-details="isDuplNickname"
+          :blur="checkDuplicateNickname"
         />
+        <div v-if="isDuplNickname" class="duplicate-message">
+          <div>중복된 닉네임 입니다</div>
+        </div>
         <div>
-          <div class="text-subtitle-1 text-medium-emphasis">휴대폰번호</div>
+          <div class="text-subtitle-1 text-medium-emphasis">휴대전화번호</div>
           <div class="sigupForm__block-phoneNumber">
-            <v-select
-              v-model="mobileCarrier"
-              :items="phoneItems"
-              :rules="[defaultTextRule.required]"
-              density="compact"
-              label="통신사"
-            ></v-select>
             <PhoneInput
               v-model="phoneNumber"
               :rules="[phoneNumberRule.required, phoneNumberRule.check]"
+              :hide-details="isDuplPhone"
+              :blur="checkDuplicatePhone"
             />
+          </div>
+          <div v-if="isDuplPhone" class="duplicate-message">
+            <div>중복된 휴대전화번호 입니다</div>
           </div>
         </div>
         <agreement-check-box
@@ -90,7 +98,13 @@ import {
 } from "@/components/Form/data/formRules";
 import { AGREE } from "@/consts/agree";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { postApi } from "@/api/modules";
+import { useUserStore } from "@/store/signUp";
+import { useCookies } from "vue3-cookies";
 
+const { cookies } = useCookies();
+const router = useRouter();
 const phoneItems = ref(["LGT", "SKT", "KT"]);
 const id = ref("");
 const password = ref("");
@@ -109,6 +123,10 @@ const agreement = ref({
   [AGREE.PERSONAL]: false,
   [AGREE.IDENTIFY]: false,
 });
+const isDuplId = ref(false);
+const isDuplNickname = ref(false);
+const isDuplPhone = ref(false);
+const userStore = useUserStore();
 
 const changeToAgree = (id) => {
   dialog.value[id] = false;
@@ -119,10 +137,78 @@ const changeToDisagree = (id) => {
   agreement.value[id] = false;
 };
 const submit = () => {
-  console.log(id.value);
-  console.log(password.value);
-  console.log(phoneNumber.value);
-  console.log(mobileCarrier.value);
+  handleSubmitSignUp();
+};
+
+const handleSubmitSignUp = async () => {
+  userStore.signUp({
+    loginId: id.value,
+    nickname: nickname.value,
+    password: password.value,
+    phoneNumber: phoneNumber.value,
+    agreeShroop: agreement.value[AGREE.SHROOP],
+    agreePersonal: agreement.value[AGREE.PERSONAL],
+    agreeIdentify: agreement.value[AGREE.IDENTIFY],
+  });
+  requestAuthNumber();
+  router.push("/phone/");
+};
+
+const checkDuplicateID = async () => {
+  return await checkDuplication({
+    checkType: "loginId",
+    dataBody: {
+      loginId: id.value,
+    },
+    dataRef: isDuplId,
+  });
+};
+const checkDuplicateNickname = async () => {
+  return await checkDuplication({
+    checkType: "nickname",
+    dataBody: {
+      nickname: nickname.value,
+    },
+    dataRef: isDuplNickname,
+  });
+};
+const checkDuplicatePhone = async () => {
+  return await checkDuplication({
+    checkType: "phoneNumber",
+    dataBody: {
+      phoneNumber: phoneNumber.value,
+    },
+    dataRef: isDuplPhone,
+  });
+};
+const requestAuthNumber = async () => {
+  try {
+    const data = await postApi({
+      url: "/api/auth/phone",
+      data: {
+        phoneNumber: phoneNumber.value,
+      },
+    });
+    cookies.set("uuid", data.uuid);
+  } catch (error) {}
+};
+
+const checkDuplication = async (param) => {
+  try {
+    const data = await postApi({
+      url: `/check/${param.checkType}`,
+      data: param.dataBody,
+    });
+    if (data.result === false) {
+      param.dataRef.value = true;
+      isValid.value = false;
+    } else {
+      param.dataRef.value = false;
+      isValid.value = true;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 
@@ -133,6 +219,26 @@ const submit = () => {
 
   .phoneNumber-input {
     flex-basis: 70%;
+  }
+}
+
+.duplicate-message {
+  position: relative;
+
+  padding-inline-start: 16px;
+  padding-inline-end: 16px;
+
+  color: rgb(var(--v-theme-heartRed));
+  div {
+    font-size: 12px;
+    font-weight: 400;
+    grid-area: messages;
+    letter-spacing: 0.0333333333em;
+    line-height: normal;
+    min-height: 22px;
+    padding-top: 3px;
+    overflow: hidden;
+    justify-content: space-between;
   }
 }
 </style>

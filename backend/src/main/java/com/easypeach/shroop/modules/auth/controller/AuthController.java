@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneNumber;
 import com.easypeach.shroop.modules.auth.dto.request.SignUpRequest;
+import com.easypeach.shroop.modules.auth.dto.response.LoginCheckResponse;
 import com.easypeach.shroop.modules.auth.dto.response.PhoneAuthUUID;
 import com.easypeach.shroop.modules.auth.service.AuthService;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
+import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
+import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +33,17 @@ public class AuthController {
 
 	private final AuthService authService;
 	private final PhoneAuthService phoneAuthService;
+	private final MemberService memberService;
+
+	@GetMapping(value = "/")
+	public ResponseEntity<LoginCheckResponse> getAuthInfo(@LoginMember Member member) {
+		LoginCheckResponse loginCheckResponse = authService.checkLogin(member);
+		return ResponseEntity.ok(loginCheckResponse);
+	}
 
 	@PostMapping(value = "/phone") // 폰인증 번호 보내기
 	public ResponseEntity<PhoneAuthUUID> getAuthNumber(@RequestBody PhoneNumber phoneNumber) {
 		Long UUID = phoneAuthService.sendAuthNumber(phoneNumber.getPhoneNumber());
-
 		return ResponseEntity.ok(new PhoneAuthUUID(UUID)); // uuid 전달
 	}
 
@@ -40,7 +51,6 @@ public class AuthController {
 	public ResponseEntity<BasicResponse> authenticate(@RequestBody PhoneAuthRequest phoneAuthRequest) {
 		log.info("인증 요청 {}", phoneAuthRequest.getUuid());
 		phoneAuthService.checkPhoneAuthNumber(phoneAuthRequest);
-
 		return ResponseEntity.ok(new BasicResponse("인증에 성공하셨습니다."));
 	}
 
