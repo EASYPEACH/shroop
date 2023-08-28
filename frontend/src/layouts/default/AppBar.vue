@@ -30,14 +30,14 @@
             </v-btn>
           </template>
           <ul class="tooltips">
-            <li>
+            <li v-if="!loginCheckStore.isLogin">
               <router-link to="/login">로그인</router-link>
             </li>
-            <li>로그아웃</li>
-            <li>
+            <li v-if="loginCheckStore.isLogin" @click="logout">로그아웃</li>
+            <li v-if="!loginCheckStore.isLogin">
               <router-link to="/signup">회원가입</router-link>
             </li>
-            <li>
+            <li v-if="loginCheckStore.isLogin">
               <router-link to="/mypage/0">마이페이지</router-link>
             </li>
           </ul>
@@ -48,14 +48,23 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useShowNotify } from "@/store/useShowNotify";
 import { useCheckLogin } from "@/store/useCheckLogin";
+import { postApi } from "@/api/modules";
 import NotifyBellButton from "@/components/Button/NotifyBellButton.vue";
-
-const notifyStore = useShowNotify();
+import router from "@/router";
 
 const loginCheckStore = useCheckLogin();
+
+const logout = async () => {
+  try {
+    await postApi({
+      url: "/logout",
+    });
+    router.go(0);
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -68,7 +68,7 @@ const handleSubmitAuth = async () => {
       },
     });
 
-    router.push("/");
+    router.push("/login");
   } catch (error) {
     if (error.response.status === 400) {
       authResult.value = false;
