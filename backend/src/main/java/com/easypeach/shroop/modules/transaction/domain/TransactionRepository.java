@@ -7,8 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.easypeach.shroop.modules.transaction.exception.TransactionNotExistException;
 
+
+import com.easypeach.shroop.modules.product.domain.Product;
+
+
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+  Transaction findByProduct(Product product);
 	Optional<Transaction> findByProductId(Long productId);
 
 	default Transaction getByProductId(Long productId) {

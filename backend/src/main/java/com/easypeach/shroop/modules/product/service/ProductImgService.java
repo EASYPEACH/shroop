@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easypeach.shroop.infra.s3.service.S3UploadService;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
+import com.easypeach.shroop.modules.product.exception.ProductImgLengthException;
 import com.easypeach.shroop.modules.product.respository.ProductImgRepository;
 import com.easypeach.shroop.modules.product.respository.ProductRepository;
 
@@ -40,7 +41,8 @@ public class ProductImgService {
 	@Transactional
 	public void updateProductImgList(List<MultipartFile> productImgList,
 		List<MultipartFile> defectImgList, Long productId, boolean isDefect) {
-		Product product = productRepository.findById(productId).get();
+		Product product = productRepository.getById(productId);
+
 		try {
 			List<ProductImg> imgList = insertImgList(productImgList, defectImgList, product, isDefect);
 			product.getProductImgList().clear();
@@ -73,4 +75,10 @@ public class ProductImgService {
 		return imgList;
 	}
 
+	public void checkImgLength(List<MultipartFile> productImgList) {
+		if (productImgList.size() < 2) {
+			throw new ProductImgLengthException("사진은 2장이상 등록해주세요");
+		}
+
+	}
 }

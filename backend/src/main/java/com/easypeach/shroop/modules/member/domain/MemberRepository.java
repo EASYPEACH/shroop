@@ -23,4 +23,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 		return findByLoginId(LoginId)
 			.orElseThrow(MemberNotExistException::new);
 	}
+
+	default Member getById(final Long id) {
+		return findById(id)
+			.orElseThrow(MemberNotExistException::new);
+	}
 }

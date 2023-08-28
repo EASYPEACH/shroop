@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
 import com.easypeach.shroop.modules.product.dto.response.ProductCreatedResponse;
+import com.easypeach.shroop.modules.product.dto.response.ProductResponse;
 import com.easypeach.shroop.modules.product.service.ProductImgService;
 import com.easypeach.shroop.modules.product.service.ProductService;
 
@@ -34,13 +36,24 @@ public class ProductController {
 	private final ProductService productService;
 	private final ProductImgService productImgService;
 
+	@GetMapping
+	public ResponseEntity<List<ProductResponse>> getAllProduct() {
+		return ResponseEntity.status(HttpStatus.OK).body(productService.findAll());
+	}
+
+	@GetMapping("/{productId}")
+	public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
+		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductInfo(productId));
+	}
+
 	@PostMapping
 	public ResponseEntity<ProductCreatedResponse> saveProduct(@LoginMember Member member,
 		@RequestPart(value = "productImgList") List<MultipartFile> productImgList,
 		@RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
 		@Validated @RequestPart ProductRequest productRequest) {
+		productImgService.checkImgLength(productImgList);
 		Product product = productService.saveProduct(member.getId(), productRequest);
-		productImgService.saveProductImg(productImgList, defectImgList, product, productRequest.isDefect());
+		productImgService.saveProductImg(productImgList, defectImgList, product, productRequest.getIsDefect());
 		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(product.getId()));
 	}
 
@@ -50,9 +63,10 @@ public class ProductController {
 		@RequestPart(value = "productImgList") List<MultipartFile> productImgList,
 		@RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
 		@RequestPart ProductRequest productRequest) {
+		productImgService.checkImgLength(productImgList);
 		Product product = productService.updateProduct(member.getId(), productId, productRequest);
 		productImgService.updateProductImgList(productImgList, defectImgList, productId,
-			productRequest.isDefect());
+			productRequest.getIsDefect());
 		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(product.getId()));
 	}
 
