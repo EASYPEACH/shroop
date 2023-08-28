@@ -23,6 +23,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -97,38 +98,34 @@ public class Product {
 
 	public static Product createProduct(
 		final Member seller,
-		final String title,
-		final ProductStatus productStatus,
-		final Category category,
-		final String brand,
-		final Long price,
-		final boolean isCheckedDeliveryFee,
-		final LocalDate purchaseDate,
-		final ProductGrade productGrade,
-		final boolean isDefect,
-		final String saleReason,
-		final String content
+		final ProductRequest productRequest,
+		final Category category
 	) {
 		Product product = new Product();
-
 		product.seller = seller;
-		product.title = title;
-		product.productStatus = productStatus;
-		product.category = category;
-		product.purchaseDate = purchaseDate;
-		product.productGrade = productGrade;
-		product.brand = brand;
-		product.price = price;
-		product.isCheckedDeliveryFee = isCheckedDeliveryFee;
-		product.isDefect = isDefect;
-		product.saleReason = saleReason;
-		product.content = content;
+		product.productStatus = ProductStatus.SELLING;
+		return setByProductRequest(product, productRequest, category);
+	}
 
+	public static Product setByProductRequest(Product product, ProductRequest productRequest, Category category) {
+		product.title = productRequest.getTitle();
+		product.category = category;
+		product.purchaseDate = productRequest.getPurchaseDate();
+		product.productGrade = productRequest.getProductGrade();
+		product.brand = productRequest.getBrand();
+		product.price = productRequest.getPrice();
+		product.isCheckedDeliveryFee = productRequest.isCheckedDeliveryFee();
+		product.isDefect = productRequest.isDefect();
+		product.saleReason = productRequest.getSaleReason();
+		product.content = productRequest.getContent();
 		return product;
 	}
 
-	public static Product forTestCodeProduct() {
-		return new Product();
+	public void updateProduct(
+		final ProductRequest productRequest,
+		final Category category
+	) {
+		setByProductRequest(this, productRequest, category);
 	}
 
 }
