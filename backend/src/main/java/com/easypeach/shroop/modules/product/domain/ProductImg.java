@@ -16,10 +16,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Table(name = "product_img")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 @Getter
 public class ProductImg {
 
@@ -35,7 +37,7 @@ public class ProductImg {
 	private String productImgUrl;
 
 	@Column(name = "is_defect", nullable = false)
-	private boolean isDefect;
+	private Boolean isDefect;
 
 	@Column(name = "create_date")
 	@CreatedDate

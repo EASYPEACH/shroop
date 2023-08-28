@@ -1,6 +1,6 @@
 package com.easypeach.shroop.modules.product.exception;
 
-import com.easypeach.shroop.modules.product.domain.ProductStatus;
+import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 
 public class ProductException extends RuntimeException {
 	private ProductException(String message) {
@@ -19,7 +19,7 @@ public class ProductException extends RuntimeException {
 		return new ProductException("삭제 권한이 없습니다.");
 	}
 
-	public static ProductException notStatusDelete(ProductStatus status) {
+	public static ProductException notStatusDelete(TransactionStatus status) {
 		return new ProductException(status + "상태에서는 삭제할 수 없습니다.");
 	}
 

@@ -69,7 +69,7 @@ public class Product {
 	private Long price;
 
 	@Column(name = "is_checked_delivery_fee", nullable = false)
-	private boolean isCheckedDeliveryFee;
+	private Boolean isCheckedDeliveryFee;
 
 	@Column(length = 255, nullable = false)
 	private String content;
@@ -79,14 +79,10 @@ public class Product {
 	private LocalDate purchaseDate;
 
 	@Column(name = "is_defect", nullable = false)
-	private boolean isDefect;
+	private Boolean isDefect;
 
 	@Column(name = "sale_reason", length = 255, nullable = false)
 	private String saleReason;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "status", nullable = false)
-	private ProductStatus productStatus;
 
 	@Column(name = "create_date")
 	@CreatedDate
@@ -103,7 +99,6 @@ public class Product {
 	) {
 		Product product = new Product();
 		product.seller = seller;
-		product.productStatus = ProductStatus.SELLING;
 		return setByProductRequest(product, productRequest, category);
 	}
 
@@ -114,8 +109,8 @@ public class Product {
 		product.productGrade = productRequest.getProductGrade();
 		product.brand = productRequest.getBrand();
 		product.price = productRequest.getPrice();
-		product.isCheckedDeliveryFee = productRequest.isCheckedDeliveryFee();
-		product.isDefect = productRequest.isDefect();
+		product.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
+		product.isDefect = productRequest.getIsDefect();
 		product.saleReason = productRequest.getSaleReason();
 		product.content = productRequest.getContent();
 		return product;

@@ -26,9 +26,14 @@ public class ProductImgService {
 	private final ProductRepository productRepository;
 	private final S3UploadService s3UploadService;
 
+	public void getProductImg(Product product) {
+		List<ProductImg> productResponseList = productImgRepository.findAllByProduct(product);
+	}
+
 	@Transactional
 	public void saveProductImg(List<MultipartFile> productImgList,
 		List<MultipartFile> defectImgList, Product product, boolean isDefect) {
+		checkImgLength(productImgList);
 		try {
 			List<ProductImg> imgList = insertImgList(productImgList, defectImgList, product, isDefect);
 			productImgRepository.saveAll(imgList);
@@ -41,6 +46,8 @@ public class ProductImgService {
 	public void updateProductImgList(List<MultipartFile> productImgList,
 		List<MultipartFile> defectImgList, Long productId, boolean isDefect) {
 		Product product = productRepository.findById(productId).get();
+		checkImgLength(productImgList);
+
 		try {
 			List<ProductImg> imgList = insertImgList(productImgList, defectImgList, product, isDefect);
 			product.getProductImgList().clear();
@@ -73,4 +80,9 @@ public class ProductImgService {
 		return imgList;
 	}
 
+	public void checkImgLength(List<MultipartFile> productImgList) {
+		if (productImgList.size() < 2) {
+			throw new RuntimeException("사진은 2장이상 등록해주세요");
+		}
+	}
 }
