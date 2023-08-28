@@ -155,40 +155,31 @@ const handleSubmitSignUp = async () => {
 };
 
 const checkDuplicateID = async () => {
-  try {
-    const data = await postApi({
-      url: "/check/loginId",
-      data: {
-        loginId: id.value,
-      },
-    });
-
-    checkDuplication(data.result, "loginId");
-  } catch (error) {}
+  return await checkDuplication({
+    checkType: "loginId",
+    dataBody: {
+      loginId: id.value,
+    },
+    dataRef: isDuplId,
+  });
 };
 const checkDuplicateNickname = async () => {
-  try {
-    const data = await postApi({
-      url: "/check/nickname",
-      data: {
-        nickname: nickname.value,
-      },
-    });
-
-    checkDuplication(data.result, "nickname");
-  } catch (error) {}
+  return await checkDuplication({
+    checkType: "nickname",
+    dataBody: {
+      nickname: nickname.value,
+    },
+    dataRef: isDuplNickname,
+  });
 };
 const checkDuplicatePhone = async () => {
-  try {
-    const data = await postApi({
-      url: "/check/phoneNumber",
-      data: {
-        phoneNumber: phoneNumber.value,
-      },
-    });
-
-    checkDuplication(data.result, "phone");
-  } catch (error) {}
+  return await checkDuplication({
+    checkType: "phoneNumber",
+    dataBody: {
+      phoneNumber: phoneNumber.value,
+    },
+    dataRef: isDuplPhone,
+  });
 };
 const requestAuthNumber = async () => {
   try {
@@ -202,35 +193,21 @@ const requestAuthNumber = async () => {
   } catch (error) {}
 };
 
-const checkDuplication = (result, checkType) => {
-  if (checkType === "loginId") {
-    if (result === false) {
-      isDuplId.value = true;
+const checkDuplication = async (param) => {
+  try {
+    const data = await postApi({
+      url: `/check/${param.checkType}`,
+      data: param.dataBody,
+    });
+    if (data.result === false) {
+      param.dataRef.value = true;
       isValid.value = false;
     } else {
-      isDuplId.value = false;
+      param.dataRef.value = false;
       isValid.value = true;
     }
-  }
-
-  if (checkType === "nickname") {
-    if (result === false) {
-      isDuplNickname.value = true;
-      isValid.value = false;
-    } else {
-      isDuplNickname.value = false;
-      isValid.value = true;
-    }
-  }
-
-  if (checkType === "phone") {
-    if (result === false) {
-      isDuplPhone.value = true;
-      isValid.value = false;
-    } else {
-      isDuplPhone.value = false;
-      isValid.value = true;
-    }
+  } catch (error) {
+    console.error(error);
   }
 };
 </script>
