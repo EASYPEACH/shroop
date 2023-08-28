@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
+import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
@@ -19,6 +20,14 @@ public class ExceptionControllerAdvice {
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 
 		return ResponseEntity.badRequest().body(errorResponse);
+	}
+
+	@ExceptionHandler(SellerPurchaseException.class)
+	public ResponseEntity<ErrorResponse> handleInternalException(final RuntimeException e) {
+		String errorMessage = e.getMessage();
+		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+
+		return ResponseEntity.internalServerError().body(errorResponse);
 	}
 
 	@ExceptionHandler(RuntimeException.class)
