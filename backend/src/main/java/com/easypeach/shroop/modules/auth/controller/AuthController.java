@@ -37,8 +37,8 @@ public class AuthController {
 
 	@GetMapping(value = "/")
 	public ResponseEntity<LoginCheckResponse> getAuthInfo(@LoginMember Member member) {
-		LoginCheckResponse dto = authService.checkLogin(member);
-		return ResponseEntity.ok(dto);
+		LoginCheckResponse loginCheckResponse = authService.checkLogin(member);
+		return ResponseEntity.ok(loginCheckResponse);
 	}
 
 	@PostMapping(value = "/phone") // 폰인증 번호 보내기
