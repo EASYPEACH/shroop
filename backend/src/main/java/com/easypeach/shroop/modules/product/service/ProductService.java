@@ -28,12 +28,12 @@ public class ProductService {
 	private final ProductImgService productImgService;
 
 	public Product findByProductId(Long productId) {
-		Product product = productRepository.getFindById(productId);
+		Product product = productRepository.getById(productId);
 		return product;
 	}
 
 	public ProductImg getProductImg(Product product) {
-		Product findProduct = productRepository.getFindById(product.getId());
+		Product findProduct = productRepository.getById(product.getId());
 		findProduct.getProductImgList().get(0).getId();
 		return findProduct.getProductImgList().get(0);
 	}
@@ -48,7 +48,7 @@ public class ProductService {
 
 	@Transactional
 	public Product updateProduct(Long memberId, Long productId, ProductRequest productRequest) {
-		Product product = productRepository.getFindById(productId);
+		Product product = productRepository.getById(productId);
 		Member loginMember = memberRepository.findById(memberId).get();
 		Member productOwnerMember = memberRepository.findById(product.getSeller().getId()).get();
 
