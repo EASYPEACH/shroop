@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.easypeach.shroop.modules.auth.domain.SecurityMember;
-import com.easypeach.shroop.modules.auth.exception.MemberNotExistException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 
@@ -19,8 +18,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String loginId) {
-		Member member = memberRepository.findByLoginId(loginId)
-			.orElseThrow(() -> new MemberNotExistException());
+		Member member = memberRepository.getByLoginId(loginId);
 
 		return new SecurityMember(member);
 	}

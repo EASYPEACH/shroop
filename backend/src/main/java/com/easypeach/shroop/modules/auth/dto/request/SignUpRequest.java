@@ -1,10 +1,11 @@
 package com.easypeach.shroop.modules.auth.dto.request;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,13 +31,37 @@ public class SignUpRequest {
 	private String nickname;
 
 	@NotBlank
-	@Pattern(regexp = "^010\\d{7,8}$")
+	@Pattern(regexp = "^0\\d{1,2}\\d{3,4}\\d{4}$")
 	private String phoneNumber;
 
-	public SignUpRequest(String loginId, String password, String nickname, String phoneNumber) {
+	@NotNull
+	@AssertTrue(message = "약관에 동의가 필요합니다")
+	private Boolean agreeShroop;
+
+	@NotNull
+	@AssertTrue(message = "약관에 동의가 필요합니다")
+	private Boolean agreePersonal;
+
+	@NotNull
+	@AssertTrue(message = "약관에 동의가 필요합니다")
+	private Boolean agreeIdentify;
+
+	@NotNull
+	private long uuid;
+
+	@NotBlank
+	private String phoneAuthNumber;
+
+	public SignUpRequest(String loginId, String password, String nickname, String phoneNumber
+		, Boolean agreeShroop, Boolean agreePersonal, Boolean agreeIdentify, long uuid, String phoneAuthNumber) {
 		this.loginId = loginId;
 		this.password = password;
 		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;
+		this.agreeShroop = agreeShroop;
+		this.agreePersonal = agreePersonal;
+		this.agreeIdentify = agreeIdentify;
+		this.uuid = uuid;
+		this.phoneAuthNumber = phoneAuthNumber;
 	}
 }

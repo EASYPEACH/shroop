@@ -22,14 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class PhoneAuthService {
+public class NaverPhoneAuthService {
 
-	private final PhoneAuthClient phoneAuthClient;
+	private final NaverPhoneAuthClient naverPhoneAuthClient;
 
 	public String sendSms(final String to, final String content) {
 
 		try {
-			PhoneAuthResponse phoneAuthResponse = phoneAuthClient.makeSignature();
+			PhoneAuthResponse phoneAuthResponse = naverPhoneAuthClient.makeSignature();
 			String accessKey = phoneAuthResponse.getAccessKey();
 			String serviceId = phoneAuthResponse.getServiceId();
 			String sender = phoneAuthResponse.getSender();

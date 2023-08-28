@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
+
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 	boolean existsByLoginId(String loginId);
@@ -17,4 +19,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	Optional<Member> findByPhoneNumber(String phoneNumber);
 
+	default Member getByLoginId(final String LoginId) {
+		return findByLoginId(LoginId)
+			.orElseThrow(MemberNotExistException::new);
+	}
 }

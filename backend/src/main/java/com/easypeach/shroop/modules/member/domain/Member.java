@@ -1,6 +1,7 @@
 package com.easypeach.shroop.modules.member.domain;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,6 +60,9 @@ public class Member {
 	@LastModifiedDate
 	private LocalDateTime updateDate;
 
+	@Column(nullable = false, name = "check_agree")
+	private boolean checkAgree;
+
 	public static Member createMember(String loginId,
 		String password,
 		String nickname,
@@ -72,11 +76,16 @@ public class Member {
 		member.phoneNumber = phoneNumber;
 		member.role = role;
 		member.point = point;
+		member.checkAgree = true;
 		return member;
 	}
 
 	public void updatePoint(Long updatedPoint) {
 		this.point = updatedPoint;
+	}
+
+	public void updateRole(Role role) {
+		this.role = role;
 	}
 
 }

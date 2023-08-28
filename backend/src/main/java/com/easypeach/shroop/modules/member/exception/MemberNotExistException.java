@@ -1,4 +1,4 @@
-package com.easypeach.shroop.modules.auth.exception;
+package com.easypeach.shroop.modules.member.exception;
 
 public class MemberNotExistException extends RuntimeException {
 	public MemberNotExistException() {

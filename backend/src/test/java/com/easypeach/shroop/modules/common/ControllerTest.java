@@ -10,6 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.easypeach.shroop.modules.auth.controller.AuthController;
 import com.easypeach.shroop.modules.auth.service.AuthService;
+import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
+
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,5 +31,8 @@ public abstract class ControllerTest {
 	protected ObjectMapper objectMapper;
 	@MockBean
 	protected MemberRepository memberRepository;
+
+	@MockBean
+	protected PhoneAuthService phoneAuthService;
 
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
+import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +14,30 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	public Member findById(final Long memberId) {
-		return memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다"));
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
+	}
+
+	boolean existsByLoginId(String loginId) {
+		return memberRepository.existsByLoginId(loginId);
+	}
+
+	boolean existsByNickname(String nickname) {
+		return memberRepository.existsByNickname(nickname);
+	}
+
+	public Member findByLoginId(String loginId) {
+		return memberRepository.findByLoginId(loginId)
+			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
+	}
+
+	public Member findByNickname(String nickname) {
+		return memberRepository.findByNickname(nickname)
+			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
+	}
+
+	public Member findByPhoneNumber(String phoneNumber) {
+		return memberRepository.findByPhoneNumber(phoneNumber)
+			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
 	}
 }
