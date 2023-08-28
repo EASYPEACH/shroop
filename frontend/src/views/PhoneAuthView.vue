@@ -34,25 +34,36 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Title from "@/components/Title/MainTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import { phoneAuthRule } from "@/components/Form/data/formRules";
 import { postApi } from "@/api/modules";
+import { useUserStore } from "@/store/signUp";
+import { useCookies } from "vue3-cookies";
 
 const route = useRoute();
 const router = useRouter();
 const phoneAuthNumber = ref("");
 const authResult = ref(true);
+const userStore = useUserStore();
+const { cookies } = useCookies();
 
 const isValid = ref(false);
 const handleSubmitAuth = async () => {
   try {
-    const result = await postApi({
-      url: "/api/auth/phone",
+    await postApi({
+      url: "/api/auth/sign-up",
       data: {
-        loginId: `${route.params.id}`,
+        loginId: userStore.getLoginId,
+        nickname: userStore.getNickname,
+        password: userStore.getPassword,
+        phoneNumber: userStore.getPhoneNumber,
+        agreeShroop: userStore.getAgreeShroop,
+        agreePersonal: userStore.getAgreePersonal,
+        agreeIdentify: userStore.getAgreeIdentify,
+        uuid: cookies.get("uuid"),
         phoneAuthNumber: phoneAuthNumber.value,
       },
     });
@@ -64,6 +75,12 @@ const handleSubmitAuth = async () => {
     }
   }
 };
+
+onBeforeMount(() => {
+  if (userStore.getLoginId === "") {
+    router.push("/signup");
+  }
+});
 </script>
 
 <style lang="scss" scoped>

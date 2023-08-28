@@ -100,7 +100,10 @@ import { AGREE } from "@/consts/agree";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { postApi } from "@/api/modules";
+import { useUserStore } from "@/store/signUp";
+import { useCookies } from "vue3-cookies";
 
+const { cookies } = useCookies();
 const router = useRouter();
 const phoneItems = ref(["LGT", "SKT", "KT"]);
 const id = ref("");
@@ -123,6 +126,7 @@ const agreement = ref({
 const isDuplId = ref(false);
 const isDuplNickname = ref(false);
 const isDuplPhone = ref(false);
+const userStore = useUserStore();
 
 const changeToAgree = (id) => {
   dialog.value[id] = false;
@@ -137,22 +141,17 @@ const submit = () => {
 };
 
 const handleSubmitSignUp = async () => {
-  try {
-    await postApi({
-      url: "/api/auth/sign-up",
-      data: {
-        loginId: id.value,
-        nickname: nickname.value,
-        password: password.value,
-        phoneNumber: phoneNumber.value,
-        agreeShroop: agreement.value[AGREE.SHROOP],
-        agreePersonal: agreement.value[AGREE.PERSONAL],
-        agreeIdentify: agreement.value[AGREE.IDENTIFY],
-      },
-    });
-
-    router.push("/phone/" + id.value);
-  } catch (error) {}
+  userStore.signUp({
+    loginId: id.value,
+    nickname: nickname.value,
+    password: password.value,
+    phoneNumber: phoneNumber.value,
+    agreeShroop: agreement.value[AGREE.SHROOP],
+    agreePersonal: agreement.value[AGREE.PERSONAL],
+    agreeIdentify: agreement.value[AGREE.IDENTIFY],
+  });
+  requestAuthNumber();
+  router.push("/phone/");
 };
 
 const checkDuplicateID = async () => {
@@ -207,6 +206,17 @@ const checkDuplicatePhone = async () => {
       isDuplPhone.value = false;
       isValid.value = true;
     }
+  } catch (error) {}
+};
+const requestAuthNumber = async () => {
+  try {
+    const data = await postApi({
+      url: "/api/auth/phone",
+      data: {
+        phoneNumber: phoneNumber.value,
+      },
+    });
+    cookies.set("uuid", data.uuid);
   } catch (error) {}
 };
 </script>
