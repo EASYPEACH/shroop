@@ -20,9 +20,7 @@
         </v-btn>
       </li>
       <li>
-        <v-btn @click="handleShowNotification">
-          <v-icon icon="mdi-bell-outline"></v-icon>
-        </v-btn>
+        <NotifyBellButton v-if="loginCheckStore.isLogin" />
       </li>
       <li class="header__account">
         <v-menu transition="scale-transition" class="tooltip-menu">
@@ -50,14 +48,14 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useShowNotify } from "@/store/useShowNotify";
+import { useCheckLogin } from "@/store/useCheckLogin";
+import NotifyBellButton from "@/components/Button/NotifyBellButton.vue";
 
 const notifyStore = useShowNotify();
 
-const handleShowNotification = () => {
-  notifyStore.setIsShowNotify();
-  console.log(notifyStore.isShowNotify);
-};
+const loginCheckStore = useCheckLogin();
 </script>
 
 <style lang="scss" scoped>
