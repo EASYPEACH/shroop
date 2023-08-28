@@ -163,13 +163,7 @@ const checkDuplicateID = async () => {
       },
     });
 
-    if (data.result === false) {
-      isDuplId.value = true;
-      isValid.value = false;
-    } else {
-      isDuplId.value = false;
-      isValid.value = true;
-    }
+    checkDuplication(data.result, "loginId");
   } catch (error) {}
 };
 const checkDuplicateNickname = async () => {
@@ -181,13 +175,7 @@ const checkDuplicateNickname = async () => {
       },
     });
 
-    if (data.result === false) {
-      isDuplNickname.value = true;
-      isValid.value = false;
-    } else {
-      isDuplNickname.value = false;
-      isValid.value = true;
-    }
+    checkDuplication(data.result, "nickname");
   } catch (error) {}
 };
 const checkDuplicatePhone = async () => {
@@ -199,13 +187,7 @@ const checkDuplicatePhone = async () => {
       },
     });
 
-    if (data.result === false) {
-      isDuplPhone.value = true;
-      isValid.value = false;
-    } else {
-      isDuplPhone.value = false;
-      isValid.value = true;
-    }
+    checkDuplication(data.result, "phone");
   } catch (error) {}
 };
 const requestAuthNumber = async () => {
@@ -218,6 +200,38 @@ const requestAuthNumber = async () => {
     });
     cookies.set("uuid", data.uuid);
   } catch (error) {}
+};
+
+const checkDuplication = (result, checkType) => {
+  if (checkType === "loginId") {
+    if (result === false) {
+      isDuplId.value = true;
+      isValid.value = false;
+    } else {
+      isDuplId.value = false;
+      isValid.value = true;
+    }
+  }
+
+  if (checkType === "nickname") {
+    if (result === false) {
+      isDuplNickname.value = true;
+      isValid.value = false;
+    } else {
+      isDuplNickname.value = false;
+      isValid.value = true;
+    }
+  }
+
+  if (checkType === "phone") {
+    if (result === false) {
+      isDuplPhone.value = true;
+      isValid.value = false;
+    } else {
+      isDuplPhone.value = false;
+      isValid.value = true;
+    }
+  }
 };
 </script>
 
