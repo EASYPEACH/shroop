@@ -15,7 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
@@ -24,7 +23,6 @@ import com.easypeach.shroop.modules.notification.dto.response.NotificationLinkRe
 import com.easypeach.shroop.modules.notification.dto.response.NotificationResponse;
 import com.easypeach.shroop.modules.notification.service.NotificationService;
 
-@MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(NotificationController.class)
 class NotificationControllerTest extends ControllerTest {
 

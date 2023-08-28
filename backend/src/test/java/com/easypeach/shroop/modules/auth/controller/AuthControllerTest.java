@@ -12,8 +12,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -25,7 +23,6 @@ import com.easypeach.shroop.modules.member.domain.Member;
 
 import lombok.Getter;
 
-@MockBean(JpaMetamodelMappingContext.class)
 class AuthControllerTest extends ControllerTest {
 
 	@DisplayName("회원가입 - 1. 휴대전화인증을 진행한다")
