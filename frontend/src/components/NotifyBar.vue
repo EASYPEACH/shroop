@@ -62,7 +62,6 @@ const handleChangeChecked = async (id) => {
     const response = await patchApi({
       url: `/api/notifications/${id}`,
     });
-    console.log(response);
     router.push(response.link);
   } catch (error) {
     console.log(error);

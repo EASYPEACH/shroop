@@ -44,7 +44,6 @@ const handleGetNotification = async () => {
 
 const handleShowNotification = () => {
   notifyStore.setIsShowNotify();
-  console.log(notifyStore.isShowNotify);
 };
 </script>
 
