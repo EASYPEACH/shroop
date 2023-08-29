@@ -7,8 +7,8 @@ export const useCheckLogin = defineStore("checkLogin", {
     };
   },
   actions: {
-    setIsLogin() {
-      this.isLogin = !this.isLogin;
+    setIsLogin(loginStatus) {
+      this.isLogin = loginStatus;
     },
   },
 });

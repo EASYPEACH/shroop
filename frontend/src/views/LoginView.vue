@@ -32,6 +32,9 @@
         >
           로그인
         </v-btn>
+        <div v-if="!authResult" class="auth-result">
+          아이디 및 비밀번호를 다시 확인해주세요
+        </div>
         <v-card-text class="text-center">
           슈룹회원이 아니신가요?
           <router-link
@@ -61,19 +64,21 @@ const visible = ref(false);
 const id = ref("");
 const password = ref("");
 const isValid = ref(false);
+const authResult = ref(true);
 const handleSubmitLogin = async () => {
   try {
-    await postApi({
+    const { response } = await postApi({
       url: "/api/auth/sign-in",
       data: {
         loginId: id.value,
         password: password.value,
       },
     });
-
     router.push("/");
   } catch (error) {
-    console.error(error);
+    if (error.response.status === 403) {
+      authResult.value = false;
+    }
   }
 };
 </script>
@@ -86,5 +91,17 @@ const handleSubmitLogin = async () => {
 }
 .guide_button {
   color: rgb(var(--v-theme-subBlue));
+}
+
+.auth-result {
+  line-height: 12px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  transition-duration: 150ms;
+  margin: 10px;
+  margin-bottom: 15px;
+  color: rgb(var(--v-theme-heartRed));
 }
 </style>

@@ -79,4 +79,8 @@ public class Transaction {
 
 		return transaction;
 	}
+
+	public void updateStatus(TransactionStatus transactionStatus) {
+		this.status = transactionStatus;
+	}
 }

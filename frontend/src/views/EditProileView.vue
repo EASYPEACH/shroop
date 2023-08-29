@@ -65,20 +65,17 @@
                 v-model="newPhoneNumber"
                 hide-details
               />
-              <v-btn class="profile__info-btn"
-                >인증번호<br />
-                전송</v-btn
-              >
+              <v-btn class="profile__info-btn">인증 하기<br /> </v-btn>
             </div>
             <div class="identify__phoneNumber">
               <custom-text-input
                 class="profile__info-input"
-                placeholderText="인증 번호"
+                placeholderText="인증번호 4자리 입력"
                 v-model="authNumber"
                 hide-details
               />
               <v-btn class="profile__info-btn" @click="checkAuthNumber"
-                >인증 확인</v-btn
+                >인증 완료</v-btn
               >
             </div>
             <strong :class="authResult ? 'auth-success' : 'auth-fail'">{{
