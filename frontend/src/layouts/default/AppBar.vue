@@ -30,15 +30,24 @@
             </v-btn>
           </template>
           <ul class="tooltips">
-            <li v-if="!loginCheckStore.isLogin">
-              <router-link to="/login">로그인</router-link>
+            <li
+              v-if="!loginCheckStore.isLogin"
+              @click="() => $router.push('/login')"
+            >
+              로그인
             </li>
             <li v-if="loginCheckStore.isLogin" @click="logout">로그아웃</li>
-            <li v-if="!loginCheckStore.isLogin">
-              <router-link to="/signup">회원가입</router-link>
+            <li
+              v-if="!loginCheckStore.isLogin"
+              @click="() => $router.push('/signup')"
+            >
+              회원가입
             </li>
-            <li v-if="loginCheckStore.isLogin">
-              <router-link to="/mypage/0">마이페이지</router-link>
+            <li
+              v-if="loginCheckStore.isLogin"
+              @click="() => $router.push('/mypage/0')"
+            >
+              마이페이지
             </li>
           </ul>
         </v-menu>
@@ -121,15 +130,11 @@ header {
   background: rgb(var(--v-theme-mainGray));
   border-radius: 10px;
   > li {
-    width: 100px;
+    cursor: pointer;
     text-align: center;
     color: #fff;
     font-weight: 600;
-    a {
-      width: 100%;
-      padding: 5px;
-      display: inline-block;
-    }
+    padding: 10px 20px;
   }
 }
 </style>
