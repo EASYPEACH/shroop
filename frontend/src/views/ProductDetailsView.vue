@@ -28,17 +28,20 @@
                     <li
                       class="font-weight-bold"
                       v-if="loginCheckStore.id !== profile.id"
+                      @click="() => $router.push(`/report/${route.params.id}`)"
                     >
                       신고하기
                     </li>
                     <li
                       class="font-weight-bold"
+                      v-if="loginCheckStore.id === profile.id"
                       @click="handleClickDeleteButton"
                     >
                       삭제하기
                     </li>
                     <li
                       class="font-weight-bold"
+                      v-if="loginCheckStore.id === profile.id"
                       @click="() => $router.push(`/edit/${$route.params.id}`)"
                     >
                       수정하기
