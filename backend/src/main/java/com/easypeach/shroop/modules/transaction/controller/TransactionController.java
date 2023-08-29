@@ -3,6 +3,7 @@ package com.easypeach.shroop.modules.transaction.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,6 +64,14 @@ public class TransactionController {
 	public ResponseEntity<BuyerResponse> getBuyer(final @PathVariable Long productId) {
 		BuyerResponse buyerResponse = transactionService.getBuyer(productId);
 		return ResponseEntity.status(HttpStatus.OK).body(buyerResponse);
+	}
+
+	@DeleteMapping("/{productId}")
+	public ResponseEntity<BasicResponse> cancelTransaction(final @LoginMember Member member,
+		final @PathVariable Long productId) {
+		transactionService.cancelTransaction(member.getId(), productId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("구매 최소가 완료되었습니다."));
 	}
 
 }

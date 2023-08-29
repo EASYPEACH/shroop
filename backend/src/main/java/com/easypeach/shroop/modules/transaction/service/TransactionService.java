@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.service.MemberService;
+import com.easypeach.shroop.modules.notification.service.NotificationService;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.service.ProductService;
@@ -26,8 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TransactionService {
 	private final TransactionRepository transactionRepository;
+
 	private final MemberService memberService;
+
 	private final ProductService productService;
+
+	private final NotificationService notificationService;
 
 	@Transactional
 	public void saveTransaction(final Long productId, final Long buyerId,
@@ -93,6 +98,7 @@ public class TransactionService {
 			product.getPrice(),
 			transaction.getBuyerName(), transaction.getBuyerLocation(), transaction.getBuyerPhoneNumber());
 	}
+
 	public BuyerResponse getBuyer(final Long productId) {
 		Transaction transaction = findByProductId(productId);
 		return new BuyerResponse(
@@ -104,6 +110,24 @@ public class TransactionService {
 
 	public Transaction findByProductId(final Long productId) {
 		return transactionRepository.getByProductId(productId);
+	}
+
+	@Transactional
+	public void cancelTransaction(final Long memberId, final Long productId) {
+		Transaction transaction = findByProductId(productId);
+		transactionRepository.delete(transaction);
+
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 구매가 취소 되었습니다.";
+		log.info("메시지 : " + message);
+
+		// 판매자 알림
+		notificationService.saveNotification(transaction.getSeller().getId(), "구매 취소", "/mypage/2", message);
+
+		// 구매자 알림
+		notificationService.saveNotification(memberId, "구매 취소", "/mypage/1", message);
+
 	}
 
 }
