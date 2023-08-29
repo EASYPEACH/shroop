@@ -1,6 +1,5 @@
 package com.easypeach.shroop.modules.product.dto.response;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class ProductResponse {
 	private Long price;
 	private Boolean isCheckedDeliveryFee;
 	private String content;
-	private LocalDate purchaseDate;
+	private LocalDateTime purchaseDate;
 	private Boolean isDefect;
 	private String saleReason;
 	private LocalDateTime createDate;

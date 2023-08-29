@@ -1,7 +1,6 @@
 package com.easypeach.shroop.modules.member.domain;
 
 import java.time.LocalDateTime;
-import java.util.Random;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

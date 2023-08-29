@@ -1,5 +1,10 @@
 package com.easypeach.shroop.modules.transaction.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +18,7 @@ import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
 import com.easypeach.shroop.modules.transaction.dto.response.BuyerResponse;
+import com.easypeach.shroop.modules.transaction.dto.response.HistoryResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
@@ -93,6 +99,7 @@ public class TransactionService {
 			product.getPrice(),
 			transaction.getBuyerName(), transaction.getBuyerLocation(), transaction.getBuyerPhoneNumber());
 	}
+
 	public BuyerResponse getBuyer(final Long productId) {
 		Transaction transaction = findByProductId(productId);
 		return new BuyerResponse(
@@ -106,4 +113,15 @@ public class TransactionService {
 		return transactionRepository.getByProductId(productId);
 	}
 
+	public List<HistoryResponse> findAllBuyingHistory(Member member) {
+		List<Transaction> transactionList = transactionRepository.findAllByBuyer(member);
+		return transactionList.stream()
+			.map(HistoryResponse::new)
+			.collect(Collectors.toList());
+	}
+
+	public Page<HistoryResponse> findAllSellingHistory(Member member, Pageable pageable) {
+		return transactionRepository.findBySellerOrderByCreateDateDesc(member, pageable)
+			.map(HistoryResponse::new);
+	}
 }
