@@ -33,7 +33,7 @@
           <li>
             <h4>카테고리</h4>
             <v-select
-              :items="category"
+              :items="category.map((list) => list.name)"
               :rules="[defaultTextRule.required]"
               v-model="categoryValue"
               label="카테고리"
@@ -74,7 +74,7 @@
             <v-radio-group
               :rules="[selectRule.required]"
               inline
-              v-model="isContainDeliveryFee"
+              v-model="isCheckedDeliveryFee"
               class="info__form"
             >
               <v-radio :value="true" label="예"></v-radio>
@@ -92,8 +92,8 @@
           <li>
             <h4>상태</h4>
             <v-select
-              :items="itemLevel"
-              v-model="itemLevelValue"
+              :items="productGrade"
+              v-model="productGradeValue"
               :rules="[defaultTextRule.required]"
               label="상태"
               class="info__form"
@@ -108,11 +108,11 @@
             ]"
           />
           <li>
-            <h4 for="isDefected">결함여부</h4>
+            <h4 for="isDefect">결함여부</h4>
             <v-radio-group
               :rules="[selectRule.required]"
               inline
-              v-model="isDefected"
+              v-model="isDefect"
               class="info__form"
             >
               <v-radio :value="true" label="예"></v-radio>
@@ -121,17 +121,24 @@
           </li>
         </ul>
         <image-attach
-          v-if="isDefected"
-          :required="isDefected"
+          v-if="isDefect"
+          :required="isDefect"
           ref="defectedtRef"
           @change-files="handleAttachDefectedImage"
           @delete-image="handleDeleteDefectedImage"
           attach-name="defectedImage"
           :images="defectedImages"
         />
-        <p v-if="isDefected && defectedImages.length < 2" class="checkRequired">
+        <p v-if="isDefect && defectedImages.length < 2" class="checkRequired">
           사진을 2장 이상 등록해주세요
         </p>
+        <product-title title="상품 판매 이유" />
+        <custom-text-input
+          placeholder-text="상품 판매 이유"
+          v-model="saleReason"
+          :rules="[defaultTextRule.required, defaultTextRule.min]"
+        />
+
         <guide-text
           title="상세 조건 가이드"
           :guide-list="[
@@ -142,8 +149,8 @@
         />
 
         <product-title title="상품 상세조건" />
-        <custom-text-area v-model="productDetailText" label="상세조건" />
-        <p>{{ productDetailText.length }} / 200</p>
+        <custom-text-area v-model="content" label="상세조건" />
+        <p>{{ content.length }} / 200</p>
         <div class="agreement">
           <label for="agree">
             <warn-alert
@@ -160,7 +167,10 @@
         <p v-if="!checkRequired" class="checkRequired">
           필수 사항을 확인 해주세요
         </p>
-        <submit-button :text="isRegister ? '상품 등록' : '상품 수정'" />
+        <submit-button
+          :disabled="!isValid"
+          :text="isRegister ? '상품 등록' : '상품 수정'"
+        />
       </v-form>
     </section>
   </content-layout>
@@ -168,13 +178,22 @@
 
 <script setup>
 import { onBeforeMount, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
   selectRule,
   defaultTextRule,
   priceRule,
 } from "@/components/Form/data/formRules.js";
-import { changeFiles, deleteImage } from "@/utils";
+import {
+  changeFiles,
+  deleteImage,
+  multipartFormDataFile,
+  multipartFormDataJson,
+  changeUrlToFiles,
+} from "@/utils";
+import { PRODUCT_GRADE, PRODUCT_GRADE_EN } from "@/consts/productGrade.js";
+import { multipartPostApi, multipartPatchApi, getApi } from "@/api/modules";
+
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import Title from "@/components/Title/MainTitle.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
@@ -191,41 +210,133 @@ const isValid = ref(false);
 const isRegister = ref(false);
 const agreement = ref(false);
 const checkRequired = ref(true);
-const isContainDeliveryFee = ref(null);
+const title = ref("");
+const price = ref("");
+const isCheckedDeliveryFee = ref(null);
 const productRef = ref(null);
 const defectedtRef = ref(null);
-const isDefected = ref(null);
+const isDefect = ref(null);
 const purchaseDate = ref(null);
 const productImages = ref([]);
 const productImagesData = ref({});
 const defectedImages = ref([]);
 const defectedImagesData = ref({});
-const category = ref(["가전", "전자제품", "의류"]);
-const itemLevel = ref(["상", "중", "하"]);
+const category = ref([]);
 const categoryValue = ref("");
-const itemLevelValue = ref("");
-const productDetailText = ref("");
-const title = ref("");
-const price = ref("");
+const productGrade = ref(["상", "중", "하"]);
+const productGradeValue = ref("");
+const content = ref("");
+const saleReason = ref("");
 const brandModel = ref("");
+const router = useRouter();
+const route = useRoute();
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  const categoryData = await getApi({
+    url: "/api/categorys",
+  });
+  category.value = categoryData;
   if (path.split("/")[1] === "regist") {
     isRegister.value = true;
   } else {
     isRegister.value = false;
   }
+
+  if (!isRegister.value) {
+    const data = await getApi({
+      url: `/api/products/${route.params.id}`,
+    });
+
+    let productImgList = data.productImgList
+      .filter((img) => !img.isDefect)
+      .map((img) => img.productImgUrl);
+    let defectImgList = data.productImgList
+      .filter((img) => img.isDefect)
+      .map((img) => img.productImgUrl);
+
+    productImages.value = productImgList;
+    defectedImages.value = defectImgList;
+
+    title.value = data.title;
+    categoryValue.value = data.category.name;
+    purchaseDate.value = data.purchaseDate;
+    brandModel.value = data.brand;
+    price.value = data.price.toLocaleString();
+    isCheckedDeliveryFee.value = data.isCheckedDeliveryFee;
+    productGradeValue.value = PRODUCT_GRADE_EN[data.productGrade];
+    isDefect.value = data.isDefect;
+    saleReason.value = data.saleReason;
+    content.value = data.content;
+
+    let productImgdataTransfer = await changeUrlToFiles(
+      productImgList,
+      new DataTransfer(),
+    );
+
+    let defectImgdataTransfer = await changeUrlToFiles(
+      defectImgList,
+      new DataTransfer(),
+    );
+
+    productRef.value.input.files = productImgdataTransfer.files;
+    productImagesData.value = productImgdataTransfer.files;
+
+    if (defectImgdataTransfer.files != null && defectedtRef.value != null) {
+      defectedImagesData.value = defectImgdataTransfer.files;
+      defectedtRef.value.input.files = defectImgdataTransfer.files;
+    }
+  }
 });
-const handleSubmitRegister = () => {
+const handleSubmitRegister = async () => {
+  let formData = new FormData();
+
   if (!isValid.value) {
     checkRequired.value = false;
   } else {
     checkRequired.value = true;
   }
-  console.log(purchaseDate.value);
+
+  multipartFormDataFile(formData, productRef.value, "productImgList");
+  multipartFormDataFile(formData, defectedtRef.value, "defectImgList");
+  multipartFormDataJson(formData, "productRequest", {
+    title: title.value,
+    categoryId: category.value.find((list) => list.name === categoryValue.value)
+      .id,
+    brand: brandModel.value,
+    price: Number(price.value.split(",").join("")),
+    isCheckedDeliveryFee: isCheckedDeliveryFee.value,
+    purchaseDate: purchaseDate.value,
+    productGrade: PRODUCT_GRADE[productGradeValue.value],
+    isDefect: isDefect.value,
+    saleReason: saleReason.value,
+    content: content.value,
+  });
+
+  try {
+    if (isValid.value) {
+      let data;
+      if (isRegister.value) {
+        data = await multipartPostApi({
+          url: "/api/products",
+          data: formData,
+        });
+      } else {
+        multipartFormDataJson(formData, "productId", route.params.id);
+        data = await multipartPatchApi({
+          url: `/api/products`,
+          data: formData,
+        });
+      }
+
+      router.push(`/detail/${data.productId}`);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
 const handleAttachProductImage = (files) => {
   changeFiles(files, productRef, productImages, productImagesData);
+  console.log(productRef.value.input.files);
 };
 const handleAttachDefectedImage = (files) => {
   changeFiles(files, defectedtRef, defectedImages, defectedImagesData);
