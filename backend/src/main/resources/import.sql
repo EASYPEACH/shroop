@@ -59,6 +59,7 @@ insert into product (id, seller_id, title, category_id, product_grade, brand, pr
 insert into product (id, seller_id, title, category_id, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, create_date) values (48, 2, '판매자2의 상품', 4, 'UPPER', 'wbx', 90358, true, 'hogehnhtzkwaggbdkddmiodesxnbjuddgvqf', '2023-06-05 10:09:36', false, 'jsmujiuwdmulf', '2022-12-23 15:55:49');
 insert into product (id, seller_id, title, category_id, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, create_date) values (49, 2, '판매자2의 상품', 4, 'UPPER', 'fev', 33132, true, 'fxfanhfqzozbkqmdfyohnnemobkkoocnhqbm', '2023-07-03 08:31:52', false, 'btwuabffxxezz', '2023-08-13 16:40:03');
 insert into product (id, seller_id, title, category_id, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, create_date) values (50, 2, '판매자2의 상품', 1, 'UPPER', 'dhu', 42986, false, 'bxcfiwsuamjnrzbbjpiaglodbmewgargvcjb', '2023-04-06 08:43:32', true, 'zvndqwdfznxxr', '2023-01-15 23:10:29');
+insert into product (id, seller_id, title, category_id, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, create_date) values (51, 2, '판매자2의 상품', 1, 'UPPER', 'dhu', 42986, false, 'bxcfiwsuamjnrzbbjpiaglodbmewgargvcjb', '2023-04-06 08:43:32', true, 'zvndqwdfznxxr', '2023-01-15 23:10:29');
 
 
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png', 1);
@@ -111,6 +112,7 @@ insert into product_img(is_defect, product_img_url, product_id) values(false, 'h
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png', 48);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png', 49);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png', 50);
+insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png', 51);
 
 
 insert into transaction (id, buyer_id, seller_id, product_id, status, buyer_name, buyer_phone_number, buyer_location, create_date) values (1, 2, 1, 1, 'TRANSACTION_PROGRESS', '이종민', '01024712939', 'blv', '2022-10-25 11:38:11');
