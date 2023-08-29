@@ -11,8 +11,8 @@ import { useCheckLogin } from "@/store/useCheckLogin";
 const router = useRouter();
 const loginCheckStore = useCheckLogin();
 
-router.beforeEach(async () => handleGetLoginInfo());
-onBeforeMount(async () => handleGetLoginInfo());
+router.beforeEach(async () => await handleGetLoginInfo());
+onBeforeMount(async () => await handleGetLoginInfo());
 
 const handleGetLoginInfo = async () => {
   try {
