@@ -10,8 +10,8 @@ import com.easypeach.shroop.modules.auth.exception.PhoneAuthFailException;
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthNotExistException;
 import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
 import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
+import com.easypeach.shroop.modules.product.exception.ProductImgLengthException;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
-
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
@@ -26,7 +26,6 @@ public class ExceptionControllerAdvice {
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
-  
 	@ExceptionHandler(SellerPurchaseException.class)
 	public ResponseEntity<ErrorResponse> handleInternalException(final RuntimeException e) {
 		String errorMessage = e.getMessage();
@@ -37,7 +36,8 @@ public class ExceptionControllerAdvice {
 
 	@ExceptionHandler({
 		MemberNotExistException.class,
-		PhoneAuthNotExistException.class
+		PhoneAuthNotExistException.class,
+		ProductImgLengthException.class,
 	})
 	public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException e) {
 		String errorMessage = e.getMessage();
