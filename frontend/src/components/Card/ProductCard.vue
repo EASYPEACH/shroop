@@ -4,7 +4,10 @@
       <v-img
         class="align-end text-white"
         height="200"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        :src="
+          productCardData.productImgList.filter((img) => !img.isDefect)[0]
+            .productImgUrl
+        "
         cover
       >
       </v-img>

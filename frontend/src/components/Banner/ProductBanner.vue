@@ -2,7 +2,7 @@
   <div class="banner">
     <div class="top">
       <span>{{ product.createDate }}</span>
-      <span>{{ product.category }}</span>
+      <span>{{ product.category.name }}</span>
     </div>
 
     <div class="banner__content">
@@ -11,7 +11,13 @@
           () => (isPurchase ? null : $router.push(`/detail/${product.id}`))
         "
       >
-        <img :src="product.thumb" :alt="product.title" />
+        <img
+          :src="
+            product.productImgList.filter((img) => !img.isDefect)[0]
+              .productImgUrl
+          "
+          :alt="product.title"
+        />
         <div>
           <h4>{{ product.title }}</h4>
           <p>{{ product.price.toLocaleString() }}원</p>
