@@ -23,6 +23,7 @@ import com.easypeach.shroop.modules.transaction.dto.response.HistoryResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.exception.IsNotBuyerException;
+import com.easypeach.shroop.modules.transaction.exception.IsNotSellerException;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
 
 import lombok.RequiredArgsConstructor;
@@ -129,7 +130,6 @@ public class TransactionService {
 		return transactionRepository.getByProductId(productId);
 	}
 
-
 	public List<HistoryResponse> findAllBuyingHistory(Member member) {
 		List<Transaction> transactionList = transactionRepository.findAllByBuyer(member);
 		return transactionList.stream()
@@ -164,14 +164,54 @@ public class TransactionService {
 	public void purchaseConfirm(final Long memberId, final Long productId) {
 
 		Transaction transaction = findByProductId(productId);
+		Long sellerId = transaction.getSeller().getId();
+		Long buyerId = transaction.getBuyer().getId();
 
-		if (transaction.getBuyer().getId() != memberId) {
+		if (buyerId != memberId) {
 			throw IsNotBuyerException.isNotBuyerException();
 		}
 
 		transaction.updateStatus(TransactionStatus.TRANSACTION_COMPLETE);
 
-		addPoint(productId, memberId);
+		addPoint(productId, sellerId);
+
+		String title = "구매 확정";
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 구매가 확정되었습니다.";
+
+		// 판매자 알림
+		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+
+		// 구매자 알림
+		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
+	}
+
+	@Transactional
+	public void returnConfirm(final Long memberId, final Long productId) {
+
+		Transaction transaction = findByProductId(productId);
+		Long sellerId = transaction.getSeller().getId();
+		Long buyerId = transaction.getBuyer().getId();
+
+		if (sellerId != memberId) {
+			throw IsNotSellerException.isNotSellerException();
+		}
+
+		transaction.updateStatus(TransactionStatus.RETURN_COMPLETE);
+
+		String title = "반품 확정";
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 반품이 확정되었습니다.";
+
+		// 판매자 알림
+		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+
+		// 구매자 알림
+		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
+
+		addPoint(productId, buyerId);
 	}
 
 }

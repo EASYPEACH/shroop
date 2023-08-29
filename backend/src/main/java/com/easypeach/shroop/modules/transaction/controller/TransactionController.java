@@ -83,5 +83,14 @@ public class TransactionController {
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("구매 확정이 완료되었습니다."));
 	}
 
+	@PatchMapping("/return/confirm/{productId}")
+	public ResponseEntity<BasicResponse> returnConfirm(final @LoginMember Member member,
+		final @PathVariable Long productId) {
+
+		transactionService.returnConfirm(member.getId(), productId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("반품 확정이 완료되었습니다."));
+	}
+
 }
 
