@@ -4,7 +4,7 @@
     <v-text-field
       density="compact"
       :placeholder="placeholderText"
-      :value="modelValue"
+      :model-value="modelValue"
       :prepend-inner-icon="preppendIcon"
       :append-inner-icon="appendIcon"
       :rules="rules"

@@ -5,7 +5,7 @@
       productDetailRule.min,
       productDetailRule.max,
     ]"
-    :value="modelValue"
+    :model-value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     variant="filled"
     auto-grow
