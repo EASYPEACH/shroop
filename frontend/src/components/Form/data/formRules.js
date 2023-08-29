@@ -38,12 +38,13 @@ export const phoneNumberRule = {
 
 export const defaultTextRule = {
   required: (value) => !!value || "필수 사항 입니다",
-  min: (value) => value.length >= 2 || "최소 2자 이상 입력해주세요",
+  min: (value) => value.length >= 5 || "최소 5자 이상 입력해주세요",
 };
 
 export const priceRule = {
   required: (value) => !!value || "필수 사항 입니다",
-  min: (value) => value >= 100 || "100원 이상 입력해주세요",
+  min: (value) =>
+    Number(value.split(",").join("")) >= 100 || "100원 이상 입력해주세요",
 };
 
 export const productDetailRule = {
