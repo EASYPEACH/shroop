@@ -35,7 +35,7 @@ class ProductReturnControllerTest extends ControllerTest {
 	void saveProductReturn() throws Exception {
 		Long memberId = 1L;
 		Long productId = 1L;
-		ProductReturnRequest productReturnRequest = new ProductReturnRequest("반품 신고 내용");
+		ProductReturnRequest productReturnRequest = new ProductReturnRequest("반품 신고 내용입니다. 최소 30자 이상 입력해야합니다.");
 		MockMultipartFile file1 = new MockMultipartFile("productReturnImgList", "test1.jpg", MediaType.IMAGE_JPEG_VALUE,
 			"test1 image".getBytes());
 		MockMultipartFile file2 = new MockMultipartFile("productReturnImgList", "test2.jpg", MediaType.IMAGE_JPEG_VALUE,
