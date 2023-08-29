@@ -16,6 +16,7 @@ import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateReq
 import com.easypeach.shroop.modules.transaction.dto.response.BuyerResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
+import com.easypeach.shroop.modules.transaction.exception.IsNotBuyerException;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
 
 import lombok.RequiredArgsConstructor;
@@ -54,8 +55,18 @@ public class TransactionService {
 		Product product = productService.findByProductId(productId);
 		Member buyer = memberService.findById(buyerId);
 
-		long updatedPoint = buyer.getPoint() - product.getPrice();
+		long updatedPoint = Math.max(buyer.getPoint() - product.getPrice(), 0L);
 		buyer.updatePoint(updatedPoint);
+	}
+
+	@Transactional
+	public void addPoint(final Long productId, final Long sallerId) {
+
+		Product product = productService.findByProductId(productId);
+		Member saller = memberService.findById(sallerId);
+
+		long updatedPoint = saller.getPoint() + product.getPrice();
+		saller.updatePoint(updatedPoint);
 	}
 
 	public void checkSeller(final Member member, final Member seller) {
@@ -128,6 +139,20 @@ public class TransactionService {
 		// 구매자 알림
 		notificationService.saveNotification(memberId, "구매 취소", "/mypage/1", message);
 
+	}
+
+	@Transactional
+	public void purchaseConfirm(final Long memberId, final Long productId) {
+
+		Transaction transaction = findByProductId(productId);
+
+		if (transaction.getBuyer().getId() != memberId) {
+			throw IsNotBuyerException.isNotBuyerException();
+		}
+
+		transaction.updateStatus(TransactionStatus.TRANSACTION_COMPLETE);
+
+		addPoint(productId, memberId);
 	}
 
 }

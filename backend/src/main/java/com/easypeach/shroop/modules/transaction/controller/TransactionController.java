@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,6 +73,14 @@ public class TransactionController {
 		transactionService.cancelTransaction(member.getId(), productId);
 
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("구매 취소가 완료되었습니다."));
+	}
+
+	@PatchMapping("/confirm/{productId}")
+	public ResponseEntity<BasicResponse> purchaseConfirm(final @LoginMember Member member,
+		final @PathVariable Long productId) {
+		transactionService.purchaseConfirm(member.getId(), productId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("구매 확정이 완료되었습니다."));
 	}
 
 }
