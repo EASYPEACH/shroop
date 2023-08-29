@@ -1,5 +1,7 @@
 package com.easypeach.shroop.infra.security;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
 import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
@@ -49,6 +51,16 @@ public class SecurityConfig {
 			.maximumSessions(1)
 			.maxSessionsPreventsLogin(true);
 
+		http.logout(logout ->
+			logout.logoutSuccessUrl("/logout")
+				.permitAll()
+				.deleteCookies("JSESSIONID")
+				.logoutSuccessHandler((request, response, authentication) -> {
+					response.setStatus(HttpServletResponse.SC_OK);
+				})
+				.invalidateHttpSession(true)
+				.clearAuthentication(true));
+
 		http
 			.authorizeRequests()
 			.antMatchers("/api/auth/me", "/api/auth/test",
@@ -56,6 +68,7 @@ public class SecurityConfig {
 			.permitAll()
 			.antMatchers(HttpMethod.GET, "/**")
 			.permitAll()
+			.antMatchers("/api/notifications").hasRole("USER")
 			.anyRequest()
 			.hasRole("USER")
 			.and()
