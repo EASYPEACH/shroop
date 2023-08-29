@@ -1,4 +1,4 @@
-export const multipartFormData = (dtoName, data, ref) => {
+export const multipartFormData = (dtoName, data, ref, fileListName) => {
   const formData = new FormData();
   formData.append(
     dtoName,
@@ -9,7 +9,7 @@ export const multipartFormData = (dtoName, data, ref) => {
 
   if (ref !== null) {
     Array.from(ref.input.files).forEach((file) => {
-      formData.append("multipartFileList", file);
+      formData.append(fileListName, file);
     });
   }
 
