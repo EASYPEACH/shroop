@@ -71,7 +71,7 @@ public class TransactionController {
 		final @PathVariable Long productId) {
 		transactionService.cancelTransaction(member.getId(), productId);
 
-		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("구매 최소가 완료되었습니다."));
+		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("구매 취소가 완료되었습니다."));
 	}
 
 }
