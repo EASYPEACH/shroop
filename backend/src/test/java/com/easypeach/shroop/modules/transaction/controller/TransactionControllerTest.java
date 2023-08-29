@@ -3,6 +3,7 @@ package com.easypeach.shroop.modules.transaction.controller;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -112,5 +113,22 @@ class TransactionControllerTest extends ControllerTest {
 				)))
 			.andDo(print());
 
+	}
+
+	@DisplayName("구매 취소")
+	@Test
+	void cancelTransaction() throws Exception {
+		Long memberId = 2L;
+		Long productId = 1L;
+
+		doNothing().when(transactionService).cancelTransaction(memberId, productId);
+
+		mockMvc.perform(delete("/api/buying/{productId}", productId))
+			.andExpect(status().isOk())
+			.andDo(document("cancelTransaction",
+				responseFields(
+					fieldWithPath("message").description("결과 메세지")
+				)))
+			.andDo(print());
 	}
 }
