@@ -92,6 +92,7 @@ const handleSubmitReport = async () => {
       isMediate: isMediate.value,
     },
     productRef.value,
+    "multipartFileList",
   );
 
   try {
