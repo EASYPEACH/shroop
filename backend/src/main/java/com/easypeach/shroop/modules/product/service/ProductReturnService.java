@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.easypeach.shroop.modules.notification.service.NotificationService;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductReturn;
 import com.easypeach.shroop.modules.product.dto.request.ProductReturnRequest;
@@ -29,6 +30,8 @@ public class ProductReturnService {
 
 	private final TransactionService transactionService;
 
+	private final NotificationService notificationService;
+
 	@Transactional
 	public void saveProductReturn(final Long memberId, final Long productId,
 		final ProductReturnRequest productReturnRequest,
@@ -39,8 +42,21 @@ public class ProductReturnService {
 
 		Transaction transaction = transactionService.findByProductId(productId);
 		transaction.updateStatus(TransactionStatus.RETURN_REQUEST);
-		
+
 		productReturnImgService.saveProductReturnImg(newProductReturn, productReturnImgList);
+
+		Long sellerId = transaction.getSeller().getId();
+		Long buyerId = transaction.getBuyer().getId();
+		String title = "반품 신청";
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 반품이 신청되었습니다.";
+
+		// 판매자 알림
+		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+
+		// 구매자 알림
+		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
 
 	}
 }
