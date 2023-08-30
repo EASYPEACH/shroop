@@ -1,5 +1,6 @@
 package com.easypeach.shroop.modules.product.dto.response;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductGrade;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 
@@ -24,9 +26,12 @@ public class ProductResponse {
 	private Long price;
 	private Boolean isCheckedDeliveryFee;
 	private String content;
-	private LocalDateTime purchaseDate;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private LocalDate purchaseDate;
 	private Boolean isDefect;
 	private String saleReason;
+
 	private LocalDateTime createDate;
 
 	public ProductResponse(Product product) {

@@ -146,10 +146,7 @@ onBeforeMount(async () => {
       url: `/api/buying/${route.params.id}`,
     });
     console.log(response);
-    product.value.thumb = response.productImgUrl;
-    product.value.title = response.title;
-    product.value.price = response.price;
-    profile.value.point = response.point;
+    product.value = response;
   } catch (error) {
     console.log(error);
   }
@@ -166,6 +163,9 @@ watch(cautionInfoList.value, (caution) => {
 
 const handleRequestPurchase = async () => {
   try {
+    console.log(buyerName.value);
+    console.log(phoneNumber.value);
+    console.log(address.value);
     await postApi({
       url: `/api/buying/${route.params.id}`,
       data: {

@@ -51,7 +51,7 @@ class TransactionHistoryControllerTest extends ControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(PURCHASE_REQUEST.toString()))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("아이패드"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(30000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].imgUrl")
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].productImgUrl")
 				.value("https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png"))
 			.andDo(print());
 
@@ -78,7 +78,7 @@ class TransactionHistoryControllerTest extends ControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(PURCHASE_REQUEST.toString()))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("아이패드"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(30000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].imgUrl")
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].productImgUrl")
 				.value("https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png"))
 			.andDo(print());
 	}
