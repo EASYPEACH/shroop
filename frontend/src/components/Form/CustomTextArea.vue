@@ -1,10 +1,6 @@
 <template>
   <v-textarea
-    :rules="[
-      productDetailRule.required,
-      productDetailRule.min,
-      productDetailRule.max,
-    ]"
+    :rules="[productDetailRule.required, productDetailRule.min]"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     variant="filled"
