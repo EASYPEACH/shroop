@@ -80,6 +80,7 @@ const logout = async () => {
 /* 헤더 왼쪽 타이틀 & 로고 */
 header {
   overflow: visible;
+  border-bottom: 1px solid rgb(var(--v-theme-mainGray), 0.2);
 }
 .logo {
   width: 30px;
