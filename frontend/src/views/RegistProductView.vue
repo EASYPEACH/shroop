@@ -62,7 +62,7 @@
             <h4>가격</h4>
             <custom-text-input
               placeholder-text="가격"
-              :rules="[priceRule.required, priceRule.min, priceRule.check]"
+              :rules="[priceRule.required, priceRule.check]"
               v-model="price"
               @input="handleFormatPrice"
               append-icon="mdi-currency-krw"
@@ -316,6 +316,7 @@ const handleSubmitRegister = async () => {
     if (isValid.value) {
       let data;
       if (isRegister.value) {
+        console.log(formData);
         data = await multipartPostApi({
           url: "/api/products",
           data: formData,

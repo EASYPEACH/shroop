@@ -43,7 +43,7 @@ export const defaultTextRule = {
 
 export const priceRule = {
   required: (value) => !!value || "필수 사항 입니다",
-  min: (value) =>
+  check: (value) =>
     Number(value.split(",").join("")) >= 100 || "100원 이상 입력해주세요",
 };
 
