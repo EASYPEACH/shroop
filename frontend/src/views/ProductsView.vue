@@ -43,10 +43,10 @@
 <script setup>
 import { ref, watch, computed, onBeforeMount } from "vue";
 import { useDisplay } from "vuetify";
+import { getApi } from "@/api/modules";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import { getApi } from "@/api/modules";
 
 const display = useDisplay();
 const isLaptop = ref(display.mdAndUp);
@@ -99,8 +99,17 @@ onBeforeMount(async () => {
   const productData = await getApi({
     url: "/api/products",
   });
-  productCards.value = productData;
-  productCardsOriginal.value = productData;
+  const sortData = productData.sort((a, b) => {
+    if (a.createDate > b.createDate) {
+      return -1;
+    } else if (a.createDate < b.createDate) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  productCards.value = productCardsOriginal.value = sortData;
+
   categoryList.value = ["전체", ...category.map((list) => list.name)];
 });
 </script>
