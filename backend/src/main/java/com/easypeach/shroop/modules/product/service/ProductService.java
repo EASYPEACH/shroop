@@ -63,9 +63,14 @@ public class ProductService {
 		return productResponsesList;
 	}
 
-	public ProductResponse getProductInfo(Long productId) {
+	public ProductResponse getProductInfo(Member member, Long productId) {
 		Product product = productRepository.getById(productId);
-		return setProductResponse(product);
+		ProductResponse productResponse = setProductResponse(product);
+		boolean isLikesProduct = likeRepository.existsLikesByMemberAndProduct(member, product);
+		if (isLikesProduct) {
+			productResponse.setIsLike();
+		}
+		return productResponse;
 	}
 
 	public Product findByProductId(Long productId) {
@@ -81,7 +86,6 @@ public class ProductService {
 
 	@Transactional
 	public Product saveProduct(Long memberId, ProductRequest productRequest) {
-
 		Member seller = memberRepository.getById(memberId);
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		Product product = Product.createProduct(seller, productRequest, category);
@@ -110,7 +114,7 @@ public class ProductService {
 		Product product = productRepository.getById(productId);
 		Member loginMember = memberRepository.getById(memberId);
 		Member productOwnerMember = memberRepository.getById(memberId);
-
+		likeRepository.deleteAllByProduct(product);
 		if (product.getTransaction() != null) {
 			throw ProductException.notStatusDelete(product.getTransaction().getStatus());
 		}
