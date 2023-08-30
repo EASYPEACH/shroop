@@ -83,4 +83,8 @@ public class Transaction {
 	public void updateStatus(TransactionStatus transactionStatus) {
 		this.status = transactionStatus;
 	}
+
+	public void updateDelivery(Delivery delivery) {
+		this.delivery = delivery;
+	}
 }
