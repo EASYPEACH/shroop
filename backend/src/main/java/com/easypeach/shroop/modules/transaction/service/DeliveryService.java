@@ -51,5 +51,9 @@ public class DeliveryService {
 		notificationService.saveNotification(buyer, "택배 등록", "/mypage/1", message);
 
 	}
+
+	public boolean duplicateCheckTrackingNumber(final String trackingNumber) {
+		return deliveryRepository.findByTrackingNumber(trackingNumber).isPresent();
+	}
 }
 
