@@ -2,6 +2,7 @@ package com.easypeach.shroop.modules.transaction.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 
@@ -32,4 +33,16 @@ public class HistoryResponse {
 		this.imgUrl = transaction.getProduct().getProductImgList().get(0).getProductImgUrl();
 	}
 
+	public HistoryResponse(Product product) {
+		if (product.getTransaction() != null) {
+			this.transactionCreateDate = product.getTransaction().getCreateDate();
+			this.transactionStatus = product.getTransaction().getStatus();
+		} else {
+			this.transactionCreateDate = null;
+			this.transactionStatus = null;
+		}
+		this.title = product.getTitle();
+		this.price = product.getPrice();
+		this.imgUrl = product.getProductImgList().get(0).getProductImgUrl();
+	}
 }

@@ -13,6 +13,7 @@ import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.notification.service.NotificationService;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
+import com.easypeach.shroop.modules.product.respository.ProductRepository;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
@@ -36,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TransactionService {
 	private final TransactionRepository transactionRepository;
 
+	private final ProductRepository productRepository;
+
 	private final MemberService memberService;
 
 	private final ProductService productService;
@@ -50,7 +53,7 @@ public class TransactionService {
 		Member buyer = memberService.findById(buyerId);
 
 		Transaction transaction = Transaction.createTransaction(buyer, product.getSeller(), product,
-			TransactionStatus.TRANSACTION_PROGRESS, transactionCreateRequest.getBuyerName(),
+			TransactionStatus.PURCHASE_REQUEST, transactionCreateRequest.getBuyerName(),
 			transactionCreateRequest.getBuyerLocation(),
 			transactionCreateRequest.getBuyerPhoneNumber());
 		transactionRepository.save(transaction);
@@ -138,7 +141,7 @@ public class TransactionService {
 	}
 
 	public Page<HistoryResponse> findAllSellingHistory(Member member, Pageable pageable) {
-		return transactionRepository.findBySellerOrderByCreateDateDesc(member, pageable)
+		return productRepository.findBySellerOrderByCreateDateDesc(member, pageable)
 			.map(HistoryResponse::new);
 	}
 
@@ -171,7 +174,7 @@ public class TransactionService {
 			throw IsNotBuyerException.isNotBuyerException();
 		}
 
-		transaction.updateStatus(TransactionStatus.TRANSACTION_COMPLETE);
+		transaction.updateStatus(TransactionStatus.PURCHASE_CONFIRM);
 
 		addPoint(productId, sellerId);
 
