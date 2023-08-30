@@ -18,7 +18,8 @@ router.beforeEach(async (to, _, next) => {
       to.name === "Detail" ||
       to.name === "Login" ||
       to.name === "Signup" ||
-      to.name === "Products"
+      to.name === "Products" ||
+      to.name === "PhoneAuth"
     ) &&
     !loginCheckStore.isLogin
   ) {
