@@ -47,11 +47,11 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useDisplay } from "vuetify";
+import { getApi } from "@/api/modules";
 import Title from "@/components/Title/MainTitle.vue";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
-import { getApi } from "@/api/modules";
 
 const productCardData = ref([]);
 const display = useDisplay();
@@ -61,7 +61,17 @@ onBeforeMount(async () => {
   const data = await getApi({
     url: "/api/products",
   });
-  productCardData.value = data.slice(0, 6);
+  productCardData.value = data
+    .sort((a, b) => {
+      if (a.createDate > b.createDate) {
+        return -1;
+      } else if (a.createDate < b.createDate) {
+        return 1;
+      } else {
+        return 0;
+      }
+    })
+    .slice(0, 6);
 });
 </script>
 
