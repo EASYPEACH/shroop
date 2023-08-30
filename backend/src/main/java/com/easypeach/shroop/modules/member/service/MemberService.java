@@ -12,7 +12,7 @@ import com.easypeach.shroop.infra.s3.service.S3UploadService;
 import com.easypeach.shroop.modules.member.domain.DuplicateCheckType;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
-import com.easypeach.shroop.modules.global.exception.DuplicateValueException;
+import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;

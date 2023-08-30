@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthFailException;
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthNotExistException;
 import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
+import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
 import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
 import com.easypeach.shroop.modules.product.exception.ProductImgLengthException;
