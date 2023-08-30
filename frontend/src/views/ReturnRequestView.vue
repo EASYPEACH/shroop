@@ -17,6 +17,7 @@
         attach-name="returnRequestImage"
         :images="returnRequestThumb"
       />
+      <p>사진을 2장 이상 첨부해주세요.</p>
       <product-title title="반품 사유" />
       <custom-text-area
         v-model="returnReasonText"
@@ -36,16 +37,16 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { changeFiles, deleteImage, multipartFormData } from "@/utils";
+import { getApi, multipartPostApi } from "@/api/modules";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
 import ImageAttach from "@/components/ImageAttach.vue";
 import CustomTextArea from "@/components/Form/CustomTextArea.vue";
-import { getApi, multipartPostApi } from "@/api/modules";
 import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const router = useRouter();
@@ -129,6 +130,17 @@ const handleErrorEtc = () => {
 };
 
 onBeforeMount(async () => await handleGetProduct());
+
+watchEffect(() => {
+  if (
+    returnReasonText.value.length >= 30 &&
+    returnRequestImageData.value.length >= 2
+  ) {
+    isVailed.value = true;
+  } else {
+    isVailed.value = false;
+  }
+});
 
 const dialogList = ref([
   {
