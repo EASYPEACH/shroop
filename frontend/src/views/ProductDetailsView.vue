@@ -176,11 +176,7 @@
       modalText="정말 삭제하시겠습니까?"
       v-model="deleteModal"
       @handle-confirm="handleClickDeleteRequest"
-    />
-    <plain-modal
-      modalText="삭제 완료 되었습니다"
-      v-model="confirmDelete"
-      @handle-confirm="handleConfirmDelete"
+      @handle-cancle="handleClickCancle"
     />
   </content-layout>
 </template>
@@ -211,7 +207,7 @@ const profile = ref({
 const productContent = ref({
   title: "",
   price: 0,
-  hasDeliveryPrice: null,
+  hasDeliveryPrice: false,
   category: "",
   createDate: "",
   purchaseDate: "",
@@ -223,7 +219,6 @@ const productContent = ref({
 });
 
 const deleteModal = ref(false);
-const confirmDelete = ref(false);
 
 const likeCount = ref(103);
 
@@ -235,7 +230,7 @@ onBeforeMount(async () => {
 
     productContent.value.title = data.title;
     productContent.value.price = data.price;
-    productContent.value.hasDeliveryPrice = data.isDeliveryFee;
+    productContent.value.hasDeliveryPrice = data.isCheckedDeliveryFee;
     productContent.value.category = data.category.name;
     productContent.value.createDate = formatDate(data.createDate);
     productContent.value.purchaseDate = formatDate(data.purchaseDate);
@@ -267,14 +262,13 @@ const handleClickDeleteRequest = async () => {
       url: `/api/products/${route.params.id}`,
     });
     deleteModal.value = false;
-    confirmDelete.value = true;
+    router.push("/");
   } catch (err) {
     console.error(err);
   }
 };
-const handleConfirmDelete = () => {
-  confirmDelete.value = false;
-  router.push("/");
+const handleClickCancle = async () => {
+  deleteModal.value = false;
 };
 </script>
 
