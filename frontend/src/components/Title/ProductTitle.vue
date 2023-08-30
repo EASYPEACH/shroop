@@ -1,7 +1,7 @@
 <template>
   <div class="productTitle">
     <div class="titlebox">
-      <h3>{{ title }}</h3>
+      <h3 :class="{ bigTitle: bigTitle }">{{ title }}</h3>
       <span v-if="isRequired">*필수항목</span>
     </div>
     <v-divider
@@ -16,6 +16,7 @@
 defineProps({
   title: String,
   isRequired: Boolean,
+  bigTitle: Boolean,
 });
 </script>
 
@@ -30,6 +31,9 @@ defineProps({
       padding: 20px 0;
       font-weight: 600;
       font-size: 18px;
+      &.bigTitle {
+        font-size: 1.5rem;
+      }
     }
     span {
       font-size: 14px;
