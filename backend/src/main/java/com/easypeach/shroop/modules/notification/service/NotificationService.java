@@ -34,13 +34,13 @@ public class NotificationService {
 
 		Notification notification = Notification.createNotification(member, title, link, message, false);
 
-		phoneAuthService.sendSms(member.getPhoneNumber(), message);
+		// phoneAuthService.sendSms(member.getPhoneNumber(), message);
 
 		notificationRepository.save(notification);
 	}
 
 	public List<Notification> findByMemberId(final Long memberId) {
-		return notificationRepository.findByMemberId(memberId);
+		return notificationRepository.findByMemberIdOrderByCreateDateDesc(memberId);
 	}
 
 	@Transactional

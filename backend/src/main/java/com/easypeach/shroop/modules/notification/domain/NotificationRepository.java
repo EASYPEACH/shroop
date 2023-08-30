@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-	List<Notification> findByMemberId(Long memberId);
+	List<Notification> findByMemberIdOrderByCreateDateDesc(Long memberId);
 }
