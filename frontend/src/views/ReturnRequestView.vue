@@ -39,7 +39,12 @@
 <script setup>
 import { ref, onBeforeMount, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { changeFiles, deleteImage, multipartFormData } from "@/utils";
+import {
+  changeFiles,
+  deleteImage,
+  multipartFormDataFile,
+  multipartFormDataJson,
+} from "@/utils";
 import { getApi, multipartPostApi } from "@/api/modules";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";
@@ -71,11 +76,13 @@ const handleDeleteProductImage = (idx) => {
   deleteImage(idx, requestImageRef, returnRequestThumb, returnRequestImageData);
 };
 const handleSubmitReport = async () => {
-  const formData = multipartFormData(
-    "productReturnRequest",
-    {
-      content: returnReasonText.value,
-    },
+  let formData = new FormData();
+
+  multipartFormDataJson(formData, "productReturnRequest", {
+    content: returnReasonText.value,
+  });
+  multipartFormDataFile(
+    formData,
     requestImageRef.value,
     "productReturnImgList",
   );
