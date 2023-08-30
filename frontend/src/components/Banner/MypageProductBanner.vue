@@ -149,9 +149,9 @@ const handleDeleteProduct = () => {};
 // 구매확정
 const handleConfirmPurchase = () => {};
 // 구매신청 취소
-const handleCanclePurchaseRequest = () => {
+const handleCanclePurchaseRequest = async () => {
   try {
-    deleteApi({
+    await deleteApi({
       url: `/api/buying/${props.product.id}`,
     });
     router.go(router.currentRoute);
