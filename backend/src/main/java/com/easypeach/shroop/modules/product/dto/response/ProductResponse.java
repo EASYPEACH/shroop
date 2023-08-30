@@ -22,15 +22,17 @@ public class ProductResponse {
 	private Category category;
 	private ProductGrade productGrade;
 	private List<ProductImgResponse> productImgList;
+	private Long likesCount;
+	private Boolean isLike = false;
 	private String brand;
 	private Long price;
 	private Boolean isCheckedDeliveryFee;
 	private String content;
+	private Boolean isDefect;
+	private String saleReason;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private LocalDate purchaseDate;
-	private Boolean isDefect;
-	private String saleReason;
 
 	private LocalDateTime createDate;
 
@@ -47,6 +49,7 @@ public class ProductResponse {
 		this.isDefect = product.getIsDefect();
 		this.saleReason = product.getSaleReason();
 		this.createDate = product.getCreateDate();
+		this.likesCount = product.getLikesCount();
 	}
 
 	public void setProductImgList(List<ProductImgResponse> productImgList) {
@@ -59,6 +62,10 @@ public class ProductResponse {
 
 	public void setTransaction(TransactionStatus transactionStatus) {
 		this.transactionStatus = transactionStatus;
+	}
+
+	public void setIsLike() {
+		this.isLike = true;
 	}
 
 }

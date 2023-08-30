@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.easypeach.shroop.modules.likes.domain.LikeRepository;
+import com.easypeach.shroop.modules.likes.domain.Likes;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.product.domain.Category;
@@ -36,13 +38,26 @@ public class ProductService {
 	private final CategoryRepository categoryRepository;
 	private final ProductImgRepository productImgRepository;
 	private final TransactionRepository transactionRepository;
+	private final LikeRepository likeRepository;
 
-	public List<ProductResponse> findAll() {
+	public List<ProductResponse> findAll(Member member) {
 		List<Product> productList = productRepository.findAll();
 		List<ProductResponse> productResponsesList = new ArrayList<>();
+		List<Likes> likeList = new ArrayList<>();
+		if (member != null) {
+			likeList = likeRepository.findAllByMember(member);
+		}
 
 		for (Product product : productList) {
 			productResponsesList.add(setProductResponse(product));
+		}
+
+		for (Likes likes : likeList) {
+			for (ProductResponse productResponse : productResponsesList) {
+				if (likes.getProduct().getId() == productResponse.getId()) {
+					productResponse.setIsLike();
+				}
+			}
 		}
 
 		return productResponsesList;

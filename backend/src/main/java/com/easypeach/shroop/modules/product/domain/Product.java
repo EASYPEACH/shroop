@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -84,6 +85,10 @@ public class Product {
 	@Column(name = "sale_reason", length = 255, nullable = false)
 	private String saleReason;
 
+	@Column(name = "likes")
+	@ColumnDefault(value = "0")
+	private Long likesCount;
+
 	@Column(name = "create_date")
 	@CreatedDate
 	private LocalDateTime createDate;
@@ -121,6 +126,10 @@ public class Product {
 		final Category category
 	) {
 		setByProductRequest(this, productRequest, category);
+	}
+
+	public void setLikesCount(Long likesCount) {
+		this.likesCount = likesCount;
 	}
 
 }

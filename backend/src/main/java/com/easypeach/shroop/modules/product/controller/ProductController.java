@@ -37,8 +37,8 @@ public class ProductController {
 	private final ProductImgService productImgService;
 
 	@GetMapping
-	public ResponseEntity<List<ProductResponse>> getAllProduct() {
-		return ResponseEntity.status(HttpStatus.OK).body(productService.findAll());
+	public ResponseEntity<List<ProductResponse>> getAllProduct(@LoginMember Member member) {
+		return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(member));
 	}
 
 	@GetMapping("/{productId}")
