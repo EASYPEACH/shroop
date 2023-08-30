@@ -51,7 +51,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { deleteApi } from "@/api/modules";
+import { deleteApi, patchApi } from "@/api/modules";
 import TRANSACTION_STATUS from "@/consts/status";
 import MiniButton from "../Button/MiniButton.vue";
 import PlainModal from "../Modal/PlainModal.vue";
@@ -155,7 +155,16 @@ const MYPAGE = [
 // 삭제하기
 const handleDeleteProduct = () => {};
 // 구매확정
-const handleConfirmPurchase = () => {};
+const handleConfirmPurchase = async () => {
+  try {
+    await patchApi({
+      url: `/api/buying/confirm/${props.product.id}`,
+    });
+    router.go(router.currentRoute);
+  } catch (error) {
+    console.log(error);
+  }
+};
 // 구매신청 취소
 const handleCanclePurchaseRequest = async () => {
   try {
@@ -177,7 +186,7 @@ const dialogList = ref([
     id: 1,
     text: "구매를 확정 하시겠습니까?",
     value: false,
-    callback: () => {},
+    callback: handleConfirmPurchase,
   },
   {
     id: 2,
