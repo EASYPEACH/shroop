@@ -26,7 +26,7 @@ public class DeliveryService {
 	private final NotificationService notificationService;
 
 	@Transactional
-	public void saveDelivery(final Long memberId, final Long productId, final DeliveryRequest deliveryRequest) {
+	public void saveDelivery(final Long productId, final DeliveryRequest deliveryRequest) {
 		String trackingNumber = deliveryRequest.getTrackingNumber();
 		String parcel = deliveryRequest.getParcel();
 
