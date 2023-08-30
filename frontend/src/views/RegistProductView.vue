@@ -18,7 +18,6 @@
           ref="productRef"
           @change-files="handleAttachProductImage"
           @delete-image="handleDeleteProductImage"
-          required
           attach-name="productImage"
           :images="productImages"
         />
@@ -122,7 +121,6 @@
         </ul>
         <image-attach
           v-if="isDefect"
-          :required="isDefect"
           ref="defectedtRef"
           @change-files="handleAttachDefectedImage"
           @delete-image="handleDeleteDefectedImage"
@@ -290,54 +288,60 @@ onBeforeMount(async () => {
 const handleSubmitRegister = async () => {
   let formData = new FormData();
 
-  if (!isValid.value) {
+  if (productImages.value.length < 2) {
     checkRequired.value = false;
   } else {
-    checkRequired.value = true;
-  }
+    if (isDefect.value && defectedImages.value.length < 2) {
+      checkRequired.value = false;
+    } else if (
+      !isDefect.value ||
+      (isDefect.value && defectedImages.value.length >= 2)
+    ) {
+      checkRequired.value = true;
+      multipartFormDataFile(formData, productRef.value, "productImgList");
+      multipartFormDataFile(formData, defectedtRef.value, "defectImgList");
+      multipartFormDataJson(formData, "productRequest", {
+        title: title.value,
+        categoryId: category.value.find(
+          (list) => list.name === categoryValue.value,
+        ).id,
+        brand: brandModel.value,
+        price: Number(price.value.split(",").join("")),
+        isCheckedDeliveryFee: isCheckedDeliveryFee.value,
+        purchaseDate: purchaseDate.value,
+        productGrade: PRODUCT_GRADE[productGradeValue.value],
+        isDefect: isDefect.value,
+        saleReason: saleReason.value,
+        content: content.value,
+      });
 
-  multipartFormDataFile(formData, productRef.value, "productImgList");
-  multipartFormDataFile(formData, defectedtRef.value, "defectImgList");
-  multipartFormDataJson(formData, "productRequest", {
-    title: title.value,
-    categoryId: category.value.find((list) => list.name === categoryValue.value)
-      .id,
-    brand: brandModel.value,
-    price: Number(price.value.split(",").join("")),
-    isCheckedDeliveryFee: isCheckedDeliveryFee.value,
-    purchaseDate: purchaseDate.value,
-    productGrade: PRODUCT_GRADE[productGradeValue.value],
-    isDefect: isDefect.value,
-    saleReason: saleReason.value,
-    content: content.value,
-  });
+      try {
+        if (isValid.value) {
+          let data;
+          if (isRegister.value) {
+            console.log(formData);
+            data = await multipartPostApi({
+              url: "/api/products",
+              data: formData,
+            });
+          } else {
+            multipartFormDataJson(formData, "productId", route.params.id);
+            data = await multipartPatchApi({
+              url: `/api/products`,
+              data: formData,
+            });
+          }
 
-  try {
-    if (isValid.value) {
-      let data;
-      if (isRegister.value) {
-        console.log(formData);
-        data = await multipartPostApi({
-          url: "/api/products",
-          data: formData,
-        });
-      } else {
-        multipartFormDataJson(formData, "productId", route.params.id);
-        data = await multipartPatchApi({
-          url: `/api/products`,
-          data: formData,
-        });
+          router.push(`/detail/${data.productId}`);
+        }
+      } catch (err) {
+        console.error(err);
       }
-
-      router.push(`/detail/${data.productId}`);
     }
-  } catch (err) {
-    console.error(err);
   }
 };
 const handleAttachProductImage = (files) => {
   changeFiles(files, productRef, productImages, productImagesData);
-  console.log(productRef.value.input.files);
 };
 const handleAttachDefectedImage = (files) => {
   changeFiles(files, defectedtRef, defectedImages, defectedImagesData);
