@@ -104,6 +104,7 @@ public class Product {
 	) {
 		Product product = new Product();
 		product.seller = seller;
+		product.likesCount = 0L;
 		return setByProductRequest(product, productRequest, category);
 	}
 

@@ -42,8 +42,8 @@ public class ProductController {
 	}
 
 	@GetMapping("/{productId}")
-	public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
-		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductInfo(productId));
+	public ResponseEntity<ProductResponse> getProduct(@LoginMember Member member, @PathVariable Long productId) {
+		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductInfo(member, productId));
 	}
 
 	@PostMapping
