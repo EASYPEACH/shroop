@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="top">
-      <span>{{ product.createDate }}</span>
+      <span>{{ formatDate(product.createDate) }}</span>
       <span>{{ product.category.name }}</span>
     </div>
 
@@ -35,6 +35,7 @@
 
 <script setup>
 import LikeButton from "../Button/LikeButton.vue";
+import { formatDate } from "@/utils";
 
 defineProps({
   product: {
