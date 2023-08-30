@@ -7,6 +7,6 @@ import com.easypeach.shroop.modules.auth.exception.PhoneAuthNotExistException;
 
 public interface PhoneAuthRepository extends JpaRepository<PhoneAuth, Long> {
 	default PhoneAuth getById(final Long id) {
-		return findById(id).orElseThrow(() -> new PhoneAuthNotExistException("인증 정보를 찾을 수 없습니다"));
+		return findById(id).orElseThrow(() -> new PhoneAuthNotExistException("휴대전화번호 및 인증 번호를 확인해주세요"));
 	}
 }
