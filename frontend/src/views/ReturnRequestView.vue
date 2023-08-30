@@ -2,7 +2,7 @@
   <content-layout>
     <main-title title="반품신청" />
     <v-form
-      v-model="isVailed"
+      v-model="isValid"
       enctype="multipart/form-data"
       @submit.prevent="handleSubmitReturnRequest"
     >
@@ -23,7 +23,7 @@
         v-model="returnReasonText"
         placeholder="반품사유를 최대한 상세하게 기재 부탁드리겠습니다"
       />
-      <submit-button :disabled="!isVailed" text="반품신청" />
+      <submit-button :disabled="!isValid" text="반품신청" />
     </v-form>
     <plain-modal
       v-for="dialog in dialogList"
@@ -51,7 +51,7 @@ import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const router = useRouter();
 const route = useRoute();
-const isVailed = ref(false);
+const isValid = ref(false);
 const productId = ref(route.params.id);
 const productName = ref("");
 const returnRequestImageData = ref({});
@@ -136,9 +136,9 @@ watchEffect(() => {
     returnReasonText.value.length >= 30 &&
     returnRequestImageData.value.length >= 2
   ) {
-    isVailed.value = true;
+    isValid.value = true;
   } else {
-    isVailed.value = false;
+    isValid.value = false;
   }
 });
 
