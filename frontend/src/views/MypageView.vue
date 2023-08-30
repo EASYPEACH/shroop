@@ -14,12 +14,7 @@
             v-for="t in tabList"
             :key="t.id"
             :value="t.title"
-            @click="
-              () => {
-                $router.push(`/mypage/${t.id}`);
-                handleHistory(t.id);
-              }
-            "
+            @click="handleTabClick(t.id)"
           >
             <v-icon start> {{ t.icon }} </v-icon>
             {{ t.title }}
@@ -142,7 +137,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -151,11 +146,7 @@ import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
-import DUMMY from "@/consts/dummy";
 import { getApi } from "@/api/modules";
-import { onBeforeMount } from "vue";
-import { computed } from "vue";
-import { watch } from "vue";
 
 const tabList = ref([
   {
@@ -175,7 +166,6 @@ const tabList = ref([
   },
 ]);
 const router = useRoute();
-const productDummyList = ref(DUMMY);
 const display = useDisplay();
 const tab = ref(tabList.value[router.params.index].title);
 const showChargePointModal = ref(false);
@@ -208,6 +198,10 @@ onBeforeMount(async () => {
 //     })
 //     .filter((item) => item.id != id);
 // };
+const handleTabClick = (tabId) => {
+  this.$router.push(`/mypage/${tabId}`);
+  this.handleHistory(tabId);
+};
 
 const fetchData = async (url) => {
   try {
