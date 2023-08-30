@@ -37,16 +37,18 @@ public class DeliveryService {
 		transaction.updateDelivery(newDelivery);
 		transaction.updateStatus(TransactionStatus.COMPLETE);
 
+		Long sellerId = transaction.getSeller().getId();
+		Long buyer = transaction.getBuyer().getId();
 		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
 			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
 		String message = "'" + productTitle + "'의 택배 등록이 완료되었습니다.";
 		log.info("메시지 : " + message);
 
 		// 판매자 알림
-		notificationService.saveNotification(transaction.getSeller().getId(), "택배 등록", "/mypage/2", message);
+		notificationService.saveNotification(sellerId, "택배 등록", "/mypage/2", message);
 
 		// 구매자 알림
-		notificationService.saveNotification(memberId, "택배 등록", "/mypage/1", message);
+		notificationService.saveNotification(buyer, "택배 등록", "/mypage/1", message);
 
 	}
 }
