@@ -1,8 +1,10 @@
 <template>
   <div class="banner">
     <div class="top">
-      <span>{{ formatDate(product.createDate) }}</span>
-      <span>{{ product.category.name }}</span>
+      <span v-if="product.createDate">{{
+        formatDate(product.createDate)
+      }}</span>
+      <span v-if="product.category">{{ product.category.name }}</span>
     </div>
 
     <div class="banner__content">
@@ -13,8 +15,10 @@
       >
         <img
           :src="
-            product.productImgList.filter((img) => !img.isDefect)[0]
-              .productImgUrl
+            product.productImgList
+              ? product.productImgList.filter((img) => !img.isDefect)[0]
+                  .productImgUrl
+              : product.productImgUrl
           "
           :alt="product.title"
         />

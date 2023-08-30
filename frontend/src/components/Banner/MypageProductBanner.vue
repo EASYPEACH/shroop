@@ -7,12 +7,24 @@
     >
       <aside>
         <div v-if="isStatus" class="status">
-          <div>{{ product.status }}</div>
+          <div>
+            {{
+              product.transactionStatus === null
+                ? TRANSACTION_STATUS.SELLING
+                : TRANSACTION_STATUS[product.transactionStatus]
+            }}
+          </div>
           <ul>
             <li v-for="list in MYPAGE" :key="list.ACTION">
               <mini-button
                 :text="list.ACTION"
-                v-if="list.STATUS(product.status)"
+                v-if="
+                  list.STATUS(
+                    product.transactionStatus === null
+                      ? TRANSACTION_STATUS.SELLING
+                      : TRANSACTION_STATUS[product.transactionStatus],
+                  )
+                "
                 @click="() => list.CLICK_EVENT(product.id)"
               />
             </li>
