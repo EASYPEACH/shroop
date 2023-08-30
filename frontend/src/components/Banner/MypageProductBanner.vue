@@ -51,7 +51,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { deleteApi } from "@/api/modules";
+import { deleteApi, patchApi } from "@/api/modules";
 import TRANSACTION_STATUS from "@/consts/status";
 import MiniButton from "../Button/MiniButton.vue";
 import PlainModal from "../Modal/PlainModal.vue";
@@ -168,7 +168,16 @@ const handleCanclePurchaseRequest = async () => {
   }
 };
 // 반품확정
-const handleReturnRequestConfirm = () => {};
+const handleReturnRequestConfirm = async () => {
+  try {
+    await patchApi({
+      url: `/api/buying/return/confirm/${props.product.id}`,
+    });
+    router.go(router.currentRoute);
+  } catch (error) {
+    console.log(error);
+  }
+};
 // 구매자정보보기
 const handleShowBuyerInfo = () => {};
 
@@ -183,7 +192,7 @@ const dialogList = ref([
     id: 2,
     text: "반품을 확정 하시겠습니까?",
     value: false,
-    callback: () => {},
+    callback: handleReturnRequestConfirm,
   },
   {
     id: 3,
