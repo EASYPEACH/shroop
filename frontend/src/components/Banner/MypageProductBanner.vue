@@ -26,6 +26,7 @@
       :modalText="list.text"
       v-model="list.value"
       @handle-cancle="() => (list.value = !list.value)"
+      @handle-confirm="list.callback"
     />
     <buyer-info-modal
       v-model="showBuyerInfoDialog"
@@ -38,7 +39,8 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import TRANSACTION_STATUS from "@/consts/delivery";
+import { deleteApi } from "@/api/modules";
+import TRANSACTION_STATUS from "@/consts/status";
 import MiniButton from "../Button/MiniButton.vue";
 import PlainModal from "../Modal/PlainModal.vue";
 import BuyerInfoModal from "../Modal/BuyerInfoModal.vue";
@@ -88,11 +90,7 @@ const MYPAGE = [
   {
     ACTION: "구매확정",
     STATUS: (status) => {
-      return (
-        !props.isSeller &&
-        (status === TRANSACTION_STATUS.SHIPPING ||
-          status === TRANSACTION_STATUS.COMPLETE)
-      );
+      return !props.isSeller && status === TRANSACTION_STATUS.COMPLETE;
     },
     CLICK_EVENT: () => (dialogList.value[0].value = true),
   },
@@ -140,39 +138,54 @@ const MYPAGE = [
     CLICK_EVENT: (id) => router.push(`/deliveryRegist/${id}`),
   },
 ];
-const dialogList = ref([
-  {
-    id: 1,
-    text: "구매를 확정 하시겠습니까?",
-    value: false,
-  },
-  {
-    id: 2,
-    text: "반품을 확정 하시겠습니까?",
-    value: false,
-  },
-  {
-    id: 3,
-    text: "상품을 삭제하시겠습니까?",
-    value: false,
-  },
-  {
-    id: 4,
-    text: "구매신청을 취소하시겠습니까?",
-    value: false,
-  },
-]);
+
 // TODO
 // 삭제하기
 const handleDeleteProduct = () => {};
 // 구매확정
 const handleConfirmPurchase = () => {};
 // 구매신청 취소
-const handleCanclePurchaseRequest = () => {};
+const handleCanclePurchaseRequest = async () => {
+  try {
+    await deleteApi({
+      url: `/api/buying/${props.product.id}`,
+    });
+    router.go(router.currentRoute);
+  } catch (error) {
+    console.log(error);
+  }
+};
 // 반품확정
 const handleReturnRequestConfirm = () => {};
 // 구매자정보보기
 const handleShowBuyerInfo = () => {};
+
+const dialogList = ref([
+  {
+    id: 1,
+    text: "구매를 확정 하시겠습니까?",
+    value: false,
+    callback: () => {},
+  },
+  {
+    id: 2,
+    text: "반품을 확정 하시겠습니까?",
+    value: false,
+    callback: () => {},
+  },
+  {
+    id: 3,
+    text: "상품을 삭제하시겠습니까?",
+    value: false,
+    callback: () => {},
+  },
+  {
+    id: 4,
+    text: "구매신청을 취소하시겠습니까?",
+    value: false,
+    callback: handleCanclePurchaseRequest,
+  },
+]);
 </script>
 
 <style lang="scss" scoped>

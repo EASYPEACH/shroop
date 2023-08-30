@@ -13,6 +13,7 @@ import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.notification.service.NotificationService;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
+import com.easypeach.shroop.modules.product.respository.ProductRepository;
 import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
@@ -23,6 +24,7 @@ import com.easypeach.shroop.modules.transaction.dto.response.HistoryResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.exception.IsNotBuyerException;
+import com.easypeach.shroop.modules.transaction.exception.IsNotSellerException;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TransactionService {
 	private final TransactionRepository transactionRepository;
+
+	private final ProductRepository productRepository;
 
 	private final MemberService memberService;
 
@@ -49,7 +53,7 @@ public class TransactionService {
 		Member buyer = memberService.findById(buyerId);
 
 		Transaction transaction = Transaction.createTransaction(buyer, product.getSeller(), product,
-			TransactionStatus.TRANSACTION_PROGRESS, transactionCreateRequest.getBuyerName(),
+			TransactionStatus.PURCHASE_REQUEST, transactionCreateRequest.getBuyerName(),
 			transactionCreateRequest.getBuyerLocation(),
 			transactionCreateRequest.getBuyerPhoneNumber());
 		transactionRepository.save(transaction);
@@ -129,7 +133,6 @@ public class TransactionService {
 		return transactionRepository.getByProductId(productId);
 	}
 
-
 	public List<HistoryResponse> findAllBuyingHistory(Member member) {
 		List<Transaction> transactionList = transactionRepository.findAllByBuyer(member);
 		return transactionList.stream()
@@ -138,7 +141,7 @@ public class TransactionService {
 	}
 
 	public Page<HistoryResponse> findAllSellingHistory(Member member, Pageable pageable) {
-		return transactionRepository.findBySellerOrderByCreateDateDesc(member, pageable)
+		return productRepository.findBySellerOrderByCreateDateDesc(member, pageable)
 			.map(HistoryResponse::new);
 	}
 
@@ -164,14 +167,54 @@ public class TransactionService {
 	public void purchaseConfirm(final Long memberId, final Long productId) {
 
 		Transaction transaction = findByProductId(productId);
+		Long sellerId = transaction.getSeller().getId();
+		Long buyerId = transaction.getBuyer().getId();
 
-		if (transaction.getBuyer().getId() != memberId) {
+		if (buyerId != memberId) {
 			throw IsNotBuyerException.isNotBuyerException();
 		}
 
-		transaction.updateStatus(TransactionStatus.TRANSACTION_COMPLETE);
+		transaction.updateStatus(TransactionStatus.PURCHASE_CONFIRM);
 
-		addPoint(productId, memberId);
+		addPoint(productId, sellerId);
+
+		String title = "구매 확정";
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 구매가 확정되었습니다.";
+
+		// 판매자 알림
+		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+
+		// 구매자 알림
+		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
+	}
+
+	@Transactional
+	public void returnConfirm(final Long memberId, final Long productId) {
+
+		Transaction transaction = findByProductId(productId);
+		Long sellerId = transaction.getSeller().getId();
+		Long buyerId = transaction.getBuyer().getId();
+
+		if (sellerId != memberId) {
+			throw IsNotSellerException.isNotSellerException();
+		}
+
+		transaction.updateStatus(TransactionStatus.RETURN_COMPLETE);
+
+		String title = "반품 확정";
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 반품이 확정되었습니다.";
+
+		// 판매자 알림
+		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+
+		// 구매자 알림
+		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
+
+		addPoint(productId, buyerId);
 	}
 
 }

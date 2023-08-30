@@ -148,4 +148,21 @@ class TransactionControllerTest extends ControllerTest {
 				)))
 			.andDo(print());
 	}
+
+	@DisplayName("반품 확정")
+	@Test
+	void returnConfirm() throws Exception {
+		Long memberId = 1L;
+		Long productId = 1L;
+
+		doNothing().when(transactionService).returnConfirm(memberId, productId);
+
+		mockMvc.perform(patch("/api/buying/return/confirm/{productId}", productId))
+			.andExpect(status().isOk())
+			.andDo(document("returnConfirm",
+				responseFields(
+					fieldWithPath("message").description("결과 메세지")
+				)))
+			.andDo(print());
+	}
 }

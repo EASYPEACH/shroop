@@ -4,12 +4,18 @@
       <v-img
         class="align-end text-white"
         height="200"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        :src="
+          productCardData.productImgList.filter((img) => !img.isDefect)[0]
+            .productImgUrl
+        "
         cover
       >
       </v-img>
     </router-link>
-    <v-card-text class="pt-3"> {{ productCardData.createDate }} </v-card-text>
+    <v-card-text class="pt-3">
+      {{ formatDate(productCardData.createDate) }}
+      <span>&nbsp; {{ productCardData.category.name }}</span>
+    </v-card-text>
     <v-card-subtitle class="pt-4 text-h5">
       {{ productCardData.title }}
     </v-card-subtitle>
@@ -30,6 +36,7 @@
 
 <script setup>
 import LikeButton from "../Button/LikeButton.vue";
+import { formatDate } from "@/utils";
 defineProps({
   productCardData: Object,
 });
@@ -51,6 +58,9 @@ defineEmits("handle-click-like");
   padding-bottom: 0;
   padding-left: 1rem;
   color: gray;
+  span {
+    color: rgb(var(--v-theme-subBlue));
+  }
 }
 
 .v-card-actions {

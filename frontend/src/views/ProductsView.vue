@@ -14,7 +14,7 @@
     <div class="products">
       <ul class="products__list">
         <li
-          v-for="productCardData in productCardsRef.slice(startIndex, endIndex)"
+          v-for="productCardData in productCards.slice(startIndex, endIndex)"
           :key="productCardData.id"
         >
           <product-card
@@ -40,11 +40,10 @@
     </div>
   </content-layout>
 </template>
-
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onBeforeMount } from "vue";
 import { useDisplay } from "vuetify";
-import DUMMY from "@/consts/dummy";
+import { getApi } from "@/api/modules";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -52,22 +51,15 @@ import ContentLayout from "@/layouts/ContentLayout.vue";
 const display = useDisplay();
 const isLaptop = ref(display.mdAndUp);
 
-const categoryList = ref([
-  `전체`,
-  `가전제품`,
-  `전자제품`,
-  `옷`,
-  `가구`,
-  `신발`,
-  `생필품`,
-]);
+const categoryList = ref([]);
 
-const productCards = ref(DUMMY);
-const productCardsRef = ref(productCards.value);
+const productCardsOriginal = ref([]);
+const productCards = ref([]);
 const perPage = ref(9); // 페이지당 상품 수
 const currentPage = ref(1); // 현재 페이지
+
 const productCount = computed(() => {
-  return productCardsRef.value.length;
+  return productCards.value.length;
 });
 // 페이지 수
 const pageCount = computed(() => {
@@ -83,20 +75,42 @@ const handleChangePage = () => {
   );
   window.scrollTo({ top: 0 });
 };
-const currentCategory = ref(`전체`);
+const currentCategory = ref(["전체"]);
+
 const handleUpdateCategory = () => {
-  productCardsRef.value = productCards.value.filter((product) => {
-    if (currentCategory.value === `전체`) {
+  productCards.value = [...productCardsOriginal.value].filter((product) => {
+    if (currentCategory.value === "전체") {
       return true;
     } else {
-      return product.category === currentCategory.value;
+      return product.category.name === currentCategory.value;
     }
   });
 };
 
-watch(productCardsRef, () => {
+watch(productCards, () => {
   currentPage.value = 1;
   handleChangePage();
+});
+
+onBeforeMount(async () => {
+  const category = await getApi({
+    url: "/api/categorys",
+  });
+  const productData = await getApi({
+    url: "/api/products",
+  });
+  const sortData = productData.sort((a, b) => {
+    if (a.createDate > b.createDate) {
+      return -1;
+    } else if (a.createDate < b.createDate) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  productCards.value = productCardsOriginal.value = sortData;
+
+  categoryList.value = ["전체", ...category.map((list) => list.name)];
 });
 </script>
 
@@ -124,6 +138,7 @@ section {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
+
   @media (max-width: 960px) {
     .products__list {
       display: flex;

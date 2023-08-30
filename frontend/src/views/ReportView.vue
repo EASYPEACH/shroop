@@ -53,7 +53,12 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
-import { changeFiles, deleteImage, multipartFormData } from "@/utils";
+import {
+  changeFiles,
+  deleteImage,
+  multipartFormDataFile,
+  multipartFormDataJson,
+} from "@/utils";
 import { multipartPostApi } from "@/api/modules";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -84,16 +89,15 @@ const handleSubmit = () => {
   dialogList.value[0].isShow = true;
 };
 const handleSubmitReport = async () => {
-  const formData = multipartFormData(
-    "reportRequest",
-    {
-      title: title.value,
-      content: reportReason.value,
-      isMediate: isMediate.value,
-    },
-    productRef.value,
-    "multipartFileList",
-  );
+  const formData = new FormData();
+
+  multipartFormDataJson(formData, "reportRequest", {
+    title: title.value,
+    content: reportReason.value,
+    isMediate: isMediate.value,
+  });
+
+  multipartFormDataFile(formData, productRef.value, "multipartFileList");
 
   try {
     await multipartPostApi({
