@@ -14,7 +14,12 @@
             v-for="t in tabList"
             :key="t.id"
             :value="t.title"
-            @click="() => $router.push(`/mypage/${t.id}`)"
+            @click="
+              () => {
+                $router.push(`/mypage/${t.id}`);
+                handleHistory(t.id);
+              }
+            "
           >
             <v-icon start> {{ t.icon }} </v-icon>
             {{ t.title }}
@@ -64,7 +69,7 @@
                 <mini-button text="충전" @click="showChargePointModal = true" />
               </div>
             </div>
-            <div class="mypage__like">
+            <!-- <div class="mypage__like">
               <h3>좋아요 <v-icon icon="mdi-heart" class="like-icon" /></h3>
               <ul>
                 <info-alert
@@ -81,7 +86,7 @@
                   />
                 </li>
               </ul>
-            </div>
+            </div> -->
           </v-window-item>
           <v-window-item value="구매내역">
             <ul>
@@ -126,6 +131,8 @@ import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
 import DUMMY from "@/consts/dummy";
+import { getApi } from "@/api/modules";
+import { onBeforeMount } from "vue";
 
 const tabList = ref([
   {
@@ -157,73 +164,26 @@ const profile = ref({
   point: 20000,
 });
 
-const purchaseList = ref([
-  {
-    id: 1,
-    title: "아이폰 14 pro",
-    status: "반품신청",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    createDate: `2023-08-10`,
-    price: 4000,
-  },
-  {
-    id: 2,
-    title: "아이폰 14 pro",
-    status: "배송중",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    createDate: `2023-08-10`,
-    price: 4000,
-  },
-  {
-    id: 3,
-    title: "아이폰 14 pro",
-    status: "구매신청",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    createDate: `2023-08-10`,
-    price: 4000,
-  },
-  {
-    id: 4,
-    title: "아이폰 14 pro",
-    status: "반품완료",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    price: 4000,
-  },
-]);
-const sellList = ref([
-  {
-    id: 1,
-    title: "아이폰 14 pro",
-    status: "판매중",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    createDate: `2023-08-10`,
-    price: 4000,
-  },
-  {
-    id: 2,
-    title: "아이폰 14 pro",
-    status: "반품신청",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    createDate: `2023-08-10`,
-    price: 4000,
-  },
-  {
-    id: 3,
-    title: "아이폰 14 pro",
-    status: "배송중",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    createDate: `2023-08-10`,
-    price: 4000,
-  },
-  {
-    id: 4,
-    title: "아이폰 14 pro",
-    status: "구매신청",
-    thumb: "https://cdn.vuetifyjs.com/images/john.jpg",
-    createDate: `2023-08-10`,
-    price: 4000,
-  },
-]);
+const purchaseList = ref([]);
+const sellList = ref([]);
+
+onBeforeMount(async () => {
+  try {
+    const purchaseData = await getApi({
+      url: "/api/buying/history",
+    });
+    const sellData = await getApi({
+      url: "/api/selling/history?page=0&size=5",
+    });
+    purchaseList.value = purchaseData;
+    sellList.value = sellData;
+    console.log(purchaseList);
+    console.log(sellList.value.length);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const handleToggleHeart = (id) => {
   productDummyList.value = productDummyList.value
     .map((item) => {
@@ -233,6 +193,30 @@ const handleToggleHeart = (id) => {
       return item;
     })
     .filter((item) => item.id != id);
+};
+
+const handleHistory = async (id) => {
+  if (id === 1) {
+    try {
+      const purchaseData = await getApi({
+        url: "/api/buying/history",
+      });
+      purchaseList.value = purchaseData;
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  } else if (id === 2) {
+    try {
+      const sellData = await getApi({
+        url: "/api/selling/history?page=4&size=5",
+      });
+      sellList.value = sellData;
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 </script>
 

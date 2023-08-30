@@ -1,6 +1,6 @@
 package com.easypeach.shroop.modules.product.dto.request;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -33,7 +33,7 @@ public class ProductRequest {
 	private Boolean isCheckedDeliveryFee;
 
 	@NotNull
-	private LocalDateTime purchaseDate;
+	private LocalDate purchaseDate;
 
 	@NotNull
 	private ProductGrade productGrade;
@@ -50,7 +50,7 @@ public class ProductRequest {
 	private String content;
 
 	public ProductRequest(final String title, final Long categoryId,
-		final String brand, final Long price, final Boolean isCheckedDeliveryFee, final LocalDateTime purchaseDate,
+		final String brand, final Long price, final Boolean isCheckedDeliveryFee, final LocalDate purchaseDate,
 		final ProductGrade productGrade, final Boolean isDefect, final String saleReason, final String content) {
 		this.title = title;
 		this.categoryId = categoryId;

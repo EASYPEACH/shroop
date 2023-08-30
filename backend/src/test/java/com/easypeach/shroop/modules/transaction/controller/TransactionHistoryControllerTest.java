@@ -36,8 +36,8 @@ class TransactionHistoryControllerTest extends ControllerTest {
 	void getBuyingHistory() throws Exception {
 		List<HistoryResponse> dtoList = new ArrayList<>();
 		LocalDateTime time = LocalDateTime.of(2019, 11, 12, 12, 32, 22, 3333);
-		HistoryResponse dto = new HistoryResponse(time,
-			TRANSACTION_PROGRESS, "아이패드", 30000L,
+		HistoryResponse dto = new HistoryResponse(1L, time,
+			PURCHASE_REQUEST, "아이패드", 30000L,
 			"https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png");
 		dtoList.add(dto);
 
@@ -46,12 +46,13 @@ class TransactionHistoryControllerTest extends ControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/buying/history")
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionCreateDate")
 				.value(time.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(TRANSACTION_PROGRESS.toString()))
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(PURCHASE_REQUEST.toString()))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("아이패드"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(30000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].imgUrl")
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].productImgUrl")
 				.value("https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png"))
 			.andDo(print());
 
@@ -61,8 +62,8 @@ class TransactionHistoryControllerTest extends ControllerTest {
 	void getSellingHistory() throws Exception {
 		List<HistoryResponse> dtoList = new ArrayList<>();
 		LocalDateTime time = LocalDateTime.of(2019, 11, 12, 12, 32, 22, 3333);
-		HistoryResponse dto = new HistoryResponse(time,
-			TRANSACTION_PROGRESS, "아이패드", 30000L,
+		HistoryResponse dto = new HistoryResponse(1L, time,
+			PURCHASE_REQUEST, "아이패드", 30000L,
 			"https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png");
 		dtoList.add(dto);
 
@@ -73,12 +74,13 @@ class TransactionHistoryControllerTest extends ControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/selling/history")
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionCreateDate")
 				.value(time.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(TRANSACTION_PROGRESS.toString()))
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(PURCHASE_REQUEST.toString()))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("아이패드"))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(30000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].imgUrl")
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].productImgUrl")
 				.value("https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png"))
 			.andDo(print());
 	}

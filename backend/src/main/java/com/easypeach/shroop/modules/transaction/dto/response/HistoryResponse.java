@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryResponse {
+	private Long id;
 
 	private LocalDateTime transactionCreateDate;
 
@@ -23,14 +24,15 @@ public class HistoryResponse {
 
 	private Long price;
 
-	private String imgUrl;
+	private String productImgUrl;
 
 	public HistoryResponse(Transaction transaction) {
+		this.id = transaction.getProduct().getId();
 		this.transactionCreateDate = transaction.getCreateDate();
 		this.transactionStatus = transaction.getStatus();
 		this.title = transaction.getProduct().getTitle();
 		this.price = transaction.getProduct().getPrice();
-		this.imgUrl = transaction.getProduct().getProductImgList().get(0).getProductImgUrl();
+		this.productImgUrl = transaction.getProduct().getProductImgList().get(0).getProductImgUrl();
 	}
 
 	public HistoryResponse(Product product) {
@@ -41,8 +43,9 @@ public class HistoryResponse {
 			this.transactionCreateDate = null;
 			this.transactionStatus = null;
 		}
+		this.id = product.getId();
 		this.title = product.getTitle();
 		this.price = product.getPrice();
-		this.imgUrl = product.getProductImgList().get(0).getProductImgUrl();
+		this.productImgUrl = product.getProductImgList().get(0).getProductImgUrl();
 	}
 }

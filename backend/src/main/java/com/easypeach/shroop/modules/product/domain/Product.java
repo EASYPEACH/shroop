@@ -1,5 +1,6 @@
 package com.easypeach.shroop.modules.product.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class Product {
 
 	@Column(name = "purchase_date", nullable = false)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private LocalDateTime purchaseDate;
+	private LocalDate purchaseDate;
 
 	@Column(name = "is_defect", nullable = false)
 	private Boolean isDefect;

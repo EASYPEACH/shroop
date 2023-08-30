@@ -13,6 +13,7 @@ import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
+import com.easypeach.shroop.modules.product.dto.response.MemberResonse;
 import com.easypeach.shroop.modules.product.dto.response.ProductImgResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductResponse;
 import com.easypeach.shroop.modules.product.exception.ProductException;
@@ -35,7 +36,6 @@ public class ProductService {
 	private final CategoryRepository categoryRepository;
 	private final ProductImgRepository productImgRepository;
 	private final TransactionRepository transactionRepository;
-	private final ProductImgService productImgService;
 
 	public List<ProductResponse> findAll() {
 		List<Product> productList = productRepository.findAll();
@@ -107,11 +107,14 @@ public class ProductService {
 
 	public ProductResponse setProductResponse(Product product) {
 		ProductResponse productResponse = new ProductResponse(product);
+		MemberResonse seller = new MemberResonse(product.getSeller());
 		List<ProductImgResponse> productImgList = productImgRepository.findAllByProduct(product)
 			.stream()
 			.map(ProductImgResponse::new)
 			.collect(Collectors.toList());
+
 		productResponse.setProductImgList(productImgList);
+		productResponse.setSeller(seller);
 		Transaction transaction = transactionRepository.findByProduct(product);
 		if (transaction != null) {
 			productResponse.setTransaction(transaction.getStatus());

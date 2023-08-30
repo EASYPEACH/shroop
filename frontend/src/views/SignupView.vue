@@ -140,7 +140,7 @@ const submit = () => {
   handleSubmitSignUp();
 };
 
-const handleSubmitSignUp = async () => {
+const handleSubmitSignUp = () => {
   userStore.signUp({
     loginId: id.value,
     nickname: nickname.value,
@@ -151,7 +151,7 @@ const handleSubmitSignUp = async () => {
     agreeIdentify: agreement.value[AGREE.IDENTIFY],
   });
   requestAuthNumber();
-  router.push("/phone/");
+  router.push("/phone");
 };
 
 const checkDuplicateID = async () => {

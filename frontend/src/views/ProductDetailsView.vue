@@ -1,16 +1,18 @@
 <template>
   <content-layout class="layout">
     <div class="imgSlide">
-      <v-responsive :aspect-ratio="1 / 1">
-        <v-carousel>
-          <v-carousel-item
-            v-for="(productImg, idx) in productImgs"
-            :key="idx"
-            :src="productImg.imgUrl"
-            cover
-          ></v-carousel-item>
-        </v-carousel>
-      </v-responsive>
+      <v-carousel v-if="productImgs.length > 0">
+        <v-carousel-item
+          v-for="productImg in productImgs"
+          :key="productImg.id"
+          :src="productImg.productImgUrl"
+          height="auto"
+          cover
+          contain
+          eager
+        >
+        </v-carousel-item>
+      </v-carousel>
       <div class="productContent">
         <v-card-item>
           <div>
@@ -19,21 +21,33 @@
                 {{ productContent.title }}
               </div>
               <div class="productContent__side-tooltips">
-                <v-menu>
+                <v-menu transition="scale-transition">
                   <template v-slot:activator="{ props }">
                     <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
                   </template>
-                  <v-list>
-                    <v-list-item
-                      v-for="(item, index) in menuItems"
-                      :key="index"
-                      :value="index"
+                  <ul>
+                    <li
+                      class="font-weight-bold"
+                      v-if="loginCheckStore.id !== profile.id"
+                      @click="() => $router.push(`/report/${route.params.id}`)"
                     >
-                      <v-list-item-title class="font-weight-bold">
-                        {{ item.title }}
-                      </v-list-item-title>
-                    </v-list-item>
-                  </v-list>
+                      신고하기
+                    </li>
+                    <li
+                      class="font-weight-bold"
+                      v-if="loginCheckStore.id === profile.id"
+                      @click="handleClickDeleteButton"
+                    >
+                      삭제하기
+                    </li>
+                    <li
+                      class="font-weight-bold"
+                      v-if="loginCheckStore.id === profile.id"
+                      @click="() => $router.push(`/edit/${$route.params.id}`)"
+                    >
+                      수정하기
+                    </li>
+                  </ul>
                 </v-menu>
               </div>
             </div>
@@ -76,25 +90,21 @@
                 alt="John"
               ></v-img>
             </v-avatar>
-            <div class="text-h5">{{ profile.name }}</div>
+            <div class="text-h5">{{ profile.nickName }}</div>
           </div>
           <div class="text-h5">등급 {{ profile.score }}점</div>
         </div>
 
         <v-card-actions>
-          <v-btn-toggle multiple>
-            <v-btn @click="HandleChangeHeart">
-              <v-icon
-                v-if="!likeToggle"
-                icon="mdi-cards-heart-outline"
-              ></v-icon>
-              <v-icon v-else icon="mdi-cards-heart"></v-icon>
-              <span class="font-weight-bold pb-1">{{ likeCount }}</span>
-            </v-btn>
-          </v-btn-toggle>
+          <v-btn variant="outlined" @click="handleChangeHeart">
+            <v-icon v-if="!likeToggle" icon="mdi-cards-heart-outline"></v-icon>
+            <v-icon v-else icon="mdi-cards-heart"></v-icon>
+            <span class="font-weight-bold pb-1">{{ likeCount }}</span>
+          </v-btn>
           <v-btn
+            v-if="loginCheckStore.id !== profile.id"
             variant="outlined"
-            @click="() => $router.push(`/purchase/${$route.params.id}`)"
+            @click="handlePurchase"
           >
             구매하기
           </v-btn>
@@ -114,7 +124,7 @@
         </div>
       </v-alert>
       <div class="productDetail__content">
-        <div class="text-h5 mb-6 font-weight-bold">상품 정보</div>
+        <product-title bigTitle title="상품 정보" />
         <v-table>
           <thead>
             <tr>
@@ -139,89 +149,133 @@
         </v-table>
       </div>
       <div class="productDetail__defect">
-        <div class="text-h5 mb-6 font-weight-bold">상품 결함 정보</div>
+        <product-title bigTitle title="상품 판매 이유" />
+        <div class="text-h6">
+          {{ productContent.saleReason }}
+        </div>
+        <product-title bigTitle title="상품 결함 정보" />
         <div v-if="!productContent.hasDefect" class="text-h6">
           경함 여부 : 없음
         </div>
-        <div v-else class="text-h6">경함 여부 : 있음</div>
+        <div v-else class="text-h6">결함 여부 : 있음</div>
         <div v-if="productContent.hasDefect" class="productDetail__defect">
           <v-img
             width="300"
             v-for="(defectImg, idx) in defectImgs"
-            :src="defectImg.imgUrl"
+            :src="defectImg.productImgUrl"
             :key="idx"
           ></v-img>
         </div>
       </div>
       <div class="productDetail__content">
-        <div class="text-h5 mb-6 font-weight-bold">상품 기타 상세 정보</div>
-        <div class="text-h6">
-          {{ productContent.content }}
-        </div>
+        <product-title bigTitle title="상품 기타 상세 정보" />
+        <div class="text-h6" v-html="productContent.content"></div>
       </div>
     </div>
+    <plain-modal
+      modalText="정말 삭제하시겠습니까?"
+      v-model="deleteModal"
+      @handle-confirm="handleClickDeleteRequest"
+    />
+    <plain-modal
+      modalText="삭제 완료 되었습니다"
+      v-model="confirmDelete"
+      @handle-confirm="handleConfirmDelete"
+    />
   </content-layout>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { getApi, deleteApi } from "@/api/modules";
+import { formatDate } from "@/utils/formatDate";
+import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
+import { useCheckLogin } from "@/store/useCheckLogin";
 import ContentLayout from "@/layouts/ContentLayout.vue";
+import ProductTitle from "@/components/Title/ProductTitle.vue";
+import PlainModal from "@/components/Modal/PlainModal.vue";
 
+const loginCheckStore = useCheckLogin();
+const route = useRoute();
+const router = useRouter();
 const likeToggle = ref(false);
-
-const HandleChangeHeart = () => {
-  likeToggle.value = !likeToggle.value;
-};
-
-const productImgs = [
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/docks.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/hotel.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/sunshine.jpg` },
-];
-
-const defectImgs = [
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/docks.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/hotel.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/sunshine.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/sunshine.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/sunshine.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/sunshine.jpg` },
-  { imgUrl: `https://cdn.vuetifyjs.com/images/cards/sunshine.jpg` },
-];
-
-const profile = {
-  name: `따식이행님`,
+const productImgs = ref([]);
+const defectImgs = ref([]);
+const profile = ref({
+  id: 0,
+  nickName: "",
   score: 70,
-};
-
-const menuItems = [{ title: `삭제하기` }, { title: `신고하기` }];
-
-const productContent = ref({
-  title: `최신 노트북 팔아요`,
-  price: 100000,
-  hasDeliveryPrice: true,
-  category: `전자제품`,
-  createDate: `2023-07-14`,
-  purchaseDate: `2023-08-10`,
-  brand: `삼성/갤럭시 플립5`,
-  grade: `중`,
-  hasDefect: true,
-  content: `정보과학에서 더미 데이터는 유용한 데이터가 포함되지 않지만 공간을
-          예비해두어 실제 데이터가 명목상 존재하는 것처럼 다루는 유순한 정보를
-          의미한다. 더미 데이터는 테스트 및 운영 목적을 위해 플레이스홀더로
-          사용할 수 있다. 정보과학에서 더미 데이터는 유용한 데이터가 포함되지
-          않지만 공간을 예비해두어 실제 데이터가 명목상 존재하는 것처럼 다루는
-          유순한 정보를 의미한다. 더미 데이터는 테스트 및 운영 목적을 위해
-          플레이스홀더로 사용할 수 있다. 정보과학에서 더미 데이터는 유용한
-          데이터가 포함되지 않지만 공간을 예비해두어 실제 데이터가 명목상
-          존재하는 것처럼 다루는 유순한 정보를 의미한다. 더미 데이터는 테스트 및
-          운영 목적을 위해 플레이스홀더로 사용할 수 있다. 정보과학에서 더미
-          데이터는 유용한 데이터가 포함되지 않지만 공간을 예비해두어 실제
-          데이터가 명목상 존재하는 것처럼 다루는 유순한 정보를 의미한다. 더미
-          데이터는 테스트 및 운영 목적을 위해 플레이스홀더로 사용할 수 있다.`,
 });
 
+const productContent = ref({
+  title: "",
+  price: 0,
+  hasDeliveryPrice: null,
+  category: "",
+  createDate: "",
+  purchaseDate: "",
+  brand: "",
+  grade: "",
+  hasDefect: null,
+  content: "",
+  saleReason: "",
+});
+
+const deleteModal = ref(false);
+const confirmDelete = ref(false);
+
 const likeCount = ref(103);
+
+onBeforeMount(async () => {
+  try {
+    const data = await getApi({
+      url: `/api/products/${route.params.id}`,
+    });
+
+    productContent.value.title = data.title;
+    productContent.value.price = data.price;
+    productContent.value.hasDeliveryPrice = data.isDeliveryFee;
+    productContent.value.category = data.category.name;
+    productContent.value.createDate = formatDate(data.createDate);
+    productContent.value.purchaseDate = formatDate(data.purchaseDate);
+    productContent.value.brand = data.brand;
+    productContent.value.grade = PRODUCT_GRADE_EN[data.productGrade];
+    productContent.value.hasDefect = data.isDefect;
+    productContent.value.content = data.content.replaceAll("\n", "<br />");
+    productContent.value.saleReason = data.saleReason;
+    productImgs.value = data.productImgList.filter((img) => !img.isDefect);
+    defectImgs.value = data.productImgList.filter((img) => img.isDefect);
+    profile.value.nickName = data.seller.nickName;
+    profile.value.id = data.seller.id;
+  } catch (err) {
+    console.error(err);
+  }
+});
+const handleChangeHeart = () => {
+  likeToggle.value = !likeToggle.value;
+};
+const handlePurchase = () => {
+  router.push(`/purchase/${route.params.id}`);
+};
+const handleClickDeleteButton = async () => {
+  deleteModal.value = true;
+};
+const handleClickDeleteRequest = async () => {
+  try {
+    await deleteApi({
+      url: `/api/products/${route.params.id}`,
+    });
+    deleteModal.value = false;
+    confirmDelete.value = true;
+  } catch (err) {
+    console.error(err);
+  }
+};
+const handleConfirmDelete = () => {
+  confirmDelete.value = false;
+  router.push("/");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -231,13 +285,17 @@ const likeCount = ref(103);
 
 .imgSlide {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 50px;
+
+  .v-carousel {
+    flex-basis: 50%;
+  }
   .productContent {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    width: 400px;
     .productContent__price {
       margin-top: 15px;
       display: flex;
@@ -276,9 +334,6 @@ const likeCount = ref(103);
         gap: 20px;
       }
     }
-    .v-btn {
-      width: 180px;
-    }
   }
   @media (max-width: 960px) {
     flex-direction: column;
@@ -302,6 +357,10 @@ const likeCount = ref(103);
 .v-card-actions {
   justify-content: space-between;
   gap: 20px;
+  .v-btn {
+    width: 100%;
+    flex: 1;
+  }
   .v-btn-toggle {
     height: 36px;
     border: thin solid currentColor;
@@ -344,11 +403,24 @@ const likeCount = ref(103);
     width: 100%;
     .v-alert {
       width: 100%;
+      font-size: 16px;
     }
   }
 }
 
 .v-menu {
+  ul {
+    background: rgb(var(--v-theme-mainGray));
+    border-radius: 10px;
+    > li {
+      cursor: pointer;
+      padding: 10px 20px;
+      text-align: center;
+      color: #fff;
+      font-weight: 600;
+    }
+  }
+
   .v-overlay__content {
     .v-list {
       background: rgb(var(--v-theme-mainGray));
