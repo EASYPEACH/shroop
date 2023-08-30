@@ -38,7 +38,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import TRANSACTION_STATUS from "@/consts/delivery";
+import TRANSACTION_STATUS from "@/consts/status";
 import MiniButton from "../Button/MiniButton.vue";
 import PlainModal from "../Modal/PlainModal.vue";
 import BuyerInfoModal from "../Modal/BuyerInfoModal.vue";
@@ -88,11 +88,7 @@ const MYPAGE = [
   {
     ACTION: "구매확정",
     STATUS: (status) => {
-      return (
-        !props.isSeller &&
-        (status === TRANSACTION_STATUS.SHIPPING ||
-          status === TRANSACTION_STATUS.COMPLETE)
-      );
+      return !props.isSeller && status === TRANSACTION_STATUS.COMPLETE;
     },
     CLICK_EVENT: () => (dialogList.value[0].value = true),
   },
