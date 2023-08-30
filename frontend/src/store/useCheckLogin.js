@@ -4,11 +4,15 @@ export const useCheckLogin = defineStore("checkLogin", {
   state: () => {
     return {
       isLogin: true,
+      id: 0,
+      nickName: "",
     };
   },
   actions: {
-    setIsLogin(loginStatus) {
-      this.isLogin = loginStatus;
+    setIsLogin(status) {
+      this.isLogin = status.result;
+      this.id = status.memberId;
+      this.nickName = status.nickname;
     },
   },
 });

@@ -17,22 +17,19 @@
       </div>
     </section>
     <content-layout>
-      <Title title="최근 거래" />
+      <Title title="최근 판매" />
       <div class="products">
         <ul class="products__list">
-          <li
-            v-for="productCardData in productCardDummyData"
-            :key="productCardData.id"
-          >
+          <li v-for="product in productCardData" :key="product.id">
             <product-card
               v-if="isLaptop"
-              :productCardData="productCardData"
-              @handle-click-like="productCardData.like = !productCardData.like"
+              :productCardData="product"
+              @handle-click-like="product.like = !product.like"
             />
             <product-banner
               v-else
-              :product="productCardData"
-              @handle-click-like="productCardData.like = !productCardData.like"
+              :product="product"
+              @handle-click-like="product.like = !product.like"
               isHeart
             />
           </li>
@@ -48,17 +45,34 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { useDisplay } from "vuetify";
-import DUMMY from "@/consts/dummy";
+import { getApi } from "@/api/modules";
 import Title from "@/components/Title/MainTitle.vue";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
 
-const productCardDummyData = ref(DUMMY);
+const productCardData = ref([]);
 const display = useDisplay();
 const isLaptop = ref(display.mdAndUp);
+
+onBeforeMount(async () => {
+  const data = await getApi({
+    url: "/api/products",
+  });
+  productCardData.value = data
+    .sort((a, b) => {
+      if (a.createDate > b.createDate) {
+        return -1;
+      } else if (a.createDate < b.createDate) {
+        return 1;
+      } else {
+        return 0;
+      }
+    })
+    .slice(0, 6);
+});
 </script>
 
 <style lang="scss" scoped>
