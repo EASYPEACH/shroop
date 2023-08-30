@@ -21,6 +21,7 @@ import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
 import com.easypeach.shroop.modules.transaction.dto.response.BuyerResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.HistoryResponse;
+import com.easypeach.shroop.modules.transaction.dto.response.PageResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionInfoResponse;
 import com.easypeach.shroop.modules.transaction.exception.IsNotBuyerException;
@@ -140,9 +141,14 @@ public class TransactionService {
 			.collect(Collectors.toList());
 	}
 
-	public Page<HistoryResponse> findAllSellingHistory(Member member, Pageable pageable) {
-		return productRepository.findBySellerOrderByCreateDateDesc(member, pageable)
-			.map(HistoryResponse::new);
+	public PageResponse findAllSellingHistory(Member member, Pageable pageable) {
+
+		Page<Product> page = productRepository.findBySellerOrderByCreateDateDesc(member, pageable);
+		int pageCount = page.getTotalPages();
+		List<HistoryResponse> historyResponseList = page
+			.map(HistoryResponse::new)
+			.getContent();
+		return PageResponse.createPageResponse(pageCount, historyResponseList);
 	}
 
 	@Transactional
