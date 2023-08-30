@@ -1,6 +1,6 @@
 package com.easypeach.shroop.modules.transaction.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -54,5 +54,23 @@ class DeliveryControllerTest extends ControllerTest {
 				)))
 			.andDo(print());
 
+	}
+
+	@DisplayName("운송장번호 중복 체크")
+	@Test
+	void duplicateCheckTrackingNumber() throws Exception {
+		String trackingNumber = "123123123";
+
+		given(deliveryService.duplicateCheckTrackingNumber(trackingNumber)).willReturn(true);
+
+		mockMvc.perform(get("/api/delivery/duplicate")
+				.param("trackingNumber", trackingNumber))
+			.andExpect(status().isOk())
+			.andDo(document("duplicatTtrackingNumber",
+				responseFields(
+					fieldWithPath("result").description("중복 여부"),
+					fieldWithPath("message").description("결과 메세지")
+				)))
+			.andDo(print());
 	}
 }
