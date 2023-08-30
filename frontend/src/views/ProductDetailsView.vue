@@ -1,17 +1,18 @@
 <template>
   <content-layout class="layout">
     <div class="imgSlide">
-      <v-responsive :aspect-ratio="1 / 1">
-        <v-carousel v-if="productImgs.length > 0">
-          <v-carousel-item
-            v-for="productImg in productImgs"
-            :key="productImg.id"
-            :src="productImg.productImgUrl"
-            cover
-          >
-          </v-carousel-item>
-        </v-carousel>
-      </v-responsive>
+      <v-carousel v-if="productImgs.length > 0">
+        <v-carousel-item
+          v-for="productImg in productImgs"
+          :key="productImg.id"
+          :src="productImg.productImgUrl"
+          height="auto"
+          cover
+          contain
+          eager
+        >
+        </v-carousel-item>
+      </v-carousel>
       <div class="productContent">
         <v-card-item>
           <div>
@@ -123,7 +124,7 @@
         </div>
       </v-alert>
       <div class="productDetail__content">
-        <ProductTitle title="상품 정보" />
+        <product-title bigTitle title="상품 정보" />
         <v-table>
           <thead>
             <tr>
@@ -148,11 +149,11 @@
         </v-table>
       </div>
       <div class="productDetail__defect">
-        <ProductTitle title="상품 판매 이유" />
+        <product-title bigTitle title="상품 판매 이유" />
         <div class="text-h6">
           {{ productContent.saleReason }}
         </div>
-        <ProductTitle title="상품 결함 정보" />
+        <product-title bigTitle title="상품 결함 정보" />
         <div v-if="!productContent.hasDefect" class="text-h6">
           경함 여부 : 없음
         </div>
@@ -167,7 +168,7 @@
         </div>
       </div>
       <div class="productDetail__content">
-        <ProductTitle title="상품 기타 상세 정보" />
+        <product-title bigTitle title="상품 기타 상세 정보" />
         <div class="text-h6" v-html="productContent.content"></div>
       </div>
     </div>
@@ -284,13 +285,17 @@ const handleConfirmDelete = () => {
 
 .imgSlide {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 50px;
+
+  .v-carousel {
+    flex-basis: 50%;
+  }
   .productContent {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    width: 400px;
     .productContent__price {
       margin-top: 15px;
       display: flex;
@@ -398,6 +403,7 @@ const handleConfirmDelete = () => {
     width: 100%;
     .v-alert {
       width: 100%;
+      font-size: 16px;
     }
   }
 }
