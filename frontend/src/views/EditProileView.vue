@@ -3,7 +3,6 @@
     <main-title title="프로필 수정" />
     <v-form
       class="profile"
-      v-model="isValid"
       @submit.prevent="handleSubmitRegister"
       enctype="multipart/form-data"
     >
@@ -28,10 +27,9 @@
         <h4 class="profile__info-name">닉네임</h4>
         <custom-text-input
           class="profile__info-input"
-          :rules="[defaultTextRule.required, defaultTextRule.min]"
           placeholderText="닉네임"
           v-model="nickname"
-          @change="handleInputChnageEvent"
+          @keydown="handleInputChnageEvent"
         />
       </div>
       <div class="profile__info">
@@ -41,13 +39,14 @@
             class="profile__info-input"
             placeholderText="기존 패스워드"
             v-model="oldPassword"
+            type="password"
           />
           <custom-text-input
             class="profile__info-input"
             placeholderText="변경할 패스워드"
-            :rules="[passwordRule.min]"
             v-model="newPassword"
-            @change="handleInputChnageEvent"
+            @keydown="handleInputChnageEvent"
+            type="password"
           />
         </div>
       </div>
@@ -57,27 +56,28 @@
           <div class="identify__phoneNumber">
             <custom-text-input
               class="profile__info-input"
-              :rules="[phoneNumberRule.required, phoneNumberRule.check]"
               type="phoneNumber"
               placeholderText="휴대전화번호"
               v-model="phoneNumber"
               hide-details
-              @change="handleInputChnageEvent"
+              @keydown="handleInputChnageEvent"
             />
-            <v-btn class="profile__info-btn">인증 하기<br /> </v-btn>
+            <v-btn @click="requestAuthNumber" class="profile__info-btn"
+              >인증 하기<br />
+            </v-btn>
           </div>
           <div class="identify__phoneNumber">
             <custom-text-input
               class="profile__info-input"
               placeholderText="인증번호 4자리 입력"
-              v-model="authNumber"
+              v-model="phoneAuthNumber"
               hide-details
             />
           </div>
-          <strong :class="authResult ? 'auth-success' : 'auth-fail'">{{
-            authResultMsg
-          }}</strong>
         </div>
+      </div>
+      <div v-show="!authResult" class="auth-fail">
+        {{ modifyResultMsg }}
       </div>
       <submit-button
         :disabled="!isValid"
@@ -85,35 +85,34 @@
         text="수정 완료"
       />
     </v-form>
+    <plain-modal
+      modalText="수정이 완료되었습니다"
+      v-model="showPlainModal"
+      @handle-cancle="showPlainModal = false"
+      @handle-confirm="showPlainModal = false"
+    />
   </section>
 </template>
 
 <script setup>
-import ContentLayout from "@/layouts/ContentLayout.vue";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
+import PlainModal from "@/components/Modal/PlainModal.vue";
 
 import { onBeforeMount, ref } from "vue";
 import {
   changeImageToData,
-  changeFiles,
-  deleteImage,
   multipartFormDataJson,
   changeUrlToFiles,
 } from "@/utils";
-import {
-  defaultTextRule,
-  phoneNumberRule,
-  passwordRule,
-} from "@/components/Form/data/formRules";
+
 import { useRouter } from "vue-router";
-import { getApi, multipartPatchApi } from "@/api/modules";
+import { getApi, postApi, multipartPatchApi } from "@/api/modules";
 import { useCookies } from "vue3-cookies";
 
 const { cookies } = useCookies();
-const router = useRouter();
 const isValid = ref(false);
 const imageThumb = ref("");
 const imageData = ref(null);
@@ -123,9 +122,10 @@ const phoneAuthNumber = ref("");
 const nickname = ref("");
 const oldPassword = ref("");
 const newPassword = ref("");
-const uuid = ref("");
 const authResultMsg = ref("");
 const profileImgRef = ref(null);
+const showPlainModal = ref(false);
+const modifyResultMsg = ref("");
 
 // Image preview
 const handleChangeProfile = async (event) => {
@@ -161,6 +161,7 @@ const handleInputChnageEvent = () => {
   isValid.value = true;
 };
 
+// modify submit
 const handleSubmitRegister = async () => {
   let formData = new FormData();
 
@@ -173,7 +174,7 @@ const handleSubmitRegister = async () => {
     nickname: nickname.value,
     oldPassword: oldPassword.value,
     newPassword: newPassword.value,
-    uuid: uuid.value,
+    uuid: cookies.get("uuid"),
     phoneNumber: phoneNumber.value,
     phoneAuthNumber: phoneAuthNumber.value,
   });
@@ -183,10 +184,30 @@ const handleSubmitRegister = async () => {
       url: `/api/members/profile`,
       data: formData,
     });
-    alert("good");
     isValid.value = false;
+    showPlainModal.value = true;
+    authResult.value = true;
+    phoneAuthNumber.value = "";
   } catch (err) {
     console.log(err);
+    authResult.value = false;
+    modifyResultMsg.value = err.response.data.message;
+  }
+  oldPassword.value = "";
+  newPassword.value = "";
+};
+
+const requestAuthNumber = async () => {
+  try {
+    const data = await postApi({
+      url: "/api/auth/phone",
+      data: {
+        phoneNumber: phoneNumber.value,
+      },
+    });
+    cookies.set("uuid", data.uuid);
+  } catch (error) {
+    console.log(error);
   }
 };
 </script>
@@ -283,7 +304,7 @@ section {
 }
 
 .submit-button {
-  margin-top: 80px;
+  margin-top: 70px;
 }
 
 .auth-success {
