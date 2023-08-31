@@ -4,7 +4,7 @@
       <v-toolbar>
         <v-toolbar-title>{{ tab }}</v-toolbar-title>
       </v-toolbar>
-      <div class="myapge__content">
+      <div class="mypage__content">
         <v-tabs
           v-model="tab"
           :direction="isTablet ? 'horizontal' : 'vertical'"
@@ -14,12 +14,7 @@
             v-for="t in tabList"
             :key="t.id"
             :value="t.title"
-            @click="
-              () => {
-                $router.push(`/mypage/${t.id}`);
-                handleHistory(t.id);
-              }
-            "
+            @click="handleTabClick(t.id)"
           >
             <v-icon start> {{ t.icon }} </v-icon>
             {{ t.title }}
@@ -94,7 +89,10 @@
                 v-if="purchaseList.length === 0"
                 title="구매내역이 없습니다"
               />
-              <li v-for="product in purchaseList" :key="product.id">
+              <li
+                v-for="product in purchaseList.slice(startIndex, endIndex)"
+                :key="product.id"
+              >
                 <mypage-product-banner :product="product" isStatus />
               </li>
             </ul>
@@ -117,22 +115,38 @@
       v-model="showChargePointModal"
       @handle-cancle="showChargePointModal = false"
     />
+    <div class="mt-5">
+      <v-pagination
+        v-if="tabId === 1"
+        v-model="currentPage"
+        :length="pageCount"
+        :total-visible="5"
+        @click="handleChangePage"
+      >
+      </v-pagination>
+      <v-pagination
+        v-else-if="tabId === 2"
+        v-model="sellingPage"
+        :length="sellPageCount"
+        :total-visible="5"
+        @click="handleSellHistory"
+      >
+      </v-pagination>
+    </div>
   </content-layout>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { ref, onBeforeMount, computed, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
+import { getApi } from "@/api/modules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
 import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
-import DUMMY from "@/consts/dummy";
-import { getApi } from "@/api/modules";
-import { onBeforeMount } from "vue";
 
 const tabList = ref([
   {
@@ -151,10 +165,10 @@ const tabList = ref([
     icon: "mdi-currency-krw",
   },
 ]);
-const router = useRoute();
-const productDummyList = ref(DUMMY);
+const route = useRoute();
+const router = useRouter();
 const display = useDisplay();
-const tab = ref(tabList.value[router.params.index].title);
+const tab = ref(tabList.value[route.params.index].title);
 const showChargePointModal = ref(false);
 const isTablet = ref(display.smAndDown);
 const profile = ref({
@@ -166,64 +180,103 @@ const profile = ref({
 
 const purchaseList = ref([]);
 const sellList = ref([]);
+const tabId = ref(0);
 
 onBeforeMount(async () => {
+  tabId.value = Number(route.params.index);
+  handlePurchaseHistory();
+  handleSellHistory();
+});
+
+const handleTabClick = (tabId) => {
+  router.push(`/mypage/${tabId}`);
+  console.log(tabId);
+  handleHistory(tabId);
+};
+
+// const handleToggleHeart = (id) => {
+//   productDummyList.value = productDummyList.value
+//     .map((item) => {
+//       if (item.id === id) {
+//         item.like = false;
+//       }
+//       return item;
+//     })
+//     .filter((item) => item.id != id);
+// };
+
+const handlePurchaseHistory = async () => {
   try {
-    const purchaseData = await getApi({
-      url: "/api/buying/history",
-    });
-    const sellData = await getApi({
-      url: "/api/selling/history?page=0&size=5",
-    });
-    purchaseList.value = purchaseData;
-    sellList.value = sellData;
-    console.log(purchaseList);
-    console.log(sellList.value.length);
+    const purchaseData = await getApi({ url: "/api/buying/history" });
+    if (purchaseData !== null) {
+      purchaseList.value = purchaseData;
+    }
   } catch (error) {
     console.log(error);
   }
-});
+};
 
-const handleToggleHeart = (id) => {
-  productDummyList.value = productDummyList.value
-    .map((item) => {
-      if (item.id === id) {
-        item.like = false;
-      }
-      return item;
-    })
-    .filter((item) => item.id != id);
+const handleSellHistory = async () => {
+  try {
+    const sellData = await getApi({
+      url: `/api/selling/history?page=${
+        sellingPage.value - 1
+      }&size=5&sort=transactionCreateDate,desc`,
+    });
+    if (sellData !== null) {
+      console.log(sellData);
+      sellList.value = sellData.historyResponseList;
+      sellPageCount.value = sellData.pageCount;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const handleHistory = async (id) => {
+  tabId.value = id;
   if (id === 1) {
-    try {
-      const purchaseData = await getApi({
-        url: "/api/buying/history",
-      });
-      purchaseList.value = purchaseData;
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    await handlePurchaseHistory();
   } else if (id === 2) {
-    try {
-      const sellData = await getApi({
-        url: "/api/selling/history?page=4&size=5",
-      });
-      sellList.value = sellData;
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    await handleSellHistory();
   }
 };
+
+const perPage = ref(5); // 페이지당 상품 수
+const currentPage = ref(1); // 현재 페이지
+
+const sellingPage = ref(0);
+const productCount = computed(() => {
+  return purchaseList.value.length;
+});
+
+const pageCount = computed(() => {
+  return Math.ceil(productCount.value / perPage.value);
+});
+
+const sellPageCount = ref();
+const startIndex = ref(0); // 상품 시작 인덱스
+const endIndex = ref(perPage.value); // 상품 마지막 인덱스
+
+const handleChangePage = () => {
+  startIndex.value = (currentPage.value - 1) * perPage.value;
+  endIndex.value = Math.min(
+    startIndex.value + perPage.value,
+    productCount.value,
+  );
+  window.scrollTo({ top: 0 });
+};
+
+watch(purchaseList, () => {
+  currentPage.value = 1;
+  handleChangePage();
+});
 </script>
 
 <style lang="scss" scoped>
 .mypage {
   opacity: 1;
-  .myapge__content {
+  .mypage__content {
     display: flex;
     @media (max-width: 960px) {
       flex-direction: column;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.transaction.dto.response.HistoryResponse;
+import com.easypeach.shroop.modules.transaction.dto.response.PageResponse;
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ public class TransactionHistoryController {
 	}
 
 	@GetMapping("/selling/history")
-	public ResponseEntity<List<HistoryResponse>> getSellingHistory(@LoginMember Member member, Pageable pageable) {
+	public ResponseEntity<PageResponse> getSellingHistory(@LoginMember Member member, Pageable pageable) {
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(transactionService.findAllSellingHistory(member, pageable).getContent());
+			.body(transactionService.findAllSellingHistory(member, pageable));
 	}
 }

@@ -4,6 +4,9 @@
       <span v-if="product.createDate"
         >상품등록일: {{ formatDate(product.createDate) }}</span
       >
+      <span v-if="product.transactionCreateDate">{{
+        formatDate(product.transactionCreateDate)
+      }}</span>
       <span v-if="product.category">{{ product.category.name }}</span>
     </div>
 

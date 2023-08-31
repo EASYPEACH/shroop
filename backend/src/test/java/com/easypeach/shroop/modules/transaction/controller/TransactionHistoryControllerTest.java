@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
 import com.easypeach.shroop.modules.transaction.dto.response.HistoryResponse;
+import com.easypeach.shroop.modules.transaction.dto.response.PageResponse;
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
 
 @WebMvcTest(TransactionHistoryController.class)
@@ -66,21 +67,22 @@ class TransactionHistoryControllerTest extends ControllerTest {
 			PURCHASE_REQUEST, "아이패드", 30000L,
 			"https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png");
 		dtoList.add(dto);
-
+		int pageCount = 7;
 		Page<HistoryResponse> page = new PageImpl<>(dtoList);
-
-		given(transactionService.findAllSellingHistory(any(), any())).willReturn(page);
+		PageResponse pageResponse = PageResponse.createPageResponse(7, page.getContent());
+		given(transactionService.findAllSellingHistory(any(), any())).willReturn(pageResponse);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/selling/history")
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionCreateDate")
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].id").value(1L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].transactionCreateDate")
 				.value(time.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(PURCHASE_REQUEST.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("아이패드"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(30000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].productImgUrl")
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].transactionStatus")
+				.value(PURCHASE_REQUEST.toString()))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].title").value("아이패드"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].price").value(30000L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].productImgUrl")
 				.value("https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png"))
 			.andDo(print());
 	}
