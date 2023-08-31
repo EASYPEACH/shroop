@@ -87,7 +87,7 @@ const dialogList = ref([
     text: "배송 등록이 완료되었습니다.",
     isShow: false,
     callback: () => {
-      router.push("/mypage/0");
+      router.push("/mypage/2");
     },
   },
   {
