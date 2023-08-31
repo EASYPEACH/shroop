@@ -143,7 +143,7 @@ public class TransactionService {
 
 	public PageResponse findAllSellingHistory(Member member, Pageable pageable) {
 
-		Page<Product> page = productRepository.findBySellerOrderByCreateDateDesc(member, pageable);
+		Page<Product> page = productRepository.findBySeller(member, pageable);
 		int pageCount = page.getTotalPages();
 		List<HistoryResponse> historyResponseList = page
 			.map(HistoryResponse::new)

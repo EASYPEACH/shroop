@@ -1,8 +1,8 @@
 <template>
   <div class="banner">
     <div class="top">
-      <span v-if="product.createDate">{{
-        formatDate(product.createDate)
+      <span v-if="product.transactionCreateDate">{{
+        formatDate(product.transactionCreateDate)
       }}</span>
       <span v-if="product.category">{{ product.category.name }}</span>
     </div>

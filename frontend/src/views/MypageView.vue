@@ -4,7 +4,7 @@
       <v-toolbar>
         <v-toolbar-title>{{ tab }}</v-toolbar-title>
       </v-toolbar>
-      <div class="myapge__content">
+      <div class="mypage__content">
         <v-tabs
           v-model="tab"
           :direction="isTablet ? 'horizontal' : 'vertical'"
@@ -138,15 +138,15 @@
 
 <script setup>
 import { ref, onBeforeMount, computed, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
+import { getApi } from "@/api/modules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
 import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
-import { getApi } from "@/api/modules";
 
 const tabList = ref([
   {
@@ -165,9 +165,10 @@ const tabList = ref([
     icon: "mdi-currency-krw",
   },
 ]);
-const router = useRoute();
+const route = useRoute();
+const router = useRouter();
 const display = useDisplay();
-const tab = ref(tabList.value[router.params.index].title);
+const tab = ref(tabList.value[route.params.index].title);
 const showChargePointModal = ref(false);
 const isTablet = ref(display.smAndDown);
 const profile = ref({
@@ -179,14 +180,19 @@ const profile = ref({
 
 const purchaseList = ref([]);
 const sellList = ref([]);
-
 const tabId = ref(0);
 
 onBeforeMount(async () => {
-  tabId.value = Number(router.params.index);
+  tabId.value = Number(route.params.index);
   handlePurchaseHistory();
   handleSellHistory();
 });
+
+const handleTabClick = (tabId) => {
+  router.push(`/mypage/${tabId}`);
+  console.log(tabId);
+  handleHistory(tabId);
+};
 
 // const handleToggleHeart = (id) => {
 //   productDummyList.value = productDummyList.value
@@ -198,24 +204,10 @@ onBeforeMount(async () => {
 //     })
 //     .filter((item) => item.id != id);
 // };
-const handleTabClick = (tabId) => {
-  this.$router.push(`/mypage/${tabId}`);
-  this.handleHistory(tabId);
-};
-
-const fetchData = async (url) => {
-  try {
-    const response = await getApi({ url });
-    return response;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
 
 const handlePurchaseHistory = async () => {
   try {
-    const purchaseData = await fetchData("/api/buying/history");
+    const purchaseData = await getApi({ url: "/api/buying/history" });
     if (purchaseData !== null) {
       purchaseList.value = purchaseData;
     }
@@ -226,13 +218,15 @@ const handlePurchaseHistory = async () => {
 
 const handleSellHistory = async () => {
   try {
-    const sellData = await fetchData(
-      `/api/selling/history?page=${sellingPage.value}&size=5`,
-    );
+    const sellData = await getApi({
+      url: `/api/selling/history?page=${
+        sellingPage.value - 1
+      }&size=5&sort=transactionCreateDate,desc`,
+    });
     if (sellData !== null) {
       console.log(sellData);
       sellList.value = sellData.historyResponseList;
-      sellPageCount.value = sellData.pageCount - 1;
+      sellPageCount.value = sellData.pageCount;
     }
   } catch (error) {
     console.log(error);
@@ -251,7 +245,7 @@ const handleHistory = async (id) => {
 const perPage = ref(5); // 페이지당 상품 수
 const currentPage = ref(1); // 현재 페이지
 
-const sellingPage = ref(1);
+const sellingPage = ref(0);
 const productCount = computed(() => {
   return purchaseList.value.length;
 });
@@ -282,7 +276,7 @@ watch(purchaseList, () => {
 <style lang="scss" scoped>
 .mypage {
   opacity: 1;
-  .myapge__content {
+  .mypage__content {
     display: flex;
     @media (max-width: 960px) {
       flex-direction: column;
