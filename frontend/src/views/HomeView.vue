@@ -24,12 +24,12 @@
             <product-card
               v-if="isLaptop"
               :productCardData="product"
-              @handle-click-like="product.like = !product.like"
+              @handle-click-like="() => handleClickLike(product)"
             />
             <product-banner
               v-else
               :product="product"
-              @handle-click-like="product.like = !product.like"
+              @handle-click-like="() => handleClickLike(product)"
               isHeart
             />
           </li>
@@ -48,6 +48,8 @@
 import { onBeforeMount, ref } from "vue";
 import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
+import { toggleLikesProduct } from "@/utils";
+import router from "@/router";
 import Title from "@/components/Title/MainTitle.vue";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -61,7 +63,14 @@ onBeforeMount(async () => {
   const data = await getApi({
     url: "/api/products",
   });
-  productCardData.value = data
+
+  // 판매중인 상품 필터링
+  const fileterSelling = data.filter(
+    (product) => product.transactionStatus === null,
+  );
+
+  // 생성일자로 정렬하여 6개까지 배열 자르기
+  productCardData.value = fileterSelling
     .sort((a, b) => {
       if (a.createDate > b.createDate) {
         return -1;
@@ -73,6 +82,17 @@ onBeforeMount(async () => {
     })
     .slice(0, 6);
 });
+
+// 상품 좋아요 버튼 클릭 이벤트
+const handleClickLike = async (product) => {
+  try {
+    toggleLikesProduct(product, productCardData);
+  } catch (err) {
+    if (err.response.status === 403) {
+      router.push("/login");
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -142,10 +162,11 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
   .products__list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 50px;
   }
   .plusbtn {
     color: rgb(var(--v-theme-subBlue));

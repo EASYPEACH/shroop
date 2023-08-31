@@ -1,13 +1,15 @@
 <template>
   <content-layout class="layout">
     <div class="imgSlide">
-      <v-carousel v-if="productImgs.length > 0">
+      <v-carousel
+        hide-delimiter-background
+        v-if="productImgs.length > 0"
+        height="450"
+      >
         <v-carousel-item
           v-for="productImg in productImgs"
           :key="productImg.id"
           :src="productImg.productImgUrl"
-          height="auto"
-          cover
           contain
           eager
         >
@@ -16,9 +18,12 @@
       <div class="productContent">
         <v-card-item>
           <div>
-            <div class="productContent__item-title">
-              <div class="text-h5 pt-2 font-weight-bold">
-                {{ productContent.title }}
+            <div class="productContent__item">
+              <div class="productContent__item-title">
+                <h2>{{ productContent.title }}</h2>
+                <transaction-badge
+                  v-if="productContent.transactionStatus !== null"
+                />
               </div>
               <div class="productContent__side-tooltips">
                 <v-menu transition="scale-transition">
@@ -35,7 +40,10 @@
                     </li>
                     <li
                       class="font-weight-bold"
-                      v-if="loginCheckStore.id === profile.id"
+                      v-if="
+                        loginCheckStore.id === profile.id &&
+                        !TRANSACTION_STATUS[productContent.transactionStatus]
+                      "
                       @click="handleClickDeleteButton"
                     >
                       삭제하기
@@ -53,10 +61,10 @@
             </div>
             <div class="productContent__price">
               <div class="text-h5 mb-1">
-                {{ productContent.price.toLocaleString() }}원
+                {{ productContent.price?.toLocaleString() }}원
               </div>
               <div
-                v-if="productContent.hasDeliveryPrice"
+                v-if="productContent.isCheckedDeliveryFee"
                 class="text-caption mb-1"
               >
                 배송비 포함
@@ -69,19 +77,19 @@
                   <td class="text-subtitle-2">
                     <v-icon icon="mdi-vector-point"></v-icon>카테고리
                   </td>
-                  <td>{{ productContent.category }}</td>
+                  <td>{{ productContent.category?.name }}</td>
                 </tr>
                 <tr>
                   <td class="text-subtitle-2">
                     <v-icon icon="mdi-vector-point"></v-icon>생성일자
                   </td>
-                  <td>{{ productContent.createDate }}</td>
+                  <td>{{ formatDate(productContent.createDate) }}</td>
                 </tr>
               </tbody>
             </v-table>
           </div>
         </v-card-item>
-        <v-divider :thickness="4" class="border-opacity-25 mb-5"></v-divider>
+        <v-divider class="border-opacity-25 mb-5"></v-divider>
         <div class="productContent__profile">
           <div class="productContent__profile-content">
             <v-avatar>
@@ -92,17 +100,22 @@
             </v-avatar>
             <div class="text-h5">{{ profile.nickName }}</div>
           </div>
-          <div class="text-h5">등급 {{ profile.score }}점</div>
+          <div class="productContent__profile-grade">
+            <v-icon icon="mdi-umbrella-beach-outline" />
+          </div>
         </div>
 
         <v-card-actions>
-          <v-btn variant="outlined" @click="handleChangeHeart">
-            <v-icon v-if="!likeToggle" icon="mdi-cards-heart-outline"></v-icon>
-            <v-icon v-else icon="mdi-cards-heart"></v-icon>
-            <span class="font-weight-bold pb-1">{{ likeCount }}</span>
-          </v-btn>
+          <like-button
+            :product="productContent"
+            variant="outlined"
+            @handle-click-like="handleClickLike"
+          />
           <v-btn
-            v-if="loginCheckStore.id !== profile.id"
+            v-if="
+              loginCheckStore.id !== profile.id &&
+              !TRANSACTION_STATUS[productContent.transactionStatus]
+            "
             variant="outlined"
             @click="handlePurchase"
           >
@@ -143,7 +156,7 @@
             </tr>
             <tr>
               <td class="font-weight-bold">상태</td>
-              <td>{{ productContent.grade }}</td>
+              <td>{{ PRODUCT_GRADE_EN[productContent.grade] }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -154,11 +167,11 @@
           {{ productContent.saleReason }}
         </div>
         <product-title bigTitle title="상품 결함 정보" />
-        <div v-if="!productContent.hasDefect" class="text-h6">
+        <div v-if="!productContent.isDefect" class="text-h6">
           경함 여부 : 없음
         </div>
         <div v-else class="text-h6">결함 여부 : 있음</div>
-        <div v-if="productContent.hasDefect" class="productDetail__defect">
+        <div v-if="productContent.isDefect" class="productDetail__defect">
           <v-img
             width="300"
             v-for="(defectImg, idx) in defectImgs"
@@ -184,78 +197,87 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getApi, deleteApi } from "@/api/modules";
+import { getApi, deleteApi, postApi } from "@/api/modules";
 import { formatDate } from "@/utils/formatDate";
 import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
 import { useCheckLogin } from "@/store/useCheckLogin";
+import TRANSACTION_STATUS from "@/consts/status";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
 import PlainModal from "@/components/Modal/PlainModal.vue";
+import TransactionBadge from "@/components/Badge/TransactionBadge.vue";
+import LikeButton from "@/components/Button/LikeButton.vue";
 
 const loginCheckStore = useCheckLogin();
 const route = useRoute();
 const router = useRouter();
-const likeToggle = ref(false);
 const productImgs = ref([]);
 const defectImgs = ref([]);
 const profile = ref({
   id: 0,
   nickName: "",
-  score: 70,
 });
 
-const productContent = ref({
-  title: "",
-  price: 0,
-  hasDeliveryPrice: false,
-  category: "",
-  createDate: "",
-  purchaseDate: "",
-  brand: "",
-  grade: "",
-  hasDefect: null,
-  content: "",
-  saleReason: "",
-});
-
+const productContent = ref({});
 const deleteModal = ref(false);
 
-const likeCount = ref(103);
-
 onBeforeMount(async () => {
+  // 특정 상품 데이터 받아오기
   try {
     const data = await getApi({
       url: `/api/products/${route.params.id}`,
     });
 
-    productContent.value.title = data.title;
-    productContent.value.price = data.price;
-    productContent.value.hasDeliveryPrice = data.isCheckedDeliveryFee;
-    productContent.value.category = data.category.name;
-    productContent.value.createDate = formatDate(data.createDate);
-    productContent.value.purchaseDate = formatDate(data.purchaseDate);
-    productContent.value.brand = data.brand;
-    productContent.value.grade = PRODUCT_GRADE_EN[data.productGrade];
-    productContent.value.hasDefect = data.isDefect;
-    productContent.value.content = data.content.replaceAll("\n", "<br />");
-    productContent.value.saleReason = data.saleReason;
+    productContent.value = data;
     productImgs.value = data.productImgList.filter((img) => !img.isDefect);
     defectImgs.value = data.productImgList.filter((img) => img.isDefect);
+
     profile.value.nickName = data.seller.nickName;
     profile.value.id = data.seller.id;
   } catch (err) {
     console.error(err);
   }
 });
-const handleChangeHeart = () => {
-  likeToggle.value = !likeToggle.value;
+
+// 상품 좋아요, 좋아요 취소
+const handleClickLike = async () => {
+  try {
+    if (productContent.value.isLike) {
+      await deleteApi({
+        url: `/api/likes/${productContent.value.id}`,
+      });
+      productContent.value.isLike = false;
+      productContent.value.likesCount -= 1;
+    } else {
+      await postApi({
+        url: `/api/likes/${productContent.value.id}`,
+      });
+      productContent.value.isLike = true;
+      productContent.value.likesCount += 1;
+    }
+  } catch (err) {
+    if (err.response.status === 403) {
+      router.push("/login");
+    }
+  }
 };
+
+// 구매하기
 const handlePurchase = () => {
   router.push(`/purchase/${route.params.id}`);
 };
+
+// 상품 삭제하기 - 확인모달노출
 const handleClickDeleteButton = async () => {
   deleteModal.value = true;
 };
+
+// 상품 삭제하기 확인모달 취소 - 삭제 취소
+const handleClickCancle = async () => {
+  deleteModal.value = false;
+};
+
+// 상품삭제요청
 const handleClickDeleteRequest = async () => {
   try {
     await deleteApi({
@@ -266,9 +288,6 @@ const handleClickDeleteRequest = async () => {
   } catch (err) {
     console.error(err);
   }
-};
-const handleClickCancle = async () => {
-  deleteModal.value = false;
 };
 </script>
 
@@ -291,25 +310,39 @@ const handleClickCancle = async () => {
     justify-content: space-between;
     flex-direction: column;
     .productContent__price {
-      margin-top: 15px;
+      margin: 15px 0;
       display: flex;
       align-items: flex-end;
       gap: 20px;
     }
     .v-card-item {
-      .productContent__item-title {
+      .productContent__item {
         display: flex;
         justify-content: space-between;
-      }
-      .productContent__side-tooltips {
-        width: 48px;
-        .v-btn {
-          box-shadow: none;
+        .productContent__item-title {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          h2 {
+            width: 200px;
+            font-size: 25px;
+            font-weight: 600;
+          }
+        }
+        .productContent__side-tooltips {
+          width: 48px;
+          .v-btn {
+            box-shadow: none;
+          }
         }
       }
+
       .v-table {
         width: 70%;
         td {
+          height: fit-content;
           padding: 0;
           border: none;
           color: gray;
@@ -317,15 +350,14 @@ const handleClickCancle = async () => {
       }
     }
     .productContent__profile {
-      padding: 0.625rem 1rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 10px;
 
       .productContent__profile-content {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
       }
     }
   }
@@ -341,7 +373,7 @@ const handleClickCancle = async () => {
 .v-carousel {
   border-radius: 25px;
   .v-carousel-item {
-    aspect-ratio: 1 / 1;
+    background-color: #fff;
   }
   @media (max-width: 960px) {
     width: 100%;
@@ -362,7 +394,6 @@ const handleClickCancle = async () => {
 }
 
 .productDetail {
-  width: 940px;
   display: flex;
   flex-direction: column;
   margin-top: 100px;
@@ -404,6 +435,7 @@ const handleClickCancle = async () => {
 
 .v-menu {
   ul {
+    margin-top: 10px;
     background: rgb(var(--v-theme-mainGray));
     border-radius: 10px;
     > li {

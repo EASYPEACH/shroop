@@ -1,6 +1,9 @@
 <template>
   <div class="banner">
     <div class="top">
+      <span v-if="product.createDate"
+        >상품등록일: {{ formatDate(product.createDate) }}</span
+      >
       <span v-if="product.transactionCreateDate">{{
         formatDate(product.transactionCreateDate)
       }}</span>
@@ -23,6 +26,7 @@
           :alt="product.title"
         />
         <div>
+          <transaction-badge v-if="product.transactionStatus !== null" />
           <h4>{{ product.title }}</h4>
           <p>{{ product.price.toLocaleString() }}원</p>
         </div>
@@ -38,8 +42,9 @@
 </template>
 
 <script setup>
-import LikeButton from "../Button/LikeButton.vue";
 import { formatDate } from "@/utils";
+import LikeButton from "../Button/LikeButton.vue";
+import TransactionBadge from "../Badge/TransactionBadge.vue";
 
 defineProps({
   product: {
@@ -89,8 +94,12 @@ defineEmits(["handle-click-like"]);
         border-radius: 10px;
       }
       h4 {
+        width: 200px;
         font-weight: 600;
         font-size: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
