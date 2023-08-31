@@ -1,8 +1,6 @@
 <template>
   <content-layout>
     <main-title title="배송등록" />
-    <product-title title="상품ID" />
-    <p>Product #{{ productId }}</p>
     <product-title title="판매상품" />
     <p>{{ productName }}</p>
     <product-title title="받는사람" />
@@ -22,14 +20,13 @@
         <p>{{ buyerInfo.phoneNumber }}</p>
       </li>
     </ul>
-    <v-form @submit.prevent="handleSubmitDelivery">
+    <v-form v-model="isValid" @submit.prevent="handleSubmitDelivery">
       <product-title title="운송장번호 등록" />
       <ul class="deliveryInfo">
         <li>
           <h4>운송장번호</h4>
           <custom-text-input
             placeholder-text="운송장번호"
-            type="number"
             v-model="deliveryNumber"
             :rules="[defaultTextRule.required]"
             class="deliveryInfo__form"
@@ -40,38 +37,106 @@
           <custom-text-input
             placeholder-text="택배사"
             v-model="deliveryCompany"
-            :rules="[defaultTextRule.required, defaultTextRule.min]"
+            :rules="[defaultTextRule.required]"
             class="deliveryInfo__form"
           />
         </li>
       </ul>
-      <submit-button text="배송 등록" />
+      <submit-button :disabled="!isValid" text="배송 등록" />
     </v-form>
+    <plain-modal
+      v-for="dialog in dialogList"
+      :key="dialog.id"
+      :modalText="dialog.text"
+      v-model="dialog.isShow"
+      @handle-cancle="() => (dialog.isShow = !dialog.isShow)"
+      @handle-confirm="dialog.callback"
+    />
   </content-layout>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { defaultTextRule } from "@/components/Form/data/formRules";
-import { useRoute } from "vue-router";
+import { getApi, postApi } from "@/api/modules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
+import PlainModal from "@/components/Modal/PlainModal.vue";
 
-const router = useRoute();
-const productId = ref(router.params.id);
-const productName = ref("아이패드 프로 10.5");
+const router = useRouter();
+const route = useRoute();
+const isValid = ref(false);
+const productId = ref(route.params.id);
+const productName = ref("");
 const deliveryNumber = ref("");
 const deliveryCompany = ref("");
+const duplicationResult = ref(false);
 const buyerInfo = ref({
-  name: "김뿅뿅",
-  address: "경기도 고양시 덕양구 신원3로 20",
-  phoneNumber: "01012341234",
+  name: "",
+  address: "",
+  phoneNumber: "",
 });
 
-const handleSubmitDelivery = () => {};
+const dialogList = ref([
+  {
+    id: 0,
+    text: "배송 등록이 완료되었습니다.",
+    isShow: false,
+    callback: () => {
+      router.push("/mypage/2");
+    },
+  },
+  {
+    id: 1,
+    text: "운송장번호가 이미 존재합니다.",
+    isShow: false,
+    callback: () => {
+      dialogList.value[1].isShow = false;
+    },
+  },
+]);
+
+const handleSubmitDelivery = async () => {
+  try {
+    const res = await getApi({
+      url: `/api/delivery/duplicate?trackingNumber=${deliveryNumber.value}`,
+    });
+
+    if (res.result === false) {
+      const response = await postApi({
+        url: `/api/delivery/${route.params.id}`,
+        data: {
+          trackingNumber: deliveryNumber.value,
+          parcel: deliveryCompany.value,
+        },
+      });
+      dialogList.value[0].isShow = true;
+    } else {
+      dialogList.value[1].isShow = true;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+const handelGetTransactionData = async () => {
+  try {
+    const response = await getApi({
+      url: `/api/buying/completed/${route.params.id}`,
+    });
+    productName.value = response.productTitle;
+    buyerInfo.value.name = response.buyerName;
+    buyerInfo.value.address = response.buyerLocation;
+    buyerInfo.value.phoneNumber = response.buyerPhoneNumber;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+onBeforeMount(async () => await handelGetTransactionData());
 </script>
 
 <style lang="scss" scoped>

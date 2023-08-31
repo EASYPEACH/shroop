@@ -35,7 +35,7 @@ public class PhoneAuthService {
 		PhoneAuth phoneAuth = phoneAuthRepository.getById(phoneAuthId);
 
 		if (!phoneAuth.getPhoneNumber().equals(phoneAuthRequest.getPhoneNumber())) {
-			throw new PhoneAuthFailException("잘못된 인증 정보입니다");
+			throw new PhoneAuthFailException("휴대전화번호 및 인증 번호를 확인해주세요");
 		}
 
 		if (!phoneAuth.getAuthNumber().equals(phoneAuthRequest.getPhoneAuthNumber())) {

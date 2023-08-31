@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.easypeach.shroop.modules.likes.domain.LikeRepository;
+import com.easypeach.shroop.modules.likes.domain.Likes;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
+import com.easypeach.shroop.modules.product.dto.response.MemberResonse;
 import com.easypeach.shroop.modules.product.dto.response.ProductImgResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductResponse;
 import com.easypeach.shroop.modules.product.exception.ProductException;
@@ -35,38 +38,54 @@ public class ProductService {
 	private final CategoryRepository categoryRepository;
 	private final ProductImgRepository productImgRepository;
 	private final TransactionRepository transactionRepository;
-	private final ProductImgService productImgService;
+	private final LikeRepository likeRepository;
 
-	public List<ProductResponse> findAll() {
+	public List<ProductResponse> findAll(final Member member) {
 		List<Product> productList = productRepository.findAll();
 		List<ProductResponse> productResponsesList = new ArrayList<>();
+		List<Likes> likeList = new ArrayList<>();
+		if (member != null) {
+			likeList = likeRepository.findAllByMember(member);
+		}
 
 		for (Product product : productList) {
 			productResponsesList.add(setProductResponse(product));
 		}
 
+		for (Likes likes : likeList) {
+			for (ProductResponse productResponse : productResponsesList) {
+				if (likes.getProduct().getId() == productResponse.getId()) {
+					productResponse.setIsLike();
+				}
+			}
+		}
+
 		return productResponsesList;
 	}
 
-	public ProductResponse getProductInfo(Long productId) {
+	public ProductResponse getProductInfo(final Member member, final Long productId) {
 		Product product = productRepository.getById(productId);
-		return setProductResponse(product);
+		ProductResponse productResponse = setProductResponse(product);
+		boolean isLikesProduct = likeRepository.existsLikesByMemberAndProduct(member, product);
+		if (isLikesProduct) {
+			productResponse.setIsLike();
+		}
+		return productResponse;
 	}
 
-	public Product findByProductId(Long productId) {
+	public Product findByProductId(final Long productId) {
 		Product product = productRepository.getById(productId);
 		return product;
 	}
 
-	public ProductImg getProductImg(Product product) {
+	public ProductImg getProductImg(final Product product) {
 		Product findProduct = productRepository.getById(product.getId());
 		findProduct.getProductImgList().get(0).getId();
 		return findProduct.getProductImgList().get(0);
 	}
 
 	@Transactional
-	public Product saveProduct(Long memberId, ProductRequest productRequest) {
-
+	public Product saveProduct(final Long memberId, final ProductRequest productRequest) {
 		Member seller = memberRepository.getById(memberId);
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		Product product = Product.createProduct(seller, productRequest, category);
@@ -74,7 +93,7 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Product updateProduct(Long memberId, Long productId, ProductRequest productRequest
+	public Product updateProduct(final Long memberId, final Long productId, final ProductRequest productRequest
 	) {
 		Product product = productRepository.getById(productId);
 		Member loginMember = memberRepository.getById(memberId);
@@ -91,11 +110,11 @@ public class ProductService {
 	}
 
 	@Transactional
-	public void deleteProduct(Long memberId, Long productId) {
+	public void deleteProduct(final Long memberId, final Long productId) {
 		Product product = productRepository.getById(productId);
 		Member loginMember = memberRepository.getById(memberId);
 		Member productOwnerMember = memberRepository.getById(memberId);
-
+		likeRepository.deleteAllByProduct(product);
 		if (product.getTransaction() != null) {
 			throw ProductException.notStatusDelete(product.getTransaction().getStatus());
 		}
@@ -105,13 +124,16 @@ public class ProductService {
 		productRepository.delete(product);
 	}
 
-	public ProductResponse setProductResponse(Product product) {
+	public ProductResponse setProductResponse(final Product product) {
 		ProductResponse productResponse = new ProductResponse(product);
+		MemberResonse seller = new MemberResonse(product.getSeller());
 		List<ProductImgResponse> productImgList = productImgRepository.findAllByProduct(product)
 			.stream()
 			.map(ProductImgResponse::new)
 			.collect(Collectors.toList());
+
 		productResponse.setProductImgList(productImgList);
+		productResponse.setSeller(seller);
 		Transaction transaction = transactionRepository.findByProduct(product);
 		if (transaction != null) {
 			productResponse.setTransaction(transaction.getStatus());

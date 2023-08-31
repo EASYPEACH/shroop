@@ -1,5 +1,6 @@
 package com.easypeach.shroop.modules.product.dto.response;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductGrade;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 
@@ -20,13 +22,18 @@ public class ProductResponse {
 	private Category category;
 	private ProductGrade productGrade;
 	private List<ProductImgResponse> productImgList;
+	private Long likesCount;
+	private Boolean isLike = false;
 	private String brand;
 	private Long price;
 	private Boolean isCheckedDeliveryFee;
 	private String content;
-	private LocalDateTime purchaseDate;
 	private Boolean isDefect;
 	private String saleReason;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private LocalDate purchaseDate;
+
 	private LocalDateTime createDate;
 
 	public ProductResponse(Product product) {
@@ -42,6 +49,7 @@ public class ProductResponse {
 		this.isDefect = product.getIsDefect();
 		this.saleReason = product.getSaleReason();
 		this.createDate = product.getCreateDate();
+		this.likesCount = product.getLikesCount();
 	}
 
 	public void setProductImgList(List<ProductImgResponse> productImgList) {
@@ -54,6 +62,10 @@ public class ProductResponse {
 
 	public void setTransaction(TransactionStatus transactionStatus) {
 		this.transactionStatus = transactionStatus;
+	}
+
+	public void setIsLike() {
+		this.isLike = true;
 	}
 
 }

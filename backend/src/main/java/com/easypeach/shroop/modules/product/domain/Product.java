@@ -1,5 +1,6 @@
 package com.easypeach.shroop.modules.product.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -75,13 +77,17 @@ public class Product {
 
 	@Column(name = "purchase_date", nullable = false)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private LocalDateTime purchaseDate;
+	private LocalDate purchaseDate;
 
 	@Column(name = "is_defect", nullable = false)
 	private Boolean isDefect;
 
 	@Column(name = "sale_reason", length = 255, nullable = false)
 	private String saleReason;
+
+	@Column(name = "likes")
+	@ColumnDefault(value = "0")
+	private Long likesCount;
 
 	@Column(name = "create_date")
 	@CreatedDate
@@ -98,6 +104,7 @@ public class Product {
 	) {
 		Product product = new Product();
 		product.seller = seller;
+		product.likesCount = 0L;
 		return setByProductRequest(product, productRequest, category);
 	}
 
@@ -120,6 +127,10 @@ public class Product {
 		final Category category
 	) {
 		setByProductRequest(this, productRequest, category);
+	}
+
+	public void setLikesCount(Long likesCount) {
+		this.likesCount = likesCount;
 	}
 
 }

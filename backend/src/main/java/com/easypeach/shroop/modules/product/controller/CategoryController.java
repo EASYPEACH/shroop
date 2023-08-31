@@ -40,7 +40,6 @@ public class CategoryController {
 	@PostMapping
 	public ResponseEntity<CategoryResponse> saveCategory(@RequestBody final CategoryRequest categoryRequest) {
 		Category category = categoryService.saveCategory(categoryRequest.getName());
-		System.out.println(category.getId());
 		return ResponseEntity.status(HttpStatus.OK).body(new CategoryResponse(category.getId(), category.getName()));
 	}
 }

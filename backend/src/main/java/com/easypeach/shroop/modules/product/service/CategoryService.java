@@ -21,7 +21,7 @@ public class CategoryService {
 	private final CategoryRepository categoryRepository;
 
 	@Transactional
-	public Category saveCategory(String categoryName) {
+	public Category saveCategory(final String categoryName) {
 		Category category = Category.createCategory(categoryName);
 		return categoryRepository.save(category);
 	}
@@ -33,7 +33,7 @@ public class CategoryService {
 			.collect(Collectors.toList());
 	}
 
-	public Category findById(Long id) {
+	public Category findById(final Long id) {
 		return categoryRepository.getById(id);
 	}
 
