@@ -30,21 +30,21 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@GetMapping("/me")
-	public ResponseEntity<MyPageInfoResponse> findMyPage(@LoginMember Member member){
+	public ResponseEntity<MyPageInfoResponse> findMyPage(@LoginMember final Member member){
 		MyPageInfoResponse myInfo = memberService.getMyInfo(member.getId());
 		return ResponseEntity.ok(myInfo);
 	}
 
 	@GetMapping("/profile")
-	public ResponseEntity<ProfileEditForm> findProfileEditPage(@LoginMember Member member) {
+	public ResponseEntity<ProfileEditForm> findProfileEditPage(@LoginMember final Member member) {
 		ProfileEditForm profileEditForm = memberService.findProfile(member.getId());
 		return ResponseEntity.ok(profileEditForm);
 	}
 
 	@PatchMapping("/profile")
-	public ResponseEntity<BasicResponse> updateProfile(@LoginMember Member member
-		, @RequestPart @Validated ProfileEditRequest editRequest,
-		@RequestPart List<MultipartFile> userImg) {
+	public ResponseEntity<BasicResponse> updateProfile(@LoginMember final Member member
+		, @RequestPart @Validated final ProfileEditRequest editRequest,
+		@RequestPart final List<MultipartFile> userImg) {
 
 		memberService.updateProfile(member.getId(), userImg, editRequest);
 		return ResponseEntity.ok(new BasicResponse("수정을 완료하였습니다"));
