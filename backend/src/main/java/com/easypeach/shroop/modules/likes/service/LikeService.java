@@ -20,9 +20,9 @@ public class LikeService {
 
 	private final LikeRepository likeRepository;
 	private final ProductRepository productRepository;
-	
+
 	@Transactional
-	public Long saveLikes(Member member, Long productId) {
+	public Long saveLikes(final Member member, final Long productId) {
 		Product product = productRepository.getById(productId);
 		boolean isExist = likeRepository.existsLikesByMemberAndProduct(member, product);
 		if (!isExist) {
@@ -35,7 +35,7 @@ public class LikeService {
 	}
 
 	@Transactional
-	public Long deleteLikes(Member member, Long productId) {
+	public Long deleteLikes(final Member member, final Long productId) {
 		Product product = productRepository.getById(productId);
 		boolean isExist = likeRepository.existsLikesByMemberAndProduct(member, product);
 		if (isExist) {
