@@ -15,6 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
@@ -39,6 +40,8 @@ public class Member {
 
 	@Column(name = "phone_number", length = 50, nullable = false, unique = true)
 	private String phoneNumber;
+
+	private String profileImg;
 
 	@Column(nullable = false)
 	@Enumerated(value = EnumType.STRING)
@@ -87,5 +90,22 @@ public class Member {
 		this.role = role;
 	}
 
+	public void updateProfile(ProfileEditRequest profileEditRequest) {
+		this.nickname = profileEditRequest.getNickname();
+		this.password = profileEditRequest.getNewPassword();
+		this.phoneNumber = profileEditRequest.getPhoneNumber();
+	}
+
+	public void updatePassword(String password) {
+		this.password = password;
+	}
+
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void updateProfileImg(String imgUrl) {
+		this.profileImg = imgUrl;
+	}
 }
 
