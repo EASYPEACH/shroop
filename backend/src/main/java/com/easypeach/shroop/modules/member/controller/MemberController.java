@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.service.MemberService;
@@ -27,6 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberController {
 	private final MemberService memberService;
+
+	@GetMapping("/me")
+	public ResponseEntity<MyPageInfoResponse> findMyPage(@LoginMember Member member){
+		MyPageInfoResponse myInfo = memberService.getMyInfo(member.getId());
+		return ResponseEntity.ok(myInfo);
+	}
 
 	@GetMapping("/profile")
 	public ResponseEntity<ProfileEditForm> findProfileEditPage(@LoginMember Member member) {

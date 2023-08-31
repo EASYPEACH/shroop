@@ -12,6 +12,7 @@ import com.easypeach.shroop.infra.s3.service.S3UploadService;
 import com.easypeach.shroop.modules.member.domain.DuplicateCheckType;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
+import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
@@ -32,6 +33,16 @@ public class MemberService {
 	private final PhoneAuthService phoneAuthService;
 	private final PasswordEncoder passwordEncoder;
 	private final S3UploadService s3UploadService;
+
+	public MyPageInfoResponse getMyInfo(Long memberId){
+		Member findMember = memberRepository.getById(memberId);
+		MyPageInfoResponse myPageInfo = new MyPageInfoResponse(
+			findMember.getProfileImg(),
+			findMember.getNickname(),
+			findMember.getPoint()
+		);
+		return myPageInfo;
+	}
 
 	public ProfileEditForm findProfile(Long memberId) {
 		Member findMember = memberRepository.getById(memberId);
