@@ -33,7 +33,7 @@
             "
           />
           <h4>{{ product.title }}</h4>
-          <p>{{ product.price.toLocaleString() }}원</p>
+          <p>{{ product.price?.toLocaleString() }}원</p>
         </div>
       </div>
       <slot />
