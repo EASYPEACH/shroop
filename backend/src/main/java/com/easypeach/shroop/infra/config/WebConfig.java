@@ -12,6 +12,6 @@ public class WebConfig implements WebMvcConfigurer {
 			.allowedMethods("*")
 			.allowCredentials(true)
 			.maxAge(3000)
-			.allowedOriginPatterns("*");
+			.allowedOriginPatterns("https://shroop.shop","http://localhost:3000");
 	}
 }
