@@ -95,22 +95,19 @@
 </template>
 
 <script setup>
-import SubmitButton from "@/components/Button/SubmitButton.vue";
-import basicProfile from "@/assets/image/basicProfile.jpeg";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import PlainModal from "@/components/Modal/PlainModal.vue";
-
 import { onBeforeMount, ref } from "vue";
 import {
   changeImageToData,
   multipartFormDataJson,
   changeUrlToFiles,
 } from "@/utils";
-
-import { useRouter } from "vue-router";
 import { getApi, postApi, multipartPatchApi } from "@/api/modules";
 import { useCookies } from "vue3-cookies";
+import SubmitButton from "@/components/Button/SubmitButton.vue";
+import basicProfile from "@/assets/image/basicProfile.jpeg";
+import ProductTitle from "@/components/Title/ProductTitle.vue";
+import CustomTextInput from "@/components/Form/CustomTextInput.vue";
+import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const { cookies } = useCookies();
 const isValid = ref(false);
