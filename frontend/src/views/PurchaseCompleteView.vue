@@ -5,21 +5,21 @@
     <product-title title="결제내역" />
     <div class="infobox">
       <h4>총 결제금액</h4>
-      <p>{{ product.price.toLocaleString() }}원</p>
+      <p>{{ product.price?.toLocaleString() }}원</p>
     </div>
     <product-title title="배송정보" />
     <ul>
       <li class="infobox">
         <h4>받는사람</h4>
-        <p>{{ buyerInfo.name }}</p>
+        <p>{{ product.buyerName }}</p>
       </li>
       <li class="infobox">
         <h4>휴대폰번호</h4>
-        <p>{{ buyerInfo.phoneNumber }}</p>
+        <p>{{ product.buyerPhoneNumber }}</p>
       </li>
       <li class="infobox">
         <h4>배송주소</h4>
-        <p>{{ buyerInfo.address }}</p>
+        <p>{{ product.address }}</p>
       </li>
     </ul>
     <v-btn
@@ -41,28 +41,16 @@ import ProductTitle from "@/components/Title/ProductTitle.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
 
 const route = useRoute();
-const product = ref({
-  title: "",
-  price: 0,
-  thumb: "",
-});
-const buyerInfo = ref({
-  name: "",
-  address: "",
-  phoneNumber: "",
-});
+const product = ref({});
 
 onBeforeMount(async () => {
   try {
     const response = await getApi({
       url: `/api/buying/completed/${route.params.id}`,
     });
-    console.log(response);
+    product.value = response;
     product.value.title = response.productTitle;
     product.value.price = response.productPrice;
-    buyerInfo.value.name = response.buyerName;
-    buyerInfo.value.phoneNumber = response.buyerPhoneNumber;
-    buyerInfo.value.address = response.buyerLocation;
   } catch (error) {
     console.log(error);
   }
