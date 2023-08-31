@@ -28,8 +28,8 @@ public class ProductImgService {
 	private final S3UploadService s3UploadService;
 
 	@Transactional
-	public void saveProductImg(List<MultipartFile> productImgList,
-		List<MultipartFile> defectImgList, Product product, boolean isDefect) {
+	public void saveProductImg(final List<MultipartFile> productImgList,
+		final List<MultipartFile> defectImgList, final Product product, final boolean isDefect) {
 		try {
 			List<ProductImg> imgList = insertImgList(productImgList, defectImgList, product, isDefect);
 			productImgRepository.saveAll(imgList);
@@ -39,8 +39,8 @@ public class ProductImgService {
 	}
 
 	@Transactional
-	public void updateProductImgList(List<MultipartFile> productImgList,
-		List<MultipartFile> defectImgList, Long productId, boolean isDefect) {
+	public void updateProductImgList(final List<MultipartFile> productImgList,
+		final List<MultipartFile> defectImgList, final Long productId, final boolean isDefect) {
 		Product product = productRepository.getById(productId);
 
 		try {
@@ -54,8 +54,9 @@ public class ProductImgService {
 		}
 	}
 
-	public List<ProductImg> insertImgList(List<MultipartFile> productImgList, List<MultipartFile> defectImgList,
-		Product product, boolean isDefect) throws IOException {
+	public List<ProductImg> insertImgList(final List<MultipartFile> productImgList,
+		final List<MultipartFile> defectImgList,
+		final Product product, final boolean isDefect) throws IOException {
 		List<ProductImg> imgList = new ArrayList<>();
 		imgList.addAll(createImgList(productImgList, product, false));
 		if (isDefect) {
@@ -64,8 +65,8 @@ public class ProductImgService {
 		return imgList;
 	}
 
-	public List<ProductImg> createImgList(List<MultipartFile> requestImgList,
-		Product product, boolean isDefect) throws
+	public List<ProductImg> createImgList(final List<MultipartFile> requestImgList,
+		final Product product, final boolean isDefect) throws
 		IOException {
 		List<ProductImg> imgList = new ArrayList<>();
 		for (MultipartFile multipartFile : requestImgList) {
@@ -75,7 +76,7 @@ public class ProductImgService {
 		return imgList;
 	}
 
-	public void checkImgLength(List<MultipartFile> productImgList) {
+	public void checkImgLength(final List<MultipartFile> productImgList) {
 		if (productImgList.size() < 2) {
 			throw new ProductImgLengthException("사진은 2장이상 등록해주세요");
 		}
