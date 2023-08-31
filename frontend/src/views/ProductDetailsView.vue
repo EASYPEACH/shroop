@@ -182,7 +182,10 @@
       </div>
       <div class="productDetail__content">
         <product-title bigTitle title="상품 기타 상세 정보" />
-        <div class="text-h6" v-html="productContent.content"></div>
+        <div
+          class="text-h6"
+          v-html="productContent.content?.replaceAll('\n', '<br />')"
+        ></div>
       </div>
     </div>
     <plain-modal
@@ -309,6 +312,7 @@ const handleClickDeleteRequest = async () => {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    gap: 20px;
     .productContent__price {
       margin: 15px 0;
       display: flex;
