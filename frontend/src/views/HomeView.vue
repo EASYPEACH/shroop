@@ -86,7 +86,7 @@ onBeforeMount(async () => {
 // 상품 좋아요 버튼 클릭 이벤트
 const handleClickLike = async (product) => {
   try {
-    toggleLikesProduct(product, productCardData);
+   await toggleLikesProduct(product, productCardData);
   } catch (err) {
     if (err.response.status === 403) {
       router.push("/login");

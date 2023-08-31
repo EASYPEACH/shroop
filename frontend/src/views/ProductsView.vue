@@ -101,7 +101,7 @@ const handleUpdateCategory = () => {
 // 좋아요, 좋아요 취소 핸들러
 const handleClickLike = async (product) => {
   try {
-    toggleLikesProduct(product, productCards);
+    await toggleLikesProduct(product, productCards);
   } catch (err) {
     if (err.response.status === 403) {
       router.push("/login");
