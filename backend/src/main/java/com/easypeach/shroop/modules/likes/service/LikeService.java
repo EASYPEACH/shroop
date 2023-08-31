@@ -1,5 +1,7 @@
 package com.easypeach.shroop.modules.likes.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +47,9 @@ public class LikeService {
 		Long totalLikes = likeRepository.countLikesByProduct(product);
 		product.setLikesCount(totalLikes);
 		return totalLikes;
+	}
+
+	public Page<Likes> getLikesPage(Member member, Pageable pageable){
+		return likeRepository.findLikesPage(member,pageable);
 	}
 }

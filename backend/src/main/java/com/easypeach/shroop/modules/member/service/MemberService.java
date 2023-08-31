@@ -3,15 +3,20 @@ package com.easypeach.shroop.modules.member.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.easypeach.shroop.infra.s3.service.S3UploadService;
+import com.easypeach.shroop.modules.likes.domain.Likes;
+import com.easypeach.shroop.modules.likes.service.LikeService;
 import com.easypeach.shroop.modules.member.domain.DuplicateCheckType;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
+import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
 import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -33,14 +38,20 @@ public class MemberService {
 	private final PhoneAuthService phoneAuthService;
 	private final PasswordEncoder passwordEncoder;
 	private final S3UploadService s3UploadService;
+	private final LikeService likeService;
 
-	public MyPageInfoResponse getMyInfo(final Long memberId){
+	public MyPageInfoResponse getMyInfo(final Long memberId, Pageable pageable){
 		Member findMember = memberRepository.getById(memberId);
+		Page<Likes> likesList = likeService.getLikesPage(findMember,pageable);
+		Page<LikeProductInfo> likeProductList = likesList.map(likes -> new LikeProductInfo());
+
 		MyPageInfoResponse myPageInfo = new MyPageInfoResponse(
 			findMember.getProfileImg(),
 			findMember.getNickname(),
-			findMember.getPoint()
+			findMember.getPoint(),
+			likeProductList
 		);
+
 		return myPageInfo;
 	}
 

@@ -2,6 +2,7 @@ package com.easypeach.shroop.modules.member.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,9 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@GetMapping("/me")
-	public ResponseEntity<MyPageInfoResponse> findMyPage(@LoginMember final Member member){
-		MyPageInfoResponse myInfo = memberService.getMyInfo(member.getId());
+	public ResponseEntity<MyPageInfoResponse> findMyPage(@LoginMember final Member member, Pageable pageable){
+		MyPageInfoResponse myInfo = memberService.getMyInfo(member.getId(),pageable);
+
 		return ResponseEntity.ok(myInfo);
 	}
 
