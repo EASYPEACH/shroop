@@ -16,5 +16,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 		return findById(id).orElseThrow(() -> ProductException.notExistProduct());
 	}
 
-	Page<Product> findBySellerOrderByCreateDateDesc(Member seller, Pageable pageable);
+	Page<Product> findBySeller(Member seller, Pageable pageable);
 }
