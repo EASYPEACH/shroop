@@ -8,23 +8,29 @@
           productCardData.productImgList.filter((img) => !img.isDefect)[0]
             .productImgUrl
         "
-        cover
+        contain
       >
       </v-img>
     </router-link>
     <v-card-text class="pt-3">
+      상품등록일<br />
       {{ formatDate(productCardData.createDate) }}
       <span>&nbsp; {{ productCardData.category.name }}</span>
     </v-card-text>
-    <v-card-subtitle class="pt-4 text-h5">
-      {{ productCardData.title }}
+    <v-card-subtitle>
+      <p>{{ productCardData.title }}</p>
     </v-card-subtitle>
-    <p class="price">{{ productCardData.price.toLocaleString() }} 원</p>
+    <div class="product-status">
+      <transaction-badge v-if="productCardData.transactionStatus !== null" />
+      <p>{{ productCardData.price.toLocaleString() }} 원</p>
+    </div>
     <v-card-actions>
-      <like-button
-        :product="productCardData"
-        @handle-click-like="$emit('handle-click-like')"
-      />
+      <div>
+        <like-button
+          :product="productCardData"
+          @handle-click-like="$emit('handle-click-like')"
+        />
+      </div>
       <v-btn color="subBlue">
         <router-link :to="`/detail/${productCardData.id}`">
           상세보기
@@ -35,23 +41,36 @@
 </template>
 
 <script setup>
-import LikeButton from "../Button/LikeButton.vue";
 import { formatDate } from "@/utils";
+import LikeButton from "../Button/LikeButton.vue";
+import TransactionBadge from "../Badge/TransactionBadge.vue";
 defineProps({
   productCardData: Object,
 });
-defineEmits("handle-click-like");
+defineEmits(["handle-click-like"]);
 </script>
 
 <style lang="scss" scoped>
+.v-img {
+  background-color: #fff;
+}
 .v-card-subtitle {
+  width: 200px;
   color: black;
   opacity: 1;
-  font-size: 20px;
+  font-size: 18px;
+  padding: 10px 15px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.price {
-  padding: 0 20px;
+.product-status {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 15px;
   text-align: right;
 }
 .v-card-text {
