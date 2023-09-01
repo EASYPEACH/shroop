@@ -168,7 +168,7 @@
         </div>
         <product-title bigTitle title="상품 결함 정보" />
         <div v-if="!productContent.isDefect" class="text-h6">
-          경함 여부 : 없음
+          결함 여부 : 없음
         </div>
         <div v-else class="text-h6">결함 여부 : 있음</div>
         <div v-if="productContent.isDefect" class="productDetail__defect">
