@@ -25,7 +25,7 @@ public class BankService {
 		if (bank.getMoney() >= point) {
 			bank.subtractMoney(point);
 		} else {
-			throw MinusMoneyException.OverCharging();
+			throw new MinusMoneyException("충전에 실패하셨습니다.");
 		}
 	}
 

@@ -176,7 +176,7 @@ public class MemberService {
 		if (member.getPoint() >= point) {
 			foundMember.subtractPoint(point);
 		} else {
-			throw MinusPointException.OverExchanging();
+			throw new MinusPointException("보유한 포인트보다 환전하려는 포인트가 더 큽니다. 다시 입력해주세요");
 		}
 		return foundMember.getPoint();
 	}
