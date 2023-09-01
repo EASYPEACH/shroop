@@ -17,4 +17,10 @@ public class SearchRequest {
 
 	@JsonProperty("hasNotTransaction")
 	private boolean hasNotTransaction;
+
+	public SearchRequest(String title, Long categoryId, boolean hasNotTransaction) {
+		this.title = title;
+		this.categoryId = categoryId;
+		this.hasNotTransaction = hasNotTransaction;
+	}
 }

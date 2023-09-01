@@ -146,10 +146,21 @@ public class ProductService {
 		return productResponse;
 	}
 
-	public SearchProductResponse searchProduct(final String title, final Long categoryId, final boolean hasTransaction,
+	public SearchProductResponse searchProduct(final Member member,
+		final String title, final Long categoryId, final boolean hasTransaction,
 		final Pageable pageable) {
-		Page<ProductOneImgResponse> productPage = productRepository.searchProduct(title, categoryId, hasTransaction,
-			pageable);
+
+		Page<ProductOneImgResponse> productPage;
+		if (member == null) {
+			productPage = productRepository.searchProduct(null, title, categoryId,
+				hasTransaction,
+				pageable);
+
+		} else {
+			productPage = productRepository.searchProduct(member.getId(), title, categoryId,
+				hasTransaction,
+				pageable);
+		}
 
 		int pageCount = productPage.getTotalPages();
 

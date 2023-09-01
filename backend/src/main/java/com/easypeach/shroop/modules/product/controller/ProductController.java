@@ -83,10 +83,11 @@ public class ProductController {
 
 	@GetMapping("/search")
 	public ResponseEntity<SearchProductResponse> searchProduct(
+		final @LoginMember Member member,
 		final SearchRequest searchRequest,
 		final @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
-		SearchProductResponse response = productService.searchProduct(searchRequest.getTitle(),
+		SearchProductResponse response = productService.searchProduct(member, searchRequest.getTitle(),
 			searchRequest.getCategoryId(), searchRequest.isHasNotTransaction(), pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);

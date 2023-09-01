@@ -32,6 +32,8 @@ public class ProductOneImgResponse {
 
 	private LocalDateTime createDate;
 
+	private boolean isLike;
+
 	public ProductOneImgResponse(Product product) {
 		this.id = product.getId();
 		this.title = product.getTitle();
@@ -54,7 +56,8 @@ public class ProductOneImgResponse {
 		final Long price,
 		final Boolean isCheckedDeliveryFee,
 		final String content,
-		final LocalDateTime createDate
+		final LocalDateTime createDate,
+		final boolean isLike
 	) {
 		this.id = id;
 		this.transactionStatus = transactionStatus;
@@ -66,6 +69,7 @@ public class ProductOneImgResponse {
 		this.isCheckedDeliveryFee = isCheckedDeliveryFee;
 		this.content = content;
 		this.createDate = createDate;
+		this.isLike = isLike;
 	}
 
 }

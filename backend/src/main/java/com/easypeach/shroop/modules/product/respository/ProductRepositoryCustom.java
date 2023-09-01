@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 import com.easypeach.shroop.modules.product.dto.response.ProductOneImgResponse;
 
 public interface ProductRepositoryCustom {
-	Page<ProductOneImgResponse> searchProduct(String title, Long categoryId, boolean hasNotTransaction,
+	Page<ProductOneImgResponse> searchProduct(Long memberId, String title, Long categoryId, boolean hasNotTransaction,
 		Pageable pageable);
 }

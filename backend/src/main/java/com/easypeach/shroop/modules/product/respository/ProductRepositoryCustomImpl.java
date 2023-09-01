@@ -1,5 +1,6 @@
 package com.easypeach.shroop.modules.product.respository;
 
+import static com.easypeach.shroop.modules.likes.domain.QLikes.*;
 import static com.easypeach.shroop.modules.product.domain.QProduct.*;
 import static com.easypeach.shroop.modules.product.domain.QProductImg.*;
 import static com.easypeach.shroop.modules.transaction.domain.QTransaction.*;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.easypeach.shroop.modules.likes.domain.QLikes;
 import com.easypeach.shroop.modules.product.dto.response.ProductOneImgResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,7 +25,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<ProductOneImgResponse> searchProduct(String title, Long categoryId, boolean hasNotTransaction,
+	public Page<ProductOneImgResponse> searchProduct(Long memberId, String title, Long categoryId,
+		boolean hasNotTransaction,
 		Pageable pageable) {
 
 		List<ProductOneImgResponse> content = queryFactory
@@ -37,11 +40,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 				product.price,
 				product.isCheckedDeliveryFee,
 				product.content,
-				product.createDate
+				product.createDate,
+				likesISNull(likes, memberId)
 			))
 			.from(product)
 			.leftJoin(transaction).on(transaction.product.id.eq(product.id))
 			.leftJoin(productImg).on(productImg.product.id.eq(product.id))
+			.leftJoin(likes).on(likes.product.id.eq(product.id))
 			.where(titleContains(title), categoryIdEq(categoryId), hasNotTransactionIsNull(hasNotTransaction))
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
@@ -80,4 +85,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
 		return transaction.status.isNull();
 	}
+
+	private BooleanExpression likesISNull(QLikes like, Long memberId) {
+		if (like == null || memberId == null) {
+			return likes.isNotNull();
+		}
+
+		return likes.member.id.eq(memberId);
+	}
+
 }
