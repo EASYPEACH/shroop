@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +19,9 @@ import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
 import com.easypeach.shroop.modules.product.dto.response.MemberResonse;
 import com.easypeach.shroop.modules.product.dto.response.ProductImgResponse;
+import com.easypeach.shroop.modules.product.dto.response.ProductOneImgResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductResponse;
+import com.easypeach.shroop.modules.product.dto.response.SearchProductResponse;
 import com.easypeach.shroop.modules.product.exception.ProductException;
 import com.easypeach.shroop.modules.product.respository.CategoryRepository;
 import com.easypeach.shroop.modules.product.respository.ProductImgRepository;
@@ -140,6 +144,18 @@ public class ProductService {
 		}
 
 		return productResponse;
+	}
+
+	public SearchProductResponse searchProduct(final String title, final Long categoryId, final boolean hasTransaction,
+		final Pageable pageable) {
+		Page<ProductOneImgResponse> productPage = productRepository.searchProduct(title, categoryId, hasTransaction,
+			pageable);
+
+		int pageCount = productPage.getTotalPages();
+
+		List<ProductOneImgResponse> list = productPage.stream().collect(Collectors.toList());
+
+		return new SearchProductResponse(pageCount, list);
 	}
 
 }

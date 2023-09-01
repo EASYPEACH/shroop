@@ -2,6 +2,9 @@ package com.easypeach.shroop.modules.product.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +23,10 @@ import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
+import com.easypeach.shroop.modules.product.dto.request.SearchRequest;
 import com.easypeach.shroop.modules.product.dto.response.ProductCreatedResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductResponse;
+import com.easypeach.shroop.modules.product.dto.response.SearchProductResponse;
 import com.easypeach.shroop.modules.product.service.ProductImgService;
 import com.easypeach.shroop.modules.product.service.ProductService;
 
@@ -74,5 +79,16 @@ public class ProductController {
 	public ResponseEntity<BasicResponse> deleteProduct(@LoginMember Member member, @PathVariable Long productId) {
 		productService.deleteProduct(member.getId(), productId);
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("삭제가 완료되었습니다"));
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<SearchProductResponse> searchProduct(
+		final SearchRequest searchRequest,
+		final @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+		SearchProductResponse response = productService.searchProduct(searchRequest.getTitle(),
+			searchRequest.getCategoryId(), searchRequest.isHasNotTransaction(), pageable);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 }
