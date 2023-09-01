@@ -40,11 +40,12 @@ class ReportControllerTest extends ControllerTest {
 	@DisplayName("신고 및 중재 신청하기 테스트 코드")
 	public void saveReportTest() throws Exception {
 		Long memberId = 1L;
+		Long productId = 1L;
 		String title = "신고 제목";
 		String content = "신고 내용";
 		boolean isMediate = true;
 
-		ReportRequest reportRequest = new ReportRequest(title, isMediate, content);
+		ReportRequest reportRequest = new ReportRequest(title, isMediate, productId, content);
 
 		MockMultipartFile file1 = new MockMultipartFile("multipartFileList", "test1.jpg", MediaType.IMAGE_JPEG_VALUE,
 			"test1 image".getBytes());
