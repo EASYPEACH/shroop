@@ -26,9 +26,14 @@
           :alt="product.title"
         />
         <div>
-          <transaction-badge v-if="product.transactionStatus !== null" />
+          <transaction-badge
+            v-if="
+              product.transactionStatus !== null &&
+              product.transactionStatus !== undefined
+            "
+          />
           <h4>{{ product.title }}</h4>
-          <p>{{ product.price.toLocaleString() }}원</p>
+          <p>{{ product.price?.toLocaleString() }}원</p>
         </div>
       </div>
       <slot />

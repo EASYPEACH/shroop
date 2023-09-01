@@ -3,15 +3,21 @@ package com.easypeach.shroop.modules.member.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.easypeach.shroop.infra.s3.service.S3UploadService;
+import com.easypeach.shroop.modules.likes.domain.Likes;
+import com.easypeach.shroop.modules.likes.service.LikeService;
 import com.easypeach.shroop.modules.member.domain.DuplicateCheckType;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
+import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
+import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
@@ -32,14 +38,31 @@ public class MemberService {
 	private final PhoneAuthService phoneAuthService;
 	private final PasswordEncoder passwordEncoder;
 	private final S3UploadService s3UploadService;
+	private final LikeService likeService;
 
-	public ProfileEditForm findProfile(Long memberId) {
+	public MyPageInfoResponse getMyInfo(final Long memberId, Pageable pageable){
+		Member findMember = memberRepository.getById(memberId);
+		Page<Likes> likedList = likeService.getLikesPage(findMember,pageable);
+
+		Page<LikeProductInfo> likedProductList = likedList.map(likes -> new LikeProductInfo(likes));
+
+		MyPageInfoResponse myPageInfo = new MyPageInfoResponse(
+			findMember.getProfileImg(),
+			findMember.getNickname(),
+			findMember.getPoint(),
+			likedProductList
+		);
+
+		return myPageInfo;
+	}
+
+	public ProfileEditForm findProfile(final Long memberId) {
 		Member findMember = memberRepository.getById(memberId);
 		return new ProfileEditForm(findMember.getNickname(), findMember.getPhoneNumber(), findMember.getProfileImg());
 	}
 
 	@Transactional
-	public void updateProfile(Long memberId, List<MultipartFile> profileImg, ProfileEditRequest req) {
+	public void updateProfile(final Long memberId, List<MultipartFile> profileImg, ProfileEditRequest req) {
 		Member findMember = memberRepository.getById(memberId);
 		PhoneAuthRequest phoneAuthRequest = new PhoneAuthRequest(
 			req.getUuid(),
@@ -52,7 +75,7 @@ public class MemberService {
 		updatePhoneNumber(findMember, phoneAuthRequest);
 	}
 
-	public void updateImgUrl(Member member, List<MultipartFile> profileImg) {
+	public void updateImgUrl(final Member member,final List<MultipartFile> profileImg) {
 		if (profileImg.size() == 0) {
 			return;
 		}
@@ -64,7 +87,7 @@ public class MemberService {
 		}
 	}
 
-	public void updateNickname(Member member, String newNickname) {
+	public void updateNickname(final Member member,final String newNickname) {
 		if (member.getNickname().equals(newNickname)) {
 			//닉네임이 같으면 변경하지 않음
 			return;
@@ -75,7 +98,7 @@ public class MemberService {
 		member.updateNickname(newNickname);
 	}
 
-	public void updatePassword(Member member, String oldPassword, String newPassword) {
+	public void updatePassword(final Member member,final String oldPassword,final String newPassword) {
 		if (!(oldPassword.equals("") && newPassword.equals(""))) {
 			if (!passwordEncoder.matches(oldPassword, member.getPassword())) {
 				throw new PasswordNotMatchException("기존 비밀번호가 맞지 않습니다");
@@ -88,7 +111,7 @@ public class MemberService {
 		}
 	}
 
-	public void updatePhoneNumber(Member member, PhoneAuthRequest phoneAuthRequest) {
+	public void updatePhoneNumber(final Member member,final PhoneAuthRequest phoneAuthRequest) {
 		if (phoneAuthRequest.getPhoneNumber().equals(member.getPhoneNumber())) {
 			//폰 번호 같으면 검사하지 않음
 			return;
@@ -102,25 +125,25 @@ public class MemberService {
 			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
 	}
 
-	boolean existsByLoginId(String loginId) {
+	boolean existsByLoginId(final String loginId) {
 		return memberRepository.existsByLoginId(loginId);
 	}
 
-	boolean existsByNickname(String nickname) {
+	boolean existsByNickname(final String nickname) {
 		return memberRepository.existsByNickname(nickname);
 	}
 
-	public Member findByLoginId(String loginId) {
+	public Member findByLoginId(final String loginId) {
 		return memberRepository.findByLoginId(loginId)
 			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
 	}
 
-	public Member findByNickname(String nickname) {
+	public Member findByNickname(final String nickname) {
 		return memberRepository.findByNickname(nickname)
 			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
 	}
 
-	public Member findByPhoneNumber(String phoneNumber) {
+	public Member findByPhoneNumber(final String phoneNumber) {
 		return memberRepository.findByPhoneNumber(phoneNumber)
 			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
 	}

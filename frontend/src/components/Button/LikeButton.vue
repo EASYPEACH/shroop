@@ -10,10 +10,10 @@ defineProps({
   product: {
     type: Object,
     required: true,
-    variant: {
-      type: String,
-      withDefaults: "text",
-    },
+  },
+  variant: {
+    type: String,
+    withDefaults: "text",
   },
 });
 defineEmits(["handle-click-like"]);

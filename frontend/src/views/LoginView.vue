@@ -67,14 +67,14 @@ const isValid = ref(false);
 const authResult = ref(true);
 const handleSubmitLogin = async () => {
   try {
-    const { response } = await postApi({
+    await postApi({
       url: "/api/auth/sign-in",
       data: {
         loginId: id.value,
         password: password.value,
       },
     });
-    router.push("/");
+    router.back();
   } catch (error) {
     if (error.response.status === 403) {
       authResult.value = false;
