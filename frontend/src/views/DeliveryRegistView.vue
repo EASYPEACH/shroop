@@ -70,11 +70,9 @@ import PlainModal from "@/components/Modal/PlainModal.vue";
 const router = useRouter();
 const route = useRoute();
 const isValid = ref(false);
-const productId = ref(route.params.id);
 const productName = ref("");
 const deliveryNumber = ref("");
 const deliveryCompany = ref("");
-const duplicationResult = ref(false);
 const buyerInfo = ref({
   name: "",
   address: "",
@@ -107,7 +105,7 @@ const handleSubmitDelivery = async () => {
     });
 
     if (res.result === false) {
-      const response = await postApi({
+      await postApi({
         url: `/api/delivery/${route.params.id}`,
         data: {
           trackingNumber: deliveryNumber.value,
@@ -119,7 +117,7 @@ const handleSubmitDelivery = async () => {
       dialogList.value[1].isShow = true;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 const handelGetTransactionData = async () => {
@@ -132,7 +130,7 @@ const handelGetTransactionData = async () => {
     buyerInfo.value.address = response.buyerLocation;
     buyerInfo.value.phoneNumber = response.buyerPhoneNumber;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

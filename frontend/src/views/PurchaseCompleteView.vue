@@ -52,7 +52,7 @@ onBeforeMount(async () => {
     product.value.title = response.productTitle;
     product.value.price = response.productPrice;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 </script>

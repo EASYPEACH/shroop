@@ -94,7 +94,6 @@ import {
   nickNameRule,
   agreeRule,
   phoneNumberRule,
-  defaultTextRule,
 } from "@/components/Form/data/formRules";
 import { AGREE } from "@/consts/agree";
 import { ref } from "vue";
@@ -105,13 +104,13 @@ import { useCookies } from "vue3-cookies";
 
 const { cookies } = useCookies();
 const router = useRouter();
-const phoneItems = ref(["LGT", "SKT", "KT"]);
+
 const id = ref("");
 const password = ref("");
-const visible = ref(false);
 const phoneNumber = ref("");
-const mobileCarrier = ref("");
 const nickname = ref("");
+
+const visible = ref(false);
 const isValid = ref(false);
 const dialog = ref({
   [AGREE.SHROOP]: false,
@@ -190,7 +189,9 @@ const requestAuthNumber = async () => {
       },
     });
     cookies.set("uuid", data.uuid);
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const checkDuplication = async (param) => {
