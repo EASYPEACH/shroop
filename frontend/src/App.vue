@@ -3,40 +3,48 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { getApi } from "@/api/modules";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useApiLoading } from "@/store/useLoading";
+import api from "./api";
 
-const router = useRouter();
-const loginCheckStore = useCheckLogin();
+const loadingStore = useApiLoading();
 
-router.beforeEach(async (to, _, next) => {
-  await handleGetLoginInfo();
-  if (
-    !(
-      to.name === "Home" ||
-      to.name === "Detail" ||
-      to.name === "Login" ||
-      to.name === "Signup" ||
-      to.name === "Products" ||
-      to.name === "PhoneAuth"
-    ) &&
-    !loginCheckStore.isLogin
-  ) {
-    next({ name: "Login" });
-  } else {
-    next();
-  }
-});
+api.interceptors.request.use(
+  (config) => {
+    if (
+      !(
+        config.url.includes("likes") ||
+        config.url.includes("check") ||
+        config.url.includes("phone")
+      )
+    ) {
+      loadingStore.setIsLoading(true);
+    }
 
-const handleGetLoginInfo = async () => {
-  try {
-    const response = await getApi({
-      url: `/api/auth/`,
-    });
-    loginCheckStore.setIsLogin(response);
-  } catch (error) {
-    console.log(error);
-  }
-};
+    return config;
+  },
+  (err) => {
+    loadingStore.setIsLoading(false);
+    if (err.response.status === 500) {
+      alert(
+        "서버에 문제가 생겼습니다. 새로고침을 하거나 관리자에게 문의해주세요.",
+      );
+    }
+    return Promise.reject(err);
+  },
+);
+api.interceptors.response.use(
+  (config) => {
+    loadingStore.setIsLoading(false);
+    return config;
+  },
+  (err) => {
+    loadingStore.setIsLoading(false);
+    if (err.response.status === 500) {
+      alert(
+        "서버에 문제가 생겼습니다. 새로고침을 하거나 관리자에게 문의해주세요.",
+      );
+    }
+    return Promise.reject(err);
+  },
+);
 </script>
