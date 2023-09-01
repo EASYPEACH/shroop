@@ -42,7 +42,7 @@ const handleGetNotification = async () => {
       notCheckednotifyCount.value = getNotCheckedList.length;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
