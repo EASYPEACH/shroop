@@ -5,21 +5,4 @@ const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (err) => {
-    return Promise.reject(err);
-  },
-);
-api.interceptors.response.use(
-  (config) => {
-    return config;
-  },
-  (err) => {
-    return Promise.reject(err);
-  },
-);
-
 export default api;

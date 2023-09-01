@@ -3,40 +3,36 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { getApi } from "@/api/modules";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useApiLoading } from "@/store/useLoading";
+import api from "./api";
 
-const router = useRouter();
-const loginCheckStore = useCheckLogin();
+api.interceptors.request.use(
+  (config) => {
+    if (
+      !(
+        config.url.includes("likes") ||
+        config.url.includes("check") ||
+        config.url.includes("phone")
+      )
+    ) {
+      const loadingStore = useApiLoading();
+      loadingStore.setIsLoading(true);
+    }
 
-router.beforeEach(async (to, _, next) => {
-  await handleGetLoginInfo();
-  if (
-    !(
-      to.name === "Home" ||
-      to.name === "Detail" ||
-      to.name === "Login" ||
-      to.name === "Signup" ||
-      to.name === "Products" ||
-      to.name === "PhoneAuth"
-    ) &&
-    !loginCheckStore.isLogin
-  ) {
-    next({ name: "Login" });
-  } else {
-    next();
-  }
-});
-
-const handleGetLoginInfo = async () => {
-  try {
-    const response = await getApi({
-      url: `/api/auth/`,
-    });
-    loginCheckStore.setIsLogin(response);
-  } catch (error) {
-    console.log(error);
-  }
-};
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  },
+);
+api.interceptors.response.use(
+  (config) => {
+    const loadingStore = useApiLoading();
+    loadingStore.setIsLoading(false);
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  },
+);
 </script>
