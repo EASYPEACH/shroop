@@ -12,14 +12,14 @@
           label="아이디"
           placeholder-text="아이디를 입력해주세요"
           v-model="id"
-          :rules="[idRule.required, idRule.min, idRule.check]"
+          :rules="[idRule.required]"
           icon="mdi-account-outline"
         />
         <password-input
           :visible="visible"
           @toggle-visible="visible = !visible"
           v-model="password"
-          :rules="[passwordRule.required, passwordRule.min, passwordRule.check]"
+          :rules="[passwordRule.required]"
           isNeedSearchState
         />
         <v-btn
@@ -53,11 +53,11 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { postApi } from "@/api/modules";
+import { idRule, passwordRule } from "@/components/Form/data/formRules";
 import Title from "@/components/Title/MainTitle.vue";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import PasswordInput from "@/components/Form/PasswordInput.vue";
-import { idRule, passwordRule } from "@/components/Form/data/formRules";
-import { postApi } from "@/api/modules";
 
 const router = useRouter();
 const visible = ref(false);
@@ -65,6 +65,8 @@ const id = ref("");
 const password = ref("");
 const isValid = ref(false);
 const authResult = ref(true);
+
+// 로그인 핸들러
 const handleSubmitLogin = async () => {
   try {
     await postApi({
@@ -74,7 +76,7 @@ const handleSubmitLogin = async () => {
         password: password.value,
       },
     });
-    router.back();
+    router.push("/");
   } catch (error) {
     if (error.response.status === 403) {
       authResult.value = false;

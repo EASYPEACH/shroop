@@ -95,7 +95,7 @@ const handleSubmitReport = async () => {
 
     dialogList.value[0].isShow = true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     const code = error.response.status;
     if (code === 400) {
       dialogList.value.forEach((dialog) => {
@@ -111,8 +111,6 @@ const handleSubmitReport = async () => {
   }
 };
 const handleSubmitReturnRequest = () => {
-  console.log(returnRequestImageData.value);
-  console.log(returnReasonText.value);
   handleSubmitReport();
 };
 const handleGetProduct = async () => {
@@ -123,7 +121,7 @@ const handleGetProduct = async () => {
 
     productName.value = response.title;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 const completeSubmitReturn = () => {
@@ -170,5 +168,3 @@ const dialogList = ref([
   },
 ]);
 </script>
-
-<style lang="scss" scoped></style>

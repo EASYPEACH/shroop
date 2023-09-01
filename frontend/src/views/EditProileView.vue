@@ -136,7 +136,7 @@ onBeforeMount(async () => {
   const userData = await getApi({
     url: "/api/members/profile",
   });
-  console.log(userData.profileImg);
+  console.error(userData.profileImg);
   let profileImgTransfer = await changeUrlToFiles(
     [userData.profileImg],
     new DataTransfer(),
@@ -147,11 +147,6 @@ onBeforeMount(async () => {
   phoneNumber.value = userData.phoneNumber;
   imageThumb.value = userData.profileImg;
 });
-
-const checkAuthNumber = () => {
-  authResult.value = !authResult.value;
-  authResultMsg.value = "인증 성공 여부";
-};
 
 // input event
 const handleInputChnageEvent = () => {
@@ -177,7 +172,7 @@ const handleSubmitRegister = async () => {
   });
 
   try {
-    const data = await multipartPatchApi({
+    await multipartPatchApi({
       url: `/api/members/profile`,
       data: formData,
     });
@@ -186,7 +181,6 @@ const handleSubmitRegister = async () => {
     authResult.value = true;
     phoneAuthNumber.value = "";
   } catch (err) {
-    console.log(err);
     authResult.value = false;
     modifyResultMsg.value = err.response.data.message;
   }
@@ -204,7 +198,7 @@ const requestAuthNumber = async () => {
     });
     cookies.set("uuid", data.uuid);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 </script>

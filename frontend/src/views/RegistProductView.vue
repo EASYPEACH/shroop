@@ -266,6 +266,7 @@ onMounted(async () => {
     saleReason.value = data.saleReason;
     content.value = data.content;
 
+    // S3 이미지 URL을 File Data로 변환
     let productImgdataTransfer = await changeUrlToFiles(
       productImgList,
       new DataTransfer(),
@@ -276,9 +277,11 @@ onMounted(async () => {
       new DataTransfer(),
     );
 
+    // input에 직접 파일 첨부-상품이미지
     productRef.value.input.files = productImgdataTransfer.files;
     productImagesData.value = productImgdataTransfer.files;
 
+    // input에 직접 파일 첨부-결함이미지
     if (defectImgdataTransfer.files != null && defectedtRef.value != null) {
       defectedImagesData.value = defectImgdataTransfer.files;
       defectedtRef.value.input.files = defectImgdataTransfer.files;
@@ -286,19 +289,24 @@ onMounted(async () => {
   }
 });
 
+// 상품등록/수정 핸들러
 const handleSubmitRegister = async () => {
   let formData = new FormData();
 
   if (productImages.value.length < 2) {
+    // 상품이미지 2장 미만일 경우 유효성체크
     checkRequired.value = false;
   } else {
     if (isDefect.value && defectedImages.value.length < 2) {
+      // 결함 있을 경우, 결함 이미지 2장 미만이면 유효성 체크
       checkRequired.value = false;
     } else if (
       !isDefect.value ||
       (isDefect.value && defectedImages.value.length >= 2)
     ) {
       checkRequired.value = true;
+
+      // 첨부한 이미지와 폼에 입력한 데이터를 multipart/formdata로 변환
       multipartFormDataFile(formData, productRef.value, "productImgList");
       multipartFormDataFile(formData, defectedtRef.value, "defectImgList");
       multipartFormDataJson(formData, "productRequest", {
@@ -319,8 +327,9 @@ const handleSubmitRegister = async () => {
       try {
         if (isValid.value) {
           let data;
+
+          // 수정 / 등록인지에 따라 처리
           if (isRegister.value) {
-            console.log(formData);
             data = await multipartPostApi({
               url: "/api/products",
               data: formData,
@@ -341,6 +350,8 @@ const handleSubmitRegister = async () => {
     }
   }
 };
+
+// 이미지 첨부시 미리보기 이미지 추가 삭제
 const handleAttachProductImage = (files) => {
   changeFiles(files, productRef, productImages, productImagesData);
 };
@@ -353,6 +364,8 @@ const handleDeleteProductImage = (idx) => {
 const handleDeleteDefectedImage = (idx) => {
   deleteImage(idx, defectedtRef, defectedImages, defectedImagesData);
 };
+
+// 숫자 입력시 콤마 format
 const handleFormatPrice = () => {
   const checkNum = Number(price.value.replaceAll(",", ""));
   if (isNaN(checkNum)) {

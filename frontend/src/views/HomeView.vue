@@ -33,10 +33,12 @@
               isHeart
             />
           </li>
-          <v-btn class="plusbtn" variant="text">
-            <router-link to="/products"
-              >더보기 <v-icon icon="mdi-chevron-right"></v-icon>
-            </router-link>
+          <v-btn
+            class="plusbtn"
+            variant="text"
+            @click="() => $router.push('/products')"
+          >
+            더보기 <v-icon icon="mdi-chevron-right"></v-icon>
           </v-btn>
         </ul>
       </div>
@@ -86,7 +88,7 @@ onBeforeMount(async () => {
 // 상품 좋아요 버튼 클릭 이벤트
 const handleClickLike = async (product) => {
   try {
-   await toggleLikesProduct(product, productCardData);
+    await toggleLikesProduct(product, productCardData);
   } catch (err) {
     if (err.response.status === 403) {
       router.push("/login");

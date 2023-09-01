@@ -1,17 +1,16 @@
 <template>
   <v-card class="mx-auto" min-width="250">
-    <router-link :to="`/detail/${productCardData.id}`">
-      <v-img
-        class="align-end text-white"
-        height="200"
-        :src="
-          productCardData.productImgList.filter((img) => !img.isDefect)[0]
-            .productImgUrl
-        "
-        contain
-      >
-      </v-img>
-    </router-link>
+    <v-img
+      class="align-end text-white"
+      height="200"
+      :src="
+        productCardData.productImgList.filter((img) => !img.isDefect)[0]
+          .productImgUrl
+      "
+      @click="() => $router.push(`/detail/${productCardData.id}`)"
+      contain
+    >
+    </v-img>
     <v-card-text class="pt-3">
       상품등록일<br />
       {{ formatDate(productCardData.createDate) }}
@@ -31,10 +30,11 @@
           @handle-click-like="$emit('handle-click-like')"
         />
       </div>
-      <v-btn color="subBlue">
-        <router-link :to="`/detail/${productCardData.id}`">
-          상세보기
-        </router-link>
+      <v-btn
+        color="subBlue"
+        @click="() => $router.push(`/detail/${productCardData.id}`)"
+      >
+        상세보기
       </v-btn>
     </v-card-actions>
   </v-card>

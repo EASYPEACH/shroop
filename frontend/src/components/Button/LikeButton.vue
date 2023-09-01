@@ -13,7 +13,7 @@ defineProps({
   },
   variant: {
     type: String,
-    withDefaults: "text",
+    default: "text",
   },
 });
 defineEmits(["handle-click-like"]);

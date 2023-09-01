@@ -70,14 +70,17 @@ import SubmitButton from "@/components/Button/SubmitButton.vue";
 import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const router = useRouter();
-const isVailed = ref(false);
+
 const title = ref("");
-const isMediate = ref(null);
-const productName = ref("아이패드 프로 10.5");
+const productName = ref("");
+const reportReason = ref("");
+
 const productImagesThumb = ref([]);
 const imageData = ref({});
+
+const isVailed = ref(false);
+const isMediate = ref(null);
 const productRef = ref(null);
-const reportReason = ref("");
 
 const handleAttachProductImage = (files) => {
   changeFiles(files, productRef, productImagesThumb, imageData);
@@ -159,5 +162,3 @@ const dialogList = ref([
   },
 ]);
 </script>
-
-<style lang="scss" scoped></style>

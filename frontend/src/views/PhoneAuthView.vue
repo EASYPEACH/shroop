@@ -35,20 +35,19 @@
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import Title from "@/components/Title/MainTitle.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
+import { useRouter } from "vue-router";
 import { phoneAuthRule } from "@/components/Form/data/formRules";
 import { postApi } from "@/api/modules";
 import { useUserStore } from "@/store/signUp";
 import { useCookies } from "vue3-cookies";
+import Title from "@/components/Title/MainTitle.vue";
+import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 
-const route = useRoute();
+const { cookies } = useCookies();
 const router = useRouter();
 const phoneAuthNumber = ref("");
 const authResult = ref(true);
 const userStore = useUserStore();
-const { cookies } = useCookies();
 
 const isValid = ref(false);
 const handleSubmitAuth = async () => {

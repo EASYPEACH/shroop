@@ -131,7 +131,7 @@ router.beforeEach(async (to) => {
     });
     loginCheckStore.setIsLogin(response);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   if (to.meta.requiresAuth && !loginCheckStore.isLogin) return "/login";
 });

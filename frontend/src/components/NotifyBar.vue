@@ -64,7 +64,7 @@ const handleChangeChecked = async (id) => {
     });
     router.push(response.link);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 </script>
