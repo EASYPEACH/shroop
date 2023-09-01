@@ -2,6 +2,7 @@ package com.easypeach.shroop.modules.member.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.service.MemberService;
@@ -28,16 +30,23 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 
+	@GetMapping("/me")
+	public ResponseEntity<MyPageInfoResponse> findMyPage(@LoginMember final Member member, Pageable pageable){
+		MyPageInfoResponse myInfo = memberService.getMyInfo(member.getId(),pageable);
+
+		return ResponseEntity.ok(myInfo);
+	}
+
 	@GetMapping("/profile")
-	public ResponseEntity<ProfileEditForm> findProfileEditPage(@LoginMember Member member) {
+	public ResponseEntity<ProfileEditForm> findProfileEditPage(@LoginMember final Member member) {
 		ProfileEditForm profileEditForm = memberService.findProfile(member.getId());
 		return ResponseEntity.ok(profileEditForm);
 	}
 
 	@PatchMapping("/profile")
-	public ResponseEntity<BasicResponse> updateProfile(@LoginMember Member member
-		, @RequestPart @Validated ProfileEditRequest editRequest,
-		@RequestPart List<MultipartFile> userImg) {
+	public ResponseEntity<BasicResponse> updateProfile(@LoginMember final Member member
+		, @RequestPart @Validated final ProfileEditRequest editRequest,
+		@RequestPart final List<MultipartFile> userImg) {
 
 		memberService.updateProfile(member.getId(), userImg, editRequest);
 		return ResponseEntity.ok(new BasicResponse("수정을 완료하였습니다"));
