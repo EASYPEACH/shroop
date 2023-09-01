@@ -88,7 +88,7 @@ public class ProductController {
 		final @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
 		SearchProductResponse response = productService.searchProduct(member, searchRequest.getTitle(),
-			searchRequest.getCategoryId(), searchRequest.isHasNotTransaction(), pageable);
+			searchRequest.getCategoryId(), searchRequest.getHasNotTransaction(), pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

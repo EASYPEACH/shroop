@@ -1,7 +1,5 @@
 package com.easypeach.shroop.modules.product.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,12 +13,12 @@ public class SearchRequest {
 
 	private Long categoryId;
 
-	@JsonProperty("hasNotTransaction")
-	private boolean hasNotTransaction;
+	private Boolean hasNotTransaction;
 
-	public SearchRequest(String title, Long categoryId, boolean hasNotTransaction) {
+	public SearchRequest(String title, Long categoryId, Boolean hasNotTransaction) {
 		this.title = title;
 		this.categoryId = categoryId;
 		this.hasNotTransaction = hasNotTransaction;
 	}
+	
 }

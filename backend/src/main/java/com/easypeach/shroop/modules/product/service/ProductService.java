@@ -147,7 +147,7 @@ public class ProductService {
 	}
 
 	public SearchProductResponse searchProduct(final Member member,
-		final String title, final Long categoryId, final boolean hasTransaction,
+		final String title, final Long categoryId, final Boolean hasTransaction,
 		final Pageable pageable) {
 
 		Page<ProductOneImgResponse> productPage;

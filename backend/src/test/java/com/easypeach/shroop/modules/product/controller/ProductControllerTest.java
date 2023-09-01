@@ -59,7 +59,7 @@ class ProductControllerTest extends ControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/products/search")
 				.param("title", searchRequest.getTitle())
 				.param("categoryId", String.valueOf(searchRequest.getCategoryId()))
-				.param("hasNotTransaction", String.valueOf(searchRequest.isHasNotTransaction()))
+				.param("hasNotTransaction", String.valueOf(searchRequest.getHasNotTransaction()))
 				.param("page", String.valueOf(pageable.getPageNumber()))
 				.param("size", String.valueOf(pageable.getPageSize()))
 				.param("sort", pageable.getSort().toString())
