@@ -24,6 +24,7 @@ import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
+import com.easypeach.shroop.modules.member.exception.MinusPointException;
 import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
 
 import lombok.RequiredArgsConstructor;
@@ -163,16 +164,20 @@ public class MemberService {
 	}
 
 	@Transactional
-	public Long plusPoint(Long point, Member member) {
+	public Long plusPoint(final Long point, final Member member) {
 		Member foundMember = memberRepository.getById(member.getId());
 		foundMember.addPoint(point);
 		return foundMember.getPoint();
 	}
 
 	@Transactional
-	public Long subtractPoint(Long point, Member member) {
+	public Long subtractPoint(final Long point, final Member member) {
 		Member foundMember = memberRepository.getById(member.getId());
-		foundMember.subtractPoint(point);
+		if (member.getPoint() >= point) {
+			foundMember.subtractPoint(point);
+		} else {
+			throw MinusPointException.OverExchanging();
+		}
 		return foundMember.getPoint();
 	}
 }

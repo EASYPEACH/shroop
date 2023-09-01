@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.bank.domain.Bank;
 import com.easypeach.shroop.modules.bank.domain.BankRepository;
+import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
 import com.easypeach.shroop.modules.member.domain.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,18 @@ public class BankService {
 	private final BankRepository bankRepository;
 
 	@Transactional
-	public void subtractMoney(Long point, Member member) {
+	public void subtractMoney(final Long point, final Member member) {
+
 		Bank bank = bankRepository.getByAccount(member.getAccount());
-		bank.subtractMoney(point);
+		if (bank.getMoney() >= point) {
+			bank.subtractMoney(point);
+		} else {
+			throw MinusMoneyException.OverCharging();
+		}
 	}
 
 	@Transactional
-	public void addPoint(Long point, Member member) {
+	public void addPoint(final Long point, final Member member) {
 		Bank bank = bankRepository.getByAccount(member.getAccount());
 		bank.addMoney(point);
 	}
