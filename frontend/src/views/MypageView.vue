@@ -64,24 +64,28 @@
                 <mini-button text="충전" @click="showChargePointModal = true" />
               </div>
             </div>
-            <!-- <div class="mypage__like">
+            <div class="mypage__like">
               <h3>좋아요 <v-icon icon="mdi-heart" class="like-icon" /></h3>
               <ul>
                 <info-alert
-                  v-if="
-                    productDummyList.filter((list) => list.like).length === 0
-                  "
+                  v-if="likeList.length === 0"
                   title="'좋아요' 상품이 없습니다"
                 />
-                <li v-for="product in productDummyList" :key="product.id">
+
+                <li
+                  v-for="(product, idx) in likeList.slice(startIndex, endIndex)"
+                  :key="product.id"
+                >
                   <mypage-product-banner
                     :product="product"
                     :is-heart="true"
-                    @handle-click-like="() => handleToggleHeart(product.id)"
+                    @handle-click-like="
+                      () => handleToggleHeart(product.id, idx)
+                    "
                   />
                 </li>
               </ul>
-            </div> -->
+            </div>
           </v-window-item>
           <v-window-item value="구매내역">
             <ul>
@@ -117,6 +121,14 @@
     />
     <div class="mt-5">
       <v-pagination
+        v-if="tabId === 0"
+        v-model="likeCurrentPage"
+        :length="likeTotalPage"
+        :total-visible="5"
+        @click="handleLikePageEvent"
+      >
+      </v-pagination>
+      <v-pagination
         v-if="tabId === 1"
         v-model="currentPage"
         :length="pageCount"
@@ -140,7 +152,7 @@
 import { ref, onBeforeMount, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
-import { getApi } from "@/api/modules";
+import { deleteApi, getApi } from "@/api/modules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
 import InfoAlert from "@/components/Alert/InfoAlert.vue";
@@ -172,38 +184,79 @@ const tab = ref(tabList.value[route.params.index].title);
 const showChargePointModal = ref(false);
 const isTablet = ref(display.smAndDown);
 const profile = ref({
-  imagePath: basicProfile,
-  nickName: "김뿅뿅",
   rank: "mdi-umbrella-beach-outline",
-  point: 20000,
 });
 
 const purchaseList = ref([]);
 const sellList = ref([]);
 const tabId = ref(0);
 
+// 좋아요 페이징
+const likeList = ref([]);
+const likeCurrentPage = ref(1);
+const likeTotalPage = ref(5);
+
 onBeforeMount(async () => {
   tabId.value = Number(route.params.index);
   handlePurchaseHistory();
   handleSellHistory();
+  handleGetUserData();
 });
+
+const handleGetUserData = async () => {
+  const userData = await getApi({
+    url: `/api/members/me?page=${
+      likeCurrentPage.value - 1
+    }&size=5&sort=id,desc `,
+  });
+  if (userData.userImg !== null) {
+    profile.value.imagePath = userData.userImg;
+  }
+  profile.value.nickName = userData.nickname;
+  profile.value.point = userData.point;
+  likeList.value = userData.page.content.map((data) => {
+    data.isLike = true;
+    return data;
+  });
+
+  likeTotalPage.value = userData.page.totalPages;
+};
+
+const handleLikePageEvent = async () => {
+  try {
+    const userData = await getApi({
+      url: `/api/members/me?page=${
+        likeCurrentPage.value - 1
+      }&size=5&sort=id,desc `,
+    });
+    if (userData !== null) {
+      likeList.value = userData.page.content.map((data) => {
+        data.isLike = true;
+        return data;
+      });
+      likeTotalPage.value = userData.page.totalPages;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleLikePageChange = () => {
+  startIndex.value = (currentPage.value - 1) * perPage.value;
+  endIndex.value = Math.min(
+    startIndex.value + perPage.value,
+    productCount.value,
+  );
+  window.scrollTo({ top: 0 });
+};
+
+// 좋아요 페이징 end
 
 const handleTabClick = (tabId) => {
   router.push(`/mypage/${tabId}`);
   console.log(tabId);
   handleHistory(tabId);
 };
-
-// const handleToggleHeart = (id) => {
-//   productDummyList.value = productDummyList.value
-//     .map((item) => {
-//       if (item.id === id) {
-//         item.like = false;
-//       }
-//       return item;
-//     })
-//     .filter((item) => item.id != id);
-// };
 
 const handlePurchaseHistory = async () => {
   try {
@@ -212,7 +265,7 @@ const handlePurchaseHistory = async () => {
       purchaseList.value = purchaseData;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -224,12 +277,11 @@ const handleSellHistory = async () => {
       }&size=5&sort=transactionCreateDate,desc`,
     });
     if (sellData !== null) {
-      console.log(sellData);
       sellList.value = sellData.historyResponseList;
       sellPageCount.value = sellData.pageCount;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -271,6 +323,16 @@ watch(purchaseList, () => {
   currentPage.value = 1;
   handleChangePage();
 });
+
+const handleToggleHeart = async (id, idx) => {
+  if (likeList.value[idx].isLike) {
+    // 좋아요 취소
+    await deleteApi({
+      url: `/api/likes/${id}`,
+    });
+    likeList.value = [...likeList.value].filter((data) => data.id !== id);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -317,7 +379,10 @@ watch(purchaseList, () => {
     gap: 20px;
     .profile__info-img {
       width: 100px;
+      aspect-ratio: 1 / 1;
       border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
     }
     > div {
       display: flex;
