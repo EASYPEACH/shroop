@@ -131,6 +131,9 @@ header {
   @media (max-width: 960px) {
     section {
       width: 100%;
+      .search__box {
+        left: 50%;
+      }
     }
   }
 }
