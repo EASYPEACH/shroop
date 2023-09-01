@@ -11,18 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.easypeach.shroop.infra.s3.service.S3UploadService;
+import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
+import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
 import com.easypeach.shroop.modules.likes.domain.Likes;
 import com.easypeach.shroop.modules.likes.service.LikeService;
 import com.easypeach.shroop.modules.member.domain.DuplicateCheckType;
-import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
-import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
-import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
-import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
-import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
+import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
+import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
+import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
 import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
 
@@ -40,9 +40,9 @@ public class MemberService {
 	private final S3UploadService s3UploadService;
 	private final LikeService likeService;
 
-	public MyPageInfoResponse getMyInfo(final Long memberId, Pageable pageable){
+	public MyPageInfoResponse getMyInfo(final Long memberId, Pageable pageable) {
 		Member findMember = memberRepository.getById(memberId);
-		Page<Likes> likedList = likeService.getLikesPage(findMember,pageable);
+		Page<Likes> likedList = likeService.getLikesPage(findMember, pageable);
 
 		Page<LikeProductInfo> likedProductList = likedList.map(likes -> new LikeProductInfo(likes));
 
@@ -75,7 +75,7 @@ public class MemberService {
 		updatePhoneNumber(findMember, phoneAuthRequest);
 	}
 
-	public void updateImgUrl(final Member member,final List<MultipartFile> profileImg) {
+	public void updateImgUrl(final Member member, final List<MultipartFile> profileImg) {
 		if (profileImg.size() == 0) {
 			return;
 		}
@@ -87,7 +87,7 @@ public class MemberService {
 		}
 	}
 
-	public void updateNickname(final Member member,final String newNickname) {
+	public void updateNickname(final Member member, final String newNickname) {
 		if (member.getNickname().equals(newNickname)) {
 			//닉네임이 같으면 변경하지 않음
 			return;
@@ -98,7 +98,7 @@ public class MemberService {
 		member.updateNickname(newNickname);
 	}
 
-	public void updatePassword(final Member member,final String oldPassword,final String newPassword) {
+	public void updatePassword(final Member member, final String oldPassword, final String newPassword) {
 		if (!(oldPassword.equals("") && newPassword.equals(""))) {
 			if (!passwordEncoder.matches(oldPassword, member.getPassword())) {
 				throw new PasswordNotMatchException("기존 비밀번호가 맞지 않습니다");
@@ -111,7 +111,7 @@ public class MemberService {
 		}
 	}
 
-	public void updatePhoneNumber(final Member member,final PhoneAuthRequest phoneAuthRequest) {
+	public void updatePhoneNumber(final Member member, final PhoneAuthRequest phoneAuthRequest) {
 		if (phoneAuthRequest.getPhoneNumber().equals(member.getPhoneNumber())) {
 			//폰 번호 같으면 검사하지 않음
 			return;
@@ -160,5 +160,19 @@ public class MemberService {
 			result = memberRepository.findByPhoneNumber(value).isPresent();
 		}
 		return result;
+	}
+
+	@Transactional
+	public Long plusPoint(Long point, Member member) {
+		Member foundMember = memberRepository.getById(member.getId());
+		foundMember.addPoint(point);
+		return foundMember.getPoint();
+	}
+
+	@Transactional
+	public Long subtractPoint(Long point, Member member) {
+		Member foundMember = memberRepository.getById(member.getId());
+		foundMember.subtractPoint(point);
+		return foundMember.getPoint();
 	}
 }

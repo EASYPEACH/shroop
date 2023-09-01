@@ -9,9 +9,11 @@ import javax.persistence.Id;
 import org.hibernate.annotations.ColumnDefault;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Bank {
 
 	@Id
@@ -27,5 +29,13 @@ public class Bank {
 	@ColumnDefault(value = "1000000")
 	@Column(nullable = false)
 	private Long money;
+
+	public void addMoney(Long point) {
+		this.money += point;
+	}
+
+	public void subtractMoney(Long point) {
+		this.money -= point;
+	}
 
 }
