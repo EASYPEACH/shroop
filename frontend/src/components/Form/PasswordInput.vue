@@ -14,7 +14,7 @@
       placeholder="비밀번호를 입력해주세요"
       prepend-inner-icon="mdi-lock-outline"
       variant="filled"
-      autocomplete
+      autocomplete="off"
       @click:append-inner="$emit('toggle-visible')"
       @input="$emit('update:modelValue', $event.target.value)"
     ></v-text-field>
