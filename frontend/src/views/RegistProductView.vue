@@ -175,7 +175,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
   selectRule,
@@ -203,7 +203,9 @@ import ContentLayout from "@/layouts/ContentLayout.vue";
 import CustomTextArea from "@/components/Form/CustomTextArea.vue";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 
-const { path } = useRoute();
+const router = useRouter();
+const route = useRoute();
+
 const isValid = ref(false);
 const isRegister = ref(false);
 const agreement = ref(false);
@@ -226,15 +228,13 @@ const productGradeValue = ref("");
 const content = ref("");
 const saleReason = ref("");
 const brandModel = ref("");
-const router = useRouter();
-const route = useRoute();
 
-onBeforeMount(async () => {
+onMounted(async () => {
   const categoryData = await getApi({
     url: "/api/categorys",
   });
   category.value = categoryData;
-  if (path.split("/")[1] === "regist") {
+  if (route.path.split("/")[1] === "regist") {
     isRegister.value = true;
   } else {
     isRegister.value = false;
@@ -285,6 +285,7 @@ onBeforeMount(async () => {
     }
   }
 });
+
 const handleSubmitRegister = async () => {
   let formData = new FormData();
 
