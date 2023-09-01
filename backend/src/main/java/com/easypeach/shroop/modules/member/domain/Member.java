@@ -65,6 +65,9 @@ public class Member {
 	@Column(nullable = false, name = "check_agree")
 	private boolean checkAgree;
 
+	@Column
+	private String account;
+
 	public static Member createMember(String loginId,
 		String password,
 		String nickname,
@@ -88,6 +91,10 @@ public class Member {
 
 	public void updateRole(Role role) {
 		this.role = role;
+	}
+
+	public void updateAccount(String account) {
+		this.account = account;
 	}
 
 	public void updateProfile(ProfileEditRequest profileEditRequest) {
