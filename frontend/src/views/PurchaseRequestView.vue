@@ -73,7 +73,7 @@ import {
   defaultTextRule,
   phoneNumberRule,
 } from "@/components/Form/data/formRules";
-import { getApi, postApi } from "@/api/modules/getApi";
+import { getApi, postApi } from "@/api/modules";
 import { useRoute, useRouter } from "vue-router";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";

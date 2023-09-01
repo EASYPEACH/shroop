@@ -14,7 +14,8 @@ api.interceptors.request.use(
       !(
         config.url.includes("likes") ||
         config.url.includes("check") ||
-        config.url.includes("phone")
+        config.url.includes("phone") ||
+        (config.url === "/api/products" && config.method === "get")
       )
     ) {
       loadingStore.setIsLoading(true);
