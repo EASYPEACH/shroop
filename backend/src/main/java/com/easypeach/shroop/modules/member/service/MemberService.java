@@ -42,14 +42,15 @@ public class MemberService {
 
 	public MyPageInfoResponse getMyInfo(final Long memberId, Pageable pageable){
 		Member findMember = memberRepository.getById(memberId);
-		Page<Likes> likesList = likeService.getLikesPage(findMember,pageable);
-		Page<LikeProductInfo> likeProductList = likesList.map(likes -> new LikeProductInfo());
+		Page<Likes> likedList = likeService.getLikesPage(findMember,pageable);
+
+		Page<LikeProductInfo> likedProductList = likedList.map(likes -> new LikeProductInfo(likes));
 
 		MyPageInfoResponse myPageInfo = new MyPageInfoResponse(
 			findMember.getProfileImg(),
 			findMember.getNickname(),
 			findMember.getPoint(),
-			likeProductList
+			likedProductList
 		);
 
 		return myPageInfo;
