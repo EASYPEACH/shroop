@@ -33,14 +33,14 @@
               isHeart
             />
           </li>
-          <v-btn
-            class="plusbtn"
-            variant="text"
-            @click="() => $router.push('/products')"
-          >
-            더보기 <v-icon icon="mdi-chevron-right"></v-icon>
-          </v-btn>
         </ul>
+        <v-btn
+          class="plusbtn"
+          variant="text"
+          @click="() => $router.push('/products')"
+        >
+          더보기 <v-icon icon="mdi-chevron-right"></v-icon>
+        </v-btn>
       </div>
     </content-layout>
   </div>
@@ -166,9 +166,13 @@ h2 {
   align-items: center;
   margin-top: 50px;
   .products__list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 50px;
+    li {
+      flex: 1;
+    }
   }
   .plusbtn {
     color: rgb(var(--v-theme-subBlue));

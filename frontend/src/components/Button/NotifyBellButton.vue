@@ -1,7 +1,13 @@
 <template>
-  <v-btn @click="handleShowNotification">
-    <v-icon v-if="!hasNewNotification" icon="mdi-bell-outline"></v-icon>
-    <v-icon v-else icon="mdi-bell-badge-outline" color="heartRed"></v-icon>
+  <v-btn class="text-none" @click="handleShowNotification">
+    <v-badge
+      v-if="notCheckednotifyCount"
+      :content="notCheckednotifyCount"
+      color="error"
+    >
+      <v-icon>mdi-bell-outline</v-icon>
+    </v-badge>
+    <v-icon v-else>mdi-bell-outline</v-icon>
   </v-btn>
 </template>
 
@@ -12,10 +18,10 @@ import { getApi } from "@/api/modules";
 import { useShowNotify } from "@/store/useShowNotify";
 import { useNotifyList } from "@/store/useNotifyList";
 
-const hasNewNotification = ref(false);
 const notifyStore = useShowNotify();
 const notifyListStore = useNotifyList();
 const router = useRouter();
+const notCheckednotifyCount = ref();
 router.beforeEach(async () => await handleGetNotification());
 onBeforeMount(async () => await handleGetNotification());
 
@@ -33,9 +39,7 @@ const handleGetNotification = async () => {
       const getNotCheckedList = notifyListStore.getNotifyChecked(
         notifyListStore.notifyList,
       );
-      if (getNotCheckedList.length > 0) {
-        hasNewNotification.value = true;
-      }
+      notCheckednotifyCount.value = getNotCheckedList.length;
     }
   } catch (error) {
     console.error(error);

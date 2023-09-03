@@ -1,6 +1,10 @@
 package com.easypeach.shroop.modules.member.dto.reponse;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import com.easypeach.shroop.modules.likes.domain.Likes;
+import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 
 import lombok.AllArgsConstructor;
@@ -11,17 +15,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeProductInfo {
-	private Long productId;
+	private Long id;
 	private String productImgUrl;
-	private String productName;
-	private String productPrice;
+	private String title;
+	private String price;
+	private Category category;
+	private LocalDateTime createDate;
 
 	public LikeProductInfo(Likes likes){
 		Product product = likes.getProduct();
-		productId = product.getId();
+		id = product.getId();
 		productImgUrl = product.getProductImgList().get(0).getProductImgUrl();
-		productName = product.getTitle();
-		productPrice = String.format("%,d",product.getPrice());
+		title = product.getTitle();
+		price = String.format("%,d",product.getPrice());
+		category = product.getCategory();
+		createDate = product.getCreateDate();
 
 	}
 }

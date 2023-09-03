@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthFailException;
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthNotExistException;
+import com.easypeach.shroop.modules.bank.exception.BankNotExistException;
+import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
 import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
+import com.easypeach.shroop.modules.member.exception.MinusPointException;
 import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
 import com.easypeach.shroop.modules.product.exception.CategoryNotFoundException;
 import com.easypeach.shroop.modules.product.exception.ProductImgLengthException;
@@ -35,7 +38,8 @@ public class ExceptionControllerAdvice {
 	@ExceptionHandler({
 		MemberNotExistException.class,
 		PhoneAuthNotExistException.class,
-		CategoryNotFoundException.class
+		CategoryNotFoundException.class,
+		BankNotExistException.class
 	})
 	public ResponseEntity<ErrorResponse> handleNotExistException(final RuntimeException e) {
 		String errorMessage = e.getMessage();
@@ -45,6 +49,8 @@ public class ExceptionControllerAdvice {
 
 	@ExceptionHandler({
 		SellerPurchaseException.class,
+		MinusPointException.class,
+		MinusMoneyException.class,
 		ProductImgLengthException.class,
 		DuplicateValueException.class,
 		PasswordNotMatchException.class,
