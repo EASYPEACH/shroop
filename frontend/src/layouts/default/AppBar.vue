@@ -4,7 +4,7 @@
       <!-- 헤더 왼쪽 타이틀 & 로고 -->
       <v-app-bar-title @click="() => $router.push('/')">
         <div class="logo">
-          <img src="@/assets/image/logo.png" />
+          <img src="@/assets/image/logo-black.png" />
           <h2>슈룹</h2>
         </div>
       </v-app-bar-title>
@@ -107,7 +107,7 @@ header {
       position: absolute;
       width: 40%;
       border: 2px solid rgb(var(--v-theme-mainGray));
-      border-radius: 10px;
+      /* border-radius: 10px; */
       top: 50%;
       height: 40px;
       left: calc(50% - 10px);
