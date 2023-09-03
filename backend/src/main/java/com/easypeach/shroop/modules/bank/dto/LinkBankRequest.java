@@ -18,4 +18,11 @@ public class LinkBankRequest {
 	@NotBlank
 	@Pattern(regexp = "^(\\d{1,})(-(\\d{1,})){1,}", message = "계좌번호 형식이 잘못되었습니다.")
 	private String account;
+
+	public static LinkBankRequest dtoForTest() {
+		LinkBankRequest dto = new LinkBankRequest();
+		dto.name = "아무개";
+		dto.account = "010-12345-12345";
+		return dto;
+	}
 }
