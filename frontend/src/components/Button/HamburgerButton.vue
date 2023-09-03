@@ -17,7 +17,7 @@ const mobileNavStore = useMobileNav();
 <style lang="scss" scoped>
 /* 햄버거 메뉴 */
 .hamburger__button {
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 10px;
   z-index: 20000;
@@ -84,7 +84,7 @@ const mobileNavStore = useMobileNav();
     background-color: rgb(var(--v-theme-mainGray));
     border-radius: 3px;
     position: absolute;
-    right: 12px;
+    right: 11px;
     bottom: 25px;
     transition: width 0.3s;
   }
