@@ -39,7 +39,7 @@ class PointControllerTest extends ControllerTest {
 		Long updatedPoint = 60000L;
 
 		given(memberService.subtractPoint(eq(10000L), any())).willReturn(updatedPoint);
-		doNothing().when(bankService).addPoint(eq(10000L), any());
+		doNothing().when(bankService).addMoney(eq(10000L), any());
 
 		mockMvc.perform(MockMvcRequestBuilders.patch("/api/point/exchanging")
 				.contentType(MediaType.APPLICATION_JSON)

@@ -33,7 +33,7 @@ public class PointController {
 	@PatchMapping(value = "/exchanging")
 	public ResponseEntity<Long> exchangePoint(@RequestBody final Long point, @LoginMember final Member member) {
 		Long updatedPoint = memberService.subtractPoint(point, member);
-		bankService.addPoint(point, member);
+		bankService.addMoney(point, member);
 
 		return ResponseEntity.status(HttpStatus.OK).body(updatedPoint);
 	}

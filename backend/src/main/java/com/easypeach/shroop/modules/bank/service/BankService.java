@@ -7,6 +7,7 @@ import com.easypeach.shroop.modules.bank.domain.Bank;
 import com.easypeach.shroop.modules.bank.domain.BankRepository;
 import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
 import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.member.domain.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BankService {
 	private final BankRepository bankRepository;
+	private final MemberRepository memberRepository;
 
 	@Transactional
 	public void subtractMoney(final Long point, final Member member) {
@@ -30,8 +32,9 @@ public class BankService {
 	}
 
 	@Transactional
-	public void addPoint(final Long point, final Member member) {
+	public void addMoney(final Long point, final Member member) {
 		Bank bank = bankRepository.getByAccount(member.getAccount());
 		bank.addMoney(point);
 	}
+
 }
