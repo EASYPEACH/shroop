@@ -78,7 +78,7 @@ const loginCheckStore = useCheckLogin();
 const search = ref("");
 
 const display = useDisplay();
-const isMobile = ref(display.mdAndDown);
+const isMobile = ref(display.smAndDown);
 
 const logout = async () => {
   try {
@@ -107,10 +107,9 @@ header {
       position: absolute;
       width: 40%;
       border: 2px solid rgb(var(--v-theme-mainGray));
-      /* border-radius: 10px; */
       top: 50%;
       height: 40px;
-      left: calc(50% - 10px);
+      left: calc(50% - 20px);
       transform: translate(-50%, -50%);
       display: flex;
       justify-content: space-between;
