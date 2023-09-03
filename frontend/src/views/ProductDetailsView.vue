@@ -330,9 +330,13 @@ const handleClickDeleteRequest = async () => {
           justify-content: space-between;
           align-items: center;
           h2 {
-            width: 500px;
+            width: 400px;
+            word-break: keep-all;
             font-size: 25px;
             font-weight: 600;
+            @media (max-width: 1500px) {
+              width: 300px;
+            }
           }
         }
         .productContent__side-tooltips {

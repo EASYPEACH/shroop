@@ -283,6 +283,7 @@ section {
     }
 
     @media (max-width: 960px) {
+      padding: 30px 0;
       flex-direction: column;
       img {
         width: 50%;
