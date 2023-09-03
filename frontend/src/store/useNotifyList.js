@@ -8,8 +8,8 @@ export const useNotifyList = defineStore("useNotifyList", {
     };
   },
   getters: {
-    getNotifyChecked(notifyList) {
-      return notifyList.filter((list) => !list.checked);
+    getNotifyChecked: (state) => {
+      return state.notifyList.filter((list) => !list.checked);
     },
   },
   actions: {
