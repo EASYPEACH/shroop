@@ -35,7 +35,7 @@
         />
         <product-title title="신고사유" isRequired />
         <CustomTextArea v-model="reportReason" />
-        <submit-button text="신고접수" />
+        <submit-button :disabled="!isVailed" text="신고접수" />
       </v-form>
     </content-layout>
     <plain-modal
@@ -99,6 +99,7 @@ const handleSubmitReport = async () => {
     title: title.value,
     content: reportReason.value,
     isMediate: isMediate.value,
+    productId: route.params.id,
   });
 
   multipartFormDataFile(formData, productRef.value, "multipartFileList");
