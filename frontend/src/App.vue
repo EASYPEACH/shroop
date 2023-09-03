@@ -12,6 +12,7 @@ api.interceptors.request.use(
   (config) => {
     if (
       !(
+        (config.url === "/api/products" && config.method === "get") ||
         config.url.includes("regist") ||
         config.url.includes("edit") ||
         config.url.includes("report") ||
