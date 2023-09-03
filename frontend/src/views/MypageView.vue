@@ -219,7 +219,7 @@ const sellPageCount = ref();
 
 onBeforeMount(async () => {
   tabId.value = Number(route.params.index);
-  hhandleGetPurchaseHistory();
+  handleGetPurchaseHistory();
   handleGetSellHistory();
   handleGetUserData();
 });
@@ -296,7 +296,7 @@ const handleToggleHeart = async (id, idx) => {
 };
 
 // 구매내역
-const hhandleGetPurchaseHistory = async () => {
+const handleGetPurchaseHistory = async () => {
   try {
     const purchaseData = await getApi({ url: "/api/buying/history" });
     if (purchaseData !== null) {
@@ -328,7 +328,7 @@ const handleGetSellHistory = async () => {
 const handleGetHistory = async (id) => {
   tabId.value = id;
   if (id === 1) {
-    await hhandleGetPurchaseHistory();
+    await handleGetPurchaseHistory();
   } else if (id === 2) {
     await handleGetSellHistory();
   }
