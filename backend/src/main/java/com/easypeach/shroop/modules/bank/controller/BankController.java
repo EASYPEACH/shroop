@@ -30,4 +30,11 @@ public class BankController {
 		bankService.linkingAccount(linkBankRequest, member);
 		return ResponseEntity.ok(new BasicResponse("계좌가 연동되었습니다."));
 	}
+
+	@PostMapping("/creating")
+	public ResponseEntity<BasicResponse> creatingAccount(
+		@Validated @RequestBody final LinkBankRequest linkBankRequest) {
+		bankService.creatingAccount(linkBankRequest);
+		return ResponseEntity.ok(new BasicResponse("계좌가 생성되었습니다."));
+	}
 }

@@ -1,11 +1,13 @@
 package com.easypeach.shroop.modules.bank.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.bank.domain.Bank;
 import com.easypeach.shroop.modules.bank.domain.BankRepository;
 import com.easypeach.shroop.modules.bank.dto.LinkBankRequest;
+import com.easypeach.shroop.modules.bank.exception.AccountMismatchException;
 import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BankService {
 	private final BankRepository bankRepository;
 	private final MemberRepository memberRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
 	public void subtractMoney(final Long point, final Member member) {
@@ -38,13 +41,25 @@ public class BankService {
 		bank.addMoney(point);
 	}
 
-
 	@Transactional
 	public void linkingAccount(final LinkBankRequest linkBankRequest, final Member member) {
-		// member에 계좌를 넣어주고, bank에 새로운 계좌 등록
+		String EnteredPassword = linkBankRequest.getPassword();
+		String encodedEnteredPassword = passwordEncoder.encode(EnteredPassword);
+
 		Member foundMember = memberRepository.getById(member.getId());
-		foundMember.updateAccount(linkBankRequest.getAccount());
-		Bank bank = Bank.createBank(linkBankRequest.getName(), linkBankRequest.getAccount());
+		String encodedBankPassword = foundMember.getPassword();
+
+		boolean isMatchedPassword = passwordEncoder.matches(encodedEnteredPassword, encodedBankPassword);
+		if (isMatchedPassword) {
+			foundMember.updateAccount(linkBankRequest.getAccount());
+		} else {
+			throw new AccountMismatchException("계좌번호가 일치하지 않습니다.");
+		}
+	}
+
+	public void creatingAccount(LinkBankRequest linkBankRequest) {
+		String encodedPassword = passwordEncoder.encode(linkBankRequest.getPassword());
+		Bank bank = Bank.createBank(linkBankRequest.getName(), linkBankRequest.getAccount(), encodedPassword);
 		bankRepository.save(bank);
 	}
 }

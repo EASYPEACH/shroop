@@ -28,6 +28,9 @@ public class Bank {
 	@Column(length = 50, nullable = false, unique = true)
 	private String account;
 
+	@Column(length = 500, nullable = false)
+	private String password;
+
 	@ColumnDefault(value = "1000000")
 	@Column(nullable = false)
 	private Long money;
@@ -40,10 +43,11 @@ public class Bank {
 		this.money -= point;
 	}
 
-	public static Bank createBank(String name, String account) {
+	public static Bank createBank(String name, String account, String encodedPassword) {
 		Bank bank = new Bank();
 		bank.name = name;
 		bank.account = account;
+		bank.password = encodedPassword;
 		return bank;
 	}
 
