@@ -3,7 +3,12 @@
     <v-img
       class="align-end text-white"
       height="200"
-      :src="productCardData.productImgUrl"
+      :src="
+        productCardData.productImgList !== undefined
+          ? productCardData.productImgList.filter((img) => !img.isDefect)[0]
+              .productImgUrl
+          : productCardData.productImgUrl
+      "
       @click="() => $router.push(`/detail/${productCardData.id}`)"
       contain
     >
@@ -13,7 +18,14 @@
     <v-card-text class="pt-3">
       상품등록일<br />
       {{ formatDate(productCardData.createDate) }}
-      <span>&nbsp; {{ productCardData.category.name }}</span>
+      <span
+        >&nbsp;
+        {{
+          productCardData.categoryName !== undefined
+            ? productCardData.categoryName
+            : productCardData.category.name
+        }}</span
+      >
     </v-card-text>
     <v-card-subtitle>
       <p>{{ productCardData.title }}</p>
