@@ -35,7 +35,7 @@
         />
         <product-title title="신고사유" isRequired />
         <CustomTextArea v-model="reportReason" />
-        <submit-button text="신고접수" />
+        <submit-button :disabled="!isVailed" text="신고접수" />
       </v-form>
     </content-layout>
     <plain-modal
@@ -50,8 +50,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onBeforeMount } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
 import {
   changeFiles,
@@ -59,7 +59,7 @@ import {
   multipartFormDataFile,
   multipartFormDataJson,
 } from "@/utils";
-import { multipartPostApi } from "@/api/modules";
+import { multipartPostApi, getApi } from "@/api/modules";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
@@ -70,6 +70,7 @@ import SubmitButton from "@/components/Button/SubmitButton.vue";
 import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const router = useRouter();
+const route = useRoute();
 
 const title = ref("");
 const productName = ref("");
@@ -98,6 +99,7 @@ const handleSubmitReport = async () => {
     title: title.value,
     content: reportReason.value,
     isMediate: isMediate.value,
+    productId: route.params.id,
   });
 
   multipartFormDataFile(formData, productRef.value, "multipartFileList");
@@ -161,4 +163,20 @@ const dialogList = ref([
     callback: handleErrorEtc,
   },
 ]);
+
+const handleGetProductDate = async () => {
+  try {
+    const response = await getApi({
+      url: `/api/products/${route.params.id}`,
+    });
+
+    productName.value = response.title;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onBeforeMount(() => {
+  handleGetProductDate();
+});
 </script>

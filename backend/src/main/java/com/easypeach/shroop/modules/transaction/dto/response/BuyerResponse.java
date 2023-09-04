@@ -11,11 +11,11 @@ public class BuyerResponse {
 
 	private String location;
 
-	private String phone_number;
+	private String phoneNumber;
 
-	public BuyerResponse(final String name, final String location, final String phone_number) {
+	public BuyerResponse(final String name, final String location, final String phoneNumber) {
 		this.name = name;
 		this.location = location;
-		this.phone_number = phone_number;
+		this.phoneNumber = phoneNumber;
 	}
 }

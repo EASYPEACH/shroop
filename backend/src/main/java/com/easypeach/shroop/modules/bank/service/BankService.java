@@ -51,6 +51,7 @@ public class BankService {
 			foundMember.updateAccount(linkBankRequest.getAccount());
 		} else {
 			throw new AccountMismatchException("계좌 인증이 되지 않았습니다. 다시 확인해주세요.");
+
 		}
 	}
 
@@ -70,12 +71,10 @@ public class BankService {
 
 		String bankName = foundBank.getName();
 		String encodedBankPassword = foundBank.getPassword();
-		System.out.println("은행의 비밀번호: " + encodedBankPassword);
 
 		boolean isMatchedPassword = passwordEncoder.matches(enteredPassword, encodedBankPassword);
 		boolean isMatchedName = bankName.equals(enteredName);
 
-		System.out.println("비밀번호 일치여부 :" + isMatchedPassword);
 		if (isMatchedPassword && isMatchedName) {
 			return true;
 		} else {
