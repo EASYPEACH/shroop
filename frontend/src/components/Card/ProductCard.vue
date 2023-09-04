@@ -3,10 +3,7 @@
     <v-img
       class="align-end text-white"
       height="200"
-      :src="
-        productCardData.productImgList.filter((img) => !img.isDefect)[0]
-          .productImgUrl
-      "
+      :src="productCardData.productImgUrl"
       @click="() => $router.push(`/detail/${productCardData.id}`)"
       contain
     >
