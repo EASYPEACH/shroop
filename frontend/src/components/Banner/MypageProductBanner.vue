@@ -43,6 +43,7 @@
     <buyer-info-modal
       v-model="showBuyerInfoDialog"
       @handle-cancle="showBuyerInfoDialog = false"
+      @handle-confirm="showBuyerInfoDialog = false"
       :buyerInfo="buyeInfo"
     />
   </div>
@@ -51,7 +52,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { deleteApi, patchApi } from "@/api/modules";
+import { deleteApi, patchApi, getApi } from "@/api/modules";
 import TRANSACTION_STATUS from "@/consts/status";
 import MiniButton from "../Button/MiniButton.vue";
 import PlainModal from "../Modal/PlainModal.vue";
@@ -140,7 +141,7 @@ const MYPAGE = [
     STATUS: (status) => {
       return props.isSeller && status !== TRANSACTION_STATUS.SELLING;
     },
-    CLICK_EVENT: () => (showBuyerInfoDialog.value = true),
+    CLICK_EVENT: () => handleShowBuyerInfo(),
   },
   {
     ACTION: "배송등록",
@@ -188,7 +189,20 @@ const handleReturnRequestConfirm = async () => {
   }
 };
 // 구매자정보보기
-const handleShowBuyerInfo = () => {};
+const handleShowBuyerInfo = async () => {
+  try {
+    const response = await getApi({
+      url: `/api/buying/buyer/${props.product.id}`,
+    });
+    buyeInfo.value.name = response.name;
+    buyeInfo.value.address = response.location;
+    buyeInfo.value.phoneNumber = response.phoneNumber;
+
+    showBuyerInfoDialog.value = true;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const dialogList = ref([
   {
