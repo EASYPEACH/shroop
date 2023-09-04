@@ -64,7 +64,7 @@ public class SecurityConfig {
 		http
 			.authorizeRequests()
 			.antMatchers("/api/auth/me", "/api/auth/test",
-				"/api/auth/sign-up", "/api/auth/phone/**", "/api/auth/sign-in", "/check/**")
+				"/api/auth/sign-up", "/api/auth/phone/**", "/api/auth/sign-in", "/check/**", "/api/bank/creating")
 			.permitAll()
 			.antMatchers(HttpMethod.GET, "/**")
 			.permitAll()

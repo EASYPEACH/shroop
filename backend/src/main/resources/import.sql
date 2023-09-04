@@ -1,11 +1,12 @@
 
-
-insert into bank (id, account, name, money) values (1, '002-93949697-003', '슈룹', 0);
-insert into bank (id, account, name) values (2, '002-106607-01-016', '이종민');
-insert into bank (id, account, name) values (3, '01085518532', '공태식');
-insert into bank (id, account, name) values (4, '01030831889', '박진영');
-insert into bank (id, account, name) values (5, '01054834790', '박지윤');
-insert into bank (id, account, name) values (6, '01054834792', 'test6');
+## 계좌 비밀번호는 1234
+insert into bank (id, account, name, money, password) values (1, '002-93949697-003', '슈룹', 0, "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (2, '002-106607-01-016', '이종민', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (3, '01085518532', '공태식', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (4, '01030831889', '박진영', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (5, '01054834790', '박지윤',"$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (6, '01054834792', 'test1', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (7, '010-9394-9697', 'test2', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
 
 ## admin 비밀번호는 전부 's93949697!'
 
