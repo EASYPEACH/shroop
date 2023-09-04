@@ -109,7 +109,7 @@ class TransactionControllerTest extends ControllerTest {
 				responseFields(
 					fieldWithPath("name").description("구매자 이름"),
 					fieldWithPath("location").description("구매자 주소"),
-					fieldWithPath("phone_number").description("구매자 휴대번호")
+					fieldWithPath("phoneNumber").description("구매자 휴대번호")
 				)))
 			.andDo(print());
 
