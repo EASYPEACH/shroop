@@ -37,16 +37,16 @@ public class TransactionController {
 	// private final PhoneAuthService phoneAuthService;
 
 	@GetMapping("/{productId}")
-	public ResponseEntity<TransactionInfoResponse> getBuyingForm(@PathVariable Long productId,
-		@LoginMember Member member) {
+	public ResponseEntity<TransactionInfoResponse> getBuyingForm(@PathVariable final Long productId,
+		@LoginMember final Member member) {
 		return ResponseEntity.status(HttpStatus.OK).body(transactionService.createTransactionInfoResponse(productId,
 			member));
 	}
 
 	@PostMapping("/{productId}")
 	public ResponseEntity<BasicResponse> buyingProduct(
-		@Validated @RequestBody TransactionCreateRequest transactionCreateRequest,
-		@PathVariable Long productId, final @LoginMember Member member) {
+		@Validated @RequestBody final TransactionCreateRequest transactionCreateRequest,
+		@PathVariable final Long productId, final @LoginMember Member member) {
 
 		transactionService.createTransaction(transactionCreateRequest, productId, member);
 
