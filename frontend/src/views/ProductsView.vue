@@ -20,7 +20,8 @@
       ></v-checkbox>
     </div>
     <div class="products">
-      <ul class="products__list">
+      <info-alert v-if="productCards.length === 0" title="상품이 없습니다" />
+      <ul v-else class="products__list">
         <li v-for="productCardData in productCards" :key="productCardData.id">
           <product-card
             v-if="isLaptop"
@@ -36,7 +37,7 @@
         </li>
       </ul>
     </div>
-    <div class="pagination">
+    <div class="pagination" v-if="productCards.length !== 0">
       <v-pagination v-model="currentPage" :length="pageCount"></v-pagination>
     </div>
   </content-layout>
@@ -51,6 +52,7 @@ import { useSearchProduct } from "@/store/useSearchProduct";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
+import InfoAlert from "@/components/Alert/InfoAlert.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -58,8 +60,11 @@ const display = useDisplay();
 const searchProductStore = useSearchProduct();
 
 const searchTitle = ref("");
+const searchCategoryId = ref(0);
+const searchHasNotTransaction = ref(false);
 const isLaptop = ref(display.mdAndUp);
 const categoryList = ref([]);
+const productCardsOriginal = ref([]);
 const productCards = ref([]);
 const currentPage = ref(1); // 현재 페이지
 const isSelling = ref(true);
@@ -84,7 +89,9 @@ const handelGetProductData = async () => {
       url: `/api/products/search?page=${
         currentPage.value - 1
       }&hasNotTransaction=${isSelling.value}&title=${
-        searchProductStore.searchTitle
+        searchProductStore.searchTitle === undefined
+          ? ""
+          : searchProductStore.searchTitle
       }&categoryId=${currentCategory.value}`,
     });
     productCards.value = response.productList;
@@ -115,6 +122,7 @@ onBeforeMount(async () => {
       url: "/api/categorys",
     });
     categoryList.value = [{ id: 0, name: "전체" }, ...category];
+
     await handelGetProductData();
   } catch (error) {
     console.error(error);
@@ -122,7 +130,9 @@ onBeforeMount(async () => {
 });
 
 router.beforeEach(() => {
-  handelGetProductData();
+  if (route.path === "/products") {
+    handelGetProductData();
+  }
 });
 </script>
 
