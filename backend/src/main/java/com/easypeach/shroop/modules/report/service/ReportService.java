@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.member.domain.Member;
-import com.easypeach.shroop.modules.member.domain.MemberRepository;
+import com.easypeach.shroop.modules.member.service.MemberService;
+import com.easypeach.shroop.modules.product.domain.Product;
+import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.report.domain.Report;
 import com.easypeach.shroop.modules.report.domain.ReportRepository;
 import com.easypeach.shroop.modules.report.domain.ReportStatus;
@@ -21,25 +23,22 @@ public class ReportService {
 
 	private final ReportRepository reportRepository;
 
-	// TODO: MemberService로 변경할 예정
-	private final MemberRepository memberRepository;
+	private final MemberService memberService;
 
-	// TODO: Product 매핑
-	// private final ProductService productService;
+	private final ProductService productService;
 
 	@Transactional
 	public Report saveReport(final Long memberId, final ReportRequest reportRequest) {
-		// TODO: Product 매핑
-		// Product product = productService.findId(reportRequest.getProductId());
+
+		Product product = productService.findByProductId(reportRequest.getProductId());
 
 		String title = reportRequest.getTitle();
 		String content = reportRequest.getContent();
-		boolean isMediate = reportRequest.isMediate();
-		log.info("isMediate : " + isMediate);
-		// TODO: MemberService로 변경되면 수정해야 함
-		Member member = memberRepository.findById(memberId).get();
+		boolean isMediate = reportRequest.getIsMediate();
 
-		Report report = Report.createReport(member, title, content, isMediate, ReportStatus.READY);
+		Member member = memberService.findById(memberId);
+
+		Report report = Report.createReport(member, product, title, content, isMediate, ReportStatus.READY);
 
 		return reportRepository.save(report);
 	}
