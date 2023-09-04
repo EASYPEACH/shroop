@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.bank.service.BankService;
 import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.member.domain.ShroopMember;
 import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.notification.service.NotificationService;
 import com.easypeach.shroop.modules.product.domain.Product;
@@ -72,10 +73,10 @@ public class TransactionService {
 		}
 
 		//슈룹이 포인트 보관
-		addPoint(productId, 1L);
+		addPoint(productId, ShroopMember.SHROOP_ID.getId());
 
 		//슈룹이 수수료 가져감
-		bankService.addMoney(fee, memberService.findById(1L));
+		bankService.addMoney(fee, memberService.findById(ShroopMember.SHROOP_ID.getId()));
 
 		// phoneAuthService.sendSms(product.getSeller().getPhoneNumber(),
 		// 	String.format("%s 판매자님 %s 상품이 결제되었습니다.", product.getSeller().getNickname(), product.getTitle()));
