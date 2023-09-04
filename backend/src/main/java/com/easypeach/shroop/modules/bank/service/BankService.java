@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.bank.domain.Bank;
 import com.easypeach.shroop.modules.bank.domain.BankRepository;
+import com.easypeach.shroop.modules.bank.dto.LinkBankRequest;
 import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
@@ -37,4 +38,13 @@ public class BankService {
 		bank.addMoney(point);
 	}
 
+
+	@Transactional
+	public void linkingAccount(final LinkBankRequest linkBankRequest, final Member member) {
+		// member에 계좌를 넣어주고, bank에 새로운 계좌 등록
+		Member foundMember = memberRepository.getById(member.getId());
+		foundMember.updateAccount(linkBankRequest.getAccount());
+		Bank bank = Bank.createBank(linkBankRequest.getName(), linkBankRequest.getAccount());
+		bankRepository.save(bank);
+	}
 }
