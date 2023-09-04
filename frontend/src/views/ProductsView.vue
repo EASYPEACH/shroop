@@ -105,6 +105,10 @@ watch([isSelling, currentCategory, currentPage], async () => {
   await handelChangeSearchData();
 });
 
+watch([isSelling, currentCategory], async () => {
+  currentPage.value = 1;
+});
+
 // 좋아요, 좋아요 취소 핸들러
 const handleClickLike = async (product) => {
   try {
