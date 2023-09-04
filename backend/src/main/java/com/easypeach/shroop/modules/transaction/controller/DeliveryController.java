@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.easypeach.shroop.infra.aop.log.user.UserTrace;
 import com.easypeach.shroop.modules.auth.dto.response.DuplicateValidResponse;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.transaction.dto.request.DeliveryRequest;
@@ -26,6 +27,7 @@ public class DeliveryController {
 
 	private final DeliveryService deliveryService;
 
+	@UserTrace(value = "운송장 번호를 등록 하였습니다")
 	@PostMapping("/{productId}")
 	public ResponseEntity<BasicResponse> saveDelivery(
 		final @PathVariable Long productId,

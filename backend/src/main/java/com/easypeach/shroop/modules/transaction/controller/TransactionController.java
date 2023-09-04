@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.easypeach.shroop.infra.aop.log.user.UserTrace;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -43,6 +44,7 @@ public class TransactionController {
 			member));
 	}
 
+	@UserTrace(value = "거래를 요청하였습니다")
 	@PostMapping("/{productId}")
 	public ResponseEntity<BasicResponse> buyingProduct(
 		@Validated @RequestBody final TransactionCreateRequest transactionCreateRequest,

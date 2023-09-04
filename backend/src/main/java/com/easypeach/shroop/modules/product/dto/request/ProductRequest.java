@@ -10,7 +10,9 @@ import com.easypeach.shroop.modules.product.domain.ProductGrade;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Getter
 @NoArgsConstructor
 public class ProductRequest {

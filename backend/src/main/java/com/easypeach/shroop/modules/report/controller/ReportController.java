@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.easypeach.shroop.infra.aop.log.user.UserTrace;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -32,6 +33,7 @@ public class ReportController {
 
 	private final ReportImgService reportImgService;
 
+	@UserTrace(value = "해당 사용자가 다른 사용자를 신고하였습니다")
 	@PostMapping
 	public ResponseEntity<BasicResponse> saveReport(
 		@LoginMember Member member,

@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
+import com.easypeach.shroop.infra.aop.log.user.UserLog;
+import com.easypeach.shroop.infra.aop.log.user.UserLogRepository;
 import com.easypeach.shroop.modules.auth.domain.SecurityMember;
 import com.easypeach.shroop.modules.auth.dto.response.LoginSuccessResponse;
 import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 	private final ObjectMapper objectMapper;
+	private final UserLogRepository userLogRepository;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -40,6 +43,9 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
 		SecurityMember securityMember = (SecurityMember) authentication.getPrincipal();
 		Member member = securityMember.getMember();
 		LoginSuccessResponse loginDto = new LoginSuccessResponse(member.getLoginId(),member.getNickname());
+
+		UserLog userLog = UserLog.createUserLog(member.getId(),"로그인 성공");
+		userLogRepository.save(userLog);
 
 		String loginDtoAsString = objectMapper.writeValueAsString(loginDto);
 		response.getWriter().write(loginDtoAsString);
