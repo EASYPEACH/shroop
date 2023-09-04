@@ -71,7 +71,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 	}
 
 	private BooleanExpression categoryIdEq(Long categoryId) {
-		if (categoryId == null) {
+		if (categoryId == null || categoryId == 0L) {
 			return null;
 		}
 

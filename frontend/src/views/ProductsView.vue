@@ -4,15 +4,15 @@
       <div class="filter__catetory">
         <v-select
           v-model="currentCategory"
-          @update:modelValue="handleUpdateCategory"
           label="카테고리"
           :items="categoryList"
+          item-title="name"
+          item-value="id"
           variant="solo"
         ></v-select>
       </div>
       <v-checkbox
         v-model="isSelling"
-        @change="handleChangeCheckIsSelling"
         :checked="isSelling"
         label="판매중"
         color="indigo"
@@ -20,11 +20,9 @@
       ></v-checkbox>
     </div>
     <div class="products">
-      <ul class="products__list">
-        <li
-          v-for="productCardData in productCards.slice(startIndex, endIndex)"
-          :key="productCardData.id"
-        >
+      <info-alert v-if="productCards.length === 0" title="상품이 없습니다" />
+      <ul v-else class="products__list">
+        <li v-for="productCardData in productCards" :key="productCardData.id">
           <product-card
             v-if="isLaptop"
             :productCardData="productCardData"
@@ -39,64 +37,77 @@
         </li>
       </ul>
     </div>
-    <div class="pagination">
-      <v-pagination
-        v-model="currentPage"
-        :length="pageCount"
-        @click="handleChangePage"
-      ></v-pagination>
+    <div class="pagination" v-if="productCards.length !== 0">
+      <v-pagination v-model="currentPage" :length="pageCount"></v-pagination>
     </div>
   </content-layout>
 </template>
 <script setup>
-import { ref, watch, computed, onBeforeMount } from "vue";
-import { useRouter } from "vue-router";
+import { ref, watch, onBeforeMount } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
 import { toggleLikesProduct } from "@/utils";
+import { useSearchProduct } from "@/store/useSearchProduct";
 import ProductCard from "@/components/Card/ProductCard.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
+import InfoAlert from "@/components/Alert/InfoAlert.vue";
 
 const router = useRouter();
+const route = useRoute();
 const display = useDisplay();
+const searchProductStore = useSearchProduct();
 
+const searchTitle = ref("");
+const searchCategoryId = ref(0);
+const searchHasNotTransaction = ref(false);
 const isLaptop = ref(display.mdAndUp);
 const categoryList = ref([]);
 const productCardsOriginal = ref([]);
 const productCards = ref([]);
-const perPage = ref(9); // 페이지당 상품 수
 const currentPage = ref(1); // 현재 페이지
 const isSelling = ref(true);
+const pageCount = ref();
+const currentCategory = ref(0);
 
-// 페이지 수 계산
-const pageCount = computed(() => {
-  return Math.ceil(productCards.value.length / perPage.value);
-});
-const startIndex = ref(0); // 상품 시작 인덱스
-const endIndex = ref(perPage.value); // 상품 마지막 인덱스
-const currentCategory = ref(["전체"]);
-
-// 페이지 전환 핸들러
-const handleChangePage = () => {
-  startIndex.value = (currentPage.value - 1) * perPage.value;
-  endIndex.value = Math.min(
-    startIndex.value + perPage.value,
-    productCards.value.length,
-  );
-  window.scrollTo({ top: 0 });
-};
-
-// 카테고리별 필터 핸들러
-const handleUpdateCategory = () => {
-  productCards.value = [...productCardsOriginal.value].filter((product) => {
-    if (currentCategory.value === "전체") {
-      return true;
-    } else {
-      return product.category.name === currentCategory.value;
-    }
+const handelChangeSearchData = () => {
+  router.push({
+    name: "Products",
+    query: {
+      title: route.query.title,
+      categoryId: currentCategory.value,
+      isSelling: isSelling.value,
+      page: currentPage.value,
+    },
   });
 };
+
+const handelGetProductData = async () => {
+  try {
+    const response = await getApi({
+      url: `/api/products/search?page=${
+        currentPage.value - 1
+      }&hasNotTransaction=${isSelling.value}&title=${
+        searchProductStore.searchTitle === undefined
+          ? ""
+          : searchProductStore.searchTitle
+      }&categoryId=${currentCategory.value}`,
+    });
+    productCards.value = response.productList;
+    pageCount.value = response.pageCount;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+watch([isSelling, currentCategory, currentPage], async () => {
+  await handelChangeSearchData();
+});
+
+watch([isSelling, currentCategory], async () => {
+  currentPage.value = 1;
+});
 
 // 좋아요, 좋아요 취소 핸들러
 const handleClickLike = async (product) => {
@@ -109,59 +120,23 @@ const handleClickLike = async (product) => {
   }
 };
 
-// 판매중 상품 필터링
-const handleChangeCheckIsSelling = () => {
-  if (isSelling.value) {
-    const fileterSelling = productCardsOriginal.value.filter(
-      (card) => card.transactionStatus === null,
-    );
-    productCards.value = fileterSelling;
-  } else {
-    productCards.value = productCardsOriginal.value;
-  }
-};
+onBeforeMount(async () => {
+  try {
+    const category = await getApi({
+      url: "/api/categorys",
+    });
+    categoryList.value = [{ id: 0, name: "전체" }, ...category];
 
-// 페이지별 보여줄 데이터 조절
-watch(productCards, () => {
-  currentPage.value = 1;
-  startIndex.value = (currentPage.value - 1) * perPage.value;
-  endIndex.value = Math.min(
-    startIndex.value + perPage.value,
-    productCards.value.length,
-  );
+    await handelGetProductData();
+  } catch (error) {
+    console.error(error);
+  }
 });
 
-onBeforeMount(async () => {
-  const category = await getApi({
-    url: "/api/categorys",
-  });
-  const productData = await getApi({
-    url: "/api/products",
-  });
-
-  // 상품 등록일 순으로 정렬
-  const sortData = productData.sort((a, b) => {
-    if (a.createDate > b.createDate) {
-      return -1;
-    } else if (a.createDate < b.createDate) {
-      return 1;
-    } else {
-      return 0;
-    }
-  });
-
-  productCardsOriginal.value = sortData;
-
-  // 판매중 체크박스 상태값에 따라, 판매중 상품 거래완료 상품 필터
-  if (isSelling.value) {
-    const fileterSelling = sortData.filter(
-      (card) => card.transactionStatus === null,
-    );
-    productCards.value = fileterSelling;
-  } else {
-    productCards.value = sortData;
+router.beforeEach(() => {
+  if (route.path === "/products") {
+    handelGetProductData();
   }
-  categoryList.value = ["전체", ...category.map((list) => list.name)];
 });
 </script>
 

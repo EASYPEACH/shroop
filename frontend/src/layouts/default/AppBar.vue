@@ -9,7 +9,7 @@
         </div>
       </v-app-bar-title>
 
-      <v-form class="search__box">
+      <v-form class="search__box" @submit.prevent="handleSearchProduct">
         <input type="text" v-model="search" />
         <v-btn type="submit">
           <v-icon icon="mdi-magnify" />
@@ -67,13 +67,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useCheckLogin } from "@/store/useCheckLogin";
 import { postApi } from "@/api/modules";
 import { useDisplay } from "vuetify";
+import { useSearchProduct } from "@/store/useSearchProduct";
+import { useRoute } from "vue-router";
 import NotifyBellButton from "@/components/Button/NotifyBellButton.vue";
 import router from "@/router";
 
+const route = useRoute();
+const searchProductStore = useSearchProduct();
 const loginCheckStore = useCheckLogin();
 const search = ref("");
 
@@ -90,6 +94,24 @@ const logout = async () => {
     console.error(error);
   }
 };
+
+const handleSearchProduct = async () => {
+  searchProductStore.setSearchTitle(search.value);
+  await router.push({
+    name: "Products",
+    query: {
+      title: search.value,
+      categotyId: route.query.categoryId,
+      isSelling: route.query.isSelling,
+      page: route.query.page,
+    },
+  });
+};
+
+onBeforeMount(() => {
+  search.value = route.query.title;
+  searchProductStore.setSearchTitle(route.query.title);
+});
 </script>
 
 <style lang="scss" scoped>
