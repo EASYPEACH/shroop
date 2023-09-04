@@ -1,6 +1,6 @@
 <template>
   <v-btn :variant="variant" @click="$emit('handle-click-like')">
-    <v-icon :icon="product.isLike ? 'mdi-heart' : 'mdi-heart-outline'" />
+    <v-icon :icon="product.like ? 'mdi-heart' : 'mdi-heart-outline'" />
     <span>{{ product.likesCount }}</span>
   </v-btn>
 </template>

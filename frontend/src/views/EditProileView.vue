@@ -137,7 +137,6 @@ onBeforeMount(async () => {
   const userData = await getApi({
     url: "/api/members/profile",
   });
-  console.error(userData.profileImg);
   let profileImgTransfer = await changeUrlToFiles(
     [userData.profileImg],
     new DataTransfer(),
