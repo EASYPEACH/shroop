@@ -36,9 +36,7 @@ const handleGetNotification = async () => {
     if (responseSize > 0) {
       notifyListStore.setHasNotify(true);
       notifyListStore.setNotifyList(response);
-      const getNotCheckedList = notifyListStore.getNotifyChecked(
-        notifyListStore.notifyList,
-      );
+      const getNotCheckedList = notifyListStore.getNotifyChecked;
       notCheckednotifyCount.value = getNotCheckedList.length;
     }
   } catch (error) {

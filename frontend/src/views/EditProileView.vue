@@ -89,7 +89,7 @@
       modalText="수정이 완료되었습니다"
       v-model="showPlainModal"
       @handle-cancle="showPlainModal = false"
-      @handle-confirm="showPlainModal = false"
+      @handle-confirm="handleConfirmEdit"
     />
   </section>
 </template>
@@ -103,6 +103,7 @@ import {
 } from "@/utils";
 import { getApi, postApi, multipartPatchApi } from "@/api/modules";
 import { useCookies } from "vue3-cookies";
+import { useRouter } from "vue-router";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
@@ -110,6 +111,7 @@ import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const { cookies } = useCookies();
+const router = useRouter();
 const isValid = ref(false);
 const imageThumb = ref("");
 const imageData = ref(null);
@@ -119,7 +121,6 @@ const phoneAuthNumber = ref("");
 const nickname = ref("");
 const oldPassword = ref("");
 const newPassword = ref("");
-const authResultMsg = ref("");
 const profileImgRef = ref(null);
 const showPlainModal = ref(false);
 const modifyResultMsg = ref("");
@@ -188,6 +189,7 @@ const handleSubmitRegister = async () => {
   newPassword.value = "";
 };
 
+// 인증번호 요청
 const requestAuthNumber = async () => {
   try {
     const data = await postApi({
@@ -200,6 +202,12 @@ const requestAuthNumber = async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+// 수정 확인
+const handleConfirmEdit = () => {
+  router.push("/mypage/0");
+  showPlainModal.value = false;
 };
 </script>
 

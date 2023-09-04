@@ -17,6 +17,7 @@ import com.easypeach.shroop.modules.member.exception.MinusPointException;
 import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
 import com.easypeach.shroop.modules.product.exception.CategoryNotFoundException;
 import com.easypeach.shroop.modules.product.exception.ProductImgLengthException;
+import com.easypeach.shroop.modules.transaction.exception.LackOfPointException;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,8 @@ public class ExceptionControllerAdvice {
 		ProductImgLengthException.class,
 		DuplicateValueException.class,
 		PasswordNotMatchException.class,
-		PhoneAuthFailException.class
+		PhoneAuthFailException.class,
+		LackOfPointException.class
 	})
 	public ResponseEntity<ErrorResponse> handleAuthException(final RuntimeException e) {
 		String errorMessage = e.getMessage();

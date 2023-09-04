@@ -7,6 +7,8 @@
 // Components
 import { createApp } from "vue";
 import App from "./App.vue";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 // Composables
 
@@ -19,4 +21,4 @@ const app = createApp(App);
 
 registerPlugins(app);
 
-app.mount("#app");
+app.use(AOS.init()).mount("#app");

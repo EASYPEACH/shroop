@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@DynamicInsert
 public class Bank {
 
 	@Id
@@ -36,6 +38,13 @@ public class Bank {
 
 	public void subtractMoney(Long point) {
 		this.money -= point;
+	}
+
+	public static Bank createBank(String name, String account) {
+		Bank bank = new Bank();
+		bank.name = name;
+		bank.account = account;
+		return bank;
 	}
 
 }

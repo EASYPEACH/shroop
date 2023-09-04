@@ -63,8 +63,7 @@ defineExpose({
         height: 200px;
         align-items: center;
         justify-content: center;
-        border: 3px dashed gray;
-        border-radius: 10px;
+        border: 2px dotted gray;
         cursor: pointer;
       }
       input {
