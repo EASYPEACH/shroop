@@ -58,11 +58,8 @@ const display = useDisplay();
 const searchProductStore = useSearchProduct();
 
 const searchTitle = ref("");
-const searchCategoryId = ref(0);
-const searchHasNotTransaction = ref(false);
 const isLaptop = ref(display.mdAndUp);
 const categoryList = ref([]);
-const productCardsOriginal = ref([]);
 const productCards = ref([]);
 const currentPage = ref(1); // 현재 페이지
 const isSelling = ref(true);
@@ -83,7 +80,6 @@ const handelChangeSearchData = () => {
 
 const handelGetProductData = async () => {
   try {
-    console.log("products : " + route.query.title);
     const response = await getApi({
       url: `/api/products/search?page=${
         currentPage.value - 1
@@ -93,7 +89,6 @@ const handelGetProductData = async () => {
     });
     productCards.value = response.productList;
     pageCount.value = response.pageCount;
-    console.log(productCards.value);
   } catch (error) {
     console.error(error);
   }
@@ -120,7 +115,6 @@ onBeforeMount(async () => {
       url: "/api/categorys",
     });
     categoryList.value = [{ id: 0, name: "전체" }, ...category];
-
     await handelGetProductData();
   } catch (error) {
     console.error(error);

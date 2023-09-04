@@ -96,7 +96,6 @@ const logout = async () => {
 };
 
 const handleSearchProduct = async () => {
-  console.log("appBar : " + search.value);
   searchProductStore.setSearchTitle(search.value);
   await router.push({
     name: "Products",
