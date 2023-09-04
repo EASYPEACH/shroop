@@ -1,9 +1,9 @@
 <template>
   <content-layout>
     <v-card variant="plain" class="mypage">
-      <v-toolbar>
+      <!-- <v-toolbar>
         <v-toolbar-title>{{ tab }}</v-toolbar-title>
-      </v-toolbar>
+      </v-toolbar> -->
       <div class="mypage__content">
         <v-tabs
           v-model="tab"
@@ -21,12 +21,22 @@
           </v-tab>
         </v-tabs>
         <v-window v-model="tab">
+          <!-- 마이페이지 -->
           <v-window-item value="마이페이지">
             <div class="mypage__profile">
-              <div class="profile__info">
-                <img :src="profile.imagePath" class="profile__info-img" />
-                <div>
-                  <div>
+              <div class="profile__img">
+                <img
+                  :src="profile.imagePath ? profile.imagePath : basicProfile"
+                />
+                <mini-button
+                  text="프로필수정"
+                  @click="() => $router.push(`/profileEdit/${0}`)"
+                />
+              </div>
+
+              <div class="profile__edit">
+                <div class="profile__info">
+                  <div class="profile__info-rank">
                     <v-icon :icon="profile.rank" class="profile__name-rank" />
                     <v-btn variant="plain" class="rank-help">
                       <v-icon icon="mdi-help" />
@@ -48,22 +58,25 @@
                       </v-tooltip>
                     </v-btn>
                   </div>
-                  <div class="profile__info-name">
-                    {{ profile.nickName }} 님
+                  <p class="profile__info-name">
+                    <span>{{ profile.nickName }}</span
+                    >님
+                  </p>
+                </div>
+
+                <div class="profile__point">
+                  <div>
+                    {{ profile.point }}
+                    <v-icon icon="mdi-water" />
                   </div>
                   <mini-button
-                    text="프로필수정"
-                    @click="() => $router.push(`/profileEdit/${0}`)"
+                    text="충전"
+                    @click="showChargePointModal = true"
                   />
                 </div>
               </div>
-              <div class="profile__point">
-                <div class="profile__point-count">
-                  {{ profile.point }} <v-icon icon="mdi-water" class="drop" />
-                </div>
-                <mini-button text="충전" @click="showChargePointModal = true" />
-              </div>
             </div>
+            <v-divider />
             <div class="mypage__like">
               <h3>좋아요 <v-icon icon="mdi-heart" class="like-icon" /></h3>
               <ul>
@@ -85,8 +98,16 @@
                   />
                 </li>
               </ul>
+              <v-pagination
+                v-model="likeCurrentPage"
+                :length="likeTotalPage"
+                :total-visible="isTablet ? 3 : 5"
+                @click="handleChangeLikePage"
+              >
+              </v-pagination>
             </div>
           </v-window-item>
+          <!-- 구매내역 -->
           <v-window-item value="구매내역">
             <ul>
               <info-alert
@@ -100,7 +121,15 @@
                 <mypage-product-banner :product="product" isStatus />
               </li>
             </ul>
+            <v-pagination
+              v-model="currentPage"
+              :length="pageCount"
+              :total-visible="isTablet ? 3 : 5"
+              @click="handleChangePurchasePage"
+            >
+            </v-pagination>
           </v-window-item>
+          <!-- 판매내역 -->
           <v-window-item value="판매내역">
             <ul>
               <info-alert
@@ -111,6 +140,13 @@
                 <mypage-product-banner :product="product" isStatus isSeller />
               </li>
             </ul>
+            <v-pagination
+              v-model="sellingPage"
+              :length="sellPageCount"
+              :total-visible="isTablet ? 3 : 5"
+              @click="handleGetSellHistory"
+            >
+            </v-pagination>
           </v-window-item>
         </v-window>
       </div>
@@ -119,32 +155,6 @@
       v-model="showChargePointModal"
       @handle-cancle="showChargePointModal = false"
     />
-    <div class="mt-5">
-      <v-pagination
-        v-if="tabId === 0"
-        v-model="likeCurrentPage"
-        :length="likeTotalPage"
-        :total-visible="5"
-        @click="handleLikePageEvent"
-      >
-      </v-pagination>
-      <v-pagination
-        v-if="tabId === 1"
-        v-model="currentPage"
-        :length="pageCount"
-        :total-visible="5"
-        @click="handleChangePage"
-      >
-      </v-pagination>
-      <v-pagination
-        v-else-if="tabId === 2"
-        v-model="sellingPage"
-        :length="sellPageCount"
-        :total-visible="5"
-        @click="handleSellHistory"
-      >
-      </v-pagination>
-    </div>
   </content-layout>
 </template>
 
@@ -187,22 +197,55 @@ const profile = ref({
   rank: "mdi-umbrella-beach-outline",
 });
 
-const purchaseList = ref([]);
-const sellList = ref([]);
 const tabId = ref(0);
 
-// 좋아요 페이징
+const perPage = ref(5); // 페이지당 상품 수
+const currentPage = ref(1); // 현재 페이지
+const startIndex = ref(0); // 상품 시작 인덱스
+const endIndex = ref(perPage.value); // 상품 마지막 인덱스
+
+// 좋아요
 const likeList = ref([]);
 const likeCurrentPage = ref(1);
 const likeTotalPage = ref(5);
 
+// 구매내역
+const purchaseList = ref([]);
+
+// 판매내역
+const sellingPage = ref(0);
+const sellList = ref([]);
+const sellPageCount = ref();
+
 onBeforeMount(async () => {
   tabId.value = Number(route.params.index);
-  handlePurchaseHistory();
-  handleSellHistory();
+  handleGetPurchaseHistory();
+  handleGetSellHistory();
   handleGetUserData();
 });
 
+// 상품 수 계산
+const productCount = computed(() => {
+  return purchaseList.value.length;
+});
+
+// 페이지 수 계산
+const pageCount = computed(() => {
+  return Math.ceil(productCount.value / perPage.value);
+});
+
+watch(purchaseList, () => {
+  currentPage.value = 1;
+  handleChangePurchasePage();
+});
+
+// 마이페이지 탭 이동
+const handleTabClick = (tabId) => {
+  router.push(`/mypage/${tabId}`);
+  handleGetHistory(tabId);
+};
+
+// 마이페이지 유저 정보
 const handleGetUserData = async () => {
   const userData = await getApi({
     url: `/api/members/me?page=${
@@ -222,7 +265,8 @@ const handleGetUserData = async () => {
   likeTotalPage.value = userData.page.totalPages;
 };
 
-const handleLikePageEvent = async () => {
+// 좋아요 페이징
+const handleChangeLikePage = async () => {
   try {
     const userData = await getApi({
       url: `/api/members/me?page=${
@@ -241,24 +285,18 @@ const handleLikePageEvent = async () => {
   }
 };
 
-const handleLikePageChange = () => {
-  startIndex.value = (currentPage.value - 1) * perPage.value;
-  endIndex.value = Math.min(
-    startIndex.value + perPage.value,
-    productCount.value,
-  );
-  window.scrollTo({ top: 0 });
+// 좋아요 취소
+const handleToggleHeart = async (id, idx) => {
+  if (likeList.value[idx].isLike) {
+    await deleteApi({
+      url: `/api/likes/${id}`,
+    });
+    likeList.value = [...likeList.value].filter((data) => data.id !== id);
+  }
 };
 
-// 좋아요 페이징 end
-
-const handleTabClick = (tabId) => {
-  router.push(`/mypage/${tabId}`);
-  console.log(tabId);
-  handleHistory(tabId);
-};
-
-const handlePurchaseHistory = async () => {
+// 구매내역
+const handleGetPurchaseHistory = async () => {
   try {
     const purchaseData = await getApi({ url: "/api/buying/history" });
     if (purchaseData !== null) {
@@ -269,7 +307,8 @@ const handlePurchaseHistory = async () => {
   }
 };
 
-const handleSellHistory = async () => {
+// 판매내역
+const handleGetSellHistory = async () => {
   try {
     const sellData = await getApi({
       url: `/api/selling/history?page=${
@@ -285,32 +324,18 @@ const handleSellHistory = async () => {
   }
 };
 
-const handleHistory = async (id) => {
+// 판매내역과 구매내역 불러오기
+const handleGetHistory = async (id) => {
   tabId.value = id;
   if (id === 1) {
-    await handlePurchaseHistory();
+    await handleGetPurchaseHistory();
   } else if (id === 2) {
-    await handleSellHistory();
+    await handleGetSellHistory();
   }
 };
 
-const perPage = ref(5); // 페이지당 상품 수
-const currentPage = ref(1); // 현재 페이지
-
-const sellingPage = ref(0);
-const productCount = computed(() => {
-  return purchaseList.value.length;
-});
-
-const pageCount = computed(() => {
-  return Math.ceil(productCount.value / perPage.value);
-});
-
-const sellPageCount = ref();
-const startIndex = ref(0); // 상품 시작 인덱스
-const endIndex = ref(perPage.value); // 상품 마지막 인덱스
-
-const handleChangePage = () => {
+// 페이징 변경 핸들러
+const handleChangePurchasePage = () => {
   startIndex.value = (currentPage.value - 1) * perPage.value;
   endIndex.value = Math.min(
     startIndex.value + perPage.value,
@@ -318,35 +343,25 @@ const handleChangePage = () => {
   );
   window.scrollTo({ top: 0 });
 };
-
-watch(purchaseList, () => {
-  currentPage.value = 1;
-  handleChangePage();
-});
-
-const handleToggleHeart = async (id, idx) => {
-  if (likeList.value[idx].isLike) {
-    // 좋아요 취소
-    await deleteApi({
-      url: `/api/likes/${id}`,
-    });
-    likeList.value = [...likeList.value].filter((data) => data.id !== id);
-  }
-};
 </script>
 
 <style lang="scss" scoped>
 .mypage {
   opacity: 1;
+  .v-toolbar-title {
+    text-align: center;
+  }
   .mypage__content {
     display: flex;
+    margin-top: 80px;
     @media (max-width: 960px) {
       flex-direction: column;
       .v-tabs {
-        margin-bottom: 30px;
+        margin-bottom: 50px;
       }
     }
   }
+
   .v-toolbar {
     color: rgb(var(--v-theme-mainGray));
     background: none;
@@ -367,44 +382,71 @@ const handleToggleHeart = async (id, idx) => {
   .v-window-item {
     padding-left: 20px;
   }
+  @media (max-width: 960px) {
+    .v-window-item {
+      padding: 0px;
+    }
+  }
 }
 
 .mypage__profile {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-
-  .profile__info {
+  gap: 30px;
+  margin: 20px 0 100px;
+  .profile__img {
     display: flex;
-    gap: 20px;
-    .profile__info-img {
-      width: 100px;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+
+    img {
+      width: 150px;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       object-fit: cover;
       object-position: center;
     }
-    > div {
+  }
+
+  .profile__edit {
+    display: flex;
+    align-items: center;
+    .profile__info {
+      margin-top: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      .rank-help {
-        min-width: 10px;
-        aspect-ratio: 1 / 1;
-        border-radius: 50%;
-        padding: 0;
-        font-size: 12px;
+      padding: 0 20px;
+      .profile__info-name {
+        font-size: small;
+        span {
+          font-weight: 600;
+          font-size: 18px;
+        }
+      }
+      .profile__info-rank {
+        display: flex;
+        .rank-help {
+          min-width: 10px;
+          aspect-ratio: 1 / 1;
+          border-radius: 50%;
+          padding: 0;
+          font-size: 12px;
+        }
+      }
+    }
+    .profile__point {
+      padding: 0 20px;
+      text-align: center;
+      .v-icon {
+        color: rgb(var(--v-theme-subBlue));
       }
     }
   }
-  .profile__point {
-    display: flex;
+
+  @media (max-width: 960px) {
     flex-direction: column;
-    align-items: center;
-    .drop {
-      color: rgb(var(--v-theme-subBlue));
-    }
   }
 }
 .mypage__like {
@@ -417,5 +459,8 @@ const handleToggleHeart = async (id, idx) => {
   .like-icon {
     color: rgb(var(--v-theme-heartRed));
   }
+}
+.v-pagination {
+  margin: 0 auto;
 }
 </style>

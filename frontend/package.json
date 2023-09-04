@@ -10,6 +10,7 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^1.4.0",
     "core-js": "^3.29.0",
     "pinia": "^2.0.0",

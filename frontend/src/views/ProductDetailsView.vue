@@ -330,9 +330,13 @@ const handleClickDeleteRequest = async () => {
           justify-content: space-between;
           align-items: center;
           h2 {
-            width: 200px;
+            width: 400px;
+            word-break: keep-all;
             font-size: 25px;
             font-weight: 600;
+            @media (max-width: 1500px) {
+              width: 300px;
+            }
           }
         }
         .productContent__side-tooltips {
@@ -375,9 +379,8 @@ const handleClickDeleteRequest = async () => {
 }
 
 .v-carousel {
-  border-radius: 25px;
   .v-carousel-item {
-    background-color: #fff;
+    background-color: #000;
   }
   @media (max-width: 960px) {
     width: 100%;

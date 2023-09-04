@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" min-width="250">
+  <v-card class="mx-auto rounded-0" min-width="250">
     <v-img
       class="align-end text-white"
       height="200"
@@ -11,6 +11,8 @@
       contain
     >
     </v-img>
+
+    <v-divider />
     <v-card-text class="pt-3">
       상품등록일<br />
       {{ formatDate(productCardData.createDate) }}
@@ -55,15 +57,17 @@ defineEmits(["handle-click-like"]);
   background-color: #fff;
 }
 .v-card-subtitle {
-  width: 200px;
+  width: 180px;
   color: black;
   opacity: 1;
   font-size: 18px;
   padding: 10px 15px;
   font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 .product-status {
   display: flex;
