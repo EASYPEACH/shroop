@@ -108,5 +108,17 @@ defineEmits(["handle-click-like"]);
       }
     }
   }
+
+  @media (max-width: 960px) {
+    .banner__content {
+      > div {
+        img {
+          flex-basis: 50px;
+          width: 50px;
+          height: 50px;
+        }
+      }
+    }
+  }
 }
 </style>

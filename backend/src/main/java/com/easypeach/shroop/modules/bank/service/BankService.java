@@ -33,10 +33,11 @@ public class BankService {
 	}
 
 	@Transactional
-	public void addPoint(final Long point, final Member member) {
+	public void addMoney(final Long point, final Member member) {
 		Bank bank = bankRepository.getByAccount(member.getAccount());
 		bank.addMoney(point);
 	}
+
 
 	@Transactional
 	public void linkingAccount(final LinkBankRequest linkBankRequest, final Member member) {

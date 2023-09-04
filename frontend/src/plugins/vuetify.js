@@ -6,8 +6,8 @@ import { createVuetify } from "vuetify";
 const lightTheme = {
   dark: false,
   colors: {
-    background: "#F3F1E9",
-    surface: "#F3F1E9",
+    background: "#fff",
+    surface: "#fff",
     primary: "#6200EE",
     "primary-darken-1": "#3700B3",
     secondary: "#03DAC6",
@@ -16,8 +16,8 @@ const lightTheme = {
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
-    mainGray: "#2C3333",
-    subBlue: "#1D5D9B",
+    mainGray: "#000000",
+    subBlue: "#3F72AF",
     heartRed: "rgb(172, 32, 32);",
   },
 };
