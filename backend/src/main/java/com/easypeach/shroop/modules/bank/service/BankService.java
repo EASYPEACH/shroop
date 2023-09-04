@@ -67,14 +67,14 @@ public class BankService {
 		String enteredPassword = linkBankRequest.getPassword();
 
 		String encodedEnteredPassword = passwordEncoder.encode(enteredPassword);
-		
+
 		Bank foundBank = bankRepository.getByAccount(enteredAccount);
 
 		String bankName = foundBank.getName();
 		String encodedBankPassword = foundBank.getPassword();
 
 		boolean isMatchedPassword = passwordEncoder.matches(encodedEnteredPassword, encodedBankPassword);
-		boolean isMatchedName = bankName.matches(enteredName);
+		boolean isMatchedName = bankName.equals(enteredName);
 		if (isMatchedPassword && isMatchedName) {
 			return true;
 		} else {
