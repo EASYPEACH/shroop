@@ -38,7 +38,7 @@ public class ReportService {
 
 		Member member = memberService.findById(memberId);
 
-		Report report = Report.createReport(member, product, title, content, isMediate, ReportStatus.READY);
+		Report report = Report.createReport(member, product, title, content, isMediate, ReportStatus.REPORT_REQUEST);
 
 		return reportRepository.save(report);
 	}
