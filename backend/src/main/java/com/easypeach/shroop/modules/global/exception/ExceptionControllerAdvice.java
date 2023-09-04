@@ -67,7 +67,7 @@ public class ExceptionControllerAdvice {
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(final Exception e) {
 		String errorMessage = e.getMessage();
-		log.error(e.getMessage());
+		log.error("ERROR {}",e);
 		ErrorResponse errorResponse = new ErrorResponse("내부 서버에 문제가 발생하여 확인 중 입니다");
 		return ResponseEntity.internalServerError().body(errorResponse);
 	}
