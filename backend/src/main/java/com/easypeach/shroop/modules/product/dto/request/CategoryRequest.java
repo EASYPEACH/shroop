@@ -14,4 +14,8 @@ public class CategoryRequest {
 	@Size(min = 2, max = 255, message = "최소 2자 이상 입력해주세요")
 	private String name;
 
+	public CategoryRequest(String name) {
+		this.name = name;
+	}
+
 }
