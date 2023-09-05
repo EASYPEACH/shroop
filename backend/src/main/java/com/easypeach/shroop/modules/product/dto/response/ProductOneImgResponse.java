@@ -32,7 +32,7 @@ public class ProductOneImgResponse {
 
 	private LocalDateTime createDate;
 
-	private boolean isLike;
+	private Boolean isLike;
 
 	public ProductOneImgResponse(Product product) {
 		this.id = product.getId();
@@ -57,7 +57,7 @@ public class ProductOneImgResponse {
 		final Boolean isCheckedDeliveryFee,
 		final String content,
 		final LocalDateTime createDate,
-		final boolean isLike
+		final Boolean isLike
 	) {
 		this.id = id;
 		this.transactionStatus = transactionStatus;
