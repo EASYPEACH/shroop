@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat>
+  <v-app-bar>
     <section>
       <!-- 헤더 왼쪽 타이틀 & 로고 -->
       <v-app-bar-title @click="() => $router.push('/')">
@@ -10,7 +10,7 @@
       </v-app-bar-title>
 
       <v-form class="search__box" @submit.prevent="handleSearchProduct">
-        <input type="text" v-model="search" />
+        <input type="text" v-model="search" @input="handleSearchInput" />
         <v-btn type="submit">
           <v-icon icon="mdi-magnify" />
         </v-btn>
@@ -96,7 +96,8 @@ const logout = async () => {
 };
 
 const handleSearchProduct = async () => {
-  searchProductStore.setSearchTitle(search.value);
+  searchProductStore.setSearchTitle(search.value.trim());
+  search.value = search.value.trim();
   await router.push({
     name: "Products",
     query: {
@@ -108,16 +109,26 @@ const handleSearchProduct = async () => {
   });
 };
 
+const handleSearchInput = () => {
+  searchProductStore.setSearchTitle(search.value);
+};
+
 onBeforeMount(() => {
-  search.value = route.query.title;
   searchProductStore.setSearchTitle(route.query.title);
+  search.value = searchProductStore.searchTitle;
+});
+
+router.afterEach((to) => {
+  if (to.name === "Home") {
+    searchProductStore.setSearchTitle("");
+    search.value = searchProductStore.searchTitle;
+  }
 });
 </script>
 
 <style lang="scss" scoped>
 header {
   overflow: visible;
-  border-bottom: 1px solid rgb(var(--v-theme-mainGray), 0.2);
   section {
     display: flex;
     width: 70%;
@@ -161,10 +172,10 @@ header {
 
 /* 헤더 왼쪽 타이틀 & 로고 */
 .v-app-bar-title {
-  width: fit-content;
+  max-width: 100px;
   cursor: pointer;
   .logo {
-    width: 30px;
+    width: 50px;
     aspect-ratio: 1 / 1;
     display: flex;
     flex-direction: column;

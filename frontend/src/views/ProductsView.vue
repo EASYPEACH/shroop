@@ -59,12 +59,8 @@ const route = useRoute();
 const display = useDisplay();
 const searchProductStore = useSearchProduct();
 
-const searchTitle = ref("");
-const searchCategoryId = ref(0);
-const searchHasNotTransaction = ref(false);
 const isLaptop = ref(display.mdAndUp);
 const categoryList = ref([]);
-const productCardsOriginal = ref([]);
 const productCards = ref([]);
 const currentPage = ref(1); // 현재 페이지
 const isSelling = ref(true);
@@ -75,7 +71,7 @@ const handelChangeSearchData = () => {
   router.push({
     name: "Products",
     query: {
-      title: route.query.title,
+      title: searchProductStore.searchTitle,
       categoryId: currentCategory.value,
       isSelling: isSelling.value,
       page: currentPage.value,
@@ -86,7 +82,7 @@ const handelChangeSearchData = () => {
 const handelGetProductData = async () => {
   try {
     const response = await getApi({
-      url: `/api/products/search?page=${
+      url: `/api/products/search?size=9&page=${
         currentPage.value - 1
       }&hasNotTransaction=${isSelling.value}&title=${
         searchProductStore.searchTitle === undefined
@@ -101,8 +97,8 @@ const handelGetProductData = async () => {
   }
 };
 
-watch([isSelling, currentCategory, currentPage], async () => {
-  await handelChangeSearchData();
+watch([isSelling, currentCategory, currentPage], () => {
+  handelChangeSearchData();
 });
 
 watch([isSelling, currentCategory], async () => {
