@@ -205,6 +205,8 @@ public class TransactionService {
 
 		transaction.updateStatus(TransactionStatus.PURCHASE_CONFIRM);
 
+		subtractPoint(transaction.getProduct().getPrice(), ShroopMember.SHROOP_ID.getId());
+
 		addPoint(productId, sellerId);
 
 		String title = "구매 확정";
@@ -232,6 +234,10 @@ public class TransactionService {
 
 		transaction.updateStatus(TransactionStatus.RETURN_COMPLETE);
 
+		subtractPoint(transaction.getProduct().getPrice(), ShroopMember.SHROOP_ID.getId());
+
+		addPoint(productId, buyerId);
+
 		String title = "반품 확정";
 		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
 			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
@@ -243,7 +249,6 @@ public class TransactionService {
 		// 구매자 알림
 		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
 
-		addPoint(productId, buyerId);
 	}
 
 }
