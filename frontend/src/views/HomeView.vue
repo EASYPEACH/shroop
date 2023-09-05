@@ -125,27 +125,14 @@ const display = useDisplay();
 const isLaptop = ref(display.mdAndUp);
 
 onBeforeMount(async () => {
-  const data = await getApi({
-    url: "/api/products",
-  });
-
-  // 판매중인 상품 필터링
-  const fileterSelling = data.filter(
-    (product) => product.transactionStatus === null,
-  );
-
-  // 생성일자로 정렬하여 6개까지 배열 자르기
-  productCardData.value = fileterSelling
-    .sort((a, b) => {
-      if (a.createDate > b.createDate) {
-        return -1;
-      } else if (a.createDate < b.createDate) {
-        return 1;
-      } else {
-        return 0;
-      }
-    })
-    .slice(0, 8);
+  try {
+    const response = await getApi({
+      url: `/api/products/search?size=8&page=0&hasNotTransaction=true`,
+    });
+    productCardData.value = response.productList;
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // 상품 좋아요 버튼 클릭 이벤트
