@@ -51,6 +51,7 @@ public class MemberService {
 			findMember.getProfileImg(),
 			findMember.getNickname(),
 			findMember.getPoint(),
+			findMember.getAccount(),
 			likedProductList
 		);
 
@@ -173,7 +174,7 @@ public class MemberService {
 	@Transactional
 	public Long subtractPoint(final Long point, final Member member) {
 		Member foundMember = memberRepository.getById(member.getId());
-		if (member.getPoint() >= point) {
+		if (foundMember.getPoint() >= point) {
 			foundMember.subtractPoint(point);
 		} else {
 			throw new MinusPointException("보유한 포인트보다 환전하려는 포인트가 더 큽니다. 다시 입력해주세요");
