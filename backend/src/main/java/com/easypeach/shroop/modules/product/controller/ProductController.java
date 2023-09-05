@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.easypeach.shroop.infra.aop.log.user.UserTrace;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -51,6 +52,7 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductInfo(member, productId));
 	}
 
+	@UserTrace(value = "상품을 등록하였습니다")
 	@PostMapping
 	public ResponseEntity<ProductCreatedResponse> saveProduct(@LoginMember Member member,
 		@RequestPart(value = "productImgList") List<MultipartFile> productImgList,
@@ -59,9 +61,11 @@ public class ProductController {
 		productImgService.checkImgLength(productImgList);
 		Product product = productService.saveProduct(member.getId(), productRequest);
 		productImgService.saveProductImg(productImgList, defectImgList, product, productRequest.getIsDefect());
+		log.info("상품 등록 로그 {}",product.getId());
 		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(product.getId()));
 	}
 
+	@UserTrace(value = "상품을 수정하였습니다")
 	@PatchMapping
 	public ResponseEntity<ProductCreatedResponse> updateProduct(@LoginMember Member member,
 		@RequestPart(value = "productId") Long productId,

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.easypeach.shroop.infra.aop.log.user.UserTrace;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -30,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 
+	@UserTrace(value = "마이페이지 이동")
 	@GetMapping("/me")
 	public ResponseEntity<MyPageInfoResponse> findMyPage(@LoginMember final Member member, Pageable pageable){
 		MyPageInfoResponse myInfo = memberService.getMyInfo(member.getId(),pageable);
