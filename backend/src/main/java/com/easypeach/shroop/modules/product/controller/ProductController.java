@@ -61,8 +61,8 @@ public class ProductController {
 		productImgService.checkImgLength(productImgList);
 		Product product = productService.saveProduct(member.getId(), productRequest);
 		productImgService.saveProductImg(productImgList, defectImgList, product, productRequest.getIsDefect());
-		log.info("상품 등록 로그 {}",product.getId());
-		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(product.getId()));
+		// log.info("상품 등록 로그 {}",product.getId());
+		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(1L));
 	}
 
 	@UserTrace(value = "상품을 수정하였습니다")
