@@ -1,6 +1,6 @@
 package com.easypeach.shroop.modules.report.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,7 @@ public class ReportImg {
 
 	@Column(name = "create_date")
 	@CreatedDate
-	private LocalDate createDate;
+	private LocalDateTime createDate;
 
 	public static ReportImg createReprotImg(
 		final Report report,
