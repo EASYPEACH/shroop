@@ -73,6 +73,30 @@
                     text="충전"
                     @click="showChargePointModal = true"
                   />
+                  <mini-button
+                    text="환전"
+                    @click="showExchangePointModal = true"
+                  />
+                </div>
+                <div class="profile_account">
+                  <v-col cols="auto">
+                    <v-btn
+                      v-if="profile.account === null"
+                      color="blue"
+                      size="large"
+                      @click="showLinkAccountModal = true"
+                      >계좌 연동하기</v-btn
+                    >
+                  </v-col>
+                  <div
+                    class="profile_account-block"
+                    v-if="profile.account !== null"
+                  >
+                    <div class="profile_account-text">내 연결 계좌</div>
+                    <div class="profile_account-info">
+                      {{ profile.account }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -153,7 +177,21 @@
     </v-card>
     <charge-point-modal
       v-model="showChargePointModal"
-      @handle-cancle="showChargePointModal = false"
+      @handle-cancel="showChargePointModal = false"
+      @handle-return-point-result="(result) => (profile.point = result)"
+      label="충전할 방울"
+      isCharged
+    />
+    <charge-point-modal
+      v-model="showExchangePointModal"
+      @handle-cancel="showExchangePointModal = false"
+      @handle-return-point-result="(result) => (profile.point = result)"
+      label="환전할 방울"
+    />
+    <link-account-modal
+      v-model="showLinkAccountModal"
+      @handle-cancle-modal="showLinkAccountModal = !showLinkAccountModal"
+      @handle-save-account="onHandleSaveAccount"
     />
   </content-layout>
 </template>
@@ -169,6 +207,7 @@ import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
+import LinkAccountModal from "@/components/Modal/LinkAccountModal.vue";
 
 const tabList = ref([
   {
@@ -192,6 +231,8 @@ const router = useRouter();
 const display = useDisplay();
 const tab = ref(tabList.value[route.params.index].title);
 const showChargePointModal = ref(false);
+const showExchangePointModal = ref(false);
+const showLinkAccountModal = ref(false);
 const isTablet = ref(display.smAndDown);
 const profile = ref({
   rank: "mdi-umbrella-beach-outline",
@@ -257,6 +298,7 @@ const handleGetUserData = async () => {
   }
   profile.value.nickName = userData.nickname;
   profile.value.point = userData.point;
+  profile.value.account = userData.account;
   likeList.value = userData.page.content.map((data) => {
     data.isLike = true;
     return data;
@@ -462,5 +504,25 @@ const handleChangePurchasePage = () => {
 }
 .v-pagination {
   margin: 0 auto;
+}
+.profile_account {
+  .profile_account-block {
+    padding-bottom: 30px;
+    display: flex;
+    align-items: center;
+    @media (max-width: 960px) {
+      flex-direction: column;
+      font-size: 8px;
+      align-items: center;
+    }
+    .profile_account-text {
+      font-weight: bold;
+      padding-right: 10px;
+    }
+    .profile_account-info {
+      border: 1px solid lightgray;
+      padding: 7px;
+    }
+  }
 }
 </style>

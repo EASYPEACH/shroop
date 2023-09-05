@@ -2,11 +2,12 @@
 ## 계좌 비밀번호는 1234
 insert into bank (id, account, name, money, password) values (1, '002-93949697-003', '슈룹', 0, "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
 insert into bank (id, account, name, password) values (2, '002-106607-01-016', '이종민', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
-insert into bank (id, account, name, password) values (3, '01085518532', '공태식', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
-insert into bank (id, account, name, password) values (4, '01030831889', '박진영', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
-insert into bank (id, account, name, password) values (5, '01054834790', '박지윤',"$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
-insert into bank (id, account, name, password) values (6, '01054834792', 'test1', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (3, '010-8551-8532', '공태식', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (4, '010-3083-1889', '박진영', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (5, '010-5483-4790', '박지윤',"$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (6, '010-5483-4792', 'test1', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
 insert into bank (id, account, name, password) values (7, '010-9394-9697', 'test2', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
+insert into bank (id, account, name, password) values (8, '010-9394-9698', 'test3', "$2y$10$c.hfcHgbhl07CdQHk7paGuS3ufujtyFMk9ZZJKx30QI2iaj6kx19.");
 
 ## admin 비밀번호는 전부 's93949697!'
 
@@ -16,7 +17,7 @@ insert into member (id, check_agree, create_date, login_date, login_id, nickname
 insert into member (id, check_agree, create_date, login_date, login_id, nickname, password ,phone_number, point, role, update_date, account) values (4, 1,'2023-04-07 17:45:22','2023-04-07 17:45:22', 'parkjinyoung',  '지녕쿤', '$2y$10$F26pbdd5v2A3NAplkgh9YujhqcbE7Jto2emEZg516FBwapp0XGKJC', '01030831889', 1000000, 'ROLE_ADMIN', '2023-04-07 17:45:22', '01030831889');
 insert into member (id, check_agree, create_date, login_date, login_id, nickname, password ,phone_number, point, role, update_date, account) values (5, 1,'2023-04-07 17:45:22','2023-04-07 17:45:22', 'parkjiyun',  '갓쥰', '$2y$10$F26pbdd5v2A3NAplkgh9YujhqcbE7Jto2emEZg516FBwapp0XGKJC', '01054834790', 1000000, 'ROLE_ADMIN', '2023-04-07 17:45:22', '01054834790');
 
-insert into member (id, check_agree, create_date, login_date, login_id, nickname, password ,phone_number, point, role, update_date, account) values (6, 1,'2023-04-07 17:45:22','2023-04-07 17:45:22', 'test111111',  'test111111', '$2y$10$tRo6AL3AMRBOXPTfqAFNBO06/2zGMTr5Cvkc5CoS0sjgnovVLCyRu', '01012345671', 100000, 'ROLE_USER', '2023-04-07 17:45:22',01054834792);
+insert into member (id, check_agree, create_date, login_date, login_id, nickname, password ,phone_number, point, role, update_date, account) values (6, 1,'2023-04-07 17:45:22','2023-04-07 17:45:22', 'test111111',  'test111111', '$2y$10$tRo6AL3AMRBOXPTfqAFNBO06/2zGMTr5Cvkc5CoS0sjgnovVLCyRu', '01012345671', 100000, 'ROLE_USER', '2023-04-07 17:45:22','01054834792');
 insert into member (id, check_agree, create_date, login_date, login_id, nickname, password ,phone_number, point, role, update_date) values (7, 1,'2023-04-07 17:45:22','2023-04-07 17:45:22', 'test222222',  'test222222', '$2y$10$nffYvzFk6vBB5J.8HFLjkuoaLmXvrtZ97Ivk4eAjWLXIUjvHc5YAe', '01012345672', 1000, 'ROLE_USER', '2023-04-07 17:45:22');
 insert into member (id, check_agree, create_date, login_date, login_id, nickname, password ,phone_number, point, role, update_date) values (8, 1,'2023-04-07 17:45:22','2023-04-07 17:45:22', 'test333333',  'test333333', '$2y$10$xsWyO3tEhyaU79pQcHw.3OPjudF4PYrhtoqD/lKd41RscMTfffz62', '01012345673', 1000, 'ROLE_USER', '2023-04-07 17:45:22');
 insert into member (id, check_agree, create_date, login_date, login_id, nickname, password ,phone_number, point, role, update_date) values (9, 1,'2023-04-07 17:45:22','2023-04-07 17:45:22', 'test444444',  'test444444', '$2y$10$JWTEL/Hlz93Q88V8WN7.9Os32EgsrC1vtHsKn/FUJ7CIwRC3ll6eC', '01012345674', 1000, 'ROLE_USER', '2023-04-07 17:45:22');

@@ -13,5 +13,6 @@ public class MyPageInfoResponse {
 	private String userImg;
 	private String nickname;
 	private Long point;
+	private String account;
 	private Page<LikeProductInfo> page;
 }
