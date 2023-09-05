@@ -26,7 +26,6 @@ public class BankService {
 
 	@Transactional
 	public void subtractMoney(final Long point, final Member member) {
-		// System.out.println(member.getAccount());
 		Member foundMember = memberRepository.getById(member.getId());
 		Bank bank = bankRepository.getByAccount(foundMember.getAccount());
 		if (bank.getMoney() >= point) {
