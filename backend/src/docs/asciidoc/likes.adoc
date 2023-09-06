@@ -1,0 +1,29 @@
+= 좋아요 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 좋아요
+
+=== Request
+
+include::{snippets}/likes/path-parameters.adoc[]
+include::{snippets}/likes/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/likes/http-response.adoc[]
+
+== 좋아요 취소
+
+=== Request
+
+include::{snippets}/cancleLikes/path-parameters.adoc[]
+include::{snippets}/cancleLikes/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/cancleLikes/http-response.adoc[]
+

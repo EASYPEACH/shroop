@@ -1,0 +1,29 @@
+= 카테고리 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 카테고리 전체 리스트 조회
+
+=== Request
+
+include::{snippets}/getCategoryList/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/getCategoryList/http-response.adoc[]
+include::{snippets}/getCategoryList/response-fields.adoc[]
+
+== 특정 카테고리 조회
+
+=== Request
+
+include::{snippets}/getCategory/path-parameters.adoc[]
+include::{snippets}/getCategory/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/getCategory/http-response.adoc[]
+include::{snippets}/getCategory/response-fields.adoc[]
