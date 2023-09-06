@@ -2,8 +2,9 @@ package com.easypeach.shroop.modules.notification.controller;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
@@ -47,6 +49,8 @@ class NotificationControllerTest extends ControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/notifications"))
 			.andExpect(status().isOk())
 			.andDo(document("notifications",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
 				responseFields(
 					fieldWithPath("[].id").description("알림의 ID"),
 					fieldWithPath("[].memberId").description("멤버 ID"),
@@ -71,9 +75,14 @@ class NotificationControllerTest extends ControllerTest {
 
 		given(notificationService.checkNotification(notificationId)).willReturn(link);
 
-		mockMvc.perform(patch("/api/notifications/{notificationId}", notificationId))
+		mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/notifications/{notificationId}", notificationId))
 			.andExpect(status().isOk())
 			.andDo(document("notificationChangeChecked",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("notificationId").description("알림 아이디")
+				),
 				responseFields(
 					fieldWithPath("link").description("알림의 링크")
 				)))
