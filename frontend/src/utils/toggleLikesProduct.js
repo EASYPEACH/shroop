@@ -7,14 +7,14 @@ import { deleteApi, postApi } from "@/api/modules";
  */
 
 export const toggleLikesProduct = async (product, productData) => {
-  if (product.like) {
+  if (product.isLike) {
     // 좋아요 취소
     await deleteApi({
       url: `/api/likes/${product.id}`,
     });
     productData.value = [...productData.value].map((data) => {
       if (data.id === product.id) {
-        data.like = false;
+        data.isLike = false;
         product.likesCount -= 1;
       }
       return data;
@@ -26,7 +26,7 @@ export const toggleLikesProduct = async (product, productData) => {
     });
     productData.value = [...productData.value].map((data) => {
       if (data.id === product.id) {
-        data.like = true;
+        data.isLike = true;
         product.likesCount += 1;
       }
       return data;

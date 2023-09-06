@@ -50,6 +50,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 			.where(titleContains(title), categoryIdEq(categoryId), hasNotTransactionIsNull(hasNotTransaction))
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
+			.orderBy(product.createDate.desc())
 			.fetch();
 
 		Long count = queryFactory

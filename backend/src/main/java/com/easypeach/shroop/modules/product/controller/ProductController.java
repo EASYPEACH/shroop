@@ -3,8 +3,6 @@ package com.easypeach.shroop.modules.product.controller;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -82,7 +80,7 @@ public class ProductController {
 	public ResponseEntity<SearchProductResponse> searchProduct(
 		final @LoginMember Member member,
 		final SearchRequest searchRequest,
-		final @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+		final Pageable pageable) {
 
 		SearchProductResponse response = productService.searchProduct(member, searchRequest.getTitle(),
 			searchRequest.getCategoryId(), searchRequest.getHasNotTransaction(), pageable);
