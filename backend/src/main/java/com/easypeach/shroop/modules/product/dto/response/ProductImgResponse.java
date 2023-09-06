@@ -2,9 +2,13 @@ package com.easypeach.shroop.modules.product.dto.response;
 
 import com.easypeach.shroop.modules.product.domain.ProductImg;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class ProductImgResponse {
 	private Long id;
 	private String productImgUrl;
@@ -15,4 +19,5 @@ public class ProductImgResponse {
 		this.productImgUrl = productImg.getProductImgUrl();
 		this.isDefect = productImg.getIsDefect();
 	}
+
 }

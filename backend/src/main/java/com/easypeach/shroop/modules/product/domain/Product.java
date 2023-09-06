@@ -122,21 +122,6 @@ public class Product {
 		return product;
 	}
 
-	public static Product forTestCreateProduct(ProductRequest productRequest) {
-		Product product = new Product();
-		product.title = productRequest.getTitle();
-		product.category = new Category();
-		product.purchaseDate = productRequest.getPurchaseDate();
-		product.productGrade = productRequest.getProductGrade();
-		product.brand = productRequest.getBrand();
-		product.price = productRequest.getPrice();
-		product.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
-		product.isDefect = productRequest.getIsDefect();
-		product.saleReason = productRequest.getSaleReason();
-		product.content = productRequest.getContent();
-		return product;
-	}
-
 	public void updateProduct(
 		final ProductRequest productRequest,
 		final Category category
