@@ -2,7 +2,9 @@ package com.easypeach.shroop.modules.report.controller;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -62,6 +64,12 @@ class ReportControllerTest extends ControllerTest {
 				.contentType(MediaType.MULTIPART_FORM_DATA))
 			.andExpect(status().isOk())
 			.andDo(document("reports",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestParts(
+					partWithName("reportRequest").description("신고 정보"),
+					partWithName("multipartFileList").description("중재 이미지 리스트").optional()
+				),
 				responseFields(
 					fieldWithPath("message").description("결과 메세지")
 				)))
