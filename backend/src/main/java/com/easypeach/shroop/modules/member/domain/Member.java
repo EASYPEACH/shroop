@@ -54,6 +54,9 @@ public class Member {
 	@Column(nullable = false)
 	private Long point;
 
+	@Column(name = "grade_score")
+	private Long GradeScore;
+
 	@Column(name = "create_date")
 	@CreatedDate
 	private LocalDateTime createDate;
