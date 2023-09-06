@@ -25,11 +25,7 @@ public class Category {
 
 	@Column(length = 50, nullable = false)
 	private String name;
-
-	// TODO: 상세조건 내용 추후 협의
-	//    @Column(name = "detailed_conditions", length = 255)
-	//    private String detailedConditions;
-
+	
 	public Category(Long id, String name) {
 		this.id = id;
 		this.name = name;

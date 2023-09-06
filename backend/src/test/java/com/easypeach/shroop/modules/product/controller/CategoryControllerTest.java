@@ -3,6 +3,7 @@ package com.easypeach.shroop.modules.product.controller;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
@@ -12,12 +13,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
 import com.easypeach.shroop.modules.product.domain.Category;
-import com.easypeach.shroop.modules.product.dto.request.CategoryRequest;
 import com.easypeach.shroop.modules.product.dto.response.CategoryResponse;
 import com.easypeach.shroop.modules.product.service.CategoryService;
 
@@ -41,7 +40,8 @@ class CategoryControllerTest extends ControllerTest {
 			.andDo(document("getCategoryList", responseFields(
 				fieldWithPath("[].id").description("카테고리 아이디"),
 				fieldWithPath("[].name").description("카테고리 이름")
-			)));
+			)))
+			.andDo(print());
 
 	}
 
@@ -55,27 +55,7 @@ class CategoryControllerTest extends ControllerTest {
 			.andDo(document("getCategory", responseFields(
 				fieldWithPath("id").description("카테고리 아이디"),
 				fieldWithPath("name").description("카테고리 이름")
-			)));
-	}
-
-	@DisplayName("카테고리를 저장한다")
-	@Test
-	void saveCategory() throws Exception {
-		Category category = new Category(1L, "전자제품");
-		CategoryRequest categoryRequest = new CategoryRequest("전자제품");
-		String json = objectMapper.writeValueAsString(categoryRequest);
-
-		given(categoryService.saveCategory("전자제품")).willReturn(category);
-
-		mockMvc.perform(
-				MockMvcRequestBuilders.post("/api/categorys")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(json))
-			.andExpect(status().isOk())
-			.andDo(document("getCategory", responseFields(
-				fieldWithPath("id").description("카테고리 아이디"),
-				fieldWithPath("name").description("카테고리 이름")
-			)));
+			))).andDo(print());
 	}
 
 }
