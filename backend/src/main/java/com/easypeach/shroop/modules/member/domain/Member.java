@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -54,8 +55,9 @@ public class Member {
 	@Column(nullable = false)
 	private Long point;
 
+	@ColumnDefault("0")
 	@Column(name = "grade_score")
-	private Long GradeScore;
+	private Long gradeScore;
 
 	@Column(name = "create_date")
 	@CreatedDate
@@ -84,6 +86,7 @@ public class Member {
 		member.phoneNumber = phoneNumber;
 		member.role = role;
 		member.point = point;
+		member.gradeScore = 0L;
 		member.checkAgree = true;
 		return member;
 	}
@@ -114,6 +117,7 @@ public class Member {
 		this.phoneNumber = profileEditRequest.getPhoneNumber();
 	}
 
+	public void addGradeScore(Long addScore){ this.gradeScore += addScore;}
 	public void updatePassword(String password) {
 		this.password = password;
 	}
