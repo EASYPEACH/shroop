@@ -1,0 +1,31 @@
+= 배송 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 운송장 번호 등록하기
+
+=== Request
+
+include::{snippets}/delivery/path-parameters.adoc[]
+include::{snippets}/delivery/request-fields.adoc[]
+include::{snippets}/delivery/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/delivery/http-response.adoc[]
+include::{snippets}/delivery/response-fields.adoc[]
+
+== 운송장 번호 중복 확인하기
+
+=== Request
+
+include::{snippets}/duplicateTrackingNumber/request-parameters.adoc[]
+include::{snippets}/duplicateTrackingNumber/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/duplicateTrackingNumber/http-response.adoc[]
+include::{snippets}/duplicateTrackingNumber/response-fields.adoc[]

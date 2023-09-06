@@ -2,8 +2,10 @@ package com.easypeach.shroop.modules.transaction.controller;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
 import com.easypeach.shroop.modules.transaction.dto.request.DeliveryRequest;
@@ -40,13 +43,18 @@ class DeliveryControllerTest extends ControllerTest {
 
 		doNothing().when(deliveryService).saveDelivery(productId, deliveryRequest);
 
-		mockMvc.perform(post("/api/delivery/{productId}", productId)
+		mockMvc.perform(RestDocumentationRequestBuilders.post("/api/delivery/{productId}", productId)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 			.andExpect(status().isOk())
 			.andDo(document("delivery",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
 				requestFields(
-					fieldWithPath("trackingNumber").description("택배 송장번호"),
+					fieldWithPath("trackingNumber").description("운송장번호"),
 					fieldWithPath("parcel").description("택배사명")
 				),
 				responseFields(
@@ -66,7 +74,12 @@ class DeliveryControllerTest extends ControllerTest {
 		mockMvc.perform(get("/api/delivery/duplicate")
 				.param("trackingNumber", trackingNumber))
 			.andExpect(status().isOk())
-			.andDo(document("duplicatTtrackingNumber",
+			.andDo(document("duplicateTrackingNumber",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestParameters(
+					parameterWithName("trackingNumber").description("운송장번호")
+				),
 				responseFields(
 					fieldWithPath("result").description("중복 여부"),
 					fieldWithPath("message").description("결과 메세지")
