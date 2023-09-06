@@ -11,8 +11,10 @@ import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ProductResponse {
 
 	private Long id;

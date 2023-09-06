@@ -1,6 +1,5 @@
 package com.easypeach.shroop.modules.product.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easypeach.shroop.modules.likes.domain.LikeRepository;
-import com.easypeach.shroop.modules.likes.domain.Likes;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.product.domain.Category;
@@ -44,29 +42,6 @@ public class ProductService {
 	private final TransactionRepository transactionRepository;
 	private final LikeRepository likeRepository;
 
-	public List<ProductResponse> findAll(final Member member) {
-		List<Product> productList = productRepository.findAll();
-		List<ProductResponse> productResponsesList = new ArrayList<>();
-		List<Likes> likeList = new ArrayList<>();
-		if (member != null) {
-			likeList = likeRepository.findAllByMember(member);
-		}
-
-		for (Product product : productList) {
-			productResponsesList.add(setProductResponse(product));
-		}
-
-		for (Likes likes : likeList) {
-			for (ProductResponse productResponse : productResponsesList) {
-				if (likes.getProduct().getId() == productResponse.getId()) {
-					productResponse.setIsLike();
-				}
-			}
-		}
-
-		return productResponsesList;
-	}
-
 	public ProductResponse getProductInfo(final Member member, final Long productId) {
 		Product product = productRepository.getById(productId);
 		ProductResponse productResponse = setProductResponse(product);
@@ -89,15 +64,15 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Product saveProduct(final Long memberId, final ProductRequest productRequest) {
+	public Long saveProduct(final Long memberId, final ProductRequest productRequest) {
 		Member seller = memberRepository.getById(memberId);
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
-		Product product = Product.createProduct(seller, productRequest, category);
-		return productRepository.save(product);
+		Product product = productRepository.save(Product.createProduct(seller, productRequest, category));
+		return product.getId();
 	}
 
 	@Transactional
-	public Product updateProduct(final Long memberId, final Long productId, final ProductRequest productRequest
+	public Long updateProduct(final Long memberId, final Long productId, final ProductRequest productRequest
 	) {
 		Product product = productRepository.getById(productId);
 		Member loginMember = memberRepository.getById(memberId);
@@ -110,7 +85,7 @@ public class ProductService {
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
 		product.updateProduct(productRequest, category);
 
-		return product;
+		return product.getId();
 	}
 
 	@Transactional
