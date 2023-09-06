@@ -77,7 +77,7 @@ class ProductControllerTest extends ControllerTest {
 					fieldWithPath("productList[].isCheckedDeliveryFee").description("상품 배송비 포함 여부"),
 					fieldWithPath("productList[].content").description("상품 내용"),
 					fieldWithPath("productList[].createDate").description("상품 생성일"),
-					fieldWithPath("productList[].like").description("좋아요 여부"),
+					fieldWithPath("productList[].isLike").description("좋아요 여부"),
 					fieldWithPath("productList[].transactionStatus").description("거래 상태")
 
 				)))
