@@ -1,0 +1,18 @@
+= 신고하기 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 신고하기
+
+=== Request
+
+include::{snippets}/reports/http-request.adoc[]
+include::{snippets}/reports/request-parts.adoc[]
+
+=== Response
+
+include::{snippets}/reports/http-response.adoc[]
+include::{snippets}/reports/response-fields.adoc[]
