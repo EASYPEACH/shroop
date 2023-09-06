@@ -28,10 +28,6 @@
                 <img
                   :src="profile.imagePath ? profile.imagePath : basicProfile"
                 />
-                <mini-button
-                  text="프로필수정"
-                  @click="() => $router.push(`/profileEdit/${0}`)"
-                />
               </div>
 
               <div class="profile__edit">
@@ -172,6 +168,10 @@
             >
             </v-pagination>
           </v-window-item>
+
+          <v-window-item value="개인정보">
+            <edit-proile-view></edit-proile-view>
+          </v-window-item>
         </v-window>
       </div>
     </v-card>
@@ -207,6 +207,8 @@ import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
+import CustomTextInput from "@/components/Form/CustomTextInput.vue";
+import EditProileView from "./EditProileView.vue";
 import LinkAccountModal from "@/components/Modal/LinkAccountModal.vue";
 
 const tabList = ref([
@@ -224,6 +226,11 @@ const tabList = ref([
     id: 2,
     title: "판매내역",
     icon: "mdi-currency-krw",
+  },
+  {
+    id: 3,
+    title: "개인정보",
+    icon: "mdi-shield-lock",
   },
 ]);
 const route = useRoute();
@@ -296,6 +303,7 @@ const handleGetUserData = async () => {
   if (userData.userImg !== null) {
     profile.value.imagePath = userData.userImg;
   }
+  console.log(userData);
   profile.value.nickName = userData.nickname;
   profile.value.point = userData.point;
   profile.value.account = userData.account;
@@ -491,7 +499,8 @@ const handleChangePurchasePage = () => {
     flex-direction: column;
   }
 }
-.mypage__like {
+.mypage__like,
+.mypage__personal {
   margin-top: 60px;
   h3 {
     margin-bottom: 20px;
@@ -505,24 +514,12 @@ const handleChangePurchasePage = () => {
 .v-pagination {
   margin: 0 auto;
 }
-.profile_account {
-  .profile_account-block {
-    padding-bottom: 30px;
-    display: flex;
-    align-items: center;
-    @media (max-width: 960px) {
-      flex-direction: column;
-      font-size: 8px;
-      align-items: center;
-    }
-    .profile_account-text {
-      font-weight: bold;
-      padding-right: 10px;
-    }
-    .profile_account-info {
-      border: 1px solid lightgray;
-      padding: 7px;
-    }
+
+.mypage__personal {
+  margin: 10px 50px;
+  max-width: 500px;
+  .delete {
+    margin-top: 80px;
   }
 }
 </style>
