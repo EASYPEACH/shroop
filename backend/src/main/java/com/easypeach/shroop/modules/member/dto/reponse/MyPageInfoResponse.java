@@ -14,5 +14,6 @@ public class MyPageInfoResponse {
 	private String nickname;
 	private Long point;
 	private String account;
+	private Long gradeScore;
 	private Page<LikeProductInfo> page;
 }

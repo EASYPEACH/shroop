@@ -52,6 +52,7 @@ public class MemberService {
 			findMember.getNickname(),
 			findMember.getPoint(),
 			findMember.getAccount(),
+			findMember.getGradeScore(),
 			likedProductList
 		);
 
