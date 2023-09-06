@@ -29,7 +29,8 @@ public class ProductImgService {
 
 	@Transactional
 	public void saveProductImg(final List<MultipartFile> productImgList,
-		final List<MultipartFile> defectImgList, final Product product, final boolean isDefect) {
+		final List<MultipartFile> defectImgList, final Long productId, final boolean isDefect) {
+		Product product = productRepository.getById(productId);
 		try {
 			List<ProductImg> imgList = insertImgList(productImgList, defectImgList, product, isDefect);
 			productImgRepository.saveAll(imgList);

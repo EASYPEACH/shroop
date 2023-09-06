@@ -135,5 +135,4 @@ public class Product {
 	public void setLikesCount(Long likesCount) {
 		this.likesCount = likesCount;
 	}
-
 }

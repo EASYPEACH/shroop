@@ -23,12 +23,26 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 50, nullable = false, unique = true)
+	@Column(length = 50, nullable = false)
 	private String name;
+
+	public Category(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
 	public static Category createCategory(final String name) {
 		Category category = new Category();
 		category.name = name;
 		return category;
 	}
+
+	public static Category forTestCreateCategory(final Long id, final String name) {
+		Category category = new Category();
+		category.id = id;
+		category.name = name;
+		return category;
+	}
+
+
 }

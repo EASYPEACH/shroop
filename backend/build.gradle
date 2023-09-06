@@ -85,17 +85,32 @@ test {
     outputs.dir snippetsDir
 }
 
+asciidoctor.doFirst {
+    delete file('src/main/resources/static')
+}
+
 asciidoctor {
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
     dependsOn test
 }
 
+tasks.register('copyDocument', Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static")
+}
+
+
 bootJar {
-    dependsOn asciidoctor // (1)
-    from("${asciidoctor.outputDir}") { // (2)
-        into 'static/docs'
+    dependsOn copyDocument // (1)
+    from("build/docs/asciidoc") {
+        into 'src/main/resources/static'
     }
+}
+
+build {
+    dependsOn(copyDocument)
 }
 
 def querydslDir = "$buildDir/generated/querydsl"

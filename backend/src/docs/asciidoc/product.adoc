@@ -1,0 +1,60 @@
+= 상품 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 특정 상품 조회하기
+
+=== Request
+
+include::{snippets}/getOneProduct/path-parameters.adoc[]
+include::{snippets}/getOneProduct/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/getOneProduct/http-response.adoc[]
+include::{snippets}/getOneProduct/response-fields.adoc[]
+
+== 상품 등록하기
+
+=== Request
+
+include::{snippets}/saveProduct/http-request.adoc[]
+include::{snippets}/saveProduct/request-parts.adoc[]
+
+==== productRequest
+
+include::{snippets}/saveProduct/request-part-productRequest-fields.adoc[]
+
+=== Response
+
+include::{snippets}/saveProduct/http-response.adoc[]
+
+== 상품 수정하기
+
+=== Request
+
+include::{snippets}/updateProduct/http-request.adoc[]
+include::{snippets}/updateProduct/request-parts.adoc[]
+
+==== productRequest
+
+include::{snippets}/updateProduct/request-part-productRequest-fields.adoc[]
+
+=== Response
+
+include::{snippets}/updateProduct/http-response.adoc[]
+
+== 상품 검색하기
+
+=== Request
+
+include::{snippets}/searchProduct/http-request.adoc[]
+include::{snippets}/searchProduct/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/searchProduct/http-response.adoc[]
+include::{snippets}/searchProduct/response-fields.adoc[]

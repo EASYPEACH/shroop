@@ -20,7 +20,6 @@ import com.easypeach.shroop.infra.aop.log.user.UserTrace;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
-import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
 import com.easypeach.shroop.modules.product.dto.request.SearchRequest;
 import com.easypeach.shroop.modules.product.dto.response.ProductCreatedResponse;
@@ -40,11 +39,6 @@ public class ProductController {
 	private final ProductService productService;
 	private final ProductImgService productImgService;
 
-	@GetMapping
-	public ResponseEntity<List<ProductResponse>> getAllProduct(@LoginMember Member member) {
-		return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(member));
-	}
-
 	@GetMapping("/{productId}")
 	public ResponseEntity<ProductResponse> getProduct(@LoginMember Member member, @PathVariable Long productId) {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getProductInfo(member, productId));
@@ -57,10 +51,9 @@ public class ProductController {
 		@RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
 		@Validated @RequestPart ProductRequest productRequest) {
 		productImgService.checkImgLength(productImgList);
-		Product product = productService.saveProduct(member.getId(), productRequest);
-		productImgService.saveProductImg(productImgList, defectImgList, product, productRequest.getIsDefect());
-		log.info("상품 등록 로그 {}", product.getId());
-		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(product.getId()));
+		Long productId = productService.saveProduct(member.getId(), productRequest);
+		productImgService.saveProductImg(productImgList, defectImgList, productId, productRequest.getIsDefect());
+		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(productId));
 	}
 
 	@UserTrace(value = "상품을 수정하였습니다")
@@ -71,10 +64,10 @@ public class ProductController {
 		@RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
 		@RequestPart ProductRequest productRequest) {
 		productImgService.checkImgLength(productImgList);
-		Product product = productService.updateProduct(member.getId(), productId, productRequest);
+		Long updateProductId = productService.updateProduct(member.getId(), productId, productRequest);
 		productImgService.updateProductImgList(productImgList, defectImgList, productId,
 			productRequest.getIsDefect());
-		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(product.getId()));
+		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(updateProductId));
 	}
 
 	@DeleteMapping("/{productId}")
