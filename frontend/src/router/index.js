@@ -16,6 +16,7 @@ import ProductsView from "@/views/ProductsView.vue";
 import PurchaseRequestView from "@/views/PurchaseRequestView.vue";
 import DeliveryRegistView from "@/views/DeliveryRegistView.vue";
 import PurchaseCompleteView from "@/views/PurchaseCompleteView.vue";
+import NotFound from "@/views/NotFound.vue";
 
 const routes = [
   {
@@ -108,6 +109,15 @@ const routes = [
         path: "/phone",
         name: "PhoneAuth",
         component: PhoneAuthView,
+      },
+      {
+        path: "/notFound",
+        name: "notFound",
+        component: NotFound,
+      },
+      {
+        path: "/:pathMatch(.*)*",
+        redirect: "/notFound",
       },
     ],
   },
