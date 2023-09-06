@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,7 @@ import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
+import com.easypeach.shroop.modules.member.dto.request.MemberInfo;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.service.MemberService;
 
@@ -52,6 +55,14 @@ public class MemberController {
 
 		memberService.updateProfile(member.getId(), userImg, editRequest);
 		return ResponseEntity.ok(new BasicResponse("수정을 완료하였습니다"));
+	}
+
+	@DeleteMapping("/leave")
+	public ResponseEntity<BasicResponse> deleteMember(
+		@LoginMember final Member member,
+		@RequestBody final MemberInfo memberInfo){
+		memberService.delete(member.getId(),memberInfo);
+		return ResponseEntity.ok(new BasicResponse("탈퇴를 완료하였습니다"));
 	}
 
 }

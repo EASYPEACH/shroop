@@ -18,10 +18,12 @@ import com.easypeach.shroop.modules.likes.service.LikeService;
 import com.easypeach.shroop.modules.member.domain.DuplicateCheckType;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
+import com.easypeach.shroop.modules.member.domain.Role;
 import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
 import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
+import com.easypeach.shroop.modules.member.dto.request.MemberInfo;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
 import com.easypeach.shroop.modules.member.exception.MinusPointException;
@@ -181,5 +183,16 @@ public class MemberService {
 			throw new MinusPointException("보유한 포인트보다 환전하려는 포인트가 더 큽니다. 다시 입력해주세요");
 		}
 		return foundMember.getPoint();
+	}
+
+	@Transactional
+	public void delete(final Long memberId, MemberInfo memberInfo){
+		Member foundMember = memberRepository.getById(memberId);
+
+		if(!passwordEncoder.matches(memberInfo.getPassword(),foundMember.getPassword() )){
+			throw new PasswordNotMatchException("패스워드가 일치하지 않습니다");
+		}
+
+		foundMember.updateRole(Role.ROLE_DELETE);
 	}
 }
