@@ -2,7 +2,9 @@ package com.easypeach.shroop.modules.product.controller;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
@@ -37,10 +40,11 @@ class CategoryControllerTest extends ControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/categorys"))
 			.andExpect(status().isOk())
-			.andDo(document("getCategoryList", responseFields(
-				fieldWithPath("[].id").description("카테고리 아이디"),
-				fieldWithPath("[].name").description("카테고리 이름")
-			)))
+			.andDo(document("getCategoryList",
+				responseFields(
+					fieldWithPath("[].id").description("카테고리 아이디"),
+					fieldWithPath("[].name").description("카테고리 이름")
+				)))
 			.andDo(print());
 
 	}
@@ -50,12 +54,18 @@ class CategoryControllerTest extends ControllerTest {
 	void getCategory() throws Exception {
 		Category category = new Category(1L, "전자제품");
 		given(categoryService.findById(category.getId())).willReturn(category);
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/categorys/1"))
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/categorys/{categoryId}", 1L))
 			.andExpect(status().isOk())
-			.andDo(document("getCategory", responseFields(
-				fieldWithPath("id").description("카테고리 아이디"),
-				fieldWithPath("name").description("카테고리 이름")
-			))).andDo(print());
+			.andDo(document("getCategory",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("categoryId").description("특정 카테고리 참조키")
+				),
+				responseFields(
+					fieldWithPath("id").description("카테고리 아이디"),
+					fieldWithPath("name").description("카테고리 이름")
+				))).andDo(print());
 	}
 
 }
