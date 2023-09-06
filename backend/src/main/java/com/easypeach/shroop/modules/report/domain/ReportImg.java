@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -26,6 +28,7 @@ public class ReportImg {
 
 	@ManyToOne
 	@JoinColumn(name = "report_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Report report;
 
 	@Column(name = "img_url", length = 255, nullable = false)
