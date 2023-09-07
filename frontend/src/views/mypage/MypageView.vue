@@ -170,7 +170,7 @@
           </v-window-item>
 
           <v-window-item value="개인정보">
-            <edit-proile-view></edit-proile-view>
+            <edit-profile-view />
           </v-window-item>
         </v-window>
       </div>
@@ -207,8 +207,7 @@ import InfoAlert from "@/components/Alert/InfoAlert.vue";
 import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
 import MiniButton from "@/components/Button/MiniButton.vue";
 import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import EditProileView from "./EditProileView.vue";
+import EditProfileView from "./EditProfileView.vue";
 import LinkAccountModal from "@/components/Modal/LinkAccountModal.vue";
 
 const tabList = ref([

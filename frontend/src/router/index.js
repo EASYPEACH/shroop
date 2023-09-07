@@ -1,22 +1,25 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useCheckLogin } from "@/store/useCheckLogin";
 import { getApi } from "@/api/modules";
+
 import DefaultLayoutView from "@/layouts/default/DefaultLayout.vue";
 import HomeView from "@/views/HomeView.vue";
-import LoginView from "@/views/LoginView.vue";
-import SignupView from "@/views/SignupView.vue";
-import MypageView from "@/views/MypageView.vue";
-import PhoneAuthView from "@/views/PhoneAuthView.vue";
-import RegistProductView from "@/views/RegistProductView.vue";
-import ProductDetailsView from "@/views/ProductDetailsView.vue";
-import ReportView from "@/views/ReportView.vue";
-import ReturnRequestView from "@/views/ReturnRequestView.vue";
-import EditProileView from "@/views/EditProileView.vue";
-import ProductsView from "@/views/ProductsView.vue";
-import PurchaseRequestView from "@/views/PurchaseRequestView.vue";
-import DeliveryRegistView from "@/views/DeliveryRegistView.vue";
-import PurchaseCompleteView from "@/views/PurchaseCompleteView.vue";
 import NotFound from "@/views/NotFound.vue";
+import ReportView from "@/views/report/ReportView.vue";
+
+import { LoginView, PhoneAuthView, SignupView } from "@/views/auth";
+import { MypageView, EditProfileView } from "@/views/mypage";
+import {
+  ProductsView,
+  ProductDetailsView,
+  RegistProductView,
+} from "@/views/product";
+import {
+  PurchaseRequestView,
+  ReturnRequestView,
+  DeliveryRegistView,
+  PurchaseCompleteView,
+} from "@/views/transaction";
 
 const routes = [
   {
@@ -31,7 +34,7 @@ const routes = [
       {
         path: "/login",
         name: "Login",
-        component: LoginView,
+        component: LoginView.default,
       },
       {
         path: "/signup",
@@ -79,7 +82,7 @@ const routes = [
       {
         path: "/profileEdit/:id(\\d+)",
         name: "ProfileEdit",
-        component: EditProileView,
+        component: EditProfileView,
         meta: { requiresAuth: true },
       },
       {
@@ -108,7 +111,7 @@ const routes = [
       {
         path: "/phone",
         name: "PhoneAuth",
-        component: PhoneAuthView,
+        component: PhoneAuthView.default,
       },
       {
         path: "/notFound",

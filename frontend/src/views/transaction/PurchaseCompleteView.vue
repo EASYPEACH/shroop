@@ -35,7 +35,7 @@
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import { getApi } from "@/api/modules/getApi";
-import ContentLayout from "../layouts/ContentLayout.vue";
+import ContentLayout from "../../layouts/ContentLayout.vue";
 import MainTitle from "@/components/Title/MainTitle.vue";
 import ProductTitle from "@/components/Title/ProductTitle.vue";
 import ProductBanner from "@/components/Banner/ProductBanner.vue";
