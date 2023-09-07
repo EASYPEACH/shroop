@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 export const useCheckLogin = defineStore("checkLogin", {
   state: () => {
     return {
-      isLogin: true,
+      isLogin: false,
       id: 0,
       nickName: "",
     };
