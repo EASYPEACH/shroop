@@ -39,8 +39,9 @@ public class ProductService {
 	private final LikeRepository likeRepository;
 
 	public ProductResponse getProductInfo(final Member member, final Long productId) {
-		Product product = productRepository.getById(productId);
+		Product product = productRepository.findProductFetch(productId);
 		ProductResponse productResponse = setProductResponse(product);
+
 		boolean isLikesProduct = likeRepository.existsLikesByMemberAndProduct(member, product);
 		if (isLikesProduct) {
 			productResponse.setIsLike();
@@ -101,6 +102,7 @@ public class ProductService {
 
 	public ProductResponse setProductResponse(final Product product) {
 		ProductResponse productResponse = new ProductResponse(product);
+
 		Transaction transaction = transactionRepository.findByProduct(product);
 		if (transaction != null) {
 			productResponse.setTransaction(transaction.getStatus());
