@@ -7,13 +7,13 @@
     >
       <aside>
         <div v-if="isStatus" class="status">
-          <div>
+          <p>
             {{
               product.transactionStatus === null
                 ? TRANSACTION_STATUS.SELLING
                 : TRANSACTION_STATUS[product.transactionStatus]
             }}
-          </div>
+          </p>
           <ul>
             <li v-for="list in MYPAGE" :key="list.ACTION">
               <mini-button
@@ -236,6 +236,12 @@ aside {
   .status {
     display: flex;
     align-items: center;
+    @media (max-width: 750px) {
+      p {
+        font-size: 15px;
+      }
+    }
+
     > div {
       width: 80px;
       text-align: center;

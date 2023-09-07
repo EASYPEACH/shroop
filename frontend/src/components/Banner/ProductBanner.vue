@@ -112,6 +112,14 @@ defineEmits(["handle-click-like"]);
   @media (max-width: 960px) {
     .banner__content {
       > div {
+        width: 50%;
+        h4 {
+          width: 60%;
+          font-size: 16px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         img {
           flex-basis: 50px;
           width: 50px;

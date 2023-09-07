@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :v-model="dialog" width="auto">
+  <v-dialog :v-model="dialog">
     <v-btn
       variant="text"
       color="#fff"
@@ -58,5 +58,15 @@ const handleConfirm = async () => {
 
 .v-card {
   width: 370px;
+}
+
+@media (max-width: 750px) {
+  .v-card {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  .close-btn {
+    margin-right: -20px;
+  }
 }
 </style>

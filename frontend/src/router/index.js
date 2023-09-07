@@ -8,7 +8,13 @@ import NotFound from "@/views/NotFound.vue";
 import ReportView from "@/views/report/ReportView.vue";
 
 import { LoginView, PhoneAuthView, SignupView } from "@/views/auth";
-import { MypageView, EditProfileView } from "@/views/mypage";
+import {
+  MypageView,
+  MypageHomeView,
+  MypageEditProfileView,
+  MypagePurchaseListView,
+  MypageSellListView,
+} from "@/views/mypage";
 import {
   ProductsView,
   ProductDetailsView,
@@ -32,23 +38,42 @@ const routes = [
         component: HomeView,
       },
       {
-        path: "/login",
+        path: "login",
         name: "Login",
         component: LoginView,
       },
       {
-        path: "/signup",
+        path: "signup",
         name: "Signup",
         component: SignupView,
       },
       {
-        path: "/mypage/:index",
-        props: (route) => {
-          /^[0-2]$/.test(route.params.param) ? route.params.param : "0";
-        },
+        path: "mypage",
         name: "Mypage",
         component: MypageView,
         meta: { requiresAuth: true },
+        children: [
+          {
+            path: "home",
+            name: "MypageHome",
+            component: MypageHomeView,
+          },
+          {
+            path: "purchaseList",
+            name: "PurchaseList",
+            component: MypagePurchaseListView,
+          },
+          {
+            path: "sellList",
+            name: "SellList",
+            component: MypageSellListView,
+          },
+          {
+            path: "profileEdit",
+            name: "ProfileEdit",
+            component: MypageEditProfileView,
+          },
+        ],
       },
       {
         path: "/regist",
@@ -79,12 +104,7 @@ const routes = [
         component: ReturnRequestView,
         meta: { requiresAuth: true },
       },
-      {
-        path: "/profileEdit/:id(\\d+)",
-        name: "ProfileEdit",
-        component: EditProfileView,
-        meta: { requiresAuth: true },
-      },
+
       {
         path: "/products",
         name: "Products",

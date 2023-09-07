@@ -35,13 +35,13 @@
       <div class="profile__info">
         <h4 class="profile__info-name">패스워드</h4>
         <div class="info__input-box">
-          <custom-text-input
+          <password-input
             class="profile__info-input"
             placeholderText="기존 패스워드"
             v-model="oldPassword"
             type="password"
           />
-          <custom-text-input
+          <password-input
             class="profile__info-input"
             placeholderText="변경할 패스워드"
             v-model="newPassword"
@@ -87,7 +87,7 @@
     </v-form>
     <v-form @submit.prevent="handleCancelMemberShip">
       <product-title title="회원 탈퇴" />
-      <custom-text-input
+      <password-input
         class="profile__info-input"
         type="password"
         placeholderText="비밀번호입력"
@@ -126,8 +126,8 @@ import { useCookies } from "vue3-cookies";
 import { useRouter } from "vue-router";
 
 import { SubmitButton } from "@/components/Button";
-import { ProductTitle } from "@/components/Title";
-import { CustomTextInput } from "@/components/Form";
+import { MainTitle, ProductTitle } from "@/components/Title";
+import { CustomTextInput, PasswordInput } from "@/components/Form";
 import { PlainModal } from "@/components/Modal";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
 
@@ -234,7 +234,7 @@ const requestAuthNumber = async () => {
 
 // 수정 확인
 const handleConfirmEdit = () => {
-  router.push("/mypage/0");
+  router.push("/mypage/home");
   showPlainModal.value = false;
 };
 
@@ -274,7 +274,6 @@ const logout = async () => {
 section {
   width: 60%;
   margin: 0 auto;
-  padding: 30px 0;
 
   @media (max-width: 1200px) {
     width: 60%;
@@ -369,5 +368,9 @@ section {
 }
 .auth-fail {
   color: rgb(var(--v-theme-heartRed));
+}
+
+.v-pagination {
+  margin: 0 auto;
 }
 </style>
