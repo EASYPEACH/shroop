@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :v-model="dialog">
+  <v-dialog :v-model="dialog" width="auto">
     <v-btn
       variant="text"
       color="#fff"
