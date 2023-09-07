@@ -25,7 +25,6 @@ defineProps({
   modelValue: String,
   visible: Boolean,
   rules: Object,
-  isNeedSearchState: Boolean,
 });
 defineEmits(["update:modelValue", "toggle-visible"]);
 </script>

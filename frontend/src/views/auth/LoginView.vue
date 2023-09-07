@@ -20,7 +20,6 @@
           @toggle-visible="visible = !visible"
           v-model="password"
           :rules="[passwordRule.required]"
-          isNeedSearchState
         />
         <v-btn
           block
