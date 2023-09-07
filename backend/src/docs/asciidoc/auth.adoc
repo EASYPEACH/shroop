@@ -1,16 +1,68 @@
-= 회원 API 문서
+= 인증 API 문서
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
 :toclevels: 3
 
-== 회원가입
+== 회원가입 1 - 휴대전화 인증번호 요청
 
 === Request
 
-include::{snippets}/auth/sign-up/http-request.adoc[]
+include::{snippets}/auth/sign-up-1/http-request.adoc[]
+include::{snippets}/auth/sign-up-1/request-fields.adoc[]
 
 === Response
 
-include::{snippets}/auth/sign-up/http-response.adoc[]
+include::{snippets}/auth/sign-up-1/http-response.adoc[]
+include::{snippets}/auth/sign-up-1/response-fields.adoc[]
+
+
+== 회원가입 2 - 휴대전화 인증번호 전달
+
+=== Request
+
+include::{snippets}/auth/sign-up-2/http-request.adoc[]
+include::{snippets}/auth/sign-up-2/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/auth/sign-up-2/http-response.adoc[]
+include::{snippets}/auth/sign-up-2/response-fields.adoc[]
+
+== 회원가입 3 - 회원 정보 전달
+
+=== Request
+
+include::{snippets}/auth/sign-up-3/http-request.adoc[]
+include::{snippets}/auth/sign-up-3/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/auth/sign-up-3/http-response.adoc[]
+include::{snippets}/auth/sign-up-3/response-fields.adoc[]
+
+
+== 회원가입 - 유효성 체크
+
+=== Request
+
+include::{snippets}/auth/sign-up-valid/http-request.adoc[]
+include::{snippets}/auth/sign-up-valid/response-fields.adoc[]
+
+=== Response
+
+include::{snippets}/auth/sign-up-valid/http-response.adoc[]
+include::{snippets}/auth/sign-up-valid/response-fields.adoc[]
+
+
+== 인증 체크
+
+=== Request
+
+include::{snippets}/auth/check/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/auth/check/http-response.adoc[]
+include::{snippets}/auth/check/response-fields.adoc[]
