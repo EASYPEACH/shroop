@@ -22,7 +22,11 @@
     <div class="products">
       <info-alert v-if="productCards.length === 0" title="상품이 없습니다" />
       <ul v-else class="products__list">
-        <li v-for="productCardData in productCards" :key="productCardData.id">
+        <li
+          v-for="productCardData in productCards"
+          :key="productCardData.id"
+          data-aos="fade-up"
+        >
           <product-card
             v-if="isLaptop"
             :productCardData="productCardData"
