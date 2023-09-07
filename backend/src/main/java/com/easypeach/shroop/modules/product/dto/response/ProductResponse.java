@@ -3,10 +3,13 @@ package com.easypeach.shroop.modules.product.dto.response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductGrade;
+import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class ProductResponse {
 
 	private Long id;
-	private MemberResonse seller;
+	private MemberResponse seller;
 	private TransactionStatus transactionStatus;
 	private String title;
 	private Category category;
@@ -56,14 +59,12 @@ public class ProductResponse {
 		this.saleReason = product.getSaleReason();
 		this.createDate = product.getCreateDate();
 		this.likesCount = product.getLikesCount();
-	}
-
-	public void setProductImgList(List<ProductImgResponse> productImgList) {
-		this.productImgList = productImgList;
-	}
-
-	public void setSeller(MemberResonse seller) {
-		this.seller = seller;
+		this.productImgList = product.getProductImgList()
+			.stream()
+			.map(ProductImgResponse::new)
+			.collect(
+				Collectors.toList());
+		this.seller = new MemberResponse(product.getSeller());
 	}
 
 	public void setTransaction(TransactionStatus transactionStatus) {
@@ -72,6 +73,34 @@ public class ProductResponse {
 
 	public void setIsLike() {
 		this.isLike = true;
+	}
+
+	@Getter
+	@Builder
+	@AllArgsConstructor
+	public static class ProductImgResponse {
+		private Long id;
+		private String productImgUrl;
+		private Boolean isDefect;
+
+		public ProductImgResponse(ProductImg productImg) {
+			this.id = productImg.getId();
+			this.productImgUrl = productImg.getProductImgUrl();
+			this.isDefect = productImg.getIsDefect();
+		}
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class MemberResponse {
+		private Long id;
+
+		private String nickName;
+
+		public MemberResponse(Member member) {
+			this.id = member.getId();
+			this.nickName = member.getNickname();
+		}
 	}
 
 }
