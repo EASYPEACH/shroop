@@ -54,7 +54,7 @@ class ProductControllerTest extends ControllerTest {
 	@Test
 	void getProduct() throws Exception {
 		Member member = new Member();
-		Category category = Category.forTestCreateCategory(1L, "전자제품");
+		ProductResponse.CategoryResponse categoryResponse = new ProductResponse.CategoryResponse(1L,"전자제품");
 		ProductResponse.MemberResponse memberResponse = new ProductResponse.MemberResponse(
 			1L,
 			"판매자"
@@ -72,7 +72,7 @@ class ProductControllerTest extends ControllerTest {
 			.seller(memberResponse)
 			.transactionStatus(TransactionStatus.PURCHASE_REQUEST)
 			.title("중고물건 팔아요")
-			.category(category)
+			.category(categoryResponse)
 			.productGrade(ProductGrade.LOWER)
 			.productImgList(productImgResponseList)
 			.likesCount(0L)
