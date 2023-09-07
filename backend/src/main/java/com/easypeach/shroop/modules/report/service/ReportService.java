@@ -11,6 +11,8 @@ import com.easypeach.shroop.modules.report.domain.Report;
 import com.easypeach.shroop.modules.report.domain.ReportRepository;
 import com.easypeach.shroop.modules.report.domain.ReportStatus;
 import com.easypeach.shroop.modules.report.dto.request.ReportRequest;
+import com.easypeach.shroop.modules.transaction.domain.Transaction;
+import com.easypeach.shroop.modules.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,8 @@ public class ReportService {
 
 	private final ProductService productService;
 
+	private final TransactionService transactionService;
+
 	@Transactional
 	public Report saveReport(final Long memberId, final ReportRequest reportRequest) {
 
@@ -35,10 +39,19 @@ public class ReportService {
 		String title = reportRequest.getTitle();
 		String content = reportRequest.getContent();
 		boolean isMediate = reportRequest.getIsMediate();
+		Long reportedPersonId;
+		if (product.getSeller().getId() == memberId) {
+			Transaction transaction = transactionService.findByProductId(reportRequest.getProductId());
+			reportedPersonId = transaction.getBuyer().getId();
+		} else {
+			reportedPersonId = product.getSeller().getId();
+		}
 
-		Member member = memberService.findById(memberId);
+		Member reporter = memberService.findById(memberId);
+		Member reportedPerson = memberService.findById(reportedPersonId);
 
-		Report report = Report.createReport(member, product, title, content, isMediate, ReportStatus.REPORT_REQUEST);
+		Report report = Report.createReport(reporter, reportedPerson, product, title, content, isMediate,
+			ReportStatus.REPORT_REQUEST);
 
 		return reportRepository.save(report);
 	}
