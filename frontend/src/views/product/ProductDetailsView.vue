@@ -94,7 +94,7 @@
           <div class="productContent__profile-content">
             <v-avatar>
               <v-img
-                src="https://cdn.vuetifyjs.com/images/john.jpg"
+                :src="profile.imgUrl ? profile.imgUrl : BasicProfile"
                 alt="John"
               ></v-img>
             </v-avatar>
@@ -156,7 +156,7 @@
             </tr>
             <tr>
               <td class="font-weight-bold">상태</td>
-              <td>{{ PRODUCT_GRADE_EN[productContent.grade] }}</td>
+              <td>{{ PRODUCT_GRADE_EN[productContent.productGrade] }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -214,6 +214,7 @@ import { formatDate } from "@/utils/formatDate";
 import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
 import { useCheckLogin } from "@/store/modules";
 import TRANSACTION_STATUS from "@/consts/status";
+import BasicProfile from "@/assets/image/basicProfile.jpeg";
 
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import TransactionBadge from "@/components/TransactionBadge.vue";
@@ -229,6 +230,7 @@ const defectImgs = ref([]);
 const profile = ref({
   id: 0,
   nickName: "",
+  imgUrl: "",
 });
 
 const productContent = ref({});
@@ -247,6 +249,7 @@ onBeforeMount(async () => {
 
     profile.value.nickName = data.seller.nickName;
     profile.value.id = data.seller.id;
+    profile.value.imgUrl = data.seller.imgUrl;
   } catch (err) {
     console.error(err);
   }
