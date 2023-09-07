@@ -23,7 +23,6 @@ public class ProfileEditRequest {
 	@Pattern(regexp = "^0\\d{1,2}\\d{3,4}\\d{4}$")
 	private String phoneNumber;
 	private String phoneAuthNumber;
-	private String imgUrl;
 
 	public ProfileEditRequest(String nickname, String oldPassword, String newPassword, long uuid, String phoneNumber,
 		String phoneAuthNumber) {
