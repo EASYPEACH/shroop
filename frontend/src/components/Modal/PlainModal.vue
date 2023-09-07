@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-text-v-html-on-component -->
 <template>
   <v-dialog :v-model="dialog" width="auto">
     <v-btn
@@ -9,6 +10,7 @@
       <v-icon icon="mdi-close" />
     </v-btn>
     <v-card>
+      <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
       <v-card-text v-html="modalText" />
       <v-card-actions>
         <v-btn color="subBlue" block @click="$emit('handleConfirm')"

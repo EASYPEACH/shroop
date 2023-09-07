@@ -35,10 +35,10 @@
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import { getApi } from "@/api/modules/getApi";
-import ContentLayout from "../../layouts/ContentLayout.vue";
-import MainTitle from "@/components/Title/MainTitle.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import ProductBanner from "@/components/Banner/ProductBanner.vue";
+
+import ContentLayout from "@/layouts/ContentLayout.vue";
+import { MainTitle, ProductTitle } from "@/components/Title";
+import { ProductBanner } from "@/components/Banner";
 
 const route = useRoute();
 const product = ref({});

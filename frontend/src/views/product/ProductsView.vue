@@ -49,10 +49,10 @@ import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
 import { toggleLikesProduct } from "@/utils";
 import { useSearchProduct } from "@/store/useSearchProduct";
-import ProductCard from "@/components/Card/ProductCard.vue";
-import ProductBanner from "@/components/Banner/ProductBanner.vue";
+import ProductCard from "@/components/ProductCard.vue";
+import { ProductBanner } from "@/components/Banner";
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import InfoAlert from "@/components/Alert/InfoAlert.vue";
+import { InfoAlert } from "@/components/Alert";
 
 const router = useRouter();
 const route = useRoute();

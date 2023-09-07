@@ -205,11 +205,12 @@ import { formatDate } from "@/utils/formatDate";
 import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
 import { useCheckLogin } from "@/store/useCheckLogin";
 import TRANSACTION_STATUS from "@/consts/status";
+
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import PlainModal from "@/components/Modal/PlainModal.vue";
-import TransactionBadge from "@/components/Badge/TransactionBadge.vue";
-import LikeButton from "@/components/Button/LikeButton.vue";
+import TransactionBadge from "@/components/TransactionBadge.vue";
+import { ProductTitle } from "@/components/Title";
+import { PlainModal } from "@/components/Modal";
+import { LikeButton } from "@/components/Button";
 
 const loginCheckStore = useCheckLogin();
 const route = useRoute();

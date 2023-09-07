@@ -70,7 +70,7 @@
     </section>
 
     <content-layout>
-      <Title title="최근 판매" data-aos="fade-up" data-aos-offset="100" />
+      <main-title title="최근 판매" data-aos="fade-up" data-aos-offset="100" />
       <div class="products">
         <ul class="products__list">
           <li
@@ -111,10 +111,12 @@ import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
 import { toggleLikesProduct } from "@/utils";
 import router from "@/router";
-import Title from "@/components/Title/MainTitle.vue";
-import ProductCard from "@/components/Card/ProductCard.vue";
+
+import { MainTitle } from "@/components/Title";
+import ProductCard from "@/components/ProductCard.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import ProductBanner from "@/components/Banner/ProductBanner.vue";
+import { ProductBanner } from "@/components/Banner";
+
 import purchaseImg from "@/assets/image/purchase.png";
 import purchaseMobileImg from "@/assets/image/purchase-mobile.png";
 import productDetailImg from "@/assets/image/product-detail.png";

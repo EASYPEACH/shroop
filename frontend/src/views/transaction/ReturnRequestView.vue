@@ -46,13 +46,12 @@ import {
   multipartFormDataJson,
 } from "@/utils";
 import { getApi, multipartPostApi } from "@/api/modules";
-import SubmitButton from "@/components/Button/SubmitButton.vue";
-import MainTitle from "@/components/Title/MainTitle.vue";
+import { SubmitButton } from "@/components/Button";
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
 import ImageAttach from "@/components/ImageAttach.vue";
-import CustomTextArea from "@/components/Form/CustomTextArea.vue";
-import PlainModal from "@/components/Modal/PlainModal.vue";
+import { MainTitle, ProductTitle } from "@/components/Title";
+import { CustomTextArea } from "@/components/Form";
+import { PlainModal } from "@/components/Modal";
 
 const router = useRouter();
 const route = useRoute();

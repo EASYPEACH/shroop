@@ -54,10 +54,10 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { deleteApi, patchApi, getApi } from "@/api/modules";
 import TRANSACTION_STATUS from "@/consts/status";
-import MiniButton from "../Button/MiniButton.vue";
-import PlainModal from "../Modal/PlainModal.vue";
-import BuyerInfoModal from "../Modal/BuyerInfoModal.vue";
-import ProductBanner from "../Banner/ProductBanner.vue";
+
+import { PlainModal, BuyerInfoModal } from "../Modal";
+import { MiniButton } from "../Button";
+import { ProductBanner } from "../Banner";
 
 const props = defineProps({
   product: Object,
@@ -152,9 +152,6 @@ const MYPAGE = [
   },
 ];
 
-// TODO
-// 삭제하기
-const handleDeleteProduct = () => {};
 // 구매확정
 const handleConfirmPurchase = async () => {
   try {

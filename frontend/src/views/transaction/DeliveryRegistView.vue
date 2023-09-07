@@ -60,12 +60,12 @@ import { ref, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defaultTextRule } from "@/components/Form/data/formRules";
 import { getApi, postApi } from "@/api/modules";
+
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import MainTitle from "@/components/Title/MainTitle.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import SubmitButton from "@/components/Button/SubmitButton.vue";
-import PlainModal from "@/components/Modal/PlainModal.vue";
+import { MainTitle, ProductTitle } from "@/components/Title";
+import { CustomTextInput } from "@/components/Form";
+import { SubmitButton } from "@/components/Button";
+import { PlainModal } from "@/components/Modal";
 
 const router = useRouter();
 const route = useRoute();

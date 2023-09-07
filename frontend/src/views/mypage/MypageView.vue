@@ -203,12 +203,11 @@ import { useDisplay } from "vuetify";
 import { deleteApi, getApi } from "@/api/modules";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
-import InfoAlert from "@/components/Alert/InfoAlert.vue";
-import MypageProductBanner from "@/components/Banner/MypageProductBanner.vue";
-import MiniButton from "@/components/Button/MiniButton.vue";
-import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
+import { InfoAlert } from "@/components/Alert";
+import { MypageProductBanner } from "@/components/Banner";
+import { MiniButton } from "@/components/Button";
+import { ChargePointModal, LinkAccountModal } from "@/components/Modal";
 import EditProfileView from "./EditProfileView.vue";
-import LinkAccountModal from "@/components/Modal/LinkAccountModal.vue";
 
 const tabList = ref([
   {

@@ -73,7 +73,7 @@ import { postApi } from "@/api/modules";
 import { useDisplay } from "vuetify";
 import { useSearchProduct } from "@/store/useSearchProduct";
 import { useRoute } from "vue-router";
-import NotifyBellButton from "@/components/Button/NotifyBellButton.vue";
+import { NotifyBellButton } from "@/components/Button";
 import router from "@/router";
 
 const route = useRoute();

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Title title="휴대전화 본인인증" />
+    <main-title title="휴대전화 본인인증" />
     <v-card
       class="mx-auto pa-12 pb-8"
       max-width="448"
@@ -40,7 +40,7 @@ import { phoneAuthRule } from "@/components/Form/data/formRules";
 import { postApi } from "@/api/modules";
 import { useUserStore } from "@/store/signUp";
 import { useCookies } from "vue3-cookies";
-import Title from "@/components/Title/MainTitle.vue";
+import { MainTitle } from "@/components/Title";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 
 const { cookies } = useCookies();

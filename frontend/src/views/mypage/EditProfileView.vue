@@ -124,11 +124,12 @@ import {
 import { getApi, postApi, multipartPatchApi, deleteApi } from "@/api/modules";
 import { useCookies } from "vue3-cookies";
 import { useRouter } from "vue-router";
-import SubmitButton from "@/components/Button/SubmitButton.vue";
+
+import { SubmitButton } from "@/components/Button";
+import { ProductTitle } from "@/components/Title";
+import { CustomTextInput } from "@/components/Form";
+import { PlainModal } from "@/components/Modal";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const { cookies } = useCookies();
 const router = useRouter();
