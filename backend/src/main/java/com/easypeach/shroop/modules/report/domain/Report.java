@@ -35,8 +35,12 @@ public class Report {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false)
-	private Member member;
+	@JoinColumn(name = "reporter_id", nullable = false)
+	private Member reporter;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "reported_person_id", nullable = false)
+	private Member reportedPerson;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
@@ -60,7 +64,8 @@ public class Report {
 	private LocalDateTime createDate;
 
 	public static Report createReport(
-		final Member member,
+		final Member reporter,
+		final Member reportedPerson,
 		final Product product,
 		final String title,
 		final String content,
@@ -68,7 +73,8 @@ public class Report {
 		final ReportStatus status
 	) {
 		Report report = new Report();
-		report.member = member;
+		report.reporter = reporter;
+		report.reportedPerson = reportedPerson;
 		report.product = product;
 		report.title = title;
 		report.content = content;
