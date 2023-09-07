@@ -51,7 +51,7 @@ public class MemberController {
 	@PatchMapping("/profile")
 	public ResponseEntity<BasicResponse> updateProfile(@LoginMember final Member member
 		, @RequestPart @Validated final ProfileEditRequest editRequest,
-		@RequestPart final List<MultipartFile> userImg) {
+		@RequestPart(required = false) final List<MultipartFile> userImg) {
 
 		memberService.updateProfile(member.getId(), userImg, editRequest);
 		return ResponseEntity.ok(new BasicResponse("수정을 완료하였습니다"));
