@@ -23,64 +23,54 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class ProductImgService {
-	private final ProductImgRepository productImgRepository;
-	private final ProductRepository productRepository;
-	private final S3UploadService s3UploadService;
+    private final ProductImgRepository productImgRepository;
+    private final ProductRepository productRepository;
+    private final S3UploadService s3UploadService;
 
-	@Transactional
-	public void saveProductImg(final List<MultipartFile> productImgList,
-		final List<MultipartFile> defectImgList, final Long productId, final boolean isDefect) {
-		Product product = productRepository.getById(productId);
-		try {
-			List<ProductImg> imgList = insertImgList(productImgList, defectImgList, product, isDefect);
-			productImgRepository.saveAll(imgList);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Transactional
+    public void saveProductImg(final List<MultipartFile> productImgList,
+                               final List<MultipartFile> defectImgList, final Long productId, final boolean isDefect) {
 
-	@Transactional
-	public void updateProductImgList(final List<MultipartFile> productImgList,
-		final List<MultipartFile> defectImgList, final Long productId, final boolean isDefect) {
-		Product product = productRepository.getById(productId);
+        List<ProductImg> imgList = insertImgList(productImgList, defectImgList, isDefect);
+        productImgRepository.saveAll(imgList);
+    }
 
-		try {
-			List<ProductImg> imgList = insertImgList(productImgList, defectImgList, product, isDefect);
-			product.getProductImgList().clear();
-			for (ProductImg img : imgList) {
-				img.setProduct(product);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Transactional
+    public void updateProductImgList(final List<MultipartFile> productImgList,
+                                     final List<MultipartFile> defectImgList, final Long productId, final boolean isDefect) {
+        Product product = productRepository.getById(productId);
 
-	public List<ProductImg> insertImgList(final List<MultipartFile> productImgList,
-		final List<MultipartFile> defectImgList,
-		final Product product, final boolean isDefect) throws IOException {
-		List<ProductImg> imgList = new ArrayList<>();
-		imgList.addAll(createImgList(productImgList, product, false));
-		if (isDefect) {
-			imgList.addAll(createImgList(defectImgList, product, true));
-		}
-		return imgList;
-	}
+            List<ProductImg> imgList = insertImgList(productImgList, defectImgList, isDefect);
+            product.getProductImgList().clear();
+            for (ProductImg img : imgList) {
+                img.setProduct(product);
+            }
 
-	public List<ProductImg> createImgList(final List<MultipartFile> requestImgList,
-		final Product product, final boolean isDefect) throws
-		IOException {
-		List<ProductImg> imgList = new ArrayList<>();
-		for (MultipartFile multipartFile : requestImgList) {
-			String uploadUrl = s3UploadService.saveFile(multipartFile);
-			imgList.add(ProductImg.createProductImg(product, uploadUrl, isDefect));
-		}
-		return imgList;
-	}
+    }
 
-	public void checkImgLength(final List<MultipartFile> productImgList) {
-		if (productImgList.size() < 2) {
-			throw new ProductImgLengthException("사진은 2장이상 등록해주세요");
-		}
+    public List<ProductImg> insertImgList(final List<MultipartFile> productImgList,
+                                          final List<MultipartFile> defectImgList, final boolean isDefect) {
+        List<ProductImg> imgList = new ArrayList<>();
+        imgList.addAll(createImgList(productImgList, false));
+        if (isDefect) {
+            imgList.addAll(createImgList(defectImgList, true));
+        }
+        return imgList;
+    }
 
-	}
+    public List<ProductImg> createImgList(final List<MultipartFile> requestImgList, final boolean isDefect) {
+        List<ProductImg> imgList = new ArrayList<>();
+        for (MultipartFile multipartFile : requestImgList) {
+            String uploadUrl = s3UploadService.saveFile(multipartFile);
+            imgList.add(ProductImg.createProductImg(uploadUrl, isDefect));
+        }
+        return imgList;
+    }
+
+    public void checkImgLength(final List<MultipartFile> productImgList) {
+        if (productImgList.size() < 2) {
+            throw new ProductImgLengthException("사진은 2장이상 등록해주세요");
+        }
+
+    }
 }

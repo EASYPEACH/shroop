@@ -44,10 +44,8 @@ public class ProductImg {
 	@CreatedDate
 	private LocalDateTime createDate;
 
-	public static ProductImg createProductImg(final Product product, final String productImgUrl,
-		final boolean isDefect) {
+	public static ProductImg createProductImg( final String productImgUrl, final boolean isDefect) {
 		ProductImg productImg = new ProductImg();
-		productImg.product = product;
 		productImg.productImgUrl = productImgUrl;
 		productImg.isDefect = isDefect;
 		return productImg;

@@ -3,6 +3,7 @@ package com.easypeach.shroop.modules.product.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.easypeach.shroop.infra.s3.service.S3UploadService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,112 +27,118 @@ import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-	private final ProductRepository productRepository;
-	private final MemberRepository memberRepository;
-	private final CategoryRepository categoryRepository;
-	private final TransactionRepository transactionRepository;
-	private final LikeRepository likeRepository;
+    private final ProductRepository productRepository;
+    private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
+    private final TransactionRepository transactionRepository;
+    private final LikeRepository likeRepository;
+    private final ProductImgService productImgService;
 
-	public ProductResponse getProductInfo(final Member member, final Long productId) {
-		Product product = productRepository.findProductFetch(productId);
-		ProductResponse productResponse = setProductResponse(product);
+    public ProductResponse getProductInfo(final Member member, final Long productId) {
+        Product product = productRepository.findProductFetch(productId);
+        ProductResponse productResponse = setProductResponse(product);
 
-		boolean isLikesProduct = likeRepository.existsLikesByMemberAndProduct(member, product);
-		if (isLikesProduct) {
-			productResponse.setIsLike();
-		}
-		return productResponse;
-	}
+        boolean isLikesProduct = likeRepository.existsLikesByMemberAndProduct(member, product);
+        if (isLikesProduct) {
+            productResponse.setIsLike();
+        }
+        return productResponse;
+    }
 
-	public Product findByProductId(final Long productId) {
-		Product product = productRepository.getById(productId);
-		return product;
-	}
+    public Product findByProductId(final Long productId) {
+        Product product = productRepository.getById(productId);
+        return product;
+    }
 
-	public ProductImg getProductImg(final Product product) {
-		Product findProduct = productRepository.getById(product.getId());
-		findProduct.getProductImgList().get(0).getId();
-		return findProduct.getProductImgList().get(0);
-	}
+    public ProductImg getProductImg(final Product product) {
+        Product findProduct = productRepository.getById(product.getId());
+        findProduct.getProductImgList().get(0).getId();
+        return findProduct.getProductImgList().get(0);
+    }
 
-	@Transactional
-	public Long saveProduct(final Long memberId, final ProductRequest productRequest) {
-		Member seller = memberRepository.getById(memberId);
-		Category category = categoryRepository.getById(productRequest.getCategoryId());
-		Product product = productRepository.save(Product.createProduct(seller, productRequest, category));
-		return product.getId();
-	}
+    @Transactional
+    public Long saveProduct(final Long memberId, final ProductRequest productRequest,
+                            final List<MultipartFile> productImgList, final List<MultipartFile> defectImgList) {
+        Member seller = memberRepository.getById(memberId);
+        Category category = categoryRepository.getById(productRequest.getCategoryId());
 
-	@Transactional
-	public Long updateProduct(final Long memberId, final Long productId, final ProductRequest productRequest
-	) {
-		Product product = productRepository.getById(productId);
-		Member loginMember = memberRepository.getById(memberId);
-		Member productOwnerMember = memberRepository.getById(product.getSeller().getId());
+        List<ProductImg> productImgs = productImgService.insertImgList(productImgList, defectImgList, productRequest.getIsDefect());
 
-		if (loginMember != productOwnerMember) {
-			throw ProductException.notAuthorizationToUpdate();
-		}
+        Product product = productRepository.save(Product.createProduct(seller, productRequest, category, productImgs));
+        return product.getId();
+    }
 
-		Category category = categoryRepository.getById(productRequest.getCategoryId());
-		product.updateProduct(productRequest, category);
+    @Transactional
+    public Long updateProduct(final Long memberId, final Long productId, final ProductRequest productRequest
+    ) {
+        Product product = productRepository.getById(productId);
+        Member loginMember = memberRepository.getById(memberId);
+        Member productOwnerMember = memberRepository.getById(product.getSeller().getId());
 
-		return product.getId();
-	}
+        if (loginMember != productOwnerMember) {
+            throw ProductException.notAuthorizationToUpdate();
+        }
 
-	@Transactional
-	public void deleteProduct(final Long memberId, final Long productId) {
-		Product product = productRepository.getById(productId);
-		Member loginMember = memberRepository.getById(memberId);
-		Member productOwnerMember = memberRepository.getById(memberId);
-		likeRepository.deleteAllByProduct(product);
-		if (product.getTransaction() != null) {
-			throw ProductException.notStatusDelete(product.getTransaction().getStatus());
-		}
-		if (loginMember != productOwnerMember) {
-			throw ProductException.notAuthorizationToDelete();
-		}
-		productRepository.delete(product);
-	}
+        Category category = categoryRepository.getById(productRequest.getCategoryId());
+        product.updateProduct(productRequest, category);
 
-	public ProductResponse setProductResponse(final Product product) {
-		ProductResponse productResponse = new ProductResponse(product);
+        return product.getId();
+    }
 
-		Transaction transaction = transactionRepository.findByProduct(product);
-		if (transaction != null) {
-			productResponse.setTransaction(transaction.getStatus());
-		}
+    @Transactional
+    public void deleteProduct(final Long memberId, final Long productId) {
+        Product product = productRepository.getById(productId);
+        Member loginMember = memberRepository.getById(memberId);
+        Member productOwnerMember = memberRepository.getById(memberId);
+        likeRepository.deleteAllByProduct(product);
+        if (product.getTransaction() != null) {
+            throw ProductException.notStatusDelete(product.getTransaction().getStatus());
+        }
+        if (loginMember != productOwnerMember) {
+            throw ProductException.notAuthorizationToDelete();
+        }
+        productRepository.delete(product);
+    }
 
-		return productResponse;
-	}
+    public ProductResponse setProductResponse(final Product product) {
+        ProductResponse productResponse = new ProductResponse(product);
 
-	public SearchProductResponse searchProduct(final Member member,
-		final String title, final Long categoryId, final Boolean hasTransaction,
-		final Pageable pageable) {
+        Transaction transaction = transactionRepository.findByProduct(product);
+        if (transaction != null) {
+            productResponse.setTransaction(transaction.getStatus());
+        }
 
-		Page<ProductOneImgResponse> productPage;
-		if (member == null) {
-			productPage = productRepository.searchProduct(null, title, categoryId,
-				hasTransaction,
-				pageable);
+        return productResponse;
+    }
 
-		} else {
-			productPage = productRepository.searchProduct(member.getId(), title, categoryId,
-				hasTransaction,
-				pageable);
-		}
+    public SearchProductResponse searchProduct(final Member member,
+                                               final String title, final Long categoryId, final Boolean hasTransaction,
+                                               final Pageable pageable) {
 
-		int pageCount = productPage.getTotalPages();
+        Page<ProductOneImgResponse> productPage;
+        if (member == null) {
+            productPage = productRepository.searchProduct(null, title, categoryId,
+                    hasTransaction,
+                    pageable);
 
-		List<ProductOneImgResponse> list = productPage.stream().collect(Collectors.toList());
+        } else {
+            productPage = productRepository.searchProduct(member.getId(), title, categoryId,
+                    hasTransaction,
+                    pageable);
+        }
 
-		return new SearchProductResponse(pageCount, list);
-	}
+        int pageCount = productPage.getTotalPages();
+
+        List<ProductOneImgResponse> list = productPage.stream().collect(Collectors.toList());
+
+        return new SearchProductResponse(pageCount, list);
+    }
 
 }

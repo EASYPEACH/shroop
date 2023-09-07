@@ -2,6 +2,7 @@ package com.easypeach.shroop.modules.product.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,102 +44,108 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "seller_id", nullable = false)
-	private Member seller;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Member seller;
 
-	@OneToOne(mappedBy = "product")
-	private Transaction transaction;
+    @OneToOne(mappedBy = "product")
+    private Transaction transaction;
 
-	@Column(length = 100, nullable = false)
-	private String title;
+    @Column(length = 100, nullable = false)
+    private String title;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id", nullable = false)
-	private Category category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
-	@Column(name = "product_grade", nullable = false)
-	@Enumerated(value = EnumType.STRING)
-	private ProductGrade productGrade;
+    @Column(name = "product_grade", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private ProductGrade productGrade;
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ProductImg> productImgList;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImg> productImgList = new ArrayList<>();
 
-	@Column(length = 50, nullable = false)
-	private String brand;
+    @Column(length = 50, nullable = false)
+    private String brand;
 
-	@Column(nullable = false)
-	private Long price;
+    @Column(nullable = false)
+    private Long price;
 
-	@Column(name = "is_checked_delivery_fee", nullable = false)
-	private Boolean isCheckedDeliveryFee;
+    @Column(name = "is_checked_delivery_fee", nullable = false)
+    private Boolean isCheckedDeliveryFee;
 
-	@Column(length = 255, nullable = false)
-	private String content;
+    @Column(length = 255, nullable = false)
+    private String content;
 
-	@Column(name = "purchase_date", nullable = false)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private LocalDate purchaseDate;
+    @Column(name = "purchase_date", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private LocalDate purchaseDate;
 
-	@Column(name = "is_defect", nullable = false)
-	private Boolean isDefect;
+    @Column(name = "is_defect", nullable = false)
+    private Boolean isDefect;
 
-	@Column(name = "sale_reason", length = 255, nullable = false)
-	private String saleReason;
+    @Column(name = "sale_reason", length = 255, nullable = false)
+    private String saleReason;
 
-	@Column(name = "likes")
-	@ColumnDefault(value = "0")
-	private Long likesCount;
+    @Column(name = "likes")
+    @ColumnDefault(value = "0")
+    private Long likesCount;
 
-	@Column(name = "create_date")
-	@CreatedDate
-	private LocalDateTime createDate;
+    @Column(name = "create_date")
+    @CreatedDate
+    private LocalDateTime createDate;
 
-	@Column(name = "update_date")
-	@LastModifiedDate
-	private LocalDateTime updateDate;
+    @Column(name = "update_date")
+    @LastModifiedDate
+    private LocalDateTime updateDate;
 
-	public static Product createProduct(
-		final Member seller,
-		final ProductRequest productRequest,
-		final Category category
-	) {
-		Product product = new Product();
-		product.seller = seller;
-		product.setByProductRequest(productRequest, category);
-		return product;
-	}
+    public static Product createProduct(
+            final Member seller,
+            final ProductRequest productRequest,
+            final Category category,
+            final List<ProductImg> productImgs
+    ) {
+        Product product = new Product();
+        product.seller = seller; //판매자 설정
+        product.category = category; // 카테고리 설정
+        product.setByProductRequest(productRequest); // 상품 내용 설정
+        for (ProductImg productImg : productImgs) { //이미지 설정
+            product.addProductImg(productImg);
+        }
 
-	public void setByProductRequest(ProductRequest productRequest, Category category) {
-		this.title = productRequest.getTitle();
-		this.category = category;
-		this.purchaseDate = productRequest.getPurchaseDate();
-		this.productGrade = productRequest.getProductGrade();
-		this.brand = productRequest.getBrand();
-		this.price = productRequest.getPrice();
-		this.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
-		this.isDefect = productRequest.getIsDefect();
-		this.saleReason = productRequest.getSaleReason();
-		this.content = productRequest.getContent();
-	}
+        return product;
+    }
 
-	public void updateProduct(
-		final ProductRequest productRequest,
-		final Category category
-	) {
-		setByProductRequest(productRequest, category);
-	}
+    public void setByProductRequest(ProductRequest productRequest) {
+        this.title = productRequest.getTitle();
+        this.purchaseDate = productRequest.getPurchaseDate();
+        this.productGrade = productRequest.getProductGrade();
+        this.brand = productRequest.getBrand();
+        this.price = productRequest.getPrice();
+        this.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
+        this.isDefect = productRequest.getIsDefect();
+        this.saleReason = productRequest.getSaleReason();
+        this.content = productRequest.getContent();
+    }
 
-	public void setLikesCount(Long likesCount) {
-		this.likesCount = likesCount;
-	}
+    public void updateProduct(
+            final ProductRequest productRequest,
+            final Category category
+    ) {
+        setByProductRequest(productRequest);
+        this.category = category;
+    }
 
-	public void addProductImg(ProductImg productImg) {
-		this.productImgList.add(productImg);
-		productImg.setProduct(this);
-	}
+    public void setLikesCount(Long likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public void addProductImg(ProductImg productImg) {
+        this.productImgList.add(productImg);
+        productImg.setProduct(this);
+    }
 }
