@@ -85,6 +85,26 @@
         text="수정 완료"
       />
     </v-form>
+    <v-form @submit.prevent="handleCancelMemberShip">
+      <product-title title="회원 탈퇴" />
+      <custom-text-input
+        class="profile__info-input"
+        type="password"
+        placeholderText="비밀번호입력"
+        v-model="password"
+        hide-details
+        @keydown="handleInputSignOutEvent"
+      />
+      <div v-show="!cancelMembershipResult" class="auth-fail">
+        {{ cancelMembershipResultMsg }}
+      </div>
+      <submit-button
+        :disabled="!isSignOutValid"
+        class="submit-button"
+        text="확인"
+      />
+    </v-form>
+
     <plain-modal
       modalText="수정이 완료되었습니다"
       v-model="showPlainModal"
@@ -101,7 +121,7 @@ import {
   multipartFormDataJson,
   changeUrlToFiles,
 } from "@/utils";
-import { getApi, postApi, multipartPatchApi } from "@/api/modules";
+import { getApi, postApi, multipartPatchApi, deleteApi } from "@/api/modules";
 import { useCookies } from "vue3-cookies";
 import { useRouter } from "vue-router";
 import SubmitButton from "@/components/Button/SubmitButton.vue";
@@ -116,14 +136,18 @@ const isValid = ref(false);
 const imageThumb = ref("");
 const imageData = ref(null);
 const authResult = ref(false);
+const cancelMembershipResult = ref(false);
+const cancelMembershipResultMsg = ref("");
 const phoneNumber = ref("");
 const phoneAuthNumber = ref("");
 const nickname = ref("");
 const oldPassword = ref("");
 const newPassword = ref("");
+const password = ref("");
 const profileImgRef = ref(null);
 const showPlainModal = ref(false);
 const modifyResultMsg = ref("");
+const isSignOutValid = ref(false);
 
 // Image preview
 const handleChangeProfile = async (event) => {
@@ -151,6 +175,10 @@ onBeforeMount(async () => {
 // input event
 const handleInputChnageEvent = () => {
   isValid.value = true;
+};
+
+const handleInputSignOutEvent = () => {
+  isSignOutValid.value = true;
 };
 
 // modify submit
@@ -208,13 +236,44 @@ const handleConfirmEdit = () => {
   router.push("/mypage/0");
   showPlainModal.value = false;
 };
+
+// 탈퇴 요청
+const handleCancelMemberShip = async () => {
+  try {
+    const data = await deleteApi({
+      url: "/api/members/leave",
+      data: {
+        password: password.value,
+      },
+    });
+
+    alert(data.message);
+    logout();
+  } catch (error) {
+    console.error(error);
+    if (error.response.status === 400) {
+      cancelMembershipResultMsg.value = error.response.data.message;
+    }
+  }
+};
+
+const logout = async () => {
+  try {
+    await postApi({
+      url: "/logout",
+    });
+    router.go(0);
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 section {
-  width: 30%;
+  width: 60%;
   margin: 0 auto;
-  padding: 100px 0;
+  padding: 30px 0;
 
   @media (max-width: 1200px) {
     width: 60%;
@@ -272,7 +331,6 @@ section {
         flex-basis: 50%;
       }
     }
-
     .info__input-box {
       flex: 1;
     }
