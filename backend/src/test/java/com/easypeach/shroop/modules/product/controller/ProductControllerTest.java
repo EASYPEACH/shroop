@@ -160,8 +160,7 @@ class ProductControllerTest extends ControllerTest {
 		multipartFileList.add(file2);
 
 		doNothing().when(productImgService).checkImgLength(multipartFileList);
-		given(productService.saveProduct(1L, productRequest)).willReturn(1L);
-		doNothing().when(productImgService).saveProductImg(multipartFileList, multipartFileList, 1L, true);
+		given(productService.saveProduct(1L, productRequest,multipartFileList,multipartFileList)).willReturn(1L);
 
 		String json = objectMapper.writeValueAsString(productRequest);
 
@@ -228,7 +227,7 @@ class ProductControllerTest extends ControllerTest {
 		multipartFileList.add(file2);
 
 		doNothing().when(productImgService).checkImgLength(multipartFileList);
-		given(productService.saveProduct(1L, productRequest)).willReturn(1L);
+		given(productService.saveProduct(1L, productRequest,multipartFileList,multipartFileList)).willReturn(1L);
 		doNothing().when(productImgService).updateProductImgList(multipartFileList, multipartFileList, 1L, true);
 
 		String productRequestJson = objectMapper.writeValueAsString(productRequest);
