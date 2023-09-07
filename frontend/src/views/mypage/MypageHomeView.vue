@@ -55,8 +55,8 @@
             <div>
               <v-btn
                 v-if="profile.account === null"
-                color="blue"
-                size="large"
+                color="subBlue"
+                class="account__buttons-link"
                 @click="showLinkAccountModal = true"
                 >계좌 연동하기</v-btn
               >
@@ -331,6 +331,9 @@ const handleSaveAccount = async () => {
   }
 
   .profile__account-link {
+    .account__buttons-link {
+      padding: 10px 0;
+    }
     h4 {
       font-weight: 600;
     }
