@@ -7,7 +7,7 @@
       <span v-if="product.transactionCreateDate">{{
         formatDate(product.transactionCreateDate)
       }}</span>
-      <span v-if="product.category">{{ product.category.name }}</span>
+      <span v-if="product.categoryName">{{ product.categoryName }}</span>
     </div>
 
     <div class="banner__content">
