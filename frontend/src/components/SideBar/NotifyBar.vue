@@ -46,9 +46,8 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
-import { useShowNotify } from "@/store/useShowNotify";
+import { useShowNotify, useNotifyList } from "@/store/modules";
 import { patchApi } from "@/api/modules";
-import { useNotifyList } from "@/store/useNotifyList";
 
 const display = useDisplay();
 const isMobile = ref(display.mdAndDown);

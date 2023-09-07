@@ -203,7 +203,7 @@ import { useRoute, useRouter } from "vue-router";
 import { getApi, deleteApi, postApi } from "@/api/modules";
 import { formatDate } from "@/utils/formatDate";
 import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useCheckLogin } from "@/store/modules";
 import TRANSACTION_STATUS from "@/consts/status";
 
 import ContentLayout from "@/layouts/ContentLayout.vue";

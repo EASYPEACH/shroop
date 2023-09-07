@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { useApiLoading } from "@/store/useLoading";
+import { useApiLoading } from "@/store/modules";
 import api from "./api";
 
 const loadingStore = useApiLoading();

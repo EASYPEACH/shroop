@@ -68,10 +68,9 @@
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useCheckLogin, useSearchProduct } from "@/store/modules";
 import { postApi } from "@/api/modules";
 import { useDisplay } from "vuetify";
-import { useSearchProduct } from "@/store/useSearchProduct";
 import { useRoute } from "vue-router";
 import { NotifyBellButton } from "@/components/Button";
 import router from "@/router";

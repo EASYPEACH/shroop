@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useCheckLogin } from "@/store/modules";
 import { getApi } from "@/api/modules";
 
 import DefaultLayoutView from "@/layouts/default/DefaultLayout.vue";

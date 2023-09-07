@@ -38,7 +38,7 @@ import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { phoneAuthRule } from "@/components/Form/data/formRules";
 import { postApi } from "@/api/modules";
-import { useUserStore } from "@/store/signUp";
+import { useUserStore } from "@/store/modules";
 import { useCookies } from "vue3-cookies";
 import { MainTitle } from "@/components/Title";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";

@@ -84,7 +84,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { postApi } from "@/api/modules";
-import { useUserStore } from "@/store/signUp";
+import { useUserStore } from "@/store/modules";
 import { useCookies } from "vue3-cookies";
 import { AGREE } from "@/consts/agree";
 

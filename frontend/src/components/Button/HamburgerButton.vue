@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { useMobileNav } from "@/store/useMobileNav";
+import { useMobileNav } from "@/store/modules";
 
 const mobileNavStore = useMobileNav();
 </script>

@@ -50,8 +50,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { postApi } from "@/api/modules";
-import { useCheckLogin } from "@/store/useCheckLogin";
-import { useMobileNav } from "@/store/useMobileNav";
+import { useCheckLogin, useMobileNav } from "@/store/modules";
 
 const router = useRouter();
 const loginCheckStore = useCheckLogin();

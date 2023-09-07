@@ -48,7 +48,7 @@ import { useRouter, useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
 import { toggleLikesProduct } from "@/utils";
-import { useSearchProduct } from "@/store/useSearchProduct";
+import { useSearchProduct } from "@/store/modules";
 import ProductCard from "@/components/ProductCard.vue";
 import { ProductBanner } from "@/components/Banner";
 import ContentLayout from "@/layouts/ContentLayout.vue";

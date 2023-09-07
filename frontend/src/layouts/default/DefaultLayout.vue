@@ -12,8 +12,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useApiLoading } from "@/store/useLoading";
-import { useMobileNav } from "@/store/useMobileNav";
+import { useApiLoading, useMobileNav } from "@/store/modules";
 import { useDisplay } from "vuetify";
 import DefaultBar from "./AppBar.vue";
 import DefaultView from "./MainView.vue";
