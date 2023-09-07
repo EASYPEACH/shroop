@@ -2,8 +2,9 @@ package com.easypeach.shroop.modules.transaction.controller;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -102,10 +104,15 @@ class TransactionControllerTest extends ControllerTest {
 
 		given(transactionService.getBuyer(productId)).willReturn(buyerResponse);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/buying/buyer/{productId}", productId)
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/buying/buyer/{productId}", productId)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andDo(document("buyer",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
 				responseFields(
 					fieldWithPath("name").description("구매자 이름"),
 					fieldWithPath("location").description("구매자 주소"),
@@ -123,9 +130,14 @@ class TransactionControllerTest extends ControllerTest {
 
 		doNothing().when(transactionService).cancelTransaction(memberId, productId);
 
-		mockMvc.perform(delete("/api/buying/{productId}", productId))
+		mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/buying/{productId}", productId))
 			.andExpect(status().isOk())
 			.andDo(document("cancelTransaction",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
 				responseFields(
 					fieldWithPath("message").description("결과 메세지")
 				)))
@@ -140,9 +152,14 @@ class TransactionControllerTest extends ControllerTest {
 
 		doNothing().when(transactionService).purchaseConfirm(memberId, productId);
 
-		mockMvc.perform(patch("/api/buying/confirm/{productId}", productId))
+		mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/buying/confirm/{productId}", productId))
 			.andExpect(status().isOk())
 			.andDo(document("purchaseConfirm",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
 				responseFields(
 					fieldWithPath("message").description("결과 메세지")
 				)))
@@ -157,9 +174,14 @@ class TransactionControllerTest extends ControllerTest {
 
 		doNothing().when(transactionService).returnConfirm(memberId, productId);
 
-		mockMvc.perform(patch("/api/buying/return/confirm/{productId}", productId))
+		mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/buying/return/confirm/{productId}", productId))
 			.andExpect(status().isOk())
 			.andDo(document("returnConfirm",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
 				responseFields(
 					fieldWithPath("message").description("결과 메세지")
 				)))
