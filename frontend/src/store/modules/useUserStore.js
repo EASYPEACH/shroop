@@ -21,27 +21,4 @@ export const useUserStore = defineStore("user", {
       this.agreeIdentify = user.agreeIdentify;
     },
   },
-  getters: {
-    getLoginId(state) {
-      return state.loginId;
-    },
-    getNickname(state) {
-      return state.nickname;
-    },
-    getPassword(state) {
-      return state.password;
-    },
-    getPhoneNumber(state) {
-      return state.phoneNumber;
-    },
-    getAgreeShroop(state) {
-      return state.agreeShroop;
-    },
-    getAgreePersonal(state) {
-      return state.agreePersonal;
-    },
-    getAgreeIdentify(state) {
-      return state.agreeIdentify;
-    },
-  },
 });

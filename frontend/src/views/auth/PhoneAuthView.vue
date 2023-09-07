@@ -55,13 +55,13 @@ const handleSubmitAuth = async () => {
     await postApi({
       url: "/api/auth/sign-up",
       data: {
-        loginId: userStore.getLoginId,
-        nickname: userStore.getNickname,
-        password: userStore.getPassword,
-        phoneNumber: userStore.getPhoneNumber,
-        agreeShroop: userStore.getAgreeShroop,
-        agreePersonal: userStore.getAgreePersonal,
-        agreeIdentify: userStore.getAgreeIdentify,
+        loginId: userStore.id,
+        nickname: userStore.nickname,
+        password: userStore.password,
+        phoneNumber: userStore.phoneNumber,
+        agreeShroop: userStore.agreeShroop,
+        agreePersonal: userStore.agreePersonal,
+        agreeIdentify: userStore.agreeIdentify,
         uuid: cookies.get("uuid"),
         phoneAuthNumber: phoneAuthNumber.value,
       },
@@ -76,7 +76,7 @@ const handleSubmitAuth = async () => {
 };
 
 onBeforeMount(() => {
-  if (userStore.getLoginId === "") {
+  if (userStore.id === "") {
     router.push("/signup");
   }
 });
