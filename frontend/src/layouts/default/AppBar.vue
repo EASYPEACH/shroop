@@ -54,7 +54,7 @@
               </li>
               <li
                 v-if="loginCheckStore.isLogin"
-                @click="() => $router.push('/mypage/0')"
+                @click="() => $router.push('/mypage/home')"
               >
                 마이페이지
               </li>
@@ -163,7 +163,7 @@ header {
     section {
       width: 100%;
       .search__box {
-        left: 50%;
+        left: calc(50% + 20px);
       }
     }
   }
