@@ -20,30 +20,27 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ProductReturnImgService {
 
-	private final ProductReturnImgRepository productReturnImgRepository;
+    private final ProductReturnImgRepository productReturnImgRepository;
 
-	private final S3UploadService s3UploadService;
+    private final S3UploadService s3UploadService;
 
-	@Transactional
-	public void saveProductReturnImg(final ProductReturn productReturn,
-		final List<MultipartFile> productReturnImgList) {
+    @Transactional
+    public void saveProductReturnImg(final ProductReturn productReturn,
+                                     final List<MultipartFile> productReturnImgList) {
 
-		List<ProductReturnImg> imgList = new ArrayList<>();
-		try {
-			if (productReturnImgList != null && !productReturnImgList.isEmpty()) {
-				for (MultipartFile productReturnImg : productReturnImgList) {
-					String uploadUrl = s3UploadService.saveFile(productReturnImg);
+        List<ProductReturnImg> imgList = new ArrayList<>();
 
-					imgList.add(ProductReturnImg.createProductReturnImg(productReturn, uploadUrl));
-				}
+        if (productReturnImgList != null && !productReturnImgList.isEmpty()) {
+            for (MultipartFile productReturnImg : productReturnImgList) {
+                String uploadUrl = s3UploadService.saveFile(productReturnImg);
 
-				productReturnImgRepository.saveAll(imgList);
-			}
+                imgList.add(ProductReturnImg.createProductReturnImg(productReturn, uploadUrl));
+            }
 
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+            productReturnImgRepository.saveAll(imgList);
+        }
 
-	}
+
+    }
 
 }
