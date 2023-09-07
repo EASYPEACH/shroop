@@ -12,6 +12,7 @@ import com.easypeach.shroop.modules.auth.controller.AuthController;
 import com.easypeach.shroop.modules.auth.service.AuthService;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
 import com.easypeach.shroop.modules.bank.service.BankService;
+import com.easypeach.shroop.modules.member.controller.MemberController;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 @WebMvcTest({
-	AuthController.class
+	AuthController.class,
+	MemberController.class,
 })
 @TestPropertySource(properties = "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration")
 public abstract class ControllerTest {

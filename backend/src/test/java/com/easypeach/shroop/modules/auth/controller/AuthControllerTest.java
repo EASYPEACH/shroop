@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneNumber;
 import com.easypeach.shroop.modules.auth.dto.request.SignUpRequest;
+import com.easypeach.shroop.modules.auth.dto.response.LoginCheckResponse;
 import com.easypeach.shroop.modules.common.ControllerTest;
 import com.easypeach.shroop.modules.member.domain.Member;
 
@@ -39,13 +40,16 @@ class AuthControllerTest extends ControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(phoneAuthRequest)))
 			.andDo(print())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-1",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())))
 			.andExpect(status().isOk())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-1",
+				requestFields(
+					fieldWithPath("phoneNumber").description("휴대전화번호")
+				),
 				responseFields(
-					fieldWithPath("uuid").description("개인 UUID 전달")
+					fieldWithPath("uuid").description("쿠키에 저장할 UUID 전달")
 				)))
 			.andReturn();
 	}
@@ -64,11 +68,16 @@ class AuthControllerTest extends ControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(phoneAuthRequest)))
 			.andDo(print())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-2",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())))
 			.andExpect(status().isOk())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-2",
+				requestFields(
+					fieldWithPath("uuid").description("휴대 전화 인증 시, 전달받은 uuid "),
+					fieldWithPath("phoneNumber").description("휴대전화번호"),
+					fieldWithPath("phoneAuthNumber").description("인증번호4자리")
+				),
 				responseFields(
 					fieldWithPath("message").description("인증 성공 여부")
 				)))
@@ -92,17 +101,28 @@ class AuthControllerTest extends ControllerTest {
 		doNothing().when(phoneAuthService).checkPhoneAuthNumber(any());
 
 		// when & then
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/sign-up").with(csrf())
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/sign-up")
 				.accept(MediaType.APPLICATION_JSON)
 				.characterEncoding(StandardCharsets.UTF_8)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(signUpRequest)))
 			.andDo(print())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-3",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())))
 			.andExpect(status().isOk())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-3",
+				requestFields(
+					fieldWithPath("loginId").description("로그인ID"),
+					fieldWithPath("password").description("패스워드"),
+					fieldWithPath("nickname").description("닉네임"),
+					fieldWithPath("phoneNumber").description("휴대전화번호"),
+					fieldWithPath("agreeShroop").description("약관 동의 여부"),
+					fieldWithPath("agreePersonal").description("약관 동의 여부"),
+					fieldWithPath("agreeIdentify").description("약관 동의 여부"),
+					fieldWithPath("uuid").description("인증 요청시 받은 uuid"),
+					fieldWithPath("phoneAuthNumber").description("인증번호4자리")
+				),
 				responseFields(
 					fieldWithPath("message").description("휴대전화 인증을 완료해주세요")
 				)))
@@ -130,11 +150,22 @@ class AuthControllerTest extends ControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(signUpRequest)))
 			.andDo(print())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-valid",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint())))
 			.andExpect(status().is4xxClientError())
-			.andDo(document("auth/sign-up",
+			.andDo(document("auth/sign-up-valid",
+				requestFields(
+					fieldWithPath("loginId").description("로그인ID"),
+					fieldWithPath("password").description("패스워드"),
+					fieldWithPath("nickname").description("닉네임"),
+					fieldWithPath("phoneNumber").description("휴대전화번호"),
+					fieldWithPath("agreeShroop").description("약관 동의 여부"),
+					fieldWithPath("agreePersonal").description("약관 동의 여부"),
+					fieldWithPath("agreeIdentify").description("약관 동의 여부"),
+					fieldWithPath("uuid").description("인증 요청시 받은 uuid"),
+					fieldWithPath("phoneAuthNumber").description("인증번호4자리")
+				),
 				responseFields(
 					fieldWithPath("message").description("유효성 검사 실패 사유")
 				)))
@@ -150,6 +181,34 @@ class AuthControllerTest extends ControllerTest {
 			this.loginId = loginId;
 			this.phoneAuthNumber = phoneAuthNumber;
 		}
+	}
+
+	@DisplayName("로그인 여부 체크")
+	@Test
+	void login_Check() throws Exception {
+		//given
+		LoginCheckResponse loginCheckResponse = new LoginCheckResponse(1L,"loginId","nickname",true);
+		given(authService.checkLogin(any())).willReturn(loginCheckResponse);
+
+		// when & then
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/")
+				.accept(MediaType.APPLICATION_JSON)
+				.characterEncoding(StandardCharsets.UTF_8)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(""))
+			.andDo(print())
+			.andDo(document("auth/check",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint())))
+			.andExpect(status().isOk())
+			.andDo(document("auth/check",
+				responseFields(
+					fieldWithPath("memberId").description("멤버 UID"),
+					fieldWithPath("loginId").description("로그인 아이디"),
+					fieldWithPath("nickname").description("닉네임"),
+					fieldWithPath("result").description("로그인 여부")
+				)))
+			.andReturn();
 	}
 
 }
