@@ -108,31 +108,36 @@ public class Product {
 	) {
 		Product product = new Product();
 		product.seller = seller;
-		return setByProductRequest(product, productRequest, category);
+		product.setByProductRequest(productRequest, category);
+		return product;
 	}
 
-	public static Product setByProductRequest(Product product, ProductRequest productRequest, Category category) {
-		product.title = productRequest.getTitle();
-		product.category = category;
-		product.purchaseDate = productRequest.getPurchaseDate();
-		product.productGrade = productRequest.getProductGrade();
-		product.brand = productRequest.getBrand();
-		product.price = productRequest.getPrice();
-		product.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
-		product.isDefect = productRequest.getIsDefect();
-		product.saleReason = productRequest.getSaleReason();
-		product.content = productRequest.getContent();
-		return product;
+	public void setByProductRequest(ProductRequest productRequest, Category category) {
+		this.title = productRequest.getTitle();
+		this.category = category;
+		this.purchaseDate = productRequest.getPurchaseDate();
+		this.productGrade = productRequest.getProductGrade();
+		this.brand = productRequest.getBrand();
+		this.price = productRequest.getPrice();
+		this.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
+		this.isDefect = productRequest.getIsDefect();
+		this.saleReason = productRequest.getSaleReason();
+		this.content = productRequest.getContent();
 	}
 
 	public void updateProduct(
 		final ProductRequest productRequest,
 		final Category category
 	) {
-		setByProductRequest(this, productRequest, category);
+		setByProductRequest(productRequest, category);
 	}
 
 	public void setLikesCount(Long likesCount) {
 		this.likesCount = likesCount;
+	}
+
+	public void addProductImg(ProductImg productImg) {
+		this.productImgList.add(productImg);
+		productImg.setProduct(this);
 	}
 }
