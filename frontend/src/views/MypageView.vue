@@ -303,7 +303,7 @@ const handleGetUserData = async () => {
   if (userData.userImg !== null) {
     profile.value.imagePath = userData.userImg;
   }
-  console.log(userData);
+
   profile.value.nickName = userData.nickname;
   profile.value.point = userData.point;
   profile.value.account = userData.account;
