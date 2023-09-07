@@ -2,8 +2,9 @@ package com.easypeach.shroop.modules.product.controller;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -17,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
@@ -49,7 +51,7 @@ class ProductReturnControllerTest extends ControllerTest {
 		doNothing().when(productReturnService)
 			.saveProductReturn(memberId, productId, productReturnRequest, productReturnImgList);
 
-		mockMvc.perform(multipart("/api/return/{productId}", productId)
+		mockMvc.perform(RestDocumentationRequestBuilders.multipart("/api/return/{productId}", productId)
 				.file(file1)
 				.file(file2)
 				.file(new MockMultipartFile("productReturnRequest", "", "application/json",
@@ -57,6 +59,18 @@ class ProductReturnControllerTest extends ControllerTest {
 				.contentType(MediaType.MULTIPART_FORM_DATA))
 			.andExpect(status().isOk())
 			.andDo(document("productReturn",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
+				requestParts(
+					partWithName("productReturnImgList").description("반품 상품 이미지 리스트"),
+					partWithName("productReturnRequest").description("반품 정보")
+				),
+				requestPartFields("productReturnRequest",
+					fieldWithPath("content").description("상품 제목")
+				),
 				responseFields(
 					fieldWithPath("message").description("결과 메세지")
 				)))
