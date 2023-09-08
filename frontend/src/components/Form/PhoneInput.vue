@@ -2,7 +2,7 @@
   <v-text-field
     density="compact"
     placeholder="휴대전화번호를 입력해주세요"
-    :value="modelValue"
+    :model-value="modelValue"
     :rules="rules"
     @input="$emit('update:modelValue', $event.target.value)"
     variant="filled"
