@@ -27,9 +27,8 @@ api.interceptors.request.use(
   },
   (err) => {
     loadingStore.setIsLoading(false);
-    if (err.response.status === 403) {
+    if (err.response.status === 403 || err.response.status === 500) {
       router.go(0);
-      alert("로그아웃 되었습니다");
     }
     return Promise.reject(err);
   },
@@ -42,9 +41,8 @@ api.interceptors.response.use(
   },
   (err) => {
     loadingStore.setIsLoading(false);
-    if (err.response.status === 403) {
+    if (err.response.status === 403 || err.response.status === 500) {
       router.go(0);
-      alert("로그아웃 되었습니다");
     }
     return Promise.reject(err);
   },
