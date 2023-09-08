@@ -57,7 +57,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 						.select(subProductImg.id.min())
 						.from(subProductImg)
 						.where(subProductImg.product.id.eq(product.id))
-						.orderBy(subProductImg.id.asc())
 				)
 			)
 			.offset(pageable.getOffset())
@@ -77,7 +76,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 						.select(subProductImg.id.min())
 						.from(subProductImg)
 						.where(subProductImg.product.id.eq(product.id))
-						.orderBy(subProductImg.id.asc())
 				))
 			.fetchOne();
 
