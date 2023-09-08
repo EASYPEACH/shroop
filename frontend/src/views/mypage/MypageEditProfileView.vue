@@ -129,7 +129,6 @@ import { SubmitButton } from "@/components/Button";
 import { MainTitle, ProductTitle } from "@/components/Title";
 import { CustomTextInput, PasswordInput } from "@/components/Form";
 import { PlainModal } from "@/components/Modal";
-import basicProfile from "@/assets/image/basicProfile.jpeg";
 
 const { cookies } = useCookies();
 const router = useRouter();
