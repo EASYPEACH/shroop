@@ -54,7 +54,7 @@
               </li>
               <li
                 v-if="loginCheckStore.isLogin"
-                @click="() => $router.push('/mypage/0')"
+                @click="() => $router.push('/mypage/home')"
               >
                 마이페이지
               </li>
@@ -68,12 +68,11 @@
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useCheckLogin, useSearchProduct } from "@/store/modules";
 import { postApi } from "@/api/modules";
 import { useDisplay } from "vuetify";
-import { useSearchProduct } from "@/store/useSearchProduct";
 import { useRoute } from "vue-router";
-import NotifyBellButton from "@/components/Button/NotifyBellButton.vue";
+import { NotifyBellButton } from "@/components/Button";
 import router from "@/router";
 
 const route = useRoute();
@@ -164,7 +163,7 @@ header {
     section {
       width: 100%;
       .search__box {
-        left: 50%;
+        left: calc(50% + 20px);
       }
     }
   }

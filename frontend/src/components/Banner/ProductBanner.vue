@@ -7,7 +7,7 @@
       <span v-if="product.transactionCreateDate">{{
         formatDate(product.transactionCreateDate)
       }}</span>
-      <span v-if="product.category">{{ product.category.name }}</span>
+      <span v-if="product.categoryName">{{ product.categoryName }}</span>
     </div>
 
     <div class="banner__content">
@@ -48,8 +48,8 @@
 
 <script setup>
 import { formatDate } from "@/utils";
-import LikeButton from "../Button/LikeButton.vue";
-import TransactionBadge from "../Badge/TransactionBadge.vue";
+import { LikeButton } from "../Button";
+import TransactionBadge from "../TransactionBadge.vue";
 
 defineProps({
   product: {
@@ -112,6 +112,14 @@ defineEmits(["handle-click-like"]);
   @media (max-width: 960px) {
     .banner__content {
       > div {
+        width: 50%;
+        h4 {
+          width: 60%;
+          font-size: 16px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         img {
           flex-basis: 50px;
           width: 50px;

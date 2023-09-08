@@ -53,8 +53,8 @@
 
 <script setup>
 import { formatDate } from "@/utils";
-import LikeButton from "../Button/LikeButton.vue";
-import TransactionBadge from "../Badge/TransactionBadge.vue";
+import { LikeButton } from "./Button";
+import TransactionBadge from "./TransactionBadge.vue";
 defineProps({
   productCardData: Object,
 });

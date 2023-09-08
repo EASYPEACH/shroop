@@ -12,16 +12,14 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useApiLoading } from "@/store/useLoading";
-import { useMobileNav } from "@/store/useMobileNav";
+import { useApiLoading, useMobileNav } from "@/store/modules";
 import { useDisplay } from "vuetify";
 import DefaultBar from "./AppBar.vue";
 import DefaultView from "./MainView.vue";
 import Footer from "./DefaultFooter.vue";
-import NotifyBar from "@/components/NotifyBar.vue";
+import { NotifyBar, SideNavigation } from "@/components/SideBar";
 import ApiLoader from "@/components/ApiLoader.vue";
-import SideNavigation from "@/components/Navigation/SideNavigation.vue";
-import HamburgerButton from "@/components/Button/HamburgerButton.vue";
+import { HamburgerButton } from "@/components/Button";
 
 const loadingStore = useApiLoading();
 const mobileNavStore = useMobileNav();

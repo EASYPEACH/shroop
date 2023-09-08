@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Title title="회원가입" />
+    <main-title title="회원가입" />
     <v-card
       class="mx-auto pa-12 pb-8"
       max-width="540"
@@ -81,12 +81,21 @@
 </template>
 
 <script setup>
-import Title from "@/components/Title/MainTitle.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import PasswordInput from "@/components/Form/PasswordInput.vue";
-import PhoneInput from "@/components/Form/PhoneInput.vue";
-import AgreementCheckBox from "@/components/Form/AgreementCheckBox.vue";
-import AgreementDialog from "@/components/Form/AgreementDialog.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { postApi } from "@/api/modules";
+import { useUserStore } from "@/store/modules";
+import { useCookies } from "vue3-cookies";
+import { AGREE } from "@/consts/agree";
+
+import { MainTitle } from "@/components/Title";
+import {
+  AgreementCheckBox,
+  CustomTextInput,
+  PasswordInput,
+  PhoneInput,
+  AgreementDialog,
+} from "@/components/Form";
 import usageRules from "@/components/Form/data/usageRules";
 import {
   idRule,
@@ -95,12 +104,6 @@ import {
   agreeRule,
   phoneNumberRule,
 } from "@/components/Form/data/formRules";
-import { AGREE } from "@/consts/agree";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { postApi } from "@/api/modules";
-import { useUserStore } from "@/store/signUp";
-import { useCookies } from "vue3-cookies";
 
 const { cookies } = useCookies();
 const router = useRouter();

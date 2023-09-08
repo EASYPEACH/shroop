@@ -75,14 +75,15 @@ import {
 } from "@/components/Form/data/formRules";
 import { getApi, postApi } from "@/api/modules";
 import { useRoute, useRouter } from "vue-router";
+
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import SubmitButton from "@/components/Button/SubmitButton.vue";
-import MiniButton from "@/components/Button/MiniButton.vue";
-import ChargePointModal from "@/components/Modal/ChargePointModal.vue";
+import { ProductTitle } from "@/components/Title";
+import { CustomTextInput } from "@/components/Form";
+import { SubmitButton } from "@/components/Button";
+import { MiniButton } from "@/components/Button";
+import { ChargePointModal } from "@/components/Modal";
 import CautionBlock from "@/components/CautionBlock.vue";
-import ProductBanner from "@/components/Banner/ProductBanner.vue";
+import { ProductBanner } from "@/components/Banner";
 
 const router = useRouter();
 const route = useRoute();

@@ -1,7 +1,7 @@
 <template>
   <content-layout>
     <section>
-      <Title :title="isRegister ? '상품등록' : '상품수정'" />
+      <main-title :title="isRegister ? '상품등록' : '상품수정'" />
       <v-form
         v-model="isValid"
         @submit.prevent="handleSubmitRegister"
@@ -192,16 +192,13 @@ import {
 import { PRODUCT_GRADE, PRODUCT_GRADE_EN } from "@/consts/productGrade.js";
 import { multipartPostApi, multipartPatchApi, getApi } from "@/api/modules";
 
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import Title from "@/components/Title/MainTitle.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
+import { CustomTextInput, CustomTextArea } from "@/components/Form";
+import { MainTitle, ProductTitle } from "@/components/Title";
+import { InfoAlert, WarnAlert } from "@/components/Alert";
+import { SubmitButton } from "@/components/Button";
 import ImageAttach from "@/components/ImageAttach.vue";
-import InfoAlert from "@/components/Alert/InfoAlert.vue";
-import WarnAlert from "@/components/Alert/WarnAlert.vue";
 import GuideText from "@/components/GuideText.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import CustomTextArea from "@/components/Form/CustomTextArea.vue";
-import SubmitButton from "@/components/Button/SubmitButton.vue";
 
 const router = useRouter();
 const route = useRoute();

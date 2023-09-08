@@ -22,7 +22,11 @@
     <div class="products">
       <info-alert v-if="productCards.length === 0" title="상품이 없습니다" />
       <ul v-else class="products__list">
-        <li v-for="productCardData in productCards" :key="productCardData.id">
+        <li
+          v-for="productCardData in productCards"
+          :key="productCardData.id"
+          data-aos="fade-up"
+        >
           <product-card
             v-if="isLaptop"
             :productCardData="productCardData"
@@ -48,11 +52,11 @@ import { useRouter, useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
 import { toggleLikesProduct } from "@/utils";
-import { useSearchProduct } from "@/store/useSearchProduct";
-import ProductCard from "@/components/Card/ProductCard.vue";
-import ProductBanner from "@/components/Banner/ProductBanner.vue";
+import { useSearchProduct } from "@/store/modules";
+import ProductCard from "@/components/ProductCard.vue";
+import { ProductBanner } from "@/components/Banner";
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import InfoAlert from "@/components/Alert/InfoAlert.vue";
+import { InfoAlert } from "@/components/Alert";
 
 const router = useRouter();
 const route = useRoute();

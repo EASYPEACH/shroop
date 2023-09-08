@@ -7,13 +7,13 @@
     >
       <aside>
         <div v-if="isStatus" class="status">
-          <div>
+          <p>
             {{
               product.transactionStatus === null
                 ? TRANSACTION_STATUS.SELLING
                 : TRANSACTION_STATUS[product.transactionStatus]
             }}
-          </div>
+          </p>
           <ul>
             <li v-for="list in MYPAGE" :key="list.ACTION">
               <mini-button
@@ -54,10 +54,10 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { deleteApi, patchApi, getApi } from "@/api/modules";
 import TRANSACTION_STATUS from "@/consts/status";
-import MiniButton from "../Button/MiniButton.vue";
-import PlainModal from "../Modal/PlainModal.vue";
-import BuyerInfoModal from "../Modal/BuyerInfoModal.vue";
-import ProductBanner from "../Banner/ProductBanner.vue";
+
+import { PlainModal, BuyerInfoModal } from "../Modal";
+import { MiniButton } from "../Button";
+import { ProductBanner } from "../Banner";
 
 const props = defineProps({
   product: Object,
@@ -152,9 +152,6 @@ const MYPAGE = [
   },
 ];
 
-// TODO
-// 삭제하기
-const handleDeleteProduct = () => {};
 // 구매확정
 const handleConfirmPurchase = async () => {
   try {
@@ -239,6 +236,12 @@ aside {
   .status {
     display: flex;
     align-items: center;
+    @media (max-width: 750px) {
+      p {
+        font-size: 15px;
+      }
+    }
+
     > div {
       width: 80px;
       text-align: center;

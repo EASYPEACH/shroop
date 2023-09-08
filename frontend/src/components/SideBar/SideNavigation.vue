@@ -11,7 +11,7 @@
               value="판매하기"
             ></v-list-item>
             <v-list-item
-              @click="() => navigationAction('/mypage/0')"
+              @click="() => navigationAction('/mypage/home')"
               v-if="loginCheckStore.isLogin"
               prepend-icon="mdi-account"
               title="마이페이지"
@@ -50,8 +50,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { postApi } from "@/api/modules";
-import { useCheckLogin } from "@/store/useCheckLogin";
-import { useMobileNav } from "@/store/useMobileNav";
+import { useCheckLogin, useMobileNav } from "@/store/modules";
 
 const router = useRouter();
 const loginCheckStore = useCheckLogin();

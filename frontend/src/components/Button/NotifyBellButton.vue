@@ -15,8 +15,7 @@
 import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { getApi } from "@/api/modules";
-import { useShowNotify } from "@/store/useShowNotify";
-import { useNotifyList } from "@/store/useNotifyList";
+import { useShowNotify, useNotifyList } from "@/store/modules";
 
 const notifyStore = useShowNotify();
 const notifyListStore = useNotifyList();

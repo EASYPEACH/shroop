@@ -60,14 +60,12 @@ import {
   multipartFormDataJson,
 } from "@/utils";
 import { multipartPostApi, getApi } from "@/api/modules";
-import MainTitle from "@/components/Title/MainTitle.vue";
+import { MainTitle, ProductTitle } from "@/components/Title";
+import { CustomTextArea, CustomTextInput } from "@/components/Form";
+import { SubmitButton } from "@/components/Button";
+import { PlainModal } from "@/components/Modal";
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
-import CustomTextArea from "@/components/Form/CustomTextArea.vue";
 import ImageAttach from "@/components/ImageAttach.vue";
-import SubmitButton from "@/components/Button/SubmitButton.vue";
-import PlainModal from "@/components/Modal/PlainModal.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -128,7 +126,7 @@ const handleSubmitReport = async () => {
   }
 };
 const completeSubmitRport = () => {
-  router.push("/mypage/0");
+  router.push("/mypage/home");
 };
 const handleErrorInput = () => {
   dialogList.value[2].isShow = false;

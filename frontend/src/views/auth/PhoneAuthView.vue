@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Title title="휴대전화 본인인증" />
+    <main-title title="휴대전화 본인인증" />
     <v-card
       class="mx-auto pa-12 pb-8"
       max-width="448"
@@ -38,9 +38,9 @@ import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { phoneAuthRule } from "@/components/Form/data/formRules";
 import { postApi } from "@/api/modules";
-import { useUserStore } from "@/store/signUp";
+import { useUserStore } from "@/store/modules";
 import { useCookies } from "vue3-cookies";
-import Title from "@/components/Title/MainTitle.vue";
+import { MainTitle } from "@/components/Title";
 import CustomTextInput from "@/components/Form/CustomTextInput.vue";
 
 const { cookies } = useCookies();
@@ -55,13 +55,13 @@ const handleSubmitAuth = async () => {
     await postApi({
       url: "/api/auth/sign-up",
       data: {
-        loginId: userStore.getLoginId,
-        nickname: userStore.getNickname,
-        password: userStore.getPassword,
-        phoneNumber: userStore.getPhoneNumber,
-        agreeShroop: userStore.getAgreeShroop,
-        agreePersonal: userStore.getAgreePersonal,
-        agreeIdentify: userStore.getAgreeIdentify,
+        loginId: userStore.id,
+        nickname: userStore.nickname,
+        password: userStore.password,
+        phoneNumber: userStore.phoneNumber,
+        agreeShroop: userStore.agreeShroop,
+        agreePersonal: userStore.agreePersonal,
+        agreeIdentify: userStore.agreeIdentify,
         uuid: cookies.get("uuid"),
         phoneAuthNumber: phoneAuthNumber.value,
       },
@@ -76,7 +76,7 @@ const handleSubmitAuth = async () => {
 };
 
 onBeforeMount(() => {
-  if (userStore.getLoginId === "") {
+  if (userStore.id === "") {
     router.push("/signup");
   }
 });

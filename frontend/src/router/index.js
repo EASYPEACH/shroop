@@ -1,22 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useCheckLogin } from "@/store/modules";
 import { getApi } from "@/api/modules";
+
 import DefaultLayoutView from "@/layouts/default/DefaultLayout.vue";
 import HomeView from "@/views/HomeView.vue";
-import LoginView from "@/views/LoginView.vue";
-import SignupView from "@/views/SignupView.vue";
-import MypageView from "@/views/MypageView.vue";
-import PhoneAuthView from "@/views/PhoneAuthView.vue";
-import RegistProductView from "@/views/RegistProductView.vue";
-import ProductDetailsView from "@/views/ProductDetailsView.vue";
-import ReportView from "@/views/ReportView.vue";
-import ReturnRequestView from "@/views/ReturnRequestView.vue";
-import EditProileView from "@/views/EditProileView.vue";
-import ProductsView from "@/views/ProductsView.vue";
-import PurchaseRequestView from "@/views/PurchaseRequestView.vue";
-import DeliveryRegistView from "@/views/DeliveryRegistView.vue";
-import PurchaseCompleteView from "@/views/PurchaseCompleteView.vue";
 import NotFound from "@/views/NotFound.vue";
+import ReportView from "@/views/report/ReportView.vue";
+
+import { LoginView, PhoneAuthView, SignupView } from "@/views/auth";
+import {
+  MypageView,
+  MypageHomeView,
+  MypageEditProfileView,
+  MypagePurchaseListView,
+  MypageSellListView,
+} from "@/views/mypage";
+import {
+  ProductsView,
+  ProductDetailsView,
+  RegistProductView,
+} from "@/views/product";
+import {
+  PurchaseRequestView,
+  ReturnRequestView,
+  DeliveryRegistView,
+  PurchaseCompleteView,
+} from "@/views/transaction";
 
 const routes = [
   {
@@ -29,23 +38,42 @@ const routes = [
         component: HomeView,
       },
       {
-        path: "/login",
+        path: "login",
         name: "Login",
         component: LoginView,
       },
       {
-        path: "/signup",
+        path: "signup",
         name: "Signup",
         component: SignupView,
       },
       {
-        path: "/mypage/:index",
-        props: (route) => {
-          /^[0-2]$/.test(route.params.param) ? route.params.param : "0";
-        },
+        path: "mypage",
         name: "Mypage",
         component: MypageView,
         meta: { requiresAuth: true },
+        children: [
+          {
+            path: "home",
+            name: "MypageHome",
+            component: MypageHomeView,
+          },
+          {
+            path: "purchaseList",
+            name: "PurchaseList",
+            component: MypagePurchaseListView,
+          },
+          {
+            path: "sellList",
+            name: "SellList",
+            component: MypageSellListView,
+          },
+          {
+            path: "profileEdit",
+            name: "ProfileEdit",
+            component: MypageEditProfileView,
+          },
+        ],
       },
       {
         path: "/regist",
@@ -76,12 +104,7 @@ const routes = [
         component: ReturnRequestView,
         meta: { requiresAuth: true },
       },
-      {
-        path: "/profileEdit/:id(\\d+)",
-        name: "ProfileEdit",
-        component: EditProileView,
-        meta: { requiresAuth: true },
-      },
+
       {
         path: "/products",
         name: "Products",
@@ -108,7 +131,7 @@ const routes = [
       {
         path: "/phone",
         name: "PhoneAuth",
-        component: PhoneAuthView,
+        component: PhoneAuthView.default,
       },
       {
         path: "/notFound",

@@ -94,7 +94,7 @@
           <div class="productContent__profile-content">
             <v-avatar>
               <v-img
-                src="https://cdn.vuetifyjs.com/images/john.jpg"
+                :src="profile.imgUrl ? profile.imgUrl : BasicProfile"
                 alt="John"
               ></v-img>
             </v-avatar>
@@ -126,7 +126,7 @@
     </div>
 
     <div class="productDetail">
-      <v-alert color="red" variant="outlined">
+      <v-alert color="red" variant="outlined" data-aos="fade-up">
         <div class="text-h5">
           <v-icon icon="mdi-alert-decagram"></v-icon> 구매 주의 사항
         </div>
@@ -137,8 +137,8 @@
         </div>
       </v-alert>
       <div class="productDetail__content">
-        <product-title bigTitle title="상품 정보" />
-        <v-table>
+        <product-title bigTitle title="상품 정보" data-aos="fade-up" />
+        <v-table data-aos="fade-up">
           <thead>
             <tr>
               <th class="text-left">정보</th>
@@ -156,22 +156,26 @@
             </tr>
             <tr>
               <td class="font-weight-bold">상태</td>
-              <td>{{ PRODUCT_GRADE_EN[productContent.grade] }}</td>
+              <td>{{ PRODUCT_GRADE_EN[productContent.productGrade] }}</td>
             </tr>
           </tbody>
         </v-table>
       </div>
       <div class="productDetail__defect">
-        <product-title bigTitle title="상품 판매 이유" />
-        <div class="text-h6">
+        <product-title bigTitle title="상품 판매 이유" data-aos="fade-up" />
+        <div class="text-h6" data-aos="fade-up">
           {{ productContent.saleReason }}
         </div>
-        <product-title bigTitle title="상품 결함 정보" />
-        <div v-if="!productContent.isDefect" class="text-h6">
+        <product-title bigTitle title="상품 결함 정보" data-aos="fade-up" />
+        <div v-if="!productContent.isDefect" class="text-h6" data-aos="fade-up">
           결함 여부 : 없음
         </div>
-        <div v-else class="text-h6">결함 여부 : 있음</div>
-        <div v-if="productContent.isDefect" class="productDetail__defect">
+        <div v-else class="text-h6" data-aos="fade-up">결함 여부 : 있음</div>
+        <div
+          v-if="productContent.isDefect"
+          class="productDetail__defect"
+          data-aos="fade-up"
+        >
           <v-img
             width="300"
             v-for="(defectImg, idx) in defectImgs"
@@ -181,8 +185,13 @@
         </div>
       </div>
       <div class="productDetail__content">
-        <product-title bigTitle title="상품 기타 상세 정보" />
+        <product-title
+          bigTitle
+          title="상품 기타 상세 정보"
+          data-aos="fade-up"
+        />
         <div
+          data-aos="fade-up"
           class="text-h6"
           v-html="productContent.content?.replaceAll('\n', '<br />')"
         ></div>
@@ -203,13 +212,15 @@ import { useRoute, useRouter } from "vue-router";
 import { getApi, deleteApi, postApi } from "@/api/modules";
 import { formatDate } from "@/utils/formatDate";
 import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
-import { useCheckLogin } from "@/store/useCheckLogin";
+import { useCheckLogin } from "@/store/modules";
 import TRANSACTION_STATUS from "@/consts/status";
+import BasicProfile from "@/assets/image/basicProfile.jpeg";
+
 import ContentLayout from "@/layouts/ContentLayout.vue";
-import ProductTitle from "@/components/Title/ProductTitle.vue";
-import PlainModal from "@/components/Modal/PlainModal.vue";
-import TransactionBadge from "@/components/Badge/TransactionBadge.vue";
-import LikeButton from "@/components/Button/LikeButton.vue";
+import TransactionBadge from "@/components/TransactionBadge.vue";
+import { ProductTitle } from "@/components/Title";
+import { PlainModal } from "@/components/Modal";
+import { LikeButton } from "@/components/Button";
 
 const loginCheckStore = useCheckLogin();
 const route = useRoute();
@@ -219,6 +230,7 @@ const defectImgs = ref([]);
 const profile = ref({
   id: 0,
   nickName: "",
+  imgUrl: "",
 });
 
 const productContent = ref({});
@@ -237,6 +249,7 @@ onBeforeMount(async () => {
 
     profile.value.nickName = data.seller.nickName;
     profile.value.id = data.seller.id;
+    profile.value.imgUrl = data.seller.imgUrl;
   } catch (err) {
     console.error(err);
   }
