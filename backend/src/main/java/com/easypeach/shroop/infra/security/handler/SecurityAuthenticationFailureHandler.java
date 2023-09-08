@@ -28,7 +28,7 @@ public class SecurityAuthenticationFailureHandler implements AuthenticationFailu
 		AuthenticationException exception) throws IOException, ServletException {
 
 		log.debug("[ LoginFailureHandler.onAuthenticationFailure ]");
-		response.setStatus(403);
+		response.setStatus(400);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 
