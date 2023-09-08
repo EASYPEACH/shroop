@@ -69,7 +69,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 			.select(product.count())
 			.from(product)
 			.leftJoin(transaction).on(transaction.product.id.eq(product.id))
-			.leftJoin(productImg).on(productImg.product.id.eq(product.id))
+			.join(productImg).on(productImg.product.id.eq(product.id))
+			.leftJoin(likes).on(likes.product.id.eq(product.id))
 			.where(titleContains(title), categoryIdEq(categoryId), hasNotTransactionIsNull(hasNotTransaction),
 				productImg.id.eq(
 					JPAExpressions
