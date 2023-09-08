@@ -1,6 +1,5 @@
 package com.easypeach.shroop.modules.member.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -84,12 +83,9 @@ public class MemberService {
 		if (profileImg == null) {
 			return;
 		}
-		try {
-			String imgUrl = s3UploadService.saveFile(profileImg.get(0));
-			member.updateProfileImg(imgUrl);
-		} catch (IOException ex) {
-			log.error(ex.getMessage());
-		}
+		String imgUrl = s3UploadService.saveFile(profileImg.get(0));
+		member.updateProfileImg(imgUrl);
+
 	}
 
 	public void updateNickname(final Member member, final String newNickname) {

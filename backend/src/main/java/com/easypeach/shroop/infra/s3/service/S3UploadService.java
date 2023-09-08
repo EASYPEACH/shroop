@@ -25,19 +25,19 @@ public class S3UploadService {
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 
-	public String saveFile(final MultipartFile multipartFile) throws IOException {
+	public String saveFile(final MultipartFile multipartFile) {
 		String originalFilename = multipartFile.getOriginalFilename();
 
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(multipartFile.getSize());
 
 		metadata.setContentType(multipartFile.getContentType());
-
-		// 저장
-		System.out.println(amazonS3Client.getRegion());
-
-		amazonS3Client.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-
+		try {
+			amazonS3Client.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
+		} catch (IOException e) {
+			log.error("에러 발생", e);
+			throw new RuntimeException(e);
+		}
 		// 저장된 파일의 URL 반환
 		return amazonS3Client.getUrl(bucket, originalFilename).toString();
 	}

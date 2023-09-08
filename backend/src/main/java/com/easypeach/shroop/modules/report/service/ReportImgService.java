@@ -22,30 +22,26 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ReportImgService {
 
-	private final ReportImgRepository reportImgRepository;
+    private final ReportImgRepository reportImgRepository;
 
-	private final S3UploadService s3UploadService;
+    private final S3UploadService s3UploadService;
 
-	@Transactional
-	public void saveReportImgs(final Report report, final List<MultipartFile> multipartFileList) {
+    @Transactional
+    public void saveReportImgs(final Report report, final List<MultipartFile> multipartFileList) {
 
-		List<ReportImg> reportImgList = new ArrayList<>();
-		try {
-			if (multipartFileList != null && !multipartFileList.isEmpty()) {
+        List<ReportImg> reportImgList = new ArrayList<>();
+        if (multipartFileList != null && !multipartFileList.isEmpty()) {
 
-				for (MultipartFile multipartFile : multipartFileList) {
+            for (MultipartFile multipartFile : multipartFileList) {
 
-					String uploadUrl = s3UploadService.saveFile(multipartFile);
+                String uploadUrl = s3UploadService.saveFile(multipartFile);
 
-					reportImgList.add(ReportImg.createReprotImg(report, uploadUrl));
-				}
+                reportImgList.add(ReportImg.createReprotImg(report, uploadUrl));
+            }
 
-				reportImgRepository.saveAll(reportImgList);
-			}
+            reportImgRepository.saveAll(reportImgList);
+        }
 
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 
-	}
+    }
 }

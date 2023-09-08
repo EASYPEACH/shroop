@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.easypeach.shroop.modules.likes.domain.LikeRepository;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -37,6 +38,7 @@ public class ProductService {
 	private final CategoryRepository categoryRepository;
 	private final TransactionRepository transactionRepository;
 	private final LikeRepository likeRepository;
+	private final ProductImgService productImgService;
 
 	public ProductResponse getProductInfo(final Member member, final Long productId) {
 		Product product = productRepository.findProductFetch(productId);
@@ -61,10 +63,15 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Long saveProduct(final Long memberId, final ProductRequest productRequest) {
+	public Long saveProduct(final Long memberId, final ProductRequest productRequest,
+		final List<MultipartFile> productImgList, final List<MultipartFile> defectImgList) {
 		Member seller = memberRepository.getById(memberId);
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
-		Product product = productRepository.save(Product.createProduct(seller, productRequest, category));
+
+		List<ProductImg> productImgs = productImgService.insertImgList(productImgList, defectImgList,
+			productRequest.getIsDefect());
+
+		Product product = productRepository.save(Product.createProduct(seller, productRequest, category, productImgs));
 		return product.getId();
 	}
 

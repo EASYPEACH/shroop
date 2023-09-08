@@ -1,6 +1,5 @@
 package com.easypeach.shroop.modules.product.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,19 +28,15 @@ public class ProductReturnImgService {
 		final List<MultipartFile> productReturnImgList) {
 
 		List<ProductReturnImg> imgList = new ArrayList<>();
-		try {
-			if (productReturnImgList != null && !productReturnImgList.isEmpty()) {
-				for (MultipartFile productReturnImg : productReturnImgList) {
-					String uploadUrl = s3UploadService.saveFile(productReturnImg);
 
-					imgList.add(ProductReturnImg.createProductReturnImg(productReturn, uploadUrl));
-				}
+		if (productReturnImgList != null && !productReturnImgList.isEmpty()) {
+			for (MultipartFile productReturnImg : productReturnImgList) {
+				String uploadUrl = s3UploadService.saveFile(productReturnImg);
 
-				productReturnImgRepository.saveAll(imgList);
+				imgList.add(ProductReturnImg.createProductReturnImg(productReturn, uploadUrl));
 			}
 
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			productReturnImgRepository.saveAll(imgList);
 		}
 
 	}

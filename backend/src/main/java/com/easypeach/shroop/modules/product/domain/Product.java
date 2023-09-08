@@ -2,6 +2,7 @@ package com.easypeach.shroop.modules.product.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -66,7 +67,7 @@ public class Product {
 	private ProductGrade productGrade;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ProductImg> productImgList;
+	private List<ProductImg> productImgList = new ArrayList<>();
 
 	@Column(length = 50, nullable = false)
 	private String brand;
@@ -105,17 +106,22 @@ public class Product {
 	public static Product createProduct(
 		final Member seller,
 		final ProductRequest productRequest,
-		final Category category
+		final Category category,
+		final List<ProductImg> productImgs
 	) {
 		Product product = new Product();
-		product.seller = seller;
-		product.setByProductRequest(productRequest, category);
+		product.seller = seller; //판매자 설정
+		product.category = category; // 카테고리 설정
+		product.setByProductRequest(productRequest); // 상품 내용 설정
+		for (ProductImg productImg : productImgs) { //이미지 설정
+			product.addProductImg(productImg);
+		}
+
 		return product;
 	}
 
-	public void setByProductRequest(ProductRequest productRequest, Category category) {
+	public void setByProductRequest(ProductRequest productRequest) {
 		this.title = productRequest.getTitle();
-		this.category = category;
 		this.purchaseDate = productRequest.getPurchaseDate();
 		this.productGrade = productRequest.getProductGrade();
 		this.brand = productRequest.getBrand();
@@ -130,7 +136,8 @@ public class Product {
 		final ProductRequest productRequest,
 		final Category category
 	) {
-		setByProductRequest(productRequest, category);
+		setByProductRequest(productRequest);
+		this.category = category;
 	}
 
 	public void setLikesCount(Long likesCount) {
