@@ -53,10 +53,10 @@ public class ProductReturnService {
 		String message = "'" + productTitle + "'의 반품이 신청되었습니다.";
 
 		// 판매자 알림
-		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+		notificationService.saveNotification(sellerId, title, "/mypage/sellList", message);
 
 		// 구매자 알림
-		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
+		notificationService.saveNotification(buyerId, title, "/mypage/purchaseList", message);
 
 	}
 }

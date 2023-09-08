@@ -185,10 +185,10 @@ public class TransactionService {
 		log.info("메시지 : " + message);
 
 		// 판매자 알림
-		notificationService.saveNotification(transaction.getSeller().getId(), "구매 취소", "/mypage/2", message);
+		notificationService.saveNotification(transaction.getSeller().getId(), "구매 취소", "/mypage/sellList", message);
 
 		// 구매자 알림
-		notificationService.saveNotification(memberId, "구매 취소", "/mypage/1", message);
+		notificationService.saveNotification(memberId, "구매 취소", "/mypage/purchaseList", message);
 
 	}
 
@@ -215,10 +215,10 @@ public class TransactionService {
 		String message = "'" + productTitle + "'의 구매가 확정되었습니다.";
 
 		// 판매자 알림
-		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+		notificationService.saveNotification(sellerId, title, "/mypage/sellList", message);
 
 		// 구매자 알림
-		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
+		notificationService.saveNotification(buyerId, title, "/mypage/purchaseList", message);
 	}
 
 	@Transactional
@@ -244,10 +244,10 @@ public class TransactionService {
 		String message = "'" + productTitle + "'의 반품이 확정되었습니다.";
 
 		// 판매자 알림
-		notificationService.saveNotification(sellerId, title, "/mypage/2", message);
+		notificationService.saveNotification(sellerId, title, "/mypage/sellList", message);
 
 		// 구매자 알림
-		notificationService.saveNotification(buyerId, title, "/mypage/1", message);
+		notificationService.saveNotification(buyerId, title, "/mypage/purchaseList", message);
 
 	}
 
