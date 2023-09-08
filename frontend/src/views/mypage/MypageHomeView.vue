@@ -9,6 +9,7 @@
         <div class="profile__infoBox">
           <aside class="profile__infoBox-details">
             <div class="profile__info-rank">
+              <div class="score">{{ profile.score }} 점</div>
               <v-icon :icon="profile.rank" class="profile__name-rank" />
               <v-btn variant="plain" class="rank-help">
                 <v-icon icon="mdi-help" />
@@ -171,12 +172,28 @@ const handleGetUserData = async () => {
   profile.value.nickName = userData.nickname;
   profile.value.point = userData.point;
   profile.value.account = userData.account;
+  profile.value.score = userData.gradeScore;
+  console.log(userData);
+  handleScoreToRankIcon(userData.gradeScore);
+
   likeList.value = userData.page.content.map((data) => {
     data.isLike = true;
     return data;
   });
 
   likeTotalPage.value = userData.page.totalPages;
+};
+
+const handleScoreToRankIcon = (gradeScore) => {
+  if (gradeScore < 30) {
+    profile.value.rank = "mdi-coat-rack";
+  }
+  if (30 <= gradeScore && gradeScore < 60) {
+    profile.value.rank = "mdi-umbrella-closed-variant";
+  }
+  if (gradeScore >= 60) {
+    profile.value.rank = "mdi-umbrella-beach-outline";
+  }
 };
 
 // 좋아요 페이징
@@ -345,5 +362,11 @@ const handleSaveAccount = async () => {
       border-radius: 5px;
     }
   }
+}
+
+.score {
+  margin-right: 15px;
+  font-weight: 600;
+  font-size: 16px;
 }
 </style>
