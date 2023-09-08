@@ -39,18 +39,18 @@ public class ReportService {
 		String title = reportRequest.getTitle();
 		String content = reportRequest.getContent();
 		boolean isMediate = reportRequest.getIsMediate();
-		Long reportedPersonId;
+		Long reporteeId;
 		if (product.getSeller().getId() == memberId) {
 			Transaction transaction = transactionService.findByProductId(reportRequest.getProductId());
-			reportedPersonId = transaction.getBuyer().getId();
+			reporteeId = transaction.getBuyer().getId();
 		} else {
-			reportedPersonId = product.getSeller().getId();
+			reporteeId = product.getSeller().getId();
 		}
 
 		Member reporter = memberService.findById(memberId);
-		Member reportedPerson = memberService.findById(reportedPersonId);
+		Member reportee = memberService.findById(reporteeId);
 
-		Report report = Report.createReport(reporter, reportedPerson, product, title, content, isMediate,
+		Report report = Report.createReport(reporter, reportee, product, title, content, isMediate,
 			ReportStatus.REPORT_REQUEST);
 
 		return reportRepository.save(report);

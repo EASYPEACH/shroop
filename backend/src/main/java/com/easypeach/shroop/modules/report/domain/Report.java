@@ -39,8 +39,8 @@ public class Report {
 	private Member reporter;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "reported_person_id", nullable = false)
-	private Member reportedPerson;
+	@JoinColumn(name = "reportee_id", nullable = false)
+	private Member reportee;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
@@ -65,7 +65,7 @@ public class Report {
 
 	public static Report createReport(
 		final Member reporter,
-		final Member reportedPerson,
+		final Member reportee,
 		final Product product,
 		final String title,
 		final String content,
@@ -74,7 +74,7 @@ public class Report {
 	) {
 		Report report = new Report();
 		report.reporter = reporter;
-		report.reportedPerson = reportedPerson;
+		report.reportee = reportee;
 		report.product = product;
 		report.title = title;
 		report.content = content;
