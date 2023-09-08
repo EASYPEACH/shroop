@@ -51,7 +51,7 @@ public class ProductController {
 		@RequestPart(value = "defectImgList", required = false) List<MultipartFile> defectImgList,
 		@Validated @RequestPart ProductRequest productRequest) {
 		productImgService.checkImgLength(productImgList);
-		Long productId = productService.saveProduct(member.getId(), productRequest,productImgList,defectImgList);
+		Long productId = productService.saveProduct(member.getId(), productRequest, productImgList, defectImgList);
 
 		return ResponseEntity.status(HttpStatus.OK).body(new ProductCreatedResponse(productId));
 	}
