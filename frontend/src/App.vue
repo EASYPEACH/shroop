@@ -27,9 +27,6 @@ api.interceptors.request.use(
   },
   (err) => {
     loadingStore.setIsLoading(false);
-    if (err.response.status === 403 || err.response.status === 500) {
-      router.go(0);
-    }
     return Promise.reject(err);
   },
 );
@@ -41,9 +38,6 @@ api.interceptors.response.use(
   },
   (err) => {
     loadingStore.setIsLoading(false);
-    if (err.response.status === 403 || err.response.status === 500) {
-      router.go(0);
-    }
     return Promise.reject(err);
   },
 );
