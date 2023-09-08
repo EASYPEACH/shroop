@@ -1,6 +1,7 @@
 package com.easypeach.shroop.infra.s3.service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
@@ -26,7 +27,7 @@ public class S3UploadService {
 	private String bucket;
 
 	public String saveFile(final MultipartFile multipartFile) {
-		String originalFilename = multipartFile.getOriginalFilename();
+		String originalFilename = multipartFile.getOriginalFilename() + UUID.randomUUID();
 
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(multipartFile.getSize());
