@@ -24,8 +24,8 @@ import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.MemberInfo;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
-import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
 import com.easypeach.shroop.modules.member.exception.MinusPointException;
+import com.easypeach.shroop.modules.member.exception.NoSuchMemberException;
 import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
 
 import lombok.RequiredArgsConstructor;
@@ -123,7 +123,7 @@ public class MemberService {
 
 	public Member findById(final Long memberId) {
 		return memberRepository.findById(memberId)
-			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
+			.orElseThrow(() -> new NoSuchMemberException("회원이 존재하지 않습니다"));
 	}
 
 	boolean existsByLoginId(final String loginId) {
@@ -136,17 +136,17 @@ public class MemberService {
 
 	public Member findByLoginId(final String loginId) {
 		return memberRepository.findByLoginId(loginId)
-			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
+			.orElseThrow(() -> new NoSuchMemberException("회원이 존재하지 않습니다"));
 	}
 
 	public Member findByNickname(final String nickname) {
 		return memberRepository.findByNickname(nickname)
-			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
+			.orElseThrow(() -> new NoSuchMemberException("회원이 존재하지 않습니다"));
 	}
 
 	public Member findByPhoneNumber(final String phoneNumber) {
 		return memberRepository.findByPhoneNumber(phoneNumber)
-			.orElseThrow(() -> new MemberNotExistException("회원이 존재하지 않습니다"));
+			.orElseThrow(() -> new NoSuchMemberException("회원이 존재하지 않습니다"));
 	}
 
 	public boolean getDuplicateResult(final String value, final DuplicateCheckType type) {

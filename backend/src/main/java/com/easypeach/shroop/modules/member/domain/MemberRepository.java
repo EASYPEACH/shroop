@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
+import com.easypeach.shroop.modules.member.exception.NoSuchMemberException;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -21,11 +21,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	default Member getByLoginId(final String LoginId) {
 		return findByLoginId(LoginId)
-			.orElseThrow(MemberNotExistException::new);
+			.orElseThrow(NoSuchMemberException::new);
 	}
 
 	default Member getById(final Long id) {
 		return findById(id)
-			.orElseThrow(MemberNotExistException::new);
+			.orElseThrow(NoSuchMemberException::new);
 	}
 }
