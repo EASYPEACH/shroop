@@ -32,7 +32,7 @@
           로그인
         </v-btn>
         <div v-if="!authResult" class="auth-result">
-          아이디 및 비밀번호를 다시 확인해주세요
+          {{ authResultMessage }}
         </div>
         <v-card-text class="text-center">
           슈룹회원이 아니신가요?
@@ -63,6 +63,7 @@ const id = ref("");
 const password = ref("");
 const isValid = ref(false);
 const authResult = ref(true);
+const authResultMessage = ref("");
 
 // 로그인 핸들러
 const handleSubmitLogin = async () => {
@@ -76,8 +77,9 @@ const handleSubmitLogin = async () => {
     });
     router.push("/");
   } catch (error) {
-    if (error.response.status === 403) {
+    if (error.response.status === 400 || error.response.status === 404) {
       authResult.value = false;
+      authResultMessage.value = error.response.data.message;
     }
   }
 };
