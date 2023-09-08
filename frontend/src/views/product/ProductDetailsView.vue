@@ -10,6 +10,7 @@
           v-for="productImg in productImgs"
           :key="productImg.id"
           :src="productImg.productImgUrl"
+          @click="() => showImageModal(productImg.productImgUrl)"
           contain
           eager
         >
@@ -93,15 +94,12 @@
         <div class="productContent__profile">
           <div class="productContent__profile-content">
             <v-avatar>
-              <v-img
-                :src="profile.imgUrl ? profile.imgUrl : BasicProfile"
-                alt="John"
-              ></v-img>
+              <v-img :src="profile.imgUrl" :alt="profile.nickName"></v-img>
             </v-avatar>
             <div class="text-h5">{{ profile.nickName }}</div>
           </div>
           <div class="productContent__profile-grade">
-            <v-icon icon="mdi-umbrella-beach-outline" />
+            <v-icon :icon="profile.rank" />
           </div>
         </div>
 
@@ -177,10 +175,10 @@
           data-aos="fade-up"
         >
           <v-img
-            width="300"
             v-for="(defectImg, idx) in defectImgs"
             :src="defectImg.productImgUrl"
             :key="idx"
+            @click="() => showImageModal(defectImg.productImgUrl)"
           ></v-img>
         </div>
       </div>
@@ -203,6 +201,11 @@
       @handle-confirm="handleClickDeleteRequest"
       @handle-cancle="handleClickCancle"
     />
+    <image-thumb-modal
+      v-model="imageModalValue"
+      :img-src="imageModalSrc"
+      @handle-close-modal="imageModalValue = false"
+    />
   </content-layout>
 </template>
 
@@ -214,12 +217,11 @@ import { formatDate } from "@/utils/formatDate";
 import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
 import { useCheckLogin } from "@/store/modules";
 import TRANSACTION_STATUS from "@/consts/status";
-import BasicProfile from "@/assets/image/basicProfile.jpeg";
 
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import TransactionBadge from "@/components/TransactionBadge.vue";
 import { ProductTitle } from "@/components/Title";
-import { PlainModal } from "@/components/Modal";
+import { PlainModal, ImageThumbModal } from "@/components/Modal";
 import { LikeButton } from "@/components/Button";
 
 const loginCheckStore = useCheckLogin();
@@ -235,6 +237,8 @@ const profile = ref({
 
 const productContent = ref({});
 const deleteModal = ref(false);
+const imageModalValue = ref(false);
+const imageModalSrc = ref("");
 
 onBeforeMount(async () => {
   // 특정 상품 데이터 받아오기
@@ -249,11 +253,27 @@ onBeforeMount(async () => {
 
     profile.value.nickName = data.seller.nickName;
     profile.value.id = data.seller.id;
-    profile.value.imgUrl = data.seller.imgUrl;
+    profile.value.imgUrl = data.seller.profileImg;
+    profile.value.score = data.seller.gradeScore;
+
+    handleScoreToRankIcon(data.seller.gradeScore);
   } catch (err) {
     console.error(err);
   }
 });
+
+//Grade Transfer
+const handleScoreToRankIcon = (gradeScore) => {
+  if (gradeScore < 30) {
+    profile.value.rank = "mdi-coat-rack";
+  }
+  if (30 <= gradeScore && gradeScore < 60) {
+    profile.value.rank = "mdi-umbrella-closed-variant";
+  }
+  if (gradeScore >= 60) {
+    profile.value.rank = "mdi-umbrella-beach-outline";
+  }
+};
 
 // 상품 좋아요, 좋아요 취소
 const handleClickLike = async () => {
@@ -304,6 +324,11 @@ const handleClickDeleteRequest = async () => {
   } catch (err) {
     console.error(err);
   }
+};
+
+const showImageModal = (imgUrl) => {
+  imageModalSrc.value = imgUrl;
+  imageModalValue.value = true;
 };
 </script>
 
@@ -433,6 +458,14 @@ const handleClickDeleteRequest = async () => {
   }
   .productDetail__defect {
     margin-top: 60px;
+    .v-img {
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+      background: #000;
+      object-fit: cover;
+      object-position: center;
+    }
     div {
       margin-top: 30px;
     }
