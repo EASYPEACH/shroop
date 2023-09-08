@@ -57,7 +57,9 @@ class ProductControllerTest extends ControllerTest {
 		ProductResponse.CategoryResponse categoryResponse = new ProductResponse.CategoryResponse(1L,"전자제품");
 		ProductResponse.MemberResponse memberResponse = new ProductResponse.MemberResponse(
 			1L,
-			"판매자"
+			"판매자",
+			"imgUrl",
+			10L
 		);
 		List<ProductResponse.ProductImgResponse> productImgResponseList = new ArrayList<>();
 		ProductResponse.ProductImgResponse productImgResponse = ProductResponse.ProductImgResponse.builder()

@@ -112,9 +112,15 @@ public class ProductResponse {
 
 		private String nickName;
 
+		private String profileImg;
+
+		private Long gradeScore;
+
 		public MemberResponse(Member member) {
 			this.id = member.getId();
 			this.nickName = member.getNickname();
+			this.profileImg = member.getProfileImg();
+			this.gradeScore = member.getGradeScore();
 		}
 	}
 
