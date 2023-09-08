@@ -2,7 +2,6 @@ package com.easypeach.shroop.modules.product.respository;
 
 import static com.easypeach.shroop.modules.likes.domain.QLikes.*;
 import static com.easypeach.shroop.modules.product.domain.QProduct.*;
-import static com.easypeach.shroop.modules.product.domain.QProductImg.*;
 import static com.easypeach.shroop.modules.transaction.domain.QTransaction.*;
 
 import java.util.List;
@@ -12,9 +11,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.easypeach.shroop.modules.likes.domain.QLikes;
+import com.easypeach.shroop.modules.product.domain.QProductImg;
 import com.easypeach.shroop.modules.product.dto.response.ProductOneImgResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 	public Page<ProductOneImgResponse> searchProduct(Long memberId, String title, Long categoryId,
 		boolean hasNotTransaction,
 		Pageable pageable) {
+
+		QProductImg productImg = QProductImg.productImg;
+		QProductImg subProductImg = new QProductImg("subProductImg");
 
 		List<ProductOneImgResponse> content = queryFactory
 			.select(Projections.constructor(ProductOneImgResponse.class,
@@ -45,9 +49,17 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 			))
 			.from(product)
 			.leftJoin(transaction).on(transaction.product.id.eq(product.id))
-			.leftJoin(productImg).on(productImg.product.id.eq(product.id))
+			.join(productImg).on(productImg.product.id.eq(product.id))
 			.leftJoin(likes).on(likes.product.id.eq(product.id))
-			.where(titleContains(title), categoryIdEq(categoryId), hasNotTransactionIsNull(hasNotTransaction))
+			.where(titleContains(title), categoryIdEq(categoryId), hasNotTransactionIsNull(hasNotTransaction),
+				productImg.id.eq(
+					JPAExpressions
+						.select(subProductImg.id.min())
+						.from(subProductImg)
+						.where(subProductImg.product.id.eq(product.id))
+						.orderBy(subProductImg.id.asc())
+				)
+			)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.orderBy(product.createDate.desc())
@@ -58,7 +70,14 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 			.from(product)
 			.leftJoin(transaction).on(transaction.product.id.eq(product.id))
 			.leftJoin(productImg).on(productImg.product.id.eq(product.id))
-			.where(titleContains(title), categoryIdEq(categoryId), hasNotTransactionIsNull(hasNotTransaction))
+			.where(titleContains(title), categoryIdEq(categoryId), hasNotTransactionIsNull(hasNotTransaction),
+				productImg.id.eq(
+					JPAExpressions
+						.select(subProductImg.id.min())
+						.from(subProductImg)
+						.where(subProductImg.product.id.eq(product.id))
+						.orderBy(subProductImg.id.asc())
+				))
 			.fetchOne();
 
 		return new PageImpl<>(content, pageable, count);
