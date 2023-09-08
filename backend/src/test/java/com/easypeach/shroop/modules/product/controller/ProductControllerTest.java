@@ -34,8 +34,6 @@ import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.ProductGrade;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
 import com.easypeach.shroop.modules.product.dto.request.SearchRequest;
-import com.easypeach.shroop.modules.product.dto.response.MemberResonse;
-import com.easypeach.shroop.modules.product.dto.response.ProductImgResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductOneImgResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductResponse;
 import com.easypeach.shroop.modules.product.dto.response.SearchProductResponse;
@@ -56,13 +54,13 @@ class ProductControllerTest extends ControllerTest {
 	@Test
 	void getProduct() throws Exception {
 		Member member = new Member();
-		Category category = Category.forTestCreateCategory(1L, "전자제품");
-		MemberResonse memberResonse = new MemberResonse(
+		ProductResponse.CategoryResponse categoryResponse = new ProductResponse.CategoryResponse(1L,"전자제품");
+		ProductResponse.MemberResponse memberResponse = new ProductResponse.MemberResponse(
 			1L,
 			"판매자"
 		);
-		List<ProductImgResponse> productImgResponseList = new ArrayList<>();
-		ProductImgResponse productImgResponse = ProductImgResponse.builder()
+		List<ProductResponse.ProductImgResponse> productImgResponseList = new ArrayList<>();
+		ProductResponse.ProductImgResponse productImgResponse = ProductResponse.ProductImgResponse.builder()
 			.id(1L)
 			.productImgUrl("imgUrl")
 			.isDefect(true)
@@ -71,10 +69,10 @@ class ProductControllerTest extends ControllerTest {
 
 		ProductResponse productResponse = ProductResponse.builder()
 			.id(1L)
-			.seller(memberResonse)
+			.seller(memberResponse)
 			.transactionStatus(TransactionStatus.PURCHASE_REQUEST)
 			.title("중고물건 팔아요")
-			.category(category)
+			.category(categoryResponse)
 			.productGrade(ProductGrade.LOWER)
 			.productImgList(productImgResponseList)
 			.likesCount(0L)

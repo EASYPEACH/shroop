@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,7 +47,7 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "seller_id", nullable = false)
 	private Member seller;
 
@@ -56,7 +57,7 @@ public class Product {
 	@Column(length = 100, nullable = false)
 	private String title;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;
 
@@ -108,31 +109,36 @@ public class Product {
 	) {
 		Product product = new Product();
 		product.seller = seller;
-		return setByProductRequest(product, productRequest, category);
+		product.setByProductRequest(productRequest, category);
+		return product;
 	}
 
-	public static Product setByProductRequest(Product product, ProductRequest productRequest, Category category) {
-		product.title = productRequest.getTitle();
-		product.category = category;
-		product.purchaseDate = productRequest.getPurchaseDate();
-		product.productGrade = productRequest.getProductGrade();
-		product.brand = productRequest.getBrand();
-		product.price = productRequest.getPrice();
-		product.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
-		product.isDefect = productRequest.getIsDefect();
-		product.saleReason = productRequest.getSaleReason();
-		product.content = productRequest.getContent();
-		return product;
+	public void setByProductRequest(ProductRequest productRequest, Category category) {
+		this.title = productRequest.getTitle();
+		this.category = category;
+		this.purchaseDate = productRequest.getPurchaseDate();
+		this.productGrade = productRequest.getProductGrade();
+		this.brand = productRequest.getBrand();
+		this.price = productRequest.getPrice();
+		this.isCheckedDeliveryFee = productRequest.getIsCheckedDeliveryFee();
+		this.isDefect = productRequest.getIsDefect();
+		this.saleReason = productRequest.getSaleReason();
+		this.content = productRequest.getContent();
 	}
 
 	public void updateProduct(
 		final ProductRequest productRequest,
 		final Category category
 	) {
-		setByProductRequest(this, productRequest, category);
+		setByProductRequest(productRequest, category);
 	}
 
 	public void setLikesCount(Long likesCount) {
 		this.likesCount = likesCount;
+	}
+
+	public void addProductImg(ProductImg productImg) {
+		this.productImgList.add(productImg);
+		productImg.setProduct(this);
 	}
 }

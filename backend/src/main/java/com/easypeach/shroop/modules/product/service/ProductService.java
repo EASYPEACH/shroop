@@ -15,14 +15,11 @@ import com.easypeach.shroop.modules.product.domain.Category;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductImg;
 import com.easypeach.shroop.modules.product.dto.request.ProductRequest;
-import com.easypeach.shroop.modules.product.dto.response.MemberResonse;
-import com.easypeach.shroop.modules.product.dto.response.ProductImgResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductOneImgResponse;
 import com.easypeach.shroop.modules.product.dto.response.ProductResponse;
 import com.easypeach.shroop.modules.product.dto.response.SearchProductResponse;
 import com.easypeach.shroop.modules.product.exception.ProductException;
 import com.easypeach.shroop.modules.product.respository.CategoryRepository;
-import com.easypeach.shroop.modules.product.respository.ProductImgRepository;
 import com.easypeach.shroop.modules.product.respository.ProductRepository;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionRepository;
@@ -38,13 +35,13 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
-	private final ProductImgRepository productImgRepository;
 	private final TransactionRepository transactionRepository;
 	private final LikeRepository likeRepository;
 
 	public ProductResponse getProductInfo(final Member member, final Long productId) {
-		Product product = productRepository.getById(productId);
+		Product product = productRepository.findProductFetch(productId);
 		ProductResponse productResponse = setProductResponse(product);
+
 		boolean isLikesProduct = likeRepository.existsLikesByMemberAndProduct(member, product);
 		if (isLikesProduct) {
 			productResponse.setIsLike();
@@ -105,14 +102,7 @@ public class ProductService {
 
 	public ProductResponse setProductResponse(final Product product) {
 		ProductResponse productResponse = new ProductResponse(product);
-		MemberResonse seller = new MemberResonse(product.getSeller());
-		List<ProductImgResponse> productImgList = productImgRepository.findAllByProduct(product)
-			.stream()
-			.map(ProductImgResponse::new)
-			.collect(Collectors.toList());
 
-		productResponse.setProductImgList(productImgList);
-		productResponse.setSeller(seller);
 		Transaction transaction = transactionRepository.findByProduct(product);
 		if (transaction != null) {
 			productResponse.setTransaction(transaction.getStatus());

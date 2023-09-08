@@ -1,0 +1,54 @@
+= 거래 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+== 구매자 조회하기
+
+=== Request
+
+include::{snippets}/buyer/path-parameters.adoc[]
+include::{snippets}/buyer/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/buyer/http-response.adoc[]
+include::{snippets}/buyer/response-fields.adoc[]
+
+== 구매 최소하기
+
+=== Request
+
+include::{snippets}/cancelTransaction/path-parameters.adoc[]
+include::{snippets}/cancelTransaction/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/cancelTransaction/http-response.adoc[]
+include::{snippets}/cancelTransaction/response-fields.adoc[]
+
+== 구매 확정하기
+
+=== Request
+
+include::{snippets}/purchaseConfirm/path-parameters.adoc[]
+include::{snippets}/purchaseConfirm/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/purchaseConfirm/http-response.adoc[]
+include::{snippets}/purchaseConfirm/response-fields.adoc[]
+
+== 반품 확정하기
+
+=== Request
+
+include::{snippets}/returnConfirm/path-parameters.adoc[]
+include::{snippets}/returnConfirm/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/returnConfirm/http-response.adoc[]
+include::{snippets}/returnConfirm/response-fields.adoc[]

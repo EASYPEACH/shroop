@@ -5,6 +5,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useApiLoading } from "@/store/modules";
+
 import api from "./api";
 
 const loadingStore = useApiLoading();
@@ -33,6 +34,7 @@ api.interceptors.request.use(
     return Promise.reject(err);
   },
 );
+
 api.interceptors.response.use(
   (config) => {
     loadingStore.setIsLoading(false);

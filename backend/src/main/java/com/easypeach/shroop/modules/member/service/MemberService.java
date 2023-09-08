@@ -22,8 +22,8 @@ import com.easypeach.shroop.modules.member.domain.Role;
 import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
 import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
-import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.dto.request.MemberInfo;
+import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
 import com.easypeach.shroop.modules.member.exception.MinusPointException;
@@ -81,7 +81,7 @@ public class MemberService {
 	}
 
 	public void updateImgUrl(final Member member, final List<MultipartFile> profileImg) {
-		if (profileImg.size() == 0) {
+		if (profileImg == null) {
 			return;
 		}
 		try {
@@ -186,10 +186,10 @@ public class MemberService {
 	}
 
 	@Transactional
-	public void delete(final Long memberId, MemberInfo memberInfo){
+	public void delete(final Long memberId, MemberInfo memberInfo) {
 		Member foundMember = memberRepository.getById(memberId);
 
-		if(!passwordEncoder.matches(memberInfo.getPassword(),foundMember.getPassword() )){
+		if (!passwordEncoder.matches(memberInfo.getPassword(), foundMember.getPassword())) {
 			throw new PasswordNotMatchException("패스워드가 일치하지 않습니다");
 		}
 
