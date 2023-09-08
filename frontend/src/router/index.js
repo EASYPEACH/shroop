@@ -131,7 +131,7 @@ const routes = [
       {
         path: "/phone",
         name: "PhoneAuth",
-        component: PhoneAuthView.default,
+        component: PhoneAuthView,
       },
       {
         path: "/notFound",

@@ -8,7 +8,7 @@
     >
       <div class="profile__info-imgbox">
         <div class="profile__info-img">
-          <img :src="imageThumb ? imageThumb : basicProfile" />
+          <img :src="imageThumb" />
           <label for="profile_image" class="profile__info-edit">
             <v-icon icon="mdi-camera" />
           </label>
@@ -186,11 +186,10 @@ const handleInputSignOutEvent = () => {
 const handleSubmitRegister = async () => {
   let formData = new FormData();
 
-  if (profileImgRef.value !== null) {
-    Array.from(profileImgRef.value.files).forEach((file) => {
-      formData.append("userImg", file);
-    });
-  }
+  Array.from(profileImgRef.value.files).forEach((file) => {
+    formData.append("userImg", file);
+  });
+
   multipartFormDataJson(formData, "editRequest", {
     nickname: nickname.value,
     oldPassword: oldPassword.value,
