@@ -11,7 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
 
 import com.easypeach.shroop.infra.security.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,20 +46,20 @@ public class SecurityConfig {
 			.csrf().disable()
 			.formLogin().disable();
 
-		http
-			.sessionManagement()
-			.maximumSessions(1)
-			.maxSessionsPreventsLogin(false)
-			.and()
-			.addObjectPostProcessor(new ObjectPostProcessor<CompositeSessionAuthenticationStrategy>() {
-				@Override
-				public <O extends CompositeSessionAuthenticationStrategy> O postProcess(O object) {
-					CompositeSessionAuthenticationStrategy strategy = (CompositeSessionAuthenticationStrategy)object;
-					jsonUsernamePasswordAuthenticationFilter().setSessionAuthenticationStrategy(strategy);
-					return object;
-				}
-			})
-		;
+		// http
+		// 	.sessionManagement()
+		// 	.maximumSessions(1)
+		// 	.maxSessionsPreventsLogin(false)
+		// 	.and()
+		// 	.addObjectPostProcessor(new ObjectPostProcessor<CompositeSessionAuthenticationStrategy>() {
+		// 		@Override
+		// 		public <O extends CompositeSessionAuthenticationStrategy> O postProcess(O object) {
+		// 			CompositeSessionAuthenticationStrategy strategy = (CompositeSessionAuthenticationStrategy)object;
+		// 			jsonUsernamePasswordAuthenticationFilter().setSessionAuthenticationStrategy(strategy);
+		// 			return object;
+		// 		}
+		// 	})
+		// ;
 
 		http.logout(logout ->
 			logout.logoutSuccessUrl("/logout")
