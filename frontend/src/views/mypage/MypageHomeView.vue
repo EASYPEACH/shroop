@@ -53,13 +53,6 @@
             </div>
             <v-divider :vertical="true" />
             <div>
-              <v-btn
-                v-if="profile.account === null"
-                color="subBlue"
-                class="account__buttons-link"
-                @click="showLinkAccountModal = true"
-                >계좌 연동하기</v-btn
-              >
               <div
                 class="profile__account-link"
                 v-if="profile.account !== null"
@@ -69,6 +62,13 @@
                   {{ profile.account }}
                 </p>
               </div>
+              <v-btn
+                color="subBlue"
+                variant="outlined"
+                class="account__buttons-link"
+                @click="showLinkAccountModal = true"
+                >계좌 연동하기</v-btn
+              >
             </div>
           </aside>
         </div>
