@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.bank.service.BankService;
 import com.easypeach.shroop.modules.member.domain.Member;
+import com.easypeach.shroop.modules.member.dto.reponse.PointResponse;
+import com.easypeach.shroop.modules.member.dto.request.PointRequest;
 import com.easypeach.shroop.modules.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,18 +26,20 @@ public class PointController {
 	private final BankService bankService;
 
 	@PatchMapping(value = "/charging")
-	public ResponseEntity<Long> chargePoint(@RequestBody final Long point, @LoginMember final Member member) {
-		bankService.subtractMoney(point, member);
-		Long updatedPoint = memberService.plusPoint(point, member);
-		return ResponseEntity.status(HttpStatus.OK).body(updatedPoint);
+	public ResponseEntity<PointResponse> chargePoint(@RequestBody final PointRequest pointRequest,
+		@LoginMember final Member member) {
+		bankService.subtractMoney(pointRequest, member);
+		PointResponse pointResponse = memberService.plusPoint(pointRequest, member);
+		return ResponseEntity.status(HttpStatus.OK).body(pointResponse);
 	}
 
 	@PatchMapping(value = "/exchanging")
-	public ResponseEntity<Long> exchangePoint(@RequestBody final Long point, @LoginMember final Member member) {
-		Long updatedPoint = memberService.subtractPoint(point, member);
-		bankService.addMoney(point, member);
+	public ResponseEntity<PointResponse> exchangePoint(@RequestBody final PointRequest pointRequest,
+		@LoginMember final Member member) {
+		PointResponse pointResponse = memberService.subtractPoint(pointRequest, member);
+		bankService.addMoney(pointRequest, member);
 
-		return ResponseEntity.status(HttpStatus.OK).body(updatedPoint);
+		return ResponseEntity.status(HttpStatus.OK).body(pointResponse);
 	}
 
 }
