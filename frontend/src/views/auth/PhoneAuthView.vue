@@ -41,7 +41,7 @@ import { postApi } from "@/api/modules";
 import { useUserStore } from "@/store/modules";
 import { useCookies } from "vue3-cookies";
 import { MainTitle } from "@/components/Title";
-import CustomTextInput from "@/components/Form/CustomTextInput.vue";
+import { CustomTextInput } from "@/components/Form";
 
 const { cookies } = useCookies();
 const router = useRouter();
@@ -55,7 +55,7 @@ const handleSubmitAuth = async () => {
     await postApi({
       url: "/api/auth/sign-up",
       data: {
-        loginId: userStore.id,
+        loginId: userStore.loginId,
         nickname: userStore.nickname,
         password: userStore.password,
         phoneNumber: userStore.phoneNumber,
