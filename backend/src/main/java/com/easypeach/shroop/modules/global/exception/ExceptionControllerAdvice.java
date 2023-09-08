@@ -6,16 +6,18 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.easypeach.shroop.modules.auth.exception.NoSuchPhoneAuthException;
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthFailException;
-import com.easypeach.shroop.modules.auth.exception.PhoneAuthNotExistException;
-import com.easypeach.shroop.modules.bank.exception.BankNotExistException;
+import com.easypeach.shroop.modules.auth.exception.UnAuthorizedAccessException;
 import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
+import com.easypeach.shroop.modules.bank.exception.NoSuchBankException;
 import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
-import com.easypeach.shroop.modules.member.exception.MemberNotExistException;
 import com.easypeach.shroop.modules.member.exception.MinusPointException;
+import com.easypeach.shroop.modules.member.exception.NoSuchMemberException;
 import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
-import com.easypeach.shroop.modules.product.exception.CategoryNotFoundException;
+import com.easypeach.shroop.modules.product.exception.NoSuchCategoryException;
+import com.easypeach.shroop.modules.product.exception.ProductException;
 import com.easypeach.shroop.modules.product.exception.ProductImgLengthException;
 import com.easypeach.shroop.modules.transaction.exception.LackOfPointException;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
@@ -37,12 +39,12 @@ public class ExceptionControllerAdvice {
 	}
 
 	@ExceptionHandler({
-		MemberNotExistException.class,
-		PhoneAuthNotExistException.class,
-		CategoryNotFoundException.class,
-		BankNotExistException.class
+		NoSuchMemberException.class,
+		NoSuchPhoneAuthException.class,
+		NoSuchCategoryException.class,
+		NoSuchBankException.class,
 	})
-	public ResponseEntity<ErrorResponse> handleNotExistException(final RuntimeException e) {
+	public ResponseEntity<ErrorResponse> handleNoSuchException(final RuntimeException e) {
 		String errorMessage = e.getMessage();
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 		return ResponseEntity.status(404).body(errorResponse);
@@ -56,18 +58,28 @@ public class ExceptionControllerAdvice {
 		DuplicateValueException.class,
 		PasswordNotMatchException.class,
 		PhoneAuthFailException.class,
-		LackOfPointException.class
+		LackOfPointException.class,
+		ProductException.class
 	})
-	public ResponseEntity<ErrorResponse> handleAuthException(final RuntimeException e) {
+	public ResponseEntity<ErrorResponse> handleBadRequestException(final RuntimeException e) {
 		String errorMessage = e.getMessage();
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(final Exception e) {
+	@ExceptionHandler({
+		UnAuthorizedAccessException.class
+	})
+	public ResponseEntity<ErrorResponse> handleAuthException(final RuntimeException e) {
 		String errorMessage = e.getMessage();
-		log.error("ERROR {}",e);
+		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+		return ResponseEntity.status(403).body(errorResponse);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleServerException(final Exception e) {
+		String errorMessage = e.getMessage();
+		log.error("ERROR {}", e);
 		ErrorResponse errorResponse = new ErrorResponse("내부 서버에 문제가 발생하여 확인 중 입니다");
 		return ResponseEntity.internalServerError().body(errorResponse);
 	}

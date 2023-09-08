@@ -15,7 +15,7 @@ import com.easypeach.shroop.modules.product.exception.ProductException;
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 
 	default Product getById(Long id) {
-		return findById(id).orElseThrow(() -> ProductException.notExistProduct());
+		return findById(id).orElseThrow(() -> ProductException.noSuchProductException());
 	}
 
 	Page<Product> findBySeller(Member seller, Pageable pageable);

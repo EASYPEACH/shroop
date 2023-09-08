@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.easypeach.shroop.modules.bank.exception.BankNotExistException;
+import com.easypeach.shroop.modules.bank.exception.NoSuchBankException;
 
 public interface BankRepository extends JpaRepository<Bank, Long> {
 
@@ -12,6 +12,6 @@ public interface BankRepository extends JpaRepository<Bank, Long> {
 
 	default Bank getByAccount(String account) {
 		return findByAccount(account).orElseThrow(
-			() -> BankNotExistException.bankNotExistException());
+			() -> NoSuchBankException.bankNotExistException());
 	}
 }

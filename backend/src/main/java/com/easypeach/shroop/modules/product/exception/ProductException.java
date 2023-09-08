@@ -7,16 +7,8 @@ public class ProductException extends RuntimeException {
 		super(message);
 	}
 
-	public static ProductException notExistProduct() {
+	public static ProductException noSuchProductException() {
 		return new ProductException("존재하지 않는 상품입니다.");
-	}
-
-	public static ProductException notAuthorizationToUpdate() {
-		return new ProductException("수정 권한이 없습니다.");
-	}
-
-	public static ProductException notAuthorizationToDelete() {
-		return new ProductException("삭제 권한이 없습니다.");
 	}
 
 	public static ProductException notStatusDelete(TransactionStatus status) {
