@@ -1,3 +1,3 @@
-export { default as ProductsView } from "./ProductsView.vue";
-export { default as ProductDetailsView } from "./ProductDetailsView.vue";
-export { default as RegistProductView } from "./RegistProductView.vue";
+export { default as ProductsView } from "@/views/product/ProductsView.vue";
+export { default as ProductDetailsView } from "@/views/product/ProductDetailsView.vue";
+export { default as RegistProductView } from "@/views/product/RegistProductView.vue";

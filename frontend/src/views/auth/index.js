@@ -1,3 +1,3 @@
-export { default as LoginView } from "./LoginView.vue";
-export { default as PhoneAuthView } from "./PhoneAuthView.vue";
-export { default as SignupView } from "./SignupView.vue";
+export { default as LoginView } from "@/views/auth/LoginView.vue";
+export { default as PhoneAuthView } from "@/views/auth/PhoneAuthView.vue";
+export { default as SignupView } from "@/views/auth/SignupView.vue";
