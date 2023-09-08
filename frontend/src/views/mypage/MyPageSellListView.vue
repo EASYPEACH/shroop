@@ -28,9 +28,9 @@ const display = useDisplay();
 const isTablet = ref(display.smAndDown);
 
 // 판매내역
-const sellingPage = ref(0);
+const sellingPage = ref(1);
 const sellList = ref([]);
-const sellPageCount = ref();
+const sellPageCount = ref(0);
 
 onBeforeMount(async () => {
   await handleGetSellHistory();

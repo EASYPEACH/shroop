@@ -42,7 +42,7 @@ const endIndex = ref(perPage.value); // 상품 마지막 인덱스
 const purchaseList = ref([]);
 
 onBeforeMount(async () => {
-  handleGetPurchaseHistory();
+  await handleGetPurchaseHistory();
 });
 
 // 상품 수 계산
