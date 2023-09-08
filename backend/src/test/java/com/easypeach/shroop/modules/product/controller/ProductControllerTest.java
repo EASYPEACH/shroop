@@ -109,6 +109,8 @@ class ProductControllerTest extends ControllerTest {
 					fieldWithPath("seller").description("상품 판매자"),
 					fieldWithPath("seller.id").description("판매자 아이디"),
 					fieldWithPath("seller.nickName").description("판매자 닉네임"),
+					fieldWithPath("seller.profileImg").description("판매자 프로필 이미지"),
+					fieldWithPath("seller.gradeScore").description("판매자 등급 점수"),
 					fieldWithPath("transactionStatus").description("상품 거래 상태"),
 					fieldWithPath("title").description("상품 제목"),
 					fieldWithPath("category").description("상품 카테고리"),
