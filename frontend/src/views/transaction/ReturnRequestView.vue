@@ -124,7 +124,7 @@ const handleGetProduct = async () => {
   }
 };
 const completeSubmitReturn = () => {
-  router.push("/mypage/1");
+  router.push("/mypage/purchaseList");
 };
 const handleErrorInput = () => {
   dialogList.value[1].isShow = false;

@@ -126,7 +126,7 @@ const handleSubmitReport = async () => {
   }
 };
 const completeSubmitRport = () => {
-  router.push("/mypage/0");
+  router.push("/mypage/home");
 };
 const handleErrorInput = () => {
   dialogList.value[2].isShow = false;

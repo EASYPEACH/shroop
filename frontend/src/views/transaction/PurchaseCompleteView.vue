@@ -25,7 +25,7 @@
     <v-btn
       variant="outlined"
       height="auto"
-      @click="() => $router.push('/mypage/1')"
+      @click="() => $router.push('/mypage/purchaseList')"
       >확인</v-btn
     >
   </content-layout>

@@ -11,11 +11,11 @@ const loadingStore = useApiLoading();
 api.interceptors.request.use(
   (config) => {
     if (
-      config.url.includes("regist") ||
-      config.url.includes("edit") ||
-      config.url.includes("report") ||
+      (config.url.includes("products") && config.method === "post") ||
+      (config.url.includes("products") && config.method === "patch") ||
+      config.url.includes("reports") ||
       config.url.includes("return") ||
-      config.url.includes("profileEdit")
+      config.url.includes("profile")
     ) {
       loadingStore.setIsLoading(true);
     }
