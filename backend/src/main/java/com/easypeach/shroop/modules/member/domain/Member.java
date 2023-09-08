@@ -88,6 +88,7 @@ public class Member {
 		member.point = point;
 		member.gradeScore = 0L;
 		member.checkAgree = true;
+		member.profileImg = "https://shroop-s3.s3.ap-northeast-2.amazonaws.com/basicProfile.jpeg";
 		return member;
 	}
 
