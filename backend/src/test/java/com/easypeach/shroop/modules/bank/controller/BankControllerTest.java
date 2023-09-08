@@ -2,6 +2,7 @@ package com.easypeach.shroop.modules.bank.controller;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -30,8 +31,13 @@ class BankControllerTest extends ControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 			.andExpect(status().isOk())
-			.andDo(document("linking", responseFields(fieldWithPath("message").description("계좌가 연동되었습니다.")
-			)))
+			.andDo(document("linkAccount",
+				preprocessRequest(prettyPrint()),
+				requestFields(
+					fieldWithPath("name").description("이름"),
+					fieldWithPath("account").description("계좌번호"),
+					fieldWithPath("password").description("계좌 비밀번호")
+				)))
 			.andDo(print());
 
 	}

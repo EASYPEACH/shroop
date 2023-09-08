@@ -5,6 +5,50 @@
 :toc: left
 :toclevels: 3
 
+== 결제창 조회하기
+
+=== Request
+
+include::{snippets}/getBuyingForm/http-request.adoc[]
+include::{snippets}/getBuyingForm/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getBuyingForm/http-response.adoc[]
+include::{snippets}/getBuyingForm/response-fields.adoc[]
+
+== 결제하기
+
+=== Request
+
+include::{snippets}/buyingProduct/http-request.adoc[]
+include::{snippets}/buyingProduct/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/buyingProduct/http-response.adoc[]
+
+== 결제 완료창 조회
+
+=== Request
+
+include::{snippets}/getBuyingCompletedForm/http-request.adoc[]
+include::{snippets}/getBuyingCompletedForm/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/getBuyingCompletedForm/http-response.adoc[]
+include::{snippets}/getBuyingCompletedForm/response-fields.adoc[]
+
+== 판매 내역 조회
+
+=== Request
+include::{snippets}/getSellingHistory/http-request.adoc[]
+
+=== Response
+include::{snippets}/getSellingHistory/http-response.adoc[]
+include::{snippets}/getSellingHistory/response-fields.adoc[]
+
 == 구매자 조회하기
 
 === Request

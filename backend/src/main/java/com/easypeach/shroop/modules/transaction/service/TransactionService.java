@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.easypeach.shroop.modules.bank.service.BankService;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.ShroopMember;
+import com.easypeach.shroop.modules.member.dto.request.PointRequest;
 import com.easypeach.shroop.modules.member.service.MemberService;
 import com.easypeach.shroop.modules.notification.service.NotificationService;
 import com.easypeach.shroop.modules.product.domain.Product;
@@ -76,7 +77,8 @@ public class TransactionService {
 		addPoint(productId, ShroopMember.SHROOP_ID.getId());
 
 		//슈룹이 수수료 가져감
-		bankService.addMoney(fee, memberService.findById(ShroopMember.SHROOP_ID.getId()));
+		bankService.addMoney(PointRequest.createPointRequest(fee),
+			memberService.findById(ShroopMember.SHROOP_ID.getId()));
 
 		// phoneAuthService.sendSms(product.getSeller().getPhoneNumber(),
 		// 	String.format("%s 판매자님 %s 상품이 결제되었습니다.", product.getSeller().getNickname(), product.getTitle()));

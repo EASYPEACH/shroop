@@ -20,8 +20,10 @@ import com.easypeach.shroop.modules.member.domain.MemberRepository;
 import com.easypeach.shroop.modules.member.domain.Role;
 import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
 import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
+import com.easypeach.shroop.modules.member.dto.reponse.PointResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.MemberInfo;
+import com.easypeach.shroop.modules.member.dto.request.PointRequest;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
 import com.easypeach.shroop.modules.member.exception.DuplicateValueException;
 import com.easypeach.shroop.modules.member.exception.MinusPointException;
@@ -80,12 +82,11 @@ public class MemberService {
 	}
 
 	public void updateImgUrl(final Member member, final List<MultipartFile> profileImg) {
-		if (profileImg == null) {
+		if (profileImg.size() == 0) {
 			return;
 		}
 		String imgUrl = s3UploadService.saveFile(profileImg.get(0));
 		member.updateProfileImg(imgUrl);
-
 	}
 
 	public void updateNickname(final Member member, final String newNickname) {
@@ -164,21 +165,24 @@ public class MemberService {
 	}
 
 	@Transactional
-	public Long plusPoint(final Long point, final Member member) {
+	public PointResponse plusPoint(final PointRequest pointRequest, final Member member) {
+		Long point = pointRequest.getPoint();
 		Member foundMember = memberRepository.getById(member.getId());
 		foundMember.addPoint(point);
-		return foundMember.getPoint();
+
+		return PointResponse.createPointResponse(foundMember.getPoint());
 	}
 
 	@Transactional
-	public Long subtractPoint(final Long point, final Member member) {
+	public PointResponse subtractPoint(final PointRequest pointRequest, final Member member) {
+		Long point = pointRequest.getPoint();
 		Member foundMember = memberRepository.getById(member.getId());
 		if (foundMember.getPoint() >= point) {
 			foundMember.subtractPoint(point);
 		} else {
 			throw new MinusPointException("보유한 포인트보다 환전하려는 포인트가 더 큽니다. 다시 입력해주세요");
 		}
-		return foundMember.getPoint();
+		return PointResponse.createPointResponse(foundMember.getPoint());
 	}
 
 	@Transactional

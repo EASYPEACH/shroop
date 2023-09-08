@@ -38,9 +38,12 @@ const handleConfirm = async () => {
   try {
     const response = await patchApi({
       url: `/api/point/${props.isCharged ? "charging" : "exchanging"}`,
-      data: Number(point.value),
+      data: {
+        point: point.value,
+      },
     });
-    emits("handleReturnPointResult", response);
+    console.log(response);
+    emits("handleReturnPointResult", response.point);
     emits("handleCancel");
     point.value = "";
   } catch (error) {

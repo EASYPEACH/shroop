@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
@@ -38,36 +37,61 @@ class TransactionControllerTest extends ControllerTest {
 	@Test
 	@DisplayName("결제창 테스트 코드")
 	void getBuyingForm() throws Exception {
+		Long productId = 1L;
 
-		TransactionInfoResponse dto = new TransactionInfoResponse("aaaa", "상품", 10000L, 20000L);
+		TransactionInfoResponse dto = new TransactionInfoResponse("상품 이미지 URL", "상품 제목", 100000L, 100000L);
 
 		given(transactionService.createTransactionInfoResponse(any(), any())).willReturn(dto);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/buying/1")
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/buying/{productId}", productId)
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.productImgUrl").value("aaaa"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("상품"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.point").value(20000L));
+			.andExpect(MockMvcResultMatchers.jsonPath("$.productImgUrl").value("상품 이미지 URL"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("상품 제목"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.price").value(100000L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.point").value(100000L))
+			.andDo(document("getBuyingForm",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
+				responseFields(
+					fieldWithPath("productImgUrl").description("상품 URL"),
+					fieldWithPath("title").description("상품 제목"),
+					fieldWithPath("price").description("상품 가격"),
+					fieldWithPath("point").description("구매자의 포인트")
+				))).andDo(print());
 
 	}
 
 	@Test
 	@DisplayName("결제하기 테스트 코드")
 	void buyingProduct() throws Exception {
+		Long productId = 1L;
+
 		doNothing().when(transactionService).createTransaction(any(), any(), any());
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		TransactionCreateRequest transactionCreateRequest = new TransactionCreateRequest("이종만", "01050505050",
-			"강서구에살아");
+		TransactionCreateRequest transactionCreateRequest = new TransactionCreateRequest("구매자 이름", "01012345678",
+			"구매자 주소");
 		String json = objectMapper.writeValueAsString(transactionCreateRequest);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/buying/1")
+		mockMvc.perform(RestDocumentationRequestBuilders.post("/api/buying/{productId}", productId)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 			.andExpect(status().isOk())
-			.andDo(document("buying",
+			.andDo(document("buyingProduct",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
+				requestFields(
+					fieldWithPath("buyerName").description("구매자 이름"),
+					fieldWithPath("buyerPhoneNumber").description("구매자 번호"),
+					fieldWithPath("buyerLocation").description("구매자 주소")
+				),
 				responseFields(
 					fieldWithPath("message").description("결제가 완료되었습니다.")
 				)))
@@ -77,21 +101,38 @@ class TransactionControllerTest extends ControllerTest {
 	@Test
 	@DisplayName("결제 완료창 테스트 코드")
 	void getBuyingCompletedForm() throws Exception {
-		TransactionCreatedResponse transactionCreatedResponse = new TransactionCreatedResponse(1L, "url", "title",
-			30000L, "이종문", "01050502222", "강서구에삽니다");
+		Long productId = 1L;
+		TransactionCreatedResponse transactionCreatedResponse = new TransactionCreatedResponse(1L, "상품 이미지 URL",
+			"상품 제목",
+			100000L, "구매자 이름", "01012345678", "구매자 주소");
 
 		given(transactionService.createTransactionCreatedResponse(any())).willReturn(transactionCreatedResponse);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/buying/completed/1")
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/api/buying/completed/{productId}", productId)
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.transactionId").value(1L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.productImgUrl").value("url"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.productTitle").value("title"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.productPrice").value(30000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.buyerName").value("이종문"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.buyerPhoneNumber").value("01050502222"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.buyerLocation").value("강서구에삽니다"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.productImgUrl").value("상품 이미지 URL"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.productTitle").value("상품 제목"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.productPrice").value(100000L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.buyerName").value("구매자 이름"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.buyerPhoneNumber").value("01012345678"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.buyerLocation").value("구매자 주소"))
+			.andDo(document("getBuyingCompletedForm",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("productId").description("상품 아이디")
+				),
+				responseFields(
+					fieldWithPath("transactionId").description("거래 아이디"),
+					fieldWithPath("productImgUrl").description("상품 이미지"),
+					fieldWithPath("productTitle").description("상품 제목"),
+					fieldWithPath("productPrice").description("상품 가격"),
+					fieldWithPath("buyerName").description("구매자 이름"),
+					fieldWithPath("buyerPhoneNumber").description("구매자 번호"),
+					fieldWithPath("buyerLocation").description("구매자 주소")
+				)))
 			.andDo(print());
 
 	}
