@@ -8,7 +8,7 @@
     <v-text-field
       :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
       :type="visible ? 'text' : 'password'"
-      :value="modelValue"
+      :model-value="modelValue"
       :rules="rules"
       density="compact"
       placeholder="비밀번호를 입력해주세요"
