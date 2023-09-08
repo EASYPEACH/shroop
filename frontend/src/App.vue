@@ -3,10 +3,12 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
 import { useApiLoading } from "@/store/modules";
 import api from "./api";
 
 const loadingStore = useApiLoading();
+const router = useRouter();
 
 api.interceptors.request.use(
   (config) => {
@@ -24,10 +26,9 @@ api.interceptors.request.use(
   },
   (err) => {
     loadingStore.setIsLoading(false);
-    if (err.response.status === 500) {
-      alert(
-        "서버에 문제가 생겼습니다. 새로고침을 하거나 관리자에게 문의해주세요.",
-      );
+    if (err.response.status === 403) {
+      router.go(0);
+      alert("로그아웃 되었습니다");
     }
     return Promise.reject(err);
   },
@@ -39,10 +40,9 @@ api.interceptors.response.use(
   },
   (err) => {
     loadingStore.setIsLoading(false);
-    if (err.response.status === 500) {
-      alert(
-        "서버에 문제가 생겼습니다. 새로고침을 하거나 관리자에게 문의해주세요.",
-      );
+    if (err.response.status === 403) {
+      router.go(0);
+      alert("로그아웃 되었습니다");
     }
     return Promise.reject(err);
   },
