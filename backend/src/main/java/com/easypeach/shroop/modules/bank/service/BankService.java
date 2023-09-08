@@ -11,6 +11,7 @@ import com.easypeach.shroop.modules.bank.exception.AccountMismatchException;
 import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
+import com.easypeach.shroop.modules.member.dto.request.PointRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,8 @@ public class BankService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
-	public void subtractMoney(final Long point, final Member member) {
+	public void subtractMoney(final PointRequest pointRequest, final Member member) {
+		Long point = pointRequest.getPoint();
 		Member foundMember = memberRepository.getById(member.getId());
 		Bank bank = bankRepository.getByAccount(foundMember.getAccount());
 		if (bank.getMoney() >= point) {
@@ -36,7 +38,8 @@ public class BankService {
 	}
 
 	@Transactional
-	public void addMoney(final Long point, final Member member) {
+	public void addMoney(final PointRequest pointRequest, final Member member) {
+		Long point = pointRequest.getPoint();
 		Member foundMember = memberRepository.getById(member.getId());
 		Bank bank = bankRepository.getByAccount(foundMember.getAccount());
 		bank.addMoney(point);
