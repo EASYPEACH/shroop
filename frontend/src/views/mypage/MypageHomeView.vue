@@ -154,7 +154,7 @@ const startIndex = ref(0); // 상품 시작 인덱스
 const endIndex = ref(perPage.value); // 상품 마지막 인덱스
 
 onBeforeMount(async () => {
-  handleGetUserData();
+  await handleGetUserData();
 });
 
 // 마이페이지 유저 정보
