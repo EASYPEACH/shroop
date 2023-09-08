@@ -56,3 +56,25 @@ include::{snippets}/members/leave/request-fields.adoc[]
 
 include::{snippets}/members/leave/http-response.adoc[]
 include::{snippets}/members/leave/response-fields.adoc[]
+
+== 포인트 충전하기
+
+=== Request
+
+include::{snippets}/chargePoint/http-request.adoc[]
+include::{snippets}/chargePoint/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/chargePoint/http-response.adoc[]
+include::{snippets}/chargePoint/response-fields.adoc[]
+
+== 포인트 환전하기
+
+include::{snippets}/exchangePoint/http-request.adoc[]
+include::{snippets}/exchangePoint/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/exchangePoint/http-response.adoc[]
+include::{snippets}/exchangePoint/response-fields.adoc[]

@@ -2,6 +2,9 @@ package com.easypeach.shroop.modules.transaction.controller;
 
 import static com.easypeach.shroop.modules.transaction.domain.TransactionStatus.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -36,10 +39,10 @@ class TransactionHistoryControllerTest extends ControllerTest {
 	@DisplayName("구매내역 조회 테스트 코드")
 	void getBuyingHistory() throws Exception {
 		List<HistoryResponse> dtoList = new ArrayList<>();
-		LocalDateTime time = LocalDateTime.of(2019, 11, 12, 12, 32, 22, 3333);
+		LocalDateTime time = LocalDateTime.of(2000, 1, 1, 1, 1, 1, 0);
 		HistoryResponse dto = new HistoryResponse(1L, time,
-			PURCHASE_REQUEST, "아이패드", 30000L,
-			"https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png");
+			PURCHASE_REQUEST, "상품 제목", 100000L,
+			"상품 이미지 URL");
 		dtoList.add(dto);
 
 		given(transactionService.findAllBuyingHistory(any())).willReturn(dtoList);
@@ -51,10 +54,20 @@ class TransactionHistoryControllerTest extends ControllerTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionCreateDate")
 				.value(time.toString()))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(PURCHASE_REQUEST.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("아이패드"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(30000L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("상품 제목"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(100000L))
 			.andExpect(MockMvcResultMatchers.jsonPath("$[0].productImgUrl")
-				.value("https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png"))
+				.value("상품 이미지 URL"))
+			// .andDo(document("getBuyingHistory",
+			// 	// preprocessResponse(prettyPrint()),
+			// 	// responseFields(
+			// 	// 	fieldWithPath("id").description("상품 아이디"),
+			// 	// 	fieldWithPath("transactionCreateDate").description("거래 날짜"),
+			// 	// 	fieldWithPath("transactionStatus").description("거래 상태"),
+			// 	// 	fieldWithPath("title").description("상품 제목"),
+			// 	// 	fieldWithPath("price").description("상품 가격"),
+			// 	// 	fieldWithPath("productImgUrl").description("상품 이미지")
+			// 	// )))
 			.andDo(print());
 
 	}
@@ -62,10 +75,10 @@ class TransactionHistoryControllerTest extends ControllerTest {
 	@Test
 	void getSellingHistory() throws Exception {
 		List<HistoryResponse> dtoList = new ArrayList<>();
-		LocalDateTime time = LocalDateTime.of(2019, 11, 12, 12, 32, 22, 3333);
+		LocalDateTime time = LocalDateTime.of(2000, 1, 1, 1, 1, 1, 0);
 		HistoryResponse dto = new HistoryResponse(1L, time,
-			PURCHASE_REQUEST, "아이패드", 30000L,
-			"https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png");
+			PURCHASE_REQUEST, "상품 제목", 100000L,
+			"상품 이미지 URL");
 		dtoList.add(dto);
 		int pageCount = 7;
 		Page<HistoryResponse> page = new PageImpl<>(dtoList);
@@ -80,10 +93,21 @@ class TransactionHistoryControllerTest extends ControllerTest {
 				.value(time.toString()))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].transactionStatus")
 				.value(PURCHASE_REQUEST.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].title").value("아이패드"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].price").value(30000L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].title").value("상품 제목"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].price").value(100000L))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].productImgUrl")
-				.value("https://shroop-s3.s3.ap-northeast-2.amazonaws.com/%E1%84%92%E1%85%AA%E1%86%AF.png"))
+				.value("상품 이미지 URL"))
+			.andDo(document("getSellingHistory",
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("pageCount").description("총 페이지 수"),
+					fieldWithPath("historyResponseList[].id").description("결제 아이디"),
+					fieldWithPath("historyResponseList[].transactionCreateDate").description("거래 날짜"),
+					fieldWithPath("historyResponseList[].transactionStatus").description("거래 상태"),
+					fieldWithPath("historyResponseList[].title").description("상품 제목"),
+					fieldWithPath("historyResponseList[].price").description("상품 가격"),
+					fieldWithPath("historyResponseList[].productImgUrl").description("상품 이미지")
+				)))
 			.andDo(print());
 	}
 }
