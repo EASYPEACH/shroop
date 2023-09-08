@@ -45,10 +45,10 @@ public class DeliveryService {
 		log.info("메시지 : " + message);
 
 		// 판매자 알림
-		notificationService.saveNotification(sellerId, "택배 등록", "/mypage/2", message);
+		notificationService.saveNotification(sellerId, "택배 등록", "/mypage/sellList", message);
 
 		// 구매자 알림
-		notificationService.saveNotification(buyer, "택배 등록", "/mypage/1", message);
+		notificationService.saveNotification(buyer, "택배 등록", "/mypage/purchaseList", message);
 
 	}
 
