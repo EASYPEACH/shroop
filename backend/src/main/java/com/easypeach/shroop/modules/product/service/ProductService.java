@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.easypeach.shroop.modules.auth.exception.UnAuthorizedAccessException;
 import com.easypeach.shroop.modules.likes.domain.LikeRepository;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.MemberRepository;
@@ -83,7 +84,7 @@ public class ProductService {
 		Member productOwnerMember = memberRepository.getById(product.getSeller().getId());
 
 		if (loginMember != productOwnerMember) {
-			throw ProductException.notAuthorizationToUpdate();
+			throw new UnAuthorizedAccessException("수정 권한이 없습니다");
 		}
 
 		Category category = categoryRepository.getById(productRequest.getCategoryId());
@@ -102,7 +103,7 @@ public class ProductService {
 			throw ProductException.notStatusDelete(product.getTransaction().getStatus());
 		}
 		if (loginMember != productOwnerMember) {
-			throw ProductException.notAuthorizationToDelete();
+			throw new UnAuthorizedAccessException("삭제 권한이 없습니다");
 		}
 		productRepository.delete(product);
 	}
