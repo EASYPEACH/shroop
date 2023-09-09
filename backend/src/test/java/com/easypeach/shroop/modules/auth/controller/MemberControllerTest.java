@@ -22,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.easypeach.shroop.modules.common.ControllerTest;
 import com.easypeach.shroop.modules.member.dto.reponse.LikeProductInfo;
@@ -30,7 +29,6 @@ import com.easypeach.shroop.modules.member.dto.reponse.MyPageInfoResponse;
 import com.easypeach.shroop.modules.member.dto.reponse.ProfileEditForm;
 import com.easypeach.shroop.modules.member.dto.request.MemberInfo;
 import com.easypeach.shroop.modules.member.dto.request.ProfileEditRequest;
-import com.easypeach.shroop.modules.product.domain.Category;
 
 public class MemberControllerTest extends ControllerTest {
 
@@ -47,7 +45,7 @@ public class MemberControllerTest extends ControllerTest {
 			"productImgUrl",
 			"title",
 			"1,000",
-			new Category(1L, "전자제품"),
+			new LikeProductInfo.CategoryInfo(1L, "전자제품"),
 			LocalDateTime.now());
 		ArrayList<LikeProductInfo> list = new ArrayList<>();
 		list.add(likeProductInfo);
@@ -60,7 +58,6 @@ public class MemberControllerTest extends ControllerTest {
 			"50811112222",
 			100L,
 			page);
-
 
 		given(memberService.getMyInfo(any(), any())).willReturn(info);
 		PageRequest pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "id"));
@@ -91,8 +88,8 @@ public class MemberControllerTest extends ControllerTest {
 					fieldWithPath("page.content[].productImgUrl").description("상품 이미지"),
 					fieldWithPath("page.content[].title").description("상품 제목"),
 					fieldWithPath("page.content[].price").description("상품 가격"),
-					fieldWithPath("page.content[].category.id").description("카테고리 UID"),
-					fieldWithPath("page.content[].category.name").description("카테고리 이름"),
+					fieldWithPath("page.content[].categoryInfo.id").description("카테고리 UID"),
+					fieldWithPath("page.content[].categoryInfo.name").description("카테고리 이름"),
 					fieldWithPath("page.content[].createDate").description("상품 게시 날짜"),
 					fieldWithPath("page.pageable").description("페이지 정보"),
 					fieldWithPath("page.last").description("마지막 페이지 여부"),
@@ -203,11 +200,11 @@ public class MemberControllerTest extends ControllerTest {
 
 		// when & then
 		mockMvc.perform(
-			delete("/api/members/leave")
-				.accept(MediaType.APPLICATION_JSON)
-				.characterEncoding(StandardCharsets.UTF_8)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(memberInfo)))
+				delete("/api/members/leave")
+					.accept(MediaType.APPLICATION_JSON)
+					.characterEncoding(StandardCharsets.UTF_8)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(memberInfo)))
 			.andDo(print())
 			.andDo(document("members/leave",
 				preprocessRequest(prettyPrint()),
