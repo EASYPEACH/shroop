@@ -118,7 +118,10 @@ public class Member {
 		this.phoneNumber = profileEditRequest.getPhoneNumber();
 	}
 
-	public void addGradeScore(Long addScore){ this.gradeScore += addScore;}
+	public void addGradeScore(Long addScore) {
+		this.gradeScore += addScore;
+	}
+
 	public void updatePassword(String password) {
 		this.password = password;
 	}
@@ -129,6 +132,10 @@ public class Member {
 
 	public void updateProfileImg(String imgUrl) {
 		this.profileImg = imgUrl;
+	}
+
+	public void updatePhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 }
 
