@@ -222,7 +222,7 @@ const handleToggleHeart = async (id, idx) => {
     await deleteApi({
       url: `/api/likes/${id}`,
     });
-    likeList.value = [...likeList.value].filter((data) => data.id !== id);
+    await handleChangeLikePage();
   }
 };
 
