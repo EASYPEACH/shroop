@@ -60,3 +60,11 @@ export const phoneAuthRule = {
   required: (value) => !!value || "인증번호를 입력해주세요",
   length: (value) => value.length === 4 || "인증번호는 4자리입니다",
 };
+
+export const trackingNumberRule = {
+  required: (value) => !!value || "운송장번호를 입력해주세요",
+  check: (value) => {
+    const pattern = /^[0-9]*$/;
+    return pattern.test(value) || "숫자만 해주세요";
+  },
+};
