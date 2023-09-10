@@ -167,7 +167,7 @@ header {
     section {
       width: 100%;
       .search__box {
-        left: calc(50% + 20px);
+        left: 50%;
       }
     }
   }
@@ -182,9 +182,14 @@ header {
     aspect-ratio: 1 / 1;
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: center;
     transform: translateX(20px);
+    @media (max-width: 960px) {
+      transform: translateX(0px);
+    }
     img {
+      align-self: flex-end;
+      margin-right: 6px;
       width: 15px;
     }
     h2 {
