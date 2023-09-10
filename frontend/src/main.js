@@ -13,11 +13,12 @@ import "aos/dist/aos.css";
 
 // Plugins
 import { registerPlugins } from "@/plugins";
+import AOS from "aos";
 
 import "./styles/global.style.css";
 
 const app = createApp(App);
 
 registerPlugins(app);
-
+AOS.init();
 app.mount("#app");

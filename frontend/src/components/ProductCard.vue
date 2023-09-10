@@ -73,6 +73,7 @@ defineEmits(["handle-click-like"]);
   padding: 10px 15px;
   font-weight: 600;
   p {
+    padding: 5px 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
