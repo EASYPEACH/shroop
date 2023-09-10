@@ -133,8 +133,8 @@ onBeforeMount(async () => {
   }
 });
 
-router.beforeEach(() => {
-  if (route.path === "/products") {
+router.beforeEach((to) => {
+  if (to.path === "/products") {
     handelGetProductData();
   }
 });
