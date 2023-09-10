@@ -19,7 +19,7 @@
       </li>
       <li class="infobox">
         <h4>배송주소</h4>
-        <p>{{ product.address }}</p>
+        <p>{{ product.buyerLocation }}</p>
       </li>
     </ul>
     <v-btn

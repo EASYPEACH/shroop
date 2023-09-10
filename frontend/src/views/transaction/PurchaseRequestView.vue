@@ -61,7 +61,10 @@
       </v-form>
       <charge-point-modal
         v-model="showChargePointModal"
-        @handle-cancle="showChargePointModal = false"
+        @handle-cancel="showChargePointModal = false"
+        @handle-return-point-result="(result) => (profile.point = result)"
+        label="충전할 방울"
+        isCharged
       />
     </content-layout>
   </section>
@@ -147,6 +150,7 @@ onBeforeMount(async () => {
       url: `/api/buying/${route.params.id}`,
     });
     product.value = response;
+    profile.value = response;
   } catch (error) {
     console.error(error);
   }
@@ -173,7 +177,7 @@ const handleRequestPurchase = async () => {
     });
     router.push(`/PurchaseComplete/${route.params.id}`);
   } catch (error) {
-    console.error(error);
+    alert(error.response.data.message);
   }
 };
 </script>
