@@ -29,7 +29,8 @@
           <transaction-badge
             v-if="
               product.transactionStatus !== null &&
-              product.transactionStatus !== undefined
+              product.transactionStatus !== undefined &&
+              $route.path.split('/')[1] !== 'mypage'
             "
           />
           <h4>{{ product.title }}</h4>
