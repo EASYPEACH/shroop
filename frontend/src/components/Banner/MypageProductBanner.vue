@@ -238,7 +238,7 @@ aside {
     align-items: center;
     @media (max-width: 750px) {
       p {
-        font-size: 15px;
+        font-size: 13px;
       }
     }
 
@@ -247,9 +247,9 @@ aside {
       text-align: center;
     }
     ul {
-      font-size: 14px;
       width: 90px;
       li {
+        font-size: 13px;
         text-align: center;
       }
     }
