@@ -62,6 +62,10 @@
           </v-menu>
         </li>
       </ul>
+      <NotifyBellButton
+        v-else-if="isMobile && loginCheckStore.isLogin"
+        style="margin-right: 40px"
+      />
     </section>
   </v-app-bar>
 </template>

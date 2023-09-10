@@ -1,5 +1,5 @@
 <template>
-  <v-btn class="text-none" @click="handleShowNotification">
+  <v-btn variant="text" class="text-none" @click="handleShowNotification">
     <v-badge
       v-if="notCheckednotifyCount"
       :content="notCheckednotifyCount"
@@ -44,7 +44,7 @@ const handleGetNotification = async () => {
 };
 
 const handleShowNotification = () => {
-  notifyStore.setIsShowNotify();
+  notifyStore.setIsShowNotify(!notifyStore.isShowNotify);
 };
 </script>
 

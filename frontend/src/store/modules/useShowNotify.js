@@ -7,8 +7,8 @@ export const useShowNotify = defineStore("showNotify", {
     };
   },
   actions: {
-    setIsShowNotify() {
-      this.isShowNotify = !this.isShowNotify;
+    setIsShowNotify(status) {
+      this.isShowNotify = status;
     },
   },
 });
