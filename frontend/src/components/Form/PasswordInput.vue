@@ -3,7 +3,7 @@
     <div
       class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between"
     >
-      비밀번호
+      {{title}}
     </div>
     <v-text-field
       :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
@@ -25,6 +25,7 @@ defineProps({
   modelValue: String,
   visible: Boolean,
   rules: Object,
+  title: String
 });
 defineEmits(["update:modelValue", "toggle-visible"]);
 </script>

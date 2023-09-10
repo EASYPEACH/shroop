@@ -36,12 +36,14 @@
         <h4 class="profile__info-name">패스워드</h4>
         <div class="info__input-box">
           <password-input
+            title="기존 패스워드"
             class="profile__info-input"
             placeholderText="기존 패스워드"
             v-model="oldPassword"
             type="password"
           />
           <password-input
+            title="새로운 패스워드"
             class="profile__info-input"
             placeholderText="변경할 패스워드"
             v-model="newPassword"
