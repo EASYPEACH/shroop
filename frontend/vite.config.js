@@ -69,6 +69,7 @@ export default defineConfig({
       manifest: {
         name: "슈룹",
         short_name: "슈룹",
+        description: "안전한 중고거래 슈룹",
         theme_color: "#ffffff",
         icons: [
           {
