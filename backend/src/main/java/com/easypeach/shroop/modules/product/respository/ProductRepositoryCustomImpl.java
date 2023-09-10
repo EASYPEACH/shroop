@@ -107,7 +107,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
 	private BooleanExpression likesISNull(QLikes like, Long memberId) {
 		if (like == null || memberId == null) {
-			return likes.isNotNull();
+			return likes.id.eq(0L);
 		}
 
 		return likes.member.id.eq(memberId);
