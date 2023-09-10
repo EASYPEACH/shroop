@@ -173,7 +173,7 @@ const handleGetUserData = async () => {
   profile.value.point = userData.point;
   profile.value.account = userData.account;
   profile.value.score = userData.gradeScore;
-  console.log(userData);
+  
   handleScoreToRankIcon(userData.gradeScore);
 
   likeList.value = userData.page.content.map((data) => {
