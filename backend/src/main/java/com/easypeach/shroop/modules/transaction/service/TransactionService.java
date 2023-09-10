@@ -222,6 +222,9 @@ public class TransactionService {
 			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
 		String message = "'" + productTitle + "'의 구매가 확정되었습니다.";
 
+		// 판매자 회원 등급 상승
+		memberService.findById(sellerId).addGradeScore(10L);
+
 		// 판매자 알림
 		notificationService.saveNotification(sellerId, title, "/mypage/sellList", message);
 
