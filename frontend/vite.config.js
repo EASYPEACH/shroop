@@ -21,14 +21,14 @@ export default defineConfig({
       },
     }),
     VitePWA({
-      strategies: "injectManifest",
       srcDir: "src",
-      filename: "sw.js",
+      filename: "service-worker.js",
+      strategies: "injectManifest",
       registerType: "autoUpdate",
       injectRegister: "auto",
       mode: "production",
       devOptions: {
-        enabled: false,
+        enabled: true,
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
@@ -62,6 +62,9 @@ export default defineConfig({
             },
           },
         ],
+      },
+      injectManifest: {
+        injectionPoint: null,
       },
       manifest: {
         name: "슈룹",
