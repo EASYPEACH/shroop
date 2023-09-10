@@ -5,15 +5,75 @@
     <link rel="icon" href="/favicon.ico" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
     />
     <meta name="description" content="슈룹: 안전 중고거래 서비스" />
     <meta name="author" content="shroop" />
     <meta property="og:title" content="슈룹: 안전 중고거래 서비스" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="./src/assets/image/logo-black.png" />
+    <meta property="og:image" content="/public/icons/icon-256x256.png" />
     <meta name="og:description" content="슈룹: 안전 중고거래 서비스" />
     <meta property="og:site_name" content="슈룹" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="manifest" href="/public/manifest.json" />
+    <link
+      rel="apple-touch-icon"
+      sizes="192x192"
+      href="/public/icons/icon-192x192.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="256x256"
+      href="/public/icons/icon-256x256.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="384x384"
+      href="/public/icons/icon-384x384.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="512x512"
+      href="/public/icons/icon-512x512.png"
+    />
+    <link
+      rel="mask-icon"
+      href="/public/icons/icon-192x192.png"
+      color="#FFFFFF"
+    />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link
+      rel="preconnect"
+      crossorigin="anonymous"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      crossorigin="anonymous"
+      href="https://fonts.gstatic.com"
+    />
+    <link
+      rel="stylesheet"
+      crossorigin="anonymous"
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
+    />
+    <script>
+      if ("serviceWorker" in navigator) {
+        // Register a service worker hosted at the root of the
+        // site using the default scope.
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then((registration) => {
+            console.log("Service worker registration succeeded:", registration);
+          })
+          .catch((err) => {
+            console.log("Service worker registration failed:", err);
+          });
+      } else {
+        console.log("Service workers are not supported.");
+      }
+    </script>
     <title>슈룹:중고거래의 안전한 우산</title>
   </head>
 
