@@ -34,9 +34,21 @@
           />
         </div>
 
-        <p class="payment-price">
-          결제 금액: {{ product.price.toLocaleString() }} 원
-        </p>
+        <div class="payment">
+          <div class="payment-price">
+            <p>상품 금액 : {{ product.price.toLocaleString() }} 원</p>
+            <p>
+              안전 결제 수수료 :
+              {{ Math.round(product.price * 0.035).toLocaleString() }}
+              원
+            </p>
+            <p>
+              총 결제금액 :
+              {{ product.price + Math.round(product.price * 0.035) }}
+              원
+            </p>
+          </div>
+        </div>
 
         <div class="caution">
           <h2>주의 사항</h2>
@@ -57,7 +69,7 @@
             </div>
           </div>
         </div>
-        <submit-button text="결제하기" />
+        <submit-button :disabled="!isValid" text="결제하기" />
       </v-form>
       <charge-point-modal
         v-model="showChargePointModal"
@@ -87,9 +99,11 @@ import { MiniButton } from "@/components/Button";
 import { ChargePointModal } from "@/components/Modal";
 import CautionBlock from "@/components/CautionBlock.vue";
 import { ProductBanner } from "@/components/Banner";
+import { watchEffect } from "vue";
 
 const router = useRouter();
 const route = useRoute();
+const isValid = ref(false);
 const buyerName = ref("");
 const phoneNumber = ref("");
 const address = ref("");
@@ -180,6 +194,20 @@ const handleRequestPurchase = async () => {
     alert(error.response.data.message);
   }
 };
+
+watchEffect(() => {
+  if (
+    buyerName.value.length >= 2 &&
+    phoneNumber.value.length >= 10 &&
+    phoneNumber.value.length <= 11 &&
+    address.value.length >= 5 &&
+    allCheckboxesChecked.value === true
+  ) {
+    isValid.value = true;
+  } else {
+    isValid.value = false;
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -196,11 +224,20 @@ const handleRequestPurchase = async () => {
     opacity: 0.7;
   }
 }
-.payment-price {
+.payment {
   display: flex;
-  justify-content: flex-end;
-  padding: 50px;
-  font-weight: bold;
+  justify-content: end;
+  .payment-price {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    height: 190px;
+    padding: 50px;
+    p:nth-child(3) {
+      font-weight: bold;
+    }
+  }
 }
 .caution {
   display: flex;
