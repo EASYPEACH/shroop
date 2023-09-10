@@ -40,12 +40,25 @@ include::{snippets}/getBuyingCompletedForm/path-parameters.adoc[]
 include::{snippets}/getBuyingCompletedForm/http-response.adoc[]
 include::{snippets}/getBuyingCompletedForm/response-fields.adoc[]
 
+== 구매 내역 조회
+
+=== Request
+
+include::{snippets}/getBuyingHistory/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/getBuyingHistory/http-response.adoc[]
+include::{snippets}/getBuyingHistory/response-fields.adoc[]
+
 == 판매 내역 조회
 
 === Request
+
 include::{snippets}/getSellingHistory/http-request.adoc[]
 
 === Response
+
 include::{snippets}/getSellingHistory/http-response.adoc[]
 include::{snippets}/getSellingHistory/response-fields.adoc[]
 
