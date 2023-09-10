@@ -3,7 +3,6 @@ package com.easypeach.shroop.modules.transaction.dto.response;
 import java.time.LocalDateTime;
 
 import com.easypeach.shroop.modules.product.domain.Product;
-import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 
 import lombok.AllArgsConstructor;
@@ -25,15 +24,6 @@ public class HistoryResponse {
 	private Long price;
 
 	private String productImgUrl;
-
-	public HistoryResponse(Transaction transaction) {
-		this.id = transaction.getProduct().getId();
-		this.transactionCreateDate = transaction.getCreateDate();
-		this.transactionStatus = transaction.getStatus();
-		this.title = transaction.getProduct().getTitle();
-		this.price = transaction.getProduct().getPrice();
-		this.productImgUrl = transaction.getProduct().getProductImgList().get(0).getProductImgUrl();
-	}
 
 	public HistoryResponse(Product product) {
 		if (product.getTransaction() != null) {
