@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.easypeach.shroop.modules.bank.exception.NoSuchBankException;
 import com.easypeach.shroop.modules.bank.service.BankService;
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.member.domain.ShroopMember;
@@ -55,20 +56,24 @@ public class TransactionService {
 	@Transactional
 	public void createTransaction(final TransactionCreateRequest transactionCreateRequest, final Long productId,
 		final Member member) {
+		Member foundMember = memberService.findById(member.getId());
+		if (foundMember.getAccount() == null) {
+			throw NoSuchBankException.bankNotExistException();
+		}
 		Product product = productService.findByProductId(productId);
 
 		Long price = product.getPrice();
 		Long fee = Math.round(price * 0.035);
 		Long totalprice = price + fee;
 
-		checkSeller(member, product.getSeller());
+		checkSeller(foundMember, product.getSeller());
 
 		// 거래 저장
-		saveTransaction(productId, member.getId(), transactionCreateRequest);
+		saveTransaction(productId, foundMember.getId(), transactionCreateRequest);
 
 		// 구매자에게 포인트 차감
-		if (member.getPoint() >= totalprice) {
-			subtractPoint(totalprice, member.getId());
+		if (foundMember.getPoint() >= totalprice) {
+			subtractPoint(totalprice, foundMember.getId());
 		} else {
 			throw new LackOfPointException("포인트가 부족합니다.");
 		}
@@ -80,8 +85,8 @@ public class TransactionService {
 		bankService.addMoney(PointRequest.createPointRequest(fee),
 			memberService.findById(ShroopMember.SHROOP_ID.getId()));
 
-		// phoneAuthService.sendSms(product.getSeller().getPhoneNumber(),
-		// 	String.format("%s 판매자님 %s 상품이 결제되었습니다.", product.getSeller().getNickname(), product.getTitle()));
+		String message = product.getSeller().getNickname() + "판매자님 " + product.getTitle() + "상품이 결제되었습니다.";
+		notificationService.saveNotification(product.getSeller().getId(), "결제완료", "/mypage/sellList", message);
 
 		log.info("{} 판매자님 {} 상품이 결제되었습니다.", product.getSeller().getNickname(), product.getTitle());
 	}
@@ -160,15 +165,16 @@ public class TransactionService {
 	}
 
 	public List<HistoryResponse> findAllBuyingHistory(final Member member) {
-		List<Transaction> transactionList = transactionRepository.findAllByBuyer(member);
+		Member foundMember = memberService.findById(member.getId());
+		List<Transaction> transactionList = transactionRepository.findAllByBuyer(foundMember);
 		return transactionList.stream()
 			.map(HistoryResponse::new)
 			.collect(Collectors.toList());
 	}
 
 	public PageResponse findAllSellingHistory(final Member member, final Pageable pageable) {
-
-		Page<Product> page = productRepository.findBySeller(member, pageable);
+		Member foundMember = memberService.findById(member.getId());
+		Page<Product> page = productRepository.findBySeller(foundMember, pageable);
 		int pageCount = page.getTotalPages();
 		List<HistoryResponse> historyResponseList = page
 			.map(HistoryResponse::new)
