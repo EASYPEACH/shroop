@@ -21,6 +21,7 @@
           <div>중복된 아이디 입니다</div>
         </div>
         <password-input
+          title="패스워드"
           :visible="visible"
           @toggle-visible="visible = !visible"
           v-model="password"
@@ -62,7 +63,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :disabled="!isValid" type="submit" color="subBlue">
+          <v-btn :disabled="!isValid || isDuplId || isDuplNickname || isDuplPhone" type="submit" color="subBlue">
             다음
           </v-btn>
         </v-card-actions>
@@ -205,10 +206,9 @@ const checkDuplication = async (param) => {
     });
     if (data.result === false) {
       param.dataRef.value = true;
-      isValid.value = false;
     } else {
       param.dataRef.value = false;
-      isValid.value = true;
+      
     }
   } catch (error) {
     console.error(error);
