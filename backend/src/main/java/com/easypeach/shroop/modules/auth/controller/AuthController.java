@@ -43,8 +43,8 @@ public class AuthController {
 
 	@PostMapping(value = "/phone") // 폰인증 번호 보내기
 	public ResponseEntity<PhoneAuthUUID> getAuthNumber(@RequestBody PhoneNumber phoneNumber) {
-		Long UUID = phoneAuthService.sendAuthNumber(phoneNumber.getPhoneNumber());
-		return ResponseEntity.ok(new PhoneAuthUUID(UUID)); // uuid 전달
+		PhoneAuthUUID phoneAuthUUID = phoneAuthService.sendAuthNumber(phoneNumber.getPhoneNumber());
+		return ResponseEntity.ok(phoneAuthUUID); // uuid 전달
 	}
 
 	@PostMapping(value = "/check") // 포커스 아웃시 폰 인증 검사

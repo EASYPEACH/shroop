@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PhoneAuthUUID {
     private Long UUID;
+    private Long seconds;
 
-    public PhoneAuthUUID(Long uuid) {
+    public PhoneAuthUUID(Long uuid, Long seconds) {
         this.UUID = uuid;
+        this.seconds = seconds;
     }
 }
