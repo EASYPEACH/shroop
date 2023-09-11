@@ -1,41 +1,39 @@
 <template>
-  <section>
+  <content-layout>
     <main-title v-if="isReport" title="신고접수" />
     <main-title v-else title="중재접수" />
-    <content-layout>
-      <v-form
-        v-model="isVailed"
-        enctype="multipart/form-data"
-        @submit.prevent="handleSubmit"
-      >
-        <product-title title="제목" isRequired />
-        <custom-text-input
-          :rules="[defaultTextRule.required]"
-          placeholderText="제목"
-          v-model="title"
+    <v-form
+      v-model="isVailed"
+      enctype="multipart/form-data"
+      @submit.prevent="handleSubmit"
+    >
+      <product-title title="제목" isRequired />
+      <custom-text-input
+        :rules="[defaultTextRule.required]"
+        placeholderText="제목"
+        v-model="title"
+      />
+      <product-title v-if="isReport" title="신고대상 게시물" />
+      <product-title v-else title="중재대상 게시물" />
+      <p>{{ productName }}</p>
+      <div v-show="!isReport">
+        <product-title title="중재 첨부사진" isRequired />
+        <image-attach
+          v-if="isMediate"
+          ref="productRef"
+          @change-files="handleAttachProductImage"
+          @delete-image="handleDeleteProductImage"
+          required
+          attach-name="reportImage"
+          :images="productImagesThumb"
         />
-        <product-title v-if="isReport" title="신고대상 게시물" />
-        <product-title v-else title="중재대상 게시물" />
-        <p>{{ productName }}</p>
-        <div v-show="!isReport">
-          <product-title title="중재 첨부사진" isRequired />
-          <image-attach
-            v-if="isMediate"
-            ref="productRef"
-            @change-files="handleAttachProductImage"
-            @delete-image="handleDeleteProductImage"
-            required
-            attach-name="reportImage"
-            :images="productImagesThumb"
-          />
-        </div>
-        <product-title v-if="isReport" title="신고사유" isRequired />
-        <product-title v-else title="중재사유" isRequired />
-        <CustomTextArea v-model="reportReason" />
-        <submit-button v-if="isReport" :disabled="!isVailed" text="신고접수" />
-        <submit-button v-else :disabled="!isVailed" text="중재접수" />
-      </v-form>
-    </content-layout>
+      </div>
+      <product-title v-if="isReport" title="신고사유" isRequired />
+      <product-title v-else title="중재사유" isRequired />
+      <CustomTextArea v-model="reportReason" />
+      <submit-button v-if="isReport" :disabled="!isVailed" text="신고접수" />
+      <submit-button v-else :disabled="!isVailed" text="중재접수" />
+    </v-form>
     <plain-modal
       v-for="dialog in dialogList"
       :key="dialog.id"
@@ -44,7 +42,7 @@
       @handle-cancle="() => (dialog.isShow = !dialog.isShow)"
       @handle-confirm="dialog.callback"
     />
-  </section>
+  </content-layout>
 </template>
 
 <script setup>
