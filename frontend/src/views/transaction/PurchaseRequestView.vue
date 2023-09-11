@@ -2,16 +2,23 @@
   <section>
     <content-layout>
       <product-banner :product="product" isPurchase />
-      <v-form @submit.prevent="handleRequestPurchase">
+      <v-form @submit.prevent="handleRequestPurchase" v-model="isValid">
         <product-title title="이름" isRequired />
         <custom-text-input
-          :rules="[defaultTextRule.required]"
+          :rules="[
+            defaultTextRule.required,
+            (value) => defaultTextRule.customMinLength(value, 2),
+          ]"
           placeholderText="이름을 입력해주세요."
           v-model="buyerName"
         />
         <product-title title="휴대폰 번호" isRequired />
         <custom-text-input
-          :rules="[phoneNumberRule.required, phoneNumberRule.check]"
+          :rules="[
+            phoneNumberRule.required,
+            phoneNumberRule.check,
+            (value) => defaultTextRule.customMinLength(value, 11),
+          ]"
           placeholderText="휴대폰 번호를 입력해주세요.(하이픈 빼고 입력)"
           v-model="phoneNumber"
         />
@@ -19,7 +26,10 @@
         <div class="postCode__box">
           <custom-text-input
             class="postCode__box-input"
-            :rules="[defaultTextRule.required]"
+            :rules="[
+              defaultTextRule.required,
+              (value) => defaultTextRule.customMinLength(value, 5),
+            ]"
             placeholderText="우편번호"
             hide-details
             v-model="postCode"
@@ -29,13 +39,19 @@
         </div>
 
         <custom-text-input
-          :rules="[defaultTextRule.required]"
+          :rules="[
+            defaultTextRule.required,
+            (value) => defaultTextRule.customMinLength(value, 8),
+          ]"
           placeholderText="주소"
           v-model="location"
           :disabled="true"
         />
         <custom-text-input
-          :rules="[defaultTextRule.required]"
+          :rules="[
+            defaultTextRule.required,
+            (value) => defaultTextRule.customMinLength(value, 5),
+          ]"
           placeholderText="상세주소"
           v-model="detailLocation"
         />
@@ -83,6 +99,7 @@
             <div class="caution__block-all-agree__text">전체 동의</div>
             <div>
               <v-checkbox
+                :rules="[agreeRule.required]"
                 v-model="allCheckboxesChecked"
                 @change="toggleAllCheckboxes"
               />
@@ -107,6 +124,7 @@ import { ref, watch, onBeforeMount } from "vue";
 import {
   defaultTextRule,
   phoneNumberRule,
+  agreeRule,
 } from "@/components/Form/data/formRules";
 import { getApi, postApi } from "@/api/modules";
 import { useRoute, useRouter } from "vue-router";
@@ -119,7 +137,6 @@ import { MiniButton } from "@/components/Button";
 import { ChargePointModal } from "@/components/Modal";
 import CautionBlock from "@/components/CautionBlock.vue";
 import { ProductBanner } from "@/components/Banner";
-import { watchEffect } from "vue";
 import { computed } from "vue";
 
 const router = useRouter();
@@ -233,22 +250,6 @@ const handleRequestPurchase = async () => {
     alert(error.response.data.message);
   }
 };
-
-watchEffect(() => {
-  if (
-    buyerName.value.length >= 2 &&
-    phoneNumber.value.length >= 10 &&
-    phoneNumber.value.length <= 11 &&
-    postCode.value.length >= 4 &&
-    location.value.length >= 5 &&
-    detailLocation.value.length >= 5 &&
-    allCheckboxesChecked.value === true
-  ) {
-    isValid.value = true;
-  } else {
-    isValid.value = false;
-  }
-});
 </script>
 
 <style lang="scss" scoped>

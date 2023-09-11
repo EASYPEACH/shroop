@@ -11,6 +11,8 @@
       :type="type"
       :disabled="disabled"
       :hide-details="hideDetails"
+      :hint="hint"
+      :persistent-hint="persistentHint"
       @input="$emit('update:modelValue', $event.target.value)"
       variant="filled"
       @blur="blur"
@@ -29,6 +31,8 @@ defineProps({
   hideDetails: Boolean,
   disabled: Boolean,
   blur: Function,
+  hint: String,
+  persistentHint: Boolean,
   type: {
     type: String,
     default: "text",
