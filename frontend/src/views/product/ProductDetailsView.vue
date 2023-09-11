@@ -299,8 +299,21 @@ const handleClickLike = async () => {
 };
 
 // 구매하기
-const handlePurchase = () => {
-  router.push(`/purchase/${route.params.id}`);
+const handlePurchase = async () => {
+  try {
+    const response = await getApi({
+      url: "/api/bank/checkingAccount",
+    });
+    console.log(response);
+    if (response === false) {
+      alert("연동된 계좌가 없습니다.");
+      router.push("/mypage/home");
+    } else {
+      router.push(`/purchase/${route.params.id}`);
+    }
+  } catch (error) {
+    alert(error.response.data.message);
+  }
 };
 
 // 상품 삭제하기 - 확인모달노출
