@@ -63,7 +63,7 @@ public class TransactionService {
 
 		Long price = product.getPrice();
 		Long fee = Math.round(price * 0.035);
-		Long totalprice = price + fee;
+		Long totalPrice = price + fee;
 
 		checkSeller(foundMember, product.getSeller());
 
@@ -71,8 +71,8 @@ public class TransactionService {
 		saveTransaction(productId, foundMember.getId(), transactionCreateRequest);
 
 		// 구매자에게 포인트 차감
-		if (foundMember.getPoint() >= totalprice) {
-			subtractPoint(totalprice, foundMember.getId());
+		if (foundMember.getPoint() >= totalPrice) {
+			subtractPoint(totalPrice, foundMember.getId());
 		} else {
 			throw new LackOfPointException("포인트가 부족합니다.");
 		}
@@ -99,17 +99,20 @@ public class TransactionService {
 
 		Transaction transaction = Transaction.createTransaction(buyer, product.getSeller(), product,
 			TransactionStatus.PURCHASE_REQUEST, transactionCreateRequest.getBuyerName(),
+			transactionCreateRequest.getBuyerPhoneNumber(),
+			transactionCreateRequest.getBuyerPostcode(),
 			transactionCreateRequest.getBuyerLocation(),
-			transactionCreateRequest.getBuyerPhoneNumber());
+			transactionCreateRequest.getBuyerDetailLocation()
+		);
 		transactionRepository.save(transaction);
 	}
 
 	@Transactional
-	public void subtractPoint(final Long totalprice, final Long buyerId) {
+	public void subtractPoint(final Long totalPrice, final Long buyerId) {
 
 		Member buyer = memberService.findById(buyerId);
 
-		long updatedPoint = buyer.getPoint() - totalprice;
+		long updatedPoint = buyer.getPoint() - totalPrice;
 		buyer.updatePoint(updatedPoint);
 	}
 
@@ -145,9 +148,10 @@ public class TransactionService {
 		ProductImg productImg = productService.getProductImg(product);
 		String productImgUrl = productImg.getProductImgUrl();
 
-		return new TransactionCreatedResponse(transaction.getId(), productImgUrl, product.getTitle(),
+		return new TransactionCreatedResponse(transaction.getId(), product.getId(), productImgUrl, product.getTitle(),
 			product.getPrice(),
-			transaction.getBuyerName(), transaction.getBuyerLocation(), transaction.getBuyerPhoneNumber());
+			transaction.getBuyerName(), transaction.getBuyerPhoneNumber(), transaction.getBuyerPostcode(),
+			transaction.getBuyerLocation(), transaction.getBuyerDetailLocation());
 	}
 
 	public BuyerResponse getBuyer(final Long productId) {
