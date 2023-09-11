@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TransactionCreatedResponse {
 	private Long transactionId;
+	private Long productId;
 	private String productImgUrl;
 	private String productTitle;
 	private Long productPrice;
 	private String buyerName;
 	private String buyerPhoneNumber;
+	private String buyerPostcode;
 	private String buyerLocation;
+	private String buyerDetailLocation;
 
 }
