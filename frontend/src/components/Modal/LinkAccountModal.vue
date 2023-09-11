@@ -1,12 +1,16 @@
 <template>
   <v-dialog :v-model="dialog" width="500">
     <v-card>
-      <v-form>
+      <v-form v-model="isValid">
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
                 <v-text-field
+                  :rules="[
+                    defaultTextRule.required,
+                    (value) => defaultTextRule.customMinLength(value, 2),
+                  ]"
                   label="이름"
                   v-model="name"
                   required
@@ -14,6 +18,10 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
+                  :rules="[
+                    defaultTextRule.required,
+                    (value) => defaultTextRule.customMinLength(value, 11),
+                  ]"
                   label="계좌번호"
                   v-model="account"
                   required
@@ -21,6 +29,10 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
+                  :rules="[
+                    defaultTextRule.required,
+                    (value) => defaultTextRule.customMinLength(value, 4),
+                  ]"
                   label="비밀번호"
                   type="password"
                   v-model="password"
@@ -36,6 +48,7 @@
             color="blue-darken-1"
             type="submit"
             variant="text"
+            :disabled="!isValid"
             @click="saveAccountHandler"
           >
             연동하기
@@ -56,9 +69,11 @@
 <script setup>
 import { postApi } from "@/api/modules";
 import { ref } from "vue";
+import { defaultTextRule } from "@/components/Form/data/formRules";
 const name = ref("");
 const account = ref("");
 const password = ref("");
+const isValid = ref(false);
 
 defineProps({ dialog: Boolean });
 const emits = defineEmits(["handle-cancle-modal"]);
