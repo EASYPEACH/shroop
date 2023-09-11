@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+ <body>
 <div align="center">
 <style>
     .logo {
@@ -227,3 +233,5 @@
 <a href="https://github.com/xotlr333" target="_blank">공태식</a>
 </h3>
 </div>
+ </body>
+</html>
