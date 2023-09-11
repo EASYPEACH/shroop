@@ -11,9 +11,8 @@
         />
         <product-title title="휴대폰 번호" isRequired />
         <custom-text-input
-          type="number"
           :rules="[phoneNumberRule.required, phoneNumberRule.check]"
-          placeholderText="휴대폰 번호를 입력해주세요."
+          placeholderText="휴대폰 번호를 입력해주세요.(하이픈 빼고 입력)"
           v-model="phoneNumber"
         />
         <product-title title="배송주소" isRequired />
@@ -24,7 +23,7 @@
         />
         <div class="profile__point">
           <div class="profile__point-count">
-            사용 가능한 방울 : {{ profile.point }}
+            사용 가능한 방울 : {{ profile.point.toLocaleString() }}
             <v-icon icon="mdi-water" class="drop" />
           </div>
           <mini-button
@@ -35,16 +34,19 @@
         </div>
 
         <div class="payment">
+          <div class="payment-text">
+            <p>상품 금액:</p>
+            <p>안전 결제 수수료:</p>
+            <p>총 결제금액:</p>
+          </div>
           <div class="payment-price">
-            <p>상품 금액 : {{ product.price.toLocaleString() }} 원</p>
+            <p>{{ product.price.toLocaleString() }} 원</p>
             <p>
-              안전 결제 수수료 :
-              {{ Math.round(product.price * 0.035).toLocaleString() }}
+              {{ fee.toLocaleString() }}
               원
             </p>
             <p>
-              총 결제금액 :
-              {{ product.price + Math.round(product.price * 0.035) }}
+              {{ (product.price + fee).toLocaleString() }}
               원
             </p>
           </div>
@@ -100,6 +102,7 @@ import { ChargePointModal } from "@/components/Modal";
 import CautionBlock from "@/components/CautionBlock.vue";
 import { ProductBanner } from "@/components/Banner";
 import { watchEffect } from "vue";
+import { computed } from "vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -140,6 +143,10 @@ const cautionInfoList = ref([
     value: false,
   },
 ]);
+
+const fee = computed(() => {
+  return Math.round(product.value.price * 0.035);
+});
 
 const showChargePointModal = ref(false);
 const allCheckboxesChecked = ref(false);
@@ -227,15 +234,25 @@ watchEffect(() => {
 .payment {
   display: flex;
   justify-content: end;
+  height: 200px;
+  .payment-text {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    height: 200px;
+    justify-content: space-around;
+    padding: 50px;
+  }
   .payment-price {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 300px;
-    height: 190px;
+    align-items: end;
+    justify-content: space-around;
+    height: 200px;
     padding: 50px;
     p:nth-child(3) {
       font-weight: bold;
+      color: tomato;
     }
   }
 }
