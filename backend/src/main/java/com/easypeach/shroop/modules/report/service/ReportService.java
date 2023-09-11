@@ -54,7 +54,9 @@ public class ReportService {
 		Report report = Report.createReport(reporter, reportee, product, title, content, isMediate,
 			ReportStatus.REPORT_REQUEST);
 
-		product.getTransaction().updateStatus(TransactionStatus.MEDIATE_REQUEST);
+		if (isMediate) {
+			product.getTransaction().updateStatus(TransactionStatus.MEDIATE_REQUEST);
+		}
 
 		return reportRepository.save(report);
 	}
