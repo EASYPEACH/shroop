@@ -40,7 +40,7 @@ onBeforeMount(async () => {
 const handleGetSellHistory = async () => {
   try {
     const sellData = await getApi({
-      url: `/api/selling/history?page=${
+      url: `/api/history/selling?page=${
         sellingPage.value - 1
       }&size=5&sort=transactionCreateDate,desc`,
     });

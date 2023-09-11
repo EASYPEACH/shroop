@@ -1,7 +1,6 @@
 package com.easypeach.shroop.modules.transaction.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -164,12 +163,15 @@ public class TransactionService {
 		return transactionRepository.getByProductId(productId);
 	}
 
-	public List<HistoryResponse> findAllBuyingHistory(final Member member) {
+	public PageResponse findAllBuyingHistory(final Member member, final Pageable pageable) {
 		Member foundMember = memberService.findById(member.getId());
-		List<Transaction> transactionList = transactionRepository.findAllByBuyer(foundMember);
-		return transactionList.stream()
+		Page<Transaction> page = transactionRepository.findByBuyer(foundMember, pageable);
+		int pageCount = page.getTotalPages();
+		List<HistoryResponse> historyResponseList = page
+			.map(p -> productService.findByProductId(p.getProduct().getId()))
 			.map(HistoryResponse::new)
-			.collect(Collectors.toList());
+			.getContent();
+		return PageResponse.createPageResponse(pageCount, historyResponseList);
 	}
 
 	public PageResponse findAllSellingHistory(final Member member, final Pageable pageable) {

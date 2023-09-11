@@ -525,13 +525,15 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 744
+Content-Length: 796
 
 {
   "id" : 1,
   "seller" : {
     "id" : 1,
-    "nickName" : "판매자"
+    "nickName" : "판매자",
+    "profileImg" : "imgUrl",
+    "gradeScore" : 10
   },
   "transactionStatus" : "PURCHASE_REQUEST",
   "title" : "중고물건 팔아요",
@@ -553,8 +555,8 @@ Content-Length: 744
   "content" : "제곧네제곧네제곧네제곧네제곧네제곧네제곧네제곧네제곧네제곧네제곧네",
   "isDefect" : false,
   "saleReason" : "안써요안써요안써요",
-  "purchaseDate" : "2023-09-08",
-  "createDate" : "2023-09-08T19:25:18.643796"
+  "purchaseDate" : "2023-09-10",
+  "createDate" : "2023-09-10T21:00:35.721724"
 }</code></pre>
 </div>
 </div>
@@ -591,6 +593,16 @@ Content-Length: 744
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>seller.nickName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">판매자 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>seller.profileImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">판매자 프로필 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>seller.gradeScore</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">판매자 등급 점수</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>transactionStatus</code></p></td>
@@ -1135,7 +1147,7 @@ Content-Length: 321
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-09-07 15:12:33 +0900
+Last updated 2023-09-06 16:57:37 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

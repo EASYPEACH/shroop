@@ -1,8 +1,9 @@
 package com.easypeach.shroop.modules.transaction.domain;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -14,7 +15,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
 	Optional<Transaction> findByProductId(Long productId);
 
-	List<Transaction> findAllByBuyer(Member buyer);
+	Page<Transaction> findByBuyer(Member seller, Pageable pageable);
 
 	default Transaction getByProductId(Long productId) {
 		return findByProductId(productId).orElseThrow(
