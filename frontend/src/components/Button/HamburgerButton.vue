@@ -1,6 +1,9 @@
 <template>
   <button
-    :class="{ active: mobileNavStore.isMobileNav }"
+    :class="{
+      active: mobileNavStore.isMobileNav,
+      isShowMobileAppBar: toShowMobileAppBar,
+    }"
     class="hamburger__button"
     @click="handleClickHamburgerButton"
   >
@@ -10,6 +13,10 @@
 
 <script setup>
 import { useMobileNav, useShowNotify } from "@/store/modules";
+
+defineProps({
+  toShowMobileAppBar: Boolean,
+});
 
 const mobileNavStore = useMobileNav();
 const notifyStore = useShowNotify();
@@ -37,7 +44,9 @@ const handleClickHamburgerButton = () => {
   &.active .bar {
     margin-top: 12px;
   }
-
+  &.isShowMobileAppBar {
+    top: 5px;
+  }
   .bar {
     position: relative;
     display: block;
