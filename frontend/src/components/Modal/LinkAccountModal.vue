@@ -94,7 +94,7 @@ const saveAccountHandler = async () => {
     account.value = "";
     password.value = "";
     emits("handle-cancle-modal");
-    // window.location.reload();
+    window.location.reload();
   } catch (error) {
     console.log(error);
     alert(error.response.data.message);
