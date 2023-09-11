@@ -34,15 +34,7 @@
       <li class="infobox">
         <h4>배송주소</h4>
         <p>
-          {{
-            "(" +
-            buyer.postcode +
-            ")" +
-            " " +
-            buyer.location +
-            " " +
-            buyer.detailLocation
-          }}
+          {{ `(${buyer.postcode}) ${buyer.location} ${buyer.detailLocation}` }}
         </p>
       </li>
     </ul>

@@ -19,13 +19,7 @@
           <h5>배송지</h5>
           <p>
             {{
-              "(" +
-              buyerInfo.postCode +
-              ")" +
-              " " +
-              buyerInfo.address +
-              " " +
-              buyerInfo.detailAddress
+              `(${buyerInfo.postCode})${buyerInfo.address} ${buyerInfo.detailAddress}`
             }}
           </p>
         </li>
