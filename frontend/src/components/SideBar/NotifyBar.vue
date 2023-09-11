@@ -44,7 +44,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 import { useShowNotify, useNotifyList } from "@/store/modules";
 import { patchApi } from "@/api/modules";
@@ -53,6 +53,7 @@ const display = useDisplay();
 const isMobile = ref(display.mdAndDown);
 const notifyListStore = useNotifyList();
 const router = useRouter();
+const route = useRoute();
 const notifyStore = useShowNotify();
 const hovered = ref(new Array(notifyListStore.notifyList.length).fill(false));
 
@@ -61,7 +62,11 @@ const handleChangeChecked = async (id) => {
     const response = await patchApi({
       url: `/api/notifications/${id}`,
     });
-    router.push(response.link);
+    if (route.path === response.link) {
+      router.go(0);
+    } else {
+      router.push(response.link);
+    }
   } catch (error) {
     console.error(error);
   }
