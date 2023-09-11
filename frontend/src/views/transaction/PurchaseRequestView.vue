@@ -23,6 +23,7 @@
             placeholderText="우편번호"
             hide-details
             v-model="postCode"
+            :disabled="true"
           />
           <v-btn variant="plain" @click="openPostCode">검색</v-btn>
         </div>
@@ -31,6 +32,7 @@
           :rules="[defaultTextRule.required]"
           placeholderText="주소"
           v-model="location"
+          :disabled="true"
         />
         <custom-text-input
           :rules="[defaultTextRule.required]"

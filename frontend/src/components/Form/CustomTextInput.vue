@@ -9,6 +9,7 @@
       :append-inner-icon="appendIcon"
       :rules="rules"
       :type="type"
+      :disabled="disabled"
       :hide-details="hideDetails"
       @input="$emit('update:modelValue', $event.target.value)"
       variant="filled"
@@ -26,6 +27,7 @@ defineProps({
   appendIcon: String,
   rules: Object,
   hideDetails: Boolean,
+  disabled: Boolean,
   blur: Function,
   type: {
     type: String,
