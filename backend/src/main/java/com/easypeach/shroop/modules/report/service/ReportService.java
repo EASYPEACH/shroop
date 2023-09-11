@@ -12,6 +12,7 @@ import com.easypeach.shroop.modules.report.domain.ReportRepository;
 import com.easypeach.shroop.modules.report.domain.ReportStatus;
 import com.easypeach.shroop.modules.report.dto.request.ReportRequest;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
+import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.easypeach.shroop.modules.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,8 @@ public class ReportService {
 
 		Report report = Report.createReport(reporter, reportee, product, title, content, isMediate,
 			ReportStatus.REPORT_REQUEST);
+
+		product.getTransaction().updateStatus(TransactionStatus.MEDIATE_REQUEST);
 
 		return reportRepository.save(report);
 	}

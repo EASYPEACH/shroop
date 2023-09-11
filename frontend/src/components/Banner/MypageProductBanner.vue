@@ -81,14 +81,15 @@ const buyeInfo = ref({
 });
 const MYPAGE = [
   {
-    ACTION: "신고하기",
+    ACTION: "중재하기",
     STATUS: (status) => {
       return !(
         status === TRANSACTION_STATUS.SELLING ||
-        status === TRANSACTION_STATUS.PURCHASE_REQUEST
+        status === TRANSACTION_STATUS.PURCHASE_REQUEST ||
+        status === TRANSACTION_STATUS.MEDIATE_REQUEST
       );
     },
-    CLICK_EVENT: (id) => router.push(`/report/${id}`),
+    CLICK_EVENT: (id) => router.push(`/mediate/${id}`),
   },
 
   {
