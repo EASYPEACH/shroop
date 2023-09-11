@@ -22,7 +22,7 @@
     <section class="subContent">
       <div
         class="subContent-text left"
-        data-aos="fade-right"
+        :data-aos="isLaptop ? 'fade-right' : 'fade-up'"
         data-aos-easing="linear"
         data-aos-duration="500"
       >
@@ -30,7 +30,7 @@
         <p>안전한 중고거래</p>
       </div>
       <img
-        data-aos="fade-left"
+        :data-aos="isLaptop ? 'fade-left' : 'fade-up'"
         :data-aos-delay="isLaptop ? 500 : 300"
         data-aos-easing="linear"
         data-aos-duration="500"
@@ -42,7 +42,7 @@
       <div
         v-if="!isLaptop"
         class="subContent-text right"
-        data-aos="fade-left"
+        data-aos="fade-up"
         data-aos-easing="linear"
         data-aos-duration="500"
       >
@@ -50,7 +50,7 @@
         <p>상품 상세 정보</p>
       </div>
       <img
-        data-aos="fade-right"
+        :data-aos="isLaptop ? 'fade-right' : 'fade-up'"
         :data-aos-delay="isLaptop ? 500 : 300"
         data-aos-easing="linear"
         data-aos-duration="500"
@@ -60,7 +60,7 @@
       <div
         v-if="isLaptop"
         class="subContent-text right"
-        data-aos="fade-left"
+        data-aos="fade-up"
         data-aos-easing="linear"
         data-aos-duration="500"
       >
