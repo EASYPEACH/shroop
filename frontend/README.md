@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-</head>
- <body>
 <div align="center">
-<style>
+
+<style type='text/css'>
     .logo {
         background: #fff;
         border-radius: 50%;
@@ -13,6 +8,7 @@
         border: 5px solid #016A70;
     }
 </style>
+
 <img class="logo" src="https://github.com/EASYPEACH/shroop/blob/main/frontend/src/assets/image/logo-black.png?raw=true" />
 
 ## 안전한 중고거래 서비스 슈룹 ☂️
@@ -233,5 +229,3 @@
 <a href="https://github.com/xotlr333" target="_blank">공태식</a>
 </h3>
 </div>
- </body>
-</html>
