@@ -50,7 +50,7 @@ public class BankService {
 
 		Member foundMember = memberRepository.getById(member.getId());
 
-		boolean isAuthenticate = authenticateAccount(linkBankRequest, member);
+		boolean isAuthenticate = authenticateAccount(linkBankRequest);
 		if (isAuthenticate) {
 			foundMember.updateAccount(linkBankRequest.getAccount());
 		} else {
@@ -60,13 +60,13 @@ public class BankService {
 	}
 
 	@Transactional
-	public void creatingAccount(LinkBankRequest linkBankRequest) {
+	public void creatingAccount(final LinkBankRequest linkBankRequest) {
 		String encodedPassword = passwordEncoder.encode(linkBankRequest.getPassword());
 		Bank bank = Bank.createBank(linkBankRequest.getName(), linkBankRequest.getAccount(), encodedPassword);
 		bankRepository.save(bank);
 	}
 
-	public boolean authenticateAccount(LinkBankRequest linkBankRequest, Member member) {
+	public boolean authenticateAccount(final LinkBankRequest linkBankRequest) {
 		String enteredName = linkBankRequest.getName();
 		String enteredAccount = linkBankRequest.getAccount();
 		String enteredPassword = linkBankRequest.getPassword();
@@ -84,5 +84,10 @@ public class BankService {
 		} else {
 			return false;
 		}
+	}
+
+	public Boolean checkAccount(final Member member) {
+		Member foundMember = memberRepository.getById(member.getId());
+		return foundMember.getAccount() != null;
 	}
 }
