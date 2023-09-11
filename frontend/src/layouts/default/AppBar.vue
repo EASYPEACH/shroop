@@ -185,7 +185,7 @@ header {
     align-items: center;
     transform: translateX(20px);
     @media (max-width: 960px) {
-      transform: translateX(0px);
+      transform: translateX(10px);
     }
     img {
       align-self: flex-end;

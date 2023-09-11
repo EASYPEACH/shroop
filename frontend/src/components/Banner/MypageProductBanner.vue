@@ -76,8 +76,10 @@ const showBuyerInfoDialog = ref(false);
 const showReturnResultDialog = ref(false);
 const buyeInfo = ref({
   name: "",
-  address: "",
   phoneNumber: "",
+  postCode: "",
+  address: "",
+  detailAddress: "",
 });
 const MYPAGE = [
   {
@@ -197,8 +199,10 @@ const handleShowBuyerInfo = async () => {
       url: `/api/buying/buyer/${props.product.id}`,
     });
     buyeInfo.value.name = response.name;
-    buyeInfo.value.address = response.location;
     buyeInfo.value.phoneNumber = response.phoneNumber;
+    buyeInfo.value.postCode = response.postcode;
+    buyeInfo.value.address = response.location;
+    buyeInfo.value.detailAddress = response.detailLocation;
 
     showBuyerInfoDialog.value = true;
   } catch (error) {

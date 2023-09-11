@@ -8,9 +8,12 @@
 section {
   width: 70%;
   margin: 0 auto;
+  padding-top: 50px;
+  overflow: visible;
 
   @media (max-width: 960px) {
-    width: 90%;
+    padding-top: 50px;
+    width: 92%;
   }
 }
 </style>

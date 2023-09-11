@@ -1,7 +1,6 @@
 package com.easypeach.shroop.modules.bank.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import lombok.Getter;
@@ -16,7 +15,7 @@ public class LinkBankRequest {
 	private String name;
 
 	@NotBlank
-	@Pattern(regexp = "^(\\d{1,})(-(\\d{1,})){1,}", message = "계좌번호 형식이 잘못되었습니다.")
+	@Size(min = 11, max = 255, message = "계좌번호 형식이 잘못되었습니다.")
 	private String account;
 
 	@NotBlank

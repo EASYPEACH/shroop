@@ -2,29 +2,62 @@
   <section>
     <content-layout>
       <product-banner :product="product" isPurchase />
-      <v-form @submit.prevent="handleRequestPurchase">
+      <v-form @submit.prevent="handleRequestPurchase" v-model="isValid">
         <product-title title="이름" isRequired />
         <custom-text-input
-          :rules="[defaultTextRule.required]"
+          :rules="[
+            defaultTextRule.required,
+            (value) => defaultTextRule.customMinLength(value, 2),
+          ]"
           placeholderText="이름을 입력해주세요."
           v-model="buyerName"
         />
         <product-title title="휴대폰 번호" isRequired />
         <custom-text-input
-          type="number"
-          :rules="[phoneNumberRule.required, phoneNumberRule.check]"
-          placeholderText="휴대폰 번호를 입력해주세요."
+          :rules="[
+            phoneNumberRule.required,
+            phoneNumberRule.check,
+            (value) => defaultTextRule.customMinLength(value, 11),
+          ]"
+          placeholderText="휴대폰 번호를 입력해주세요.(하이픈 빼고 입력)"
           v-model="phoneNumber"
         />
         <product-title title="배송주소" isRequired />
+        <div class="postCode__box">
+          <custom-text-input
+            class="postCode__box-input"
+            :rules="[
+              defaultTextRule.required,
+              (value) => defaultTextRule.customMinLength(value, 5),
+            ]"
+            placeholderText="우편번호"
+            hide-details
+            v-model="postCode"
+            :disabled="true"
+          />
+          <v-btn variant="plain" @click="openPostCode">검색</v-btn>
+        </div>
+
         <custom-text-input
-          :rules="[defaultTextRule.required]"
-          placeholderText="배송주소를 입력해주세요."
-          v-model="address"
+          :rules="[
+            defaultTextRule.required,
+            (value) => defaultTextRule.customMinLength(value, 8),
+          ]"
+          placeholderText="주소"
+          v-model="location"
+          :disabled="true"
+        />
+        <custom-text-input
+          :rules="[
+            defaultTextRule.required,
+            (value) => defaultTextRule.customMinLength(value, 5),
+          ]"
+          placeholderText="상세주소"
+          v-model="detailLocation"
         />
         <div class="profile__point">
           <div class="profile__point-count">
-            사용 가능한 방울 : {{ profile.point }}
+            사용 가능한 방울 : {{ profile.point.toLocaleString() }}
             <v-icon icon="mdi-water" class="drop" />
           </div>
           <mini-button
@@ -34,9 +67,24 @@
           />
         </div>
 
-        <p class="payment-price">
-          결제 금액: {{ product.price.toLocaleString() }} 원
-        </p>
+        <div class="payment">
+          <div class="payment-text">
+            <p>상품 금액:</p>
+            <p>안전 결제 수수료:</p>
+            <p>총 결제금액:</p>
+          </div>
+          <div class="payment-price">
+            <p>{{ product.price.toLocaleString() }} 원</p>
+            <p>
+              {{ fee.toLocaleString() }}
+              원
+            </p>
+            <p>
+              {{ (product.price + fee).toLocaleString() }}
+              원
+            </p>
+          </div>
+        </div>
 
         <div class="caution">
           <h2>주의 사항</h2>
@@ -51,13 +99,14 @@
             <div class="caution__block-all-agree__text">전체 동의</div>
             <div>
               <v-checkbox
+                :rules="[agreeRule.required]"
                 v-model="allCheckboxesChecked"
                 @change="toggleAllCheckboxes"
               />
             </div>
           </div>
         </div>
-        <submit-button text="결제하기" />
+        <submit-button :disabled="!isValid" text="결제하기" />
       </v-form>
       <charge-point-modal
         v-model="showChargePointModal"
@@ -75,6 +124,7 @@ import { ref, watch, onBeforeMount } from "vue";
 import {
   defaultTextRule,
   phoneNumberRule,
+  agreeRule,
 } from "@/components/Form/data/formRules";
 import { getApi, postApi } from "@/api/modules";
 import { useRoute, useRouter } from "vue-router";
@@ -87,12 +137,16 @@ import { MiniButton } from "@/components/Button";
 import { ChargePointModal } from "@/components/Modal";
 import CautionBlock from "@/components/CautionBlock.vue";
 import { ProductBanner } from "@/components/Banner";
+import { computed } from "vue";
 
 const router = useRouter();
 const route = useRoute();
+const isValid = ref(false);
 const buyerName = ref("");
 const phoneNumber = ref("");
-const address = ref("");
+const postCode = ref("");
+const location = ref("");
+const detailLocation = ref("");
 const product = ref({
   title: "",
   price: 0,
@@ -127,6 +181,10 @@ const cautionInfoList = ref([
   },
 ]);
 
+const fee = computed(() => {
+  return Math.round(product.value.price * 0.035);
+});
+
 const showChargePointModal = ref(false);
 const allCheckboxesChecked = ref(false);
 
@@ -156,6 +214,15 @@ onBeforeMount(async () => {
   }
 });
 
+const openPostCode = () => {
+  new window.daum.Postcode({
+    oncomplete: (data) => {
+      postCode.value = data.zonecode;
+      location.value = data.roadAddress;
+    },
+  }).open();
+};
+
 watch(cautionInfoList.value, (caution) => {
   const filterTrue = caution.filter((list) => list.value);
   if (filterTrue.length === 4) {
@@ -172,7 +239,9 @@ const handleRequestPurchase = async () => {
       data: {
         buyerName: buyerName.value,
         buyerPhoneNumber: phoneNumber.value,
-        buyerLocation: address.value,
+        buyerPostcode: postCode.value,
+        buyerLocation: location.value,
+        buyerDetailLocation: detailLocation.value,
       },
     });
     router.push(`/PurchaseComplete/${route.params.id}`);
@@ -196,11 +265,30 @@ const handleRequestPurchase = async () => {
     opacity: 0.7;
   }
 }
-.payment-price {
+.payment {
   display: flex;
-  justify-content: flex-end;
-  padding: 50px;
-  font-weight: bold;
+  justify-content: end;
+  height: 200px;
+  .payment-text {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    height: 200px;
+    justify-content: space-around;
+    padding: 50px;
+  }
+  .payment-price {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: space-around;
+    height: 200px;
+    padding: 50px;
+    p:nth-child(3) {
+      font-weight: bold;
+      color: tomato;
+    }
+  }
 }
 .caution {
   display: flex;
@@ -233,6 +321,22 @@ const handleRequestPurchase = async () => {
 
   .drop {
     color: rgb(var(--v-theme-subBlue));
+  }
+}
+.postCode__box {
+  display: flex;
+  width: 60%;
+  align-items: center;
+  margin-bottom: 20px;
+  .postCode__box-input {
+    flex-basis: 50%;
+  }
+  .v-btn {
+    background-color: #000;
+    opacity: 1;
+    color: #fff;
+    height: 44px;
+    border-radius: 0 4px 0 0;
   }
 }
 </style>

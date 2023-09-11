@@ -97,7 +97,7 @@ asciidoctor {
 
 tasks.register('copyDocument', Copy) {
     dependsOn asciidoctor
-    from file("build/docs/asciidoc")
+    from file("build/docs/asciidoc"), file("src/docs/asciidoc/index.html")
     into file("src/main/resources/static")
 }
 

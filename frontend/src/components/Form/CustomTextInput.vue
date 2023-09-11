@@ -9,7 +9,10 @@
       :append-inner-icon="appendIcon"
       :rules="rules"
       :type="type"
+      :disabled="disabled"
       :hide-details="hideDetails"
+      :hint="hint"
+      :persistent-hint="persistentHint"
       @input="$emit('update:modelValue', $event.target.value)"
       variant="filled"
       @blur="blur"
@@ -26,7 +29,10 @@ defineProps({
   appendIcon: String,
   rules: Object,
   hideDetails: Boolean,
+  disabled: Boolean,
   blur: Function,
+  hint: String,
+  persistentHint: Boolean,
   type: {
     type: String,
     default: "text",
