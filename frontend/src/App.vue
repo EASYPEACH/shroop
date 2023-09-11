@@ -3,13 +3,11 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import { useApiLoading } from "@/store/modules";
 
 import api from "./api";
 
 const loadingStore = useApiLoading();
-const router = useRouter();
 
 api.interceptors.request.use(
   (config) => {
@@ -18,7 +16,7 @@ api.interceptors.request.use(
       (config.url.includes("products") && config.method === "patch") ||
       config.url.includes("reports") ||
       config.url.includes("return") ||
-      config.url.includes("profile")
+      (config.url.includes("profile") && config.method === "patch")
     ) {
       loadingStore.setIsLoading(true);
     }

@@ -3,7 +3,12 @@
     <ul>
       <info-alert v-if="sellList.length === 0" title="판매내역이 없습니다" />
       <li v-for="product in sellList" :key="product.id">
-        <mypage-product-banner :product="product" isStatus isSeller />
+        <mypage-product-banner
+          :product="product"
+          isStatus
+          isSeller
+          @handle-get-sellHistory="handleGetSellHistory"
+        />
       </li>
     </ul>
     <v-pagination

@@ -160,18 +160,22 @@ const handleChangeProfile = async (event) => {
 
 // 기존 회원 정보 가져오기
 onBeforeMount(async () => {
-  const userData = await getApi({
-    url: "/api/members/profile",
-  });
-  let profileImgTransfer = await changeUrlToFiles(
-    [userData.profileImg],
-    new DataTransfer(),
-  );
-  profileImgRef.value.files = profileImgTransfer.files;
-  imageData.value = profileImgTransfer.files;
-  nickname.value = userData.nickname;
-  phoneNumber.value = userData.phoneNumber;
-  imageThumb.value = userData.profileImg;
+  try {
+    const userData = await getApi({
+      url: "/api/members/profile",
+    });
+    let profileImgTransfer = await changeUrlToFiles(
+      [userData.profileImg],
+      new DataTransfer(),
+    );
+    profileImgRef.value.files = profileImgTransfer.files;
+    imageData.value = profileImgTransfer.files;
+    nickname.value = userData.nickname;
+    phoneNumber.value = userData.phoneNumber;
+    imageThumb.value = userData.profileImg;
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // input event

@@ -6,7 +6,11 @@
         title="구매내역이 없습니다"
       />
       <li v-for="product in purchaseList" :key="product.id">
-        <mypage-product-banner :product="product" isStatus />
+        <mypage-product-banner
+          :product="product"
+          isStatus
+          @handle-get-purchaseHistory="handleGetPurchaseHistory"
+        />
       </li>
     </ul>
     <v-pagination
