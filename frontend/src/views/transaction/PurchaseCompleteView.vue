@@ -76,7 +76,6 @@ onBeforeMount(async () => {
     const response = await getApi({
       url: `/api/buying/completed/${route.params.id}`,
     });
-    console.log(response);
     product.value = response;
     product.value.id = response.productId;
     product.value.title = response.productTitle;

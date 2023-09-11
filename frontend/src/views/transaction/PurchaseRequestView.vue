@@ -217,7 +217,6 @@ onBeforeMount(async () => {
 const openPostCode = () => {
   new window.daum.Postcode({
     oncomplete: (data) => {
-      console.log(data);
       postCode.value = data.zonecode;
       location.value = data.roadAddress;
     },
