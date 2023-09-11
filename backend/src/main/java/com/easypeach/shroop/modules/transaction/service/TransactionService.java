@@ -114,13 +114,13 @@ public class TransactionService {
 	}
 
 	@Transactional
-	public void addPoint(final Long productId, final Long sallerId) {
+	public void addPoint(final Long productId, final Long sellerId) {
 
 		Product product = productService.findByProductId(productId);
-		Member saller = memberService.findById(sallerId);
+		Member seller = memberService.findById(sellerId);
 
-		long updatedPoint = saller.getPoint() + product.getPrice();
-		saller.updatePoint(updatedPoint);
+		long updatedPoint = seller.getPoint() + product.getPrice();
+		seller.updatePoint(updatedPoint);
 	}
 
 	public void checkSeller(final Member member, final Member seller) {
