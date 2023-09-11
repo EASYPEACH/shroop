@@ -44,35 +44,41 @@ class TransactionHistoryControllerTest extends ControllerTest {
 			PURCHASE_REQUEST, "상품 제목", 100000L,
 			"상품 이미지 URL");
 		dtoList.add(dto);
+		int pageCount = 7;
+		Page<HistoryResponse> page = new PageImpl<>(dtoList);
+		PageResponse pageResponse = PageResponse.createPageResponse(7, page.getContent());
 
-		given(transactionService.findAllBuyingHistory(any())).willReturn(dtoList);
+		given(transactionService.findAllBuyingHistory(any(), any())).willReturn(pageResponse);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/buying/history")
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/history/buying/")
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionCreateDate")
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].id").value(1L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].transactionCreateDate")
 				.value(time.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].transactionStatus").value(PURCHASE_REQUEST.toString()))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("상품 제목"))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(100000L))
-			.andExpect(MockMvcResultMatchers.jsonPath("$[0].productImgUrl")
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].transactionStatus")
+				.value(PURCHASE_REQUEST.toString()))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].title").value("상품 제목"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].price").value(100000L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].productImgUrl")
 				.value("상품 이미지 URL"))
-			// .andDo(document("getBuyingHistory",
-			// 	// preprocessResponse(prettyPrint()),
-			// 	// responseFields(
-			// 	// 	fieldWithPath("id").description("상품 아이디"),
-			// 	// 	fieldWithPath("transactionCreateDate").description("거래 날짜"),
-			// 	// 	fieldWithPath("transactionStatus").description("거래 상태"),
-			// 	// 	fieldWithPath("title").description("상품 제목"),
-			// 	// 	fieldWithPath("price").description("상품 가격"),
-			// 	// 	fieldWithPath("productImgUrl").description("상품 이미지")
-			// 	// )))
+			.andDo(document("getBuyingHistory",
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("pageCount").description("총 페이지 수"),
+					fieldWithPath("historyResponseList[].id").description("결제 아이디"),
+					fieldWithPath("historyResponseList[].transactionCreateDate").description("거래 날짜"),
+					fieldWithPath("historyResponseList[].transactionStatus").description("거래 상태"),
+					fieldWithPath("historyResponseList[].title").description("상품 제목"),
+					fieldWithPath("historyResponseList[].price").description("상품 가격"),
+					fieldWithPath("historyResponseList[].productImgUrl").description("상품 이미지")
+				)))
 			.andDo(print());
 
 	}
 
 	@Test
+	@DisplayName("판매내역 조회 테스트 코드")
 	void getSellingHistory() throws Exception {
 		List<HistoryResponse> dtoList = new ArrayList<>();
 		LocalDateTime time = LocalDateTime.of(2000, 1, 1, 1, 1, 1, 0);
@@ -85,7 +91,7 @@ class TransactionHistoryControllerTest extends ControllerTest {
 		PageResponse pageResponse = PageResponse.createPageResponse(7, page.getContent());
 		given(transactionService.findAllSellingHistory(any(), any())).willReturn(pageResponse);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/selling/history")
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/history/selling")
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.historyResponseList[0].id").value(1L))

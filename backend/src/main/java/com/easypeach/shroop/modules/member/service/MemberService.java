@@ -82,7 +82,7 @@ public class MemberService {
 	}
 
 	public void updateImgUrl(final Member member, final List<MultipartFile> profileImg) {
-		if (profileImg.size() == 0) {
+		if (profileImg == null) {
 			return;
 		}
 		String imgUrl = s3UploadService.saveFile(profileImg.get(0));
@@ -120,6 +120,7 @@ public class MemberService {
 		}
 
 		phoneAuthService.checkPhoneAuthNumber(phoneAuthRequest);
+		member.updatePhoneNumber(phoneAuthRequest.getPhoneNumber());
 	}
 
 	public Member findById(final Long memberId) {

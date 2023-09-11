@@ -36,12 +36,14 @@
         <h4 class="profile__info-name">패스워드</h4>
         <div class="info__input-box">
           <password-input
+            title="기존 패스워드"
             class="profile__info-input"
             placeholderText="기존 패스워드"
             v-model="oldPassword"
             type="password"
           />
           <password-input
+            title="새로운 패스워드"
             class="profile__info-input"
             placeholderText="변경할 패스워드"
             v-model="newPassword"
@@ -158,18 +160,22 @@ const handleChangeProfile = async (event) => {
 
 // 기존 회원 정보 가져오기
 onBeforeMount(async () => {
-  const userData = await getApi({
-    url: "/api/members/profile",
-  });
-  let profileImgTransfer = await changeUrlToFiles(
-    [userData.profileImg],
-    new DataTransfer(),
-  );
-  profileImgRef.value.files = profileImgTransfer.files;
-  imageData.value = profileImgTransfer.files;
-  nickname.value = userData.nickname;
-  phoneNumber.value = userData.phoneNumber;
-  imageThumb.value = userData.profileImg;
+  try {
+    const userData = await getApi({
+      url: "/api/members/profile",
+    });
+    let profileImgTransfer = await changeUrlToFiles(
+      [userData.profileImg],
+      new DataTransfer(),
+    );
+    profileImgRef.value.files = profileImgTransfer.files;
+    imageData.value = profileImgTransfer.files;
+    nickname.value = userData.nickname;
+    phoneNumber.value = userData.phoneNumber;
+    imageThumb.value = userData.profileImg;
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // input event

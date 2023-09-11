@@ -2,16 +2,24 @@
   <button
     :class="{ active: mobileNavStore.isMobileNav }"
     class="hamburger__button"
-    @click="() => mobileNavStore.setIsMobileNav(!mobileNavStore.isMobileNav)"
+    @click="handleClickHamburgerButton"
   >
     <span className="bar"></span>
   </button>
 </template>
 
 <script setup>
-import { useMobileNav } from "@/store/modules";
+import { useMobileNav, useShowNotify } from "@/store/modules";
 
 const mobileNavStore = useMobileNav();
+const notifyStore = useShowNotify();
+
+const handleClickHamburgerButton = () => {
+  mobileNavStore.setIsMobileNav(!mobileNavStore.isMobileNav);
+  if (notifyStore.isShowNotify) {
+    notifyStore.setIsShowNotify(false);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -19,7 +27,7 @@ const mobileNavStore = useMobileNav();
 .hamburger__button {
   position: fixed;
   right: 0;
-  top: 10px;
+  top: 12px;
   z-index: 20000;
   width: 40px;
   height: 40px;

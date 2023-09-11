@@ -28,7 +28,7 @@
           <custom-text-input
             placeholder-text="운송장번호"
             v-model="deliveryNumber"
-            :rules="[defaultTextRule.required]"
+            :rules="[defaultTextRule.required, trackingNumberRule.check]"
             class="deliveryInfo__form"
           />
         </li>
@@ -58,7 +58,10 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { defaultTextRule } from "@/components/Form/data/formRules";
+import {
+  defaultTextRule,
+  trackingNumberRule,
+} from "@/components/Form/data/formRules";
 import { getApi, postApi } from "@/api/modules";
 
 import ContentLayout from "@/layouts/ContentLayout.vue";
@@ -96,6 +99,14 @@ const dialogList = ref([
       dialogList.value[1].isShow = false;
     },
   },
+  {
+    id: 2,
+    text: "입력값을 확인하세요.",
+    isShow: false,
+    callback: () => {
+      dialogList.value[2].isShow = false;
+    },
+  },
 ]);
 
 const handleSubmitDelivery = async () => {
@@ -117,7 +128,14 @@ const handleSubmitDelivery = async () => {
       dialogList.value[1].isShow = true;
     }
   } catch (error) {
-    console.error(error);
+    const code = error.response.status;
+    const msg = error.response.data.message;
+    if (code === 400) {
+      dialogList.value[2].isShow = true;
+    } else {
+      alert(msg);
+      console.error(error);
+    }
   }
 };
 const handelGetTransactionData = async () => {

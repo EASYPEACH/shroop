@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     density="compact"
-    placeholder="휴대전화번호를 입력해주세요"
+    placeholder="휴대전화번호를 입력해주세요 ( - 제외)"
     :model-value="modelValue"
     :rules="rules"
     @input="$emit('update:modelValue', $event.target.value)"

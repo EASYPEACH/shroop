@@ -65,15 +65,19 @@ const props = defineProps({
   isSeller: Boolean,
   isHeart: Boolean,
 });
-defineEmits(["handle-click-like"]);
+const emits = defineEmits([
+  "handle-click-like",
+  "handle-get-sellHistory",
+  "handle-get-purchaseHistory",
+]);
 
 const router = useRouter();
 const showBuyerInfoDialog = ref(false);
 const showReturnResultDialog = ref(false);
 const buyeInfo = ref({
-  name: "김뿅뿅",
-  address: "경기도 고양시 덕양구 신원3로 20",
-  phoneNumber: "01012341234",
+  name: "",
+  address: "",
+  phoneNumber: "",
 });
 const MYPAGE = [
   {
@@ -158,7 +162,7 @@ const handleConfirmPurchase = async () => {
     await patchApi({
       url: `/api/buying/confirm/${props.product.id}`,
     });
-    router.go(router.currentRoute);
+    emits("handle-get-purchaseHistory");
   } catch (error) {
     console.log(error);
   }
@@ -169,7 +173,7 @@ const handleCanclePurchaseRequest = async () => {
     await deleteApi({
       url: `/api/buying/${props.product.id}`,
     });
-    router.go(router.currentRoute);
+    emits("handle-get-purchaseHistory");
   } catch (error) {
     console.log(error);
   }
@@ -180,7 +184,7 @@ const handleReturnRequestConfirm = async () => {
     await patchApi({
       url: `/api/buying/return/confirm/${props.product.id}`,
     });
-    router.go(router.currentRoute);
+    emits("handle-get-sellHistory");
   } catch (error) {
     console.log(error);
   }
@@ -196,6 +200,18 @@ const handleShowBuyerInfo = async () => {
     buyeInfo.value.phoneNumber = response.phoneNumber;
 
     showBuyerInfoDialog.value = true;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// 상품 삭제
+const handleDeleteProduct = async () => {
+  try {
+    await deleteApi({
+      url: `/api/products/${props.product.id}`,
+    });
+    emits("handle-get-sellHistory");
   } catch (error) {
     console.error(error);
   }
@@ -218,7 +234,7 @@ const dialogList = ref([
     id: 3,
     text: "상품을 삭제하시겠습니까?",
     value: false,
-    callback: () => {},
+    callback: handleDeleteProduct,
   },
   {
     id: 4,
@@ -238,7 +254,7 @@ aside {
     align-items: center;
     @media (max-width: 750px) {
       p {
-        font-size: 15px;
+        font-size: 13px;
       }
     }
 
@@ -247,9 +263,9 @@ aside {
       text-align: center;
     }
     ul {
-      font-size: 14px;
       width: 90px;
       li {
+        font-size: 13px;
         text-align: center;
       }
     }

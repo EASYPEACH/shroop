@@ -509,9 +509,9 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 461
+Content-Length: 466
 
-{"userImg":"userImg","nickname":"nickname","point":100,"account":"50811112222","gradeScore":100,"page":{"content":[{"id":1,"productImgUrl":"productImgUrl","title":"title","price":"1,000","category":{"id":1,"name":"전자제품"},"createDate":"2023-09-08T19:25:15.59518"}],"pageable":"INSTANCE","totalPages":1,"totalElements":1,"last":true,"numberOfElements":1,"first":true,"size":1,"sort":{"unsorted":true,"sorted":false,"empty":true},"number":0,"empty":false}}</code></pre>
+{"userImg":"userImg","nickname":"nickname","point":100,"account":"50811112222","gradeScore":100,"page":{"content":[{"id":1,"productImgUrl":"productImgUrl","title":"title","price":"1,000","categoryInfo":{"id":1,"name":"전자제품"},"createDate":"2023-09-10T21:00:28.818743"}],"pageable":"INSTANCE","totalPages":1,"totalElements":1,"last":true,"numberOfElements":1,"first":true,"size":1,"sort":{"unsorted":true,"sorted":false,"empty":true},"number":0,"empty":false}}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -579,12 +579,12 @@ Content-Length: 461
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page.content[].category.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page.content[].categoryInfo.id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 UID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page.content[].category.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page.content[].categoryInfo.name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 이름</p></td>
 </tr>
@@ -1082,7 +1082,7 @@ Content-Length: 22
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-09-08 18:32:34 +0900
+Last updated 2023-09-08 21:00:01 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
