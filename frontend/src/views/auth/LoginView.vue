@@ -80,6 +80,7 @@ const handleSubmitLogin = async () => {
     if (error.response.status === 400 || error.response.status === 404) {
       authResult.value = false;
       authResultMessage.value = error.response.data.message;
+      password.value = "";
     }
   }
 };
