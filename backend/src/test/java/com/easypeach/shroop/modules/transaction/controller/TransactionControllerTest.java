@@ -74,7 +74,7 @@ class TransactionControllerTest extends ControllerTest {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		TransactionCreateRequest transactionCreateRequest = new TransactionCreateRequest("구매자 이름", "01012345678",
-			"구매자 주소");
+			"구매자 우편번호", "구매자 주소", "구매자 상세주소");
 		String json = objectMapper.writeValueAsString(transactionCreateRequest);
 
 		mockMvc.perform(RestDocumentationRequestBuilders.post("/api/buying/{productId}", productId)
@@ -90,7 +90,9 @@ class TransactionControllerTest extends ControllerTest {
 				requestFields(
 					fieldWithPath("buyerName").description("구매자 이름"),
 					fieldWithPath("buyerPhoneNumber").description("구매자 번호"),
-					fieldWithPath("buyerLocation").description("구매자 주소")
+					fieldWithPath("buyerPostcode").description("구매자 우편번호"),
+					fieldWithPath("buyerLocation").description("구매자 주소"),
+					fieldWithPath("buyerDetailLocation").description("구매자 상세주소")
 				),
 				responseFields(
 					fieldWithPath("message").description("결제가 완료되었습니다.")
@@ -102,9 +104,9 @@ class TransactionControllerTest extends ControllerTest {
 	@DisplayName("결제 완료창 테스트 코드")
 	void getBuyingCompletedForm() throws Exception {
 		Long productId = 1L;
-		TransactionCreatedResponse transactionCreatedResponse = new TransactionCreatedResponse(1L, "상품 이미지 URL",
+		TransactionCreatedResponse transactionCreatedResponse = new TransactionCreatedResponse(1L, 1L, "상품 이미지 URL",
 			"상품 제목",
-			100000L, "구매자 이름", "01012345678", "구매자 주소");
+			100000L, "구매자 이름", "01012345678", "구매자 우편번호", "구매자 주소", "구매자 상세주소");
 
 		given(transactionService.createTransactionCreatedResponse(any())).willReturn(transactionCreatedResponse);
 
@@ -126,12 +128,15 @@ class TransactionControllerTest extends ControllerTest {
 				),
 				responseFields(
 					fieldWithPath("transactionId").description("거래 아이디"),
+					fieldWithPath("productId").description("상품 아이디"),
 					fieldWithPath("productImgUrl").description("상품 이미지"),
 					fieldWithPath("productTitle").description("상품 제목"),
 					fieldWithPath("productPrice").description("상품 가격"),
 					fieldWithPath("buyerName").description("구매자 이름"),
 					fieldWithPath("buyerPhoneNumber").description("구매자 번호"),
-					fieldWithPath("buyerLocation").description("구매자 주소")
+					fieldWithPath("buyerPostcode").description("구매자 우편번호"),
+					fieldWithPath("buyerLocation").description("구매자 주소"),
+					fieldWithPath("buyerDetailLocation").description("구매자 상세주소")
 				)))
 			.andDo(print());
 
@@ -141,7 +146,7 @@ class TransactionControllerTest extends ControllerTest {
 	@Test
 	void getBuyer() throws Exception {
 		Long productId = 1L;
-		BuyerResponse buyerResponse = new BuyerResponse("구매자 이름", "구매자 주소", "구매자 휴대번호");
+		BuyerResponse buyerResponse = new BuyerResponse("구매자 이름", "구매자 휴대번호", "구매자 우편번호", "구매자 주소", "구매자 상세주소");
 
 		given(transactionService.getBuyer(productId)).willReturn(buyerResponse);
 
@@ -156,8 +161,10 @@ class TransactionControllerTest extends ControllerTest {
 				),
 				responseFields(
 					fieldWithPath("name").description("구매자 이름"),
+					fieldWithPath("phoneNumber").description("구매자 휴대번호"),
+					fieldWithPath("postcode").description("구매자 우편번호"),
 					fieldWithPath("location").description("구매자 주소"),
-					fieldWithPath("phoneNumber").description("구매자 휴대번호")
+					fieldWithPath("detailLocation").description("구매자 주소")
 				)))
 			.andDo(print());
 

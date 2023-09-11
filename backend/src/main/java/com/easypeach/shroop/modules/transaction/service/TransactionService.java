@@ -158,8 +158,10 @@ public class TransactionService {
 		Transaction transaction = findByProductId(productId);
 		return new BuyerResponse(
 			transaction.getBuyerName(),
+			transaction.getBuyerPhoneNumber(),
+			transaction.getBuyerPostcode(),
 			transaction.getBuyerLocation(),
-			transaction.getBuyerPhoneNumber()
+			transaction.getBuyerDetailLocation()
 		);
 	}
 

@@ -9,13 +9,20 @@ public class BuyerResponse {
 
 	private String name;
 
-	private String location;
-
 	private String phoneNumber;
 
-	public BuyerResponse(final String name, final String location, final String phoneNumber) {
+	private String postcode;
+
+	private String location;
+
+	private String detailLocation;
+
+	public BuyerResponse(final String name, final String phoneNumber, final String postcode, final String location,
+		final String detailLocation) {
 		this.name = name;
-		this.location = location;
 		this.phoneNumber = phoneNumber;
+		this.postcode = postcode;
+		this.location = location;
+		this.detailLocation = detailLocation;
 	}
 }
