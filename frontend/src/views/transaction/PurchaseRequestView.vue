@@ -16,10 +16,26 @@
           v-model="phoneNumber"
         />
         <product-title title="배송주소" isRequired />
+        <div class="postCode__box">
+          <custom-text-input
+            class="postCode__box-input"
+            :rules="[defaultTextRule.required]"
+            placeholderText="우편번호"
+            hide-details
+            v-model="postCode"
+          />
+          <v-btn variant="plain" @click="openPostCode">검색</v-btn>
+        </div>
+
         <custom-text-input
           :rules="[defaultTextRule.required]"
-          placeholderText="배송주소를 입력해주세요."
-          v-model="address"
+          placeholderText="주소"
+          v-model="location"
+        />
+        <custom-text-input
+          :rules="[defaultTextRule.required]"
+          placeholderText="상세주소"
+          v-model="detailLocation"
         />
         <div class="profile__point">
           <div class="profile__point-count">
@@ -109,7 +125,9 @@ const route = useRoute();
 const isValid = ref(false);
 const buyerName = ref("");
 const phoneNumber = ref("");
-const address = ref("");
+const postCode = ref("");
+const location = ref("");
+const detailLocation = ref("");
 const product = ref({
   title: "",
   price: 0,
@@ -177,6 +195,16 @@ onBeforeMount(async () => {
   }
 });
 
+const openPostCode = () => {
+  new window.daum.Postcode({
+    oncomplete: (data) => {
+      console.log(data);
+      postCode.value = data.zonecode;
+      location.value = data.roadAddress;
+    },
+  }).open();
+};
+
 watch(cautionInfoList.value, (caution) => {
   const filterTrue = caution.filter((list) => list.value);
   if (filterTrue.length === 4) {
@@ -193,7 +221,9 @@ const handleRequestPurchase = async () => {
       data: {
         buyerName: buyerName.value,
         buyerPhoneNumber: phoneNumber.value,
-        buyerLocation: address.value,
+        buyerPostcode: postCode.value,
+        buyerLocation: location.value,
+        buyerDetailLocation: detailLocation.value,
       },
     });
     router.push(`/PurchaseComplete/${route.params.id}`);
@@ -207,7 +237,9 @@ watchEffect(() => {
     buyerName.value.length >= 2 &&
     phoneNumber.value.length >= 10 &&
     phoneNumber.value.length <= 11 &&
-    address.value.length >= 5 &&
+    postCode.value.length >= 4 &&
+    location.value.length >= 5 &&
+    detailLocation.value.length >= 5 &&
     allCheckboxesChecked.value === true
   ) {
     isValid.value = true;
@@ -287,6 +319,22 @@ watchEffect(() => {
 
   .drop {
     color: rgb(var(--v-theme-subBlue));
+  }
+}
+.postCode__box {
+  display: flex;
+  width: 60%;
+  align-items: center;
+  margin-bottom: 20px;
+  .postCode__box-input {
+    flex-basis: 50%;
+  }
+  .v-btn {
+    background-color: #000;
+    opacity: 1;
+    color: #fff;
+    height: 44px;
+    border-radius: 0 4px 0 0;
   }
 }
 </style>

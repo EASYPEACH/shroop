@@ -22,6 +22,14 @@ public class TransactionCreateRequest {
 	private String buyerPhoneNumber;
 
 	@NotBlank
+	@Size(min = 4, max = 255, message = "최소 5자 이상 입력해주세요")
+	private String buyerPostcode;
+
+	@NotBlank
 	@Size(min = 5, max = 255, message = "최소 5자 이상 입력해주세요")
 	private String buyerLocation;
+
+	@NotBlank
+	@Size(min = 5, max = 255, message = "최소 5자 이상 입력해주세요")
+	private String buyerDetailLocation;
 }
