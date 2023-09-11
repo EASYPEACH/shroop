@@ -1,18 +1,8 @@
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="github-markdown.css">
-
 <div align="center">
-
-<style type='text/css'>
-    .logo {
-        background: #fff;
+<img style="background: #fff;
         border-radius: 50%;
         padding: 10px;
-        border: 5px solid #016A70;
-    }
-</style>
-
-<img class="logo" src="https://github.com/EASYPEACH/shroop/blob/main/frontend/src/assets/image/logo-black.png?raw=true" />
+        border: 5px solid #016A70;" src="https://github.com/EASYPEACH/shroop/blob/main/frontend/src/assets/image/logo-black.png?raw=true" />
 
 ## 안전한 중고거래 서비스 슈룹 ☂️
 
@@ -146,32 +136,19 @@
 
 ## Team-Member
 
-<style>
-    .member {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .profile {
-        width: 30px;
-        height: 30px;
-        border-radius:50%;
-    }
-    .name {
-      font-size: inherit;
-      display:flex;
-      align-items:center;
-    }
-
-</style>
-
 <!-- 지윤 -->
 
 <div>
-<div class="member">
-<img class="profile" src="https://avatars.githubusercontent.com/u/72537762?v=4" width=400px alt="지윤"/>
+<div class="member" style="display: flex;
+        align-items: center;
+        gap: 10px;">
+<img class="profile" style="width: 30px;
+        height: 30px;
+        border-radius:50%;" src="https://avatars.githubusercontent.com/u/72537762?v=4" width=400px alt="지윤"/>
 <h3 class="name">
-<a href="https://github.com/Jiyun-Parkk" target="_blank">박지윤</a>
+<a href="https://github.com/Jiyun-Parkk"  style="ont-size: inherit;
+      display:flex;
+      align-items:center;" target="_blank">박지윤</a>
 </h3>
 </div>
 <div>
@@ -208,27 +185,45 @@
 
 <!-- 진영 -->
 
-<div class="member">
-<img  class="profile" src="https://avatars.githubusercontent.com/u/122027452?v=4" width=400px alt="진영"/>
+<div class="member" style="display: flex;
+        align-items: center;
+        gap: 10px;">
+<img  class="profile"  style="width: 30px;
+        height: 30px;
+        border-radius:50%;"src="https://avatars.githubusercontent.com/u/122027452?v=4" width=400px alt="진영"/>
 <h3 class="name">
-<a href="https://github.com/jiny798" target="_blank">박진영</a>
+<a href="https://github.com/jiny798" style="ont-size: inherit;
+      display:flex;
+      align-items:center;" target="_blank">박진영</a>
 </h3>
 </div>
 
 <!-- 종민 -->
 
-<div class="member">
-<img class="profile" src="https://avatars.githubusercontent.com/u/92674967?v=4" width=400px alt="종민"/>
+<div class="member" style="display: flex;
+        align-items: center;
+        gap: 10px;">
+<img class="profile" style="width: 30px;
+        height: 30px;
+        border-radius:50%;" src="https://avatars.githubusercontent.com/u/92674967?v=4" width=400px alt="종민"/>
 <h3 class="name">
-<a href="https://github.com/2onin" target="_blank">이종민</a>
+<a href="https://github.com/2onin" style="ont-size: inherit;
+      display:flex;
+      align-items:center;" target="_blank">이종민</a>
 </h3>
 </div>
 
 <!-- 태식 -->
 
-<div class="member">
-<img  class="profile" src="https://avatars.githubusercontent.com/u/81614820?v=4" width=400px alt="태식"/>
+<div class="member" style="display: flex;
+        align-items: center;
+        gap: 10px;">
+<img  class="profile" style="width: 30px;
+        height: 30px;
+        border-radius:50%;" src="https://avatars.githubusercontent.com/u/81614820?v=4" width=400px alt="태식"/>
 <h3 class="name">
-<a href="https://github.com/xotlr333" target="_blank">공태식</a>
+<a href="https://github.com/xotlr333" style="ont-size: inherit;
+      display:flex;
+      align-items:center;" target="_blank">공태식</a>
 </h3>
 </div>
