@@ -1,6 +1,7 @@
 <template>
   <section>
-    <main-title title="신고접수" />
+    <main-title v-if="isReport" title="신고접수" />
+    <main-title v-else title="중재접수" />
     <content-layout>
       <v-form
         v-model="isVailed"
@@ -13,29 +14,26 @@
           placeholderText="제목"
           v-model="title"
         />
-        <product-title title="신고대상 게시물" />
+        <product-title v-if="isReport" title="신고대상 게시물" />
+        <product-title v-else title="중재대상 게시물" />
         <p>{{ productName }}</p>
-        <product-title title="중재신청 여부" isRequired />
-        <v-radio-group
-          :rules="[selectRule.required]"
-          inline
-          v-model="isMediate"
-        >
-          <v-radio :value="true" label="예"></v-radio>
-          <v-radio :value="false" label="아니오"></v-radio>
-        </v-radio-group>
-        <image-attach
-          v-if="isMediate"
-          ref="productRef"
-          @change-files="handleAttachProductImage"
-          @delete-image="handleDeleteProductImage"
-          required
-          attach-name="reportImage"
-          :images="productImagesThumb"
-        />
-        <product-title title="신고사유" isRequired />
+        <div v-show="!isReport">
+          <product-title title="중재 첨부사진" isRequired />
+          <image-attach
+            v-if="isMediate"
+            ref="productRef"
+            @change-files="handleAttachProductImage"
+            @delete-image="handleDeleteProductImage"
+            required
+            attach-name="reportImage"
+            :images="productImagesThumb"
+          />
+        </div>
+        <product-title v-if="isReport" title="신고사유" isRequired />
+        <product-title v-else title="중재사유" isRequired />
         <CustomTextArea v-model="reportReason" />
-        <submit-button :disabled="!isVailed" text="신고접수" />
+        <submit-button v-if="isReport" :disabled="!isVailed" text="신고접수" />
+        <submit-button v-else :disabled="!isVailed" text="중재접수" />
       </v-form>
     </content-layout>
     <plain-modal
@@ -50,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
 import {
@@ -77,8 +75,9 @@ const reportReason = ref("");
 const productImagesThumb = ref([]);
 const imageData = ref({});
 
+const isReport = route.meta.isReport;
 const isVailed = ref(false);
-const isMediate = ref(null);
+const isMediate = ref(!isReport);
 const productRef = ref(null);
 
 const handleAttachProductImage = (files) => {
@@ -138,13 +137,17 @@ const handleErrorEtc = () => {
 const dialogList = ref([
   {
     id: 0,
-    text: "신고를 진행하시겠습니까?<br>신고는 신중히 부탁드립니다.",
+    text: isReport
+      ? "신고를 진행하시겠습니까?<br>신고는 신중히 부탁드립니다."
+      : "중재를 진행하시겠습니까?<br>중재는 신중히 부탁드립니다.",
     isShow: false,
     callback: handleSubmitReport,
   },
   {
     id: 1,
-    text: "신고 접수가 완료되었습니다.",
+    text: isReport
+      ? "신고 접수가 완료되었습니다."
+      : "중재 접수가 완료되었습니다.",
     isShow: false,
     callback: completeSubmitRport,
   },
@@ -176,5 +179,21 @@ const handleGetProductDate = async () => {
 
 onBeforeMount(() => {
   handleGetProductDate();
+});
+
+watchEffect(() => {
+  if (title.value.length > 0 && reportReason.value.length >= 30) {
+    if (!isReport) {
+      if (productImagesThumb.value.length > 0) {
+        isVailed.value = true;
+      } else {
+        isVailed.value = false;
+      }
+    } else {
+      isVailed.value = true;
+    }
+  } else {
+    isVailed.value = false;
+  }
 });
 </script>

@@ -96,7 +96,13 @@ const routes = [
         path: "/report/:id(\\d+)",
         name: "Report",
         component: ReportView,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, isReport: true },
+      },
+      {
+        path: "/mediate/:id(\\d+)",
+        name: "Mediate",
+        component: ReportView,
+        meta: { requiresAuth: true, isReport: false },
       },
       {
         path: "/return/:id(\\d+)",
@@ -104,7 +110,6 @@ const routes = [
         component: ReturnRequestView,
         meta: { requiresAuth: true },
       },
-
       {
         path: "/products",
         name: "Products",
