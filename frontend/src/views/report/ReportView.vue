@@ -1,43 +1,37 @@
 <template>
-  <section>
+  <content-layout>
     <main-title title="신고접수" />
-    <content-layout>
-      <v-form
-        v-model="isVailed"
-        enctype="multipart/form-data"
-        @submit.prevent="handleSubmit"
-      >
-        <product-title title="제목" isRequired />
-        <custom-text-input
-          :rules="[defaultTextRule.required]"
-          placeholderText="제목"
-          v-model="title"
-        />
-        <product-title title="신고대상 게시물" />
-        <p>{{ productName }}</p>
-        <product-title title="중재신청 여부" isRequired />
-        <v-radio-group
-          :rules="[selectRule.required]"
-          inline
-          v-model="isMediate"
-        >
-          <v-radio :value="true" label="예"></v-radio>
-          <v-radio :value="false" label="아니오"></v-radio>
-        </v-radio-group>
-        <image-attach
-          v-if="isMediate"
-          ref="productRef"
-          @change-files="handleAttachProductImage"
-          @delete-image="handleDeleteProductImage"
-          required
-          attach-name="reportImage"
-          :images="productImagesThumb"
-        />
-        <product-title title="신고사유" isRequired />
-        <CustomTextArea v-model="reportReason" />
-        <submit-button :disabled="!isVailed" text="신고접수" />
-      </v-form>
-    </content-layout>
+    <v-form
+      v-model="isVailed"
+      enctype="multipart/form-data"
+      @submit.prevent="handleSubmit"
+    >
+      <product-title title="제목" isRequired />
+      <custom-text-input
+        :rules="[defaultTextRule.required]"
+        placeholderText="제목"
+        v-model="title"
+      />
+      <product-title title="신고대상 게시물" />
+      <p>{{ productName }}</p>
+      <product-title title="중재신청 여부" isRequired />
+      <v-radio-group :rules="[selectRule.required]" inline v-model="isMediate">
+        <v-radio :value="true" label="예"></v-radio>
+        <v-radio :value="false" label="아니오"></v-radio>
+      </v-radio-group>
+      <image-attach
+        v-if="isMediate"
+        ref="productRef"
+        @change-files="handleAttachProductImage"
+        @delete-image="handleDeleteProductImage"
+        required
+        attach-name="reportImage"
+        :images="productImagesThumb"
+      />
+      <product-title title="신고사유" isRequired />
+      <CustomTextArea v-model="reportReason" />
+      <submit-button :disabled="!isVailed" text="신고접수" />
+    </v-form>
     <plain-modal
       v-for="dialog in dialogList"
       :key="dialog.id"
@@ -46,7 +40,7 @@
       @handle-cancle="() => (dialog.isShow = !dialog.isShow)"
       @handle-confirm="dialog.callback"
     />
-  </section>
+  </content-layout>
 </template>
 
 <script setup>

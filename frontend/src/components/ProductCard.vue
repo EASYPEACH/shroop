@@ -65,6 +65,9 @@ defineEmits(["handle-click-like"]);
 .v-img {
   background-color: #fff;
 }
+.v-card {
+  padding: 0;
+}
 .v-card-subtitle {
   width: 180px;
   color: black;

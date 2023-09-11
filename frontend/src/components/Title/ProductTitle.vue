@@ -39,6 +39,14 @@ defineProps({
       font-size: 14px;
       color: red;
     }
+
+    @media (max-width: 750px) {
+      h3 {
+        &.bigTitle {
+          font-size: 1.3rem;
+        }
+      }
+    }
   }
 }
 </style>
