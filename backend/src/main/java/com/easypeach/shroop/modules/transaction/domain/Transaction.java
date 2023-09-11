@@ -58,8 +58,14 @@ public class Transaction {
 	@Column(name = "buyer_phone_number", length = 255, nullable = false)
 	private String buyerPhoneNumber;
 
+	@Column(name = "buyer_postcode", length = 255, nullable = false)
+	private String buyerPostcode;
+
 	@Column(name = "buyer_location", length = 255, nullable = false)
 	private String buyerLocation;
+
+	@Column(name = "buyer_detail_location", length = 255, nullable = false)
+	private String buyerDetailLocation;
 
 	@Column(name = "create_date")
 	@CreatedDate
@@ -67,7 +73,8 @@ public class Transaction {
 
 	public static Transaction createTransaction(final Member buyer, final Member seller, final Product product,
 		final TransactionStatus status, final String buyerName, final String buyerPhoneNumber,
-		final String buyerLocation
+		final String buyerPostcode,
+		final String buyerLocation, final String buyerDetailLocation
 	) {
 		Transaction transaction = new Transaction();
 		transaction.buyer = buyer;
@@ -76,7 +83,9 @@ public class Transaction {
 		transaction.status = status;
 		transaction.buyerName = buyerName;
 		transaction.buyerPhoneNumber = buyerPhoneNumber;
+		transaction.buyerPostcode = buyerPostcode;
 		transaction.buyerLocation = buyerLocation;
+		transaction.buyerDetailLocation = buyerDetailLocation;
 
 		return transaction;
 	}

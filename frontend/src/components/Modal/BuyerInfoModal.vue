@@ -18,7 +18,9 @@
         <li>
           <h5>배송지</h5>
           <p>
-            {{ buyerInfo.address }}
+            {{
+              `(${buyerInfo.postCode})${buyerInfo.address} ${buyerInfo.detailAddress}`
+            }}
           </p>
         </li>
         <li>

@@ -16,8 +16,6 @@ import com.easypeach.shroop.infra.aop.log.user.UserTrace;
 import com.easypeach.shroop.modules.auth.support.LoginMember;
 import com.easypeach.shroop.modules.global.response.BasicResponse;
 import com.easypeach.shroop.modules.member.domain.Member;
-import com.easypeach.shroop.modules.member.service.MemberService;
-import com.easypeach.shroop.modules.product.service.ProductService;
 import com.easypeach.shroop.modules.transaction.dto.request.TransactionCreateRequest;
 import com.easypeach.shroop.modules.transaction.dto.response.BuyerResponse;
 import com.easypeach.shroop.modules.transaction.dto.response.TransactionCreatedResponse;
@@ -32,10 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/buying")
 public class TransactionController {
-	private final ProductService productService;
-	private final MemberService memberService;
 	private final TransactionService transactionService;
-	// private final PhoneAuthService phoneAuthService;
 
 	@GetMapping("/{productId}")
 	public ResponseEntity<TransactionInfoResponse> getBuyingForm(@PathVariable final Long productId,
