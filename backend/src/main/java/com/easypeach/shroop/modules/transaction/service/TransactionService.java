@@ -114,13 +114,13 @@ public class TransactionService {
 	}
 
 	@Transactional
-	public void addPoint(final Long productId, final Long sallerId) {
+	public void addPoint(final Long productId, final Long sellerId) {
 
 		Product product = productService.findByProductId(productId);
-		Member saller = memberService.findById(sallerId);
+		Member seller = memberService.findById(sellerId);
 
-		long updatedPoint = saller.getPoint() + product.getPrice();
-		saller.updatePoint(updatedPoint);
+		long updatedPoint = seller.getPoint() + product.getPrice();
+		seller.updatePoint(updatedPoint);
 	}
 
 	public void checkSeller(final Member member, final Member seller) {
@@ -188,6 +188,15 @@ public class TransactionService {
 	public void cancelTransaction(final Long memberId, final Long productId) {
 		Transaction transaction = findByProductId(productId);
 		transactionRepository.delete(transaction);
+
+		Long price = transaction.getProduct().getPrice();
+		Long commission = Math.round(price * 0.035);
+		Member shroopAdmin = memberService.findById(ShroopMember.SHROOP_ID.getId());
+
+		// 구매자 포인트 환불
+		transaction.getBuyer().addPoint(price + commission);
+		shroopAdmin.subtractPoint(price);
+		bankService.subtractMoney(new PointRequest(commission), shroopAdmin);
 
 		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
 			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
