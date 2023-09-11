@@ -50,17 +50,23 @@
 
 실제 커머스 서비스만큼 정확하고 자세하게 기재하도록 서비스를 구성했습니다.
 
+<br />
+
 <div align="center">
 
 ![ezgif com-video-to-gif](https://github.com/EASYPEACH/shroop/assets/72537762/8c6d7cab-5c13-4b87-adef-b9cceb23da3a)
 
 </div>
 
+<br />
+
 단순히 사진 몇장과 글 몇줄로만 소개되는 것이 아닌,
 
 구매시기, 브랜드, 상세조건, 결함 관련 이미지 등을 필수로 기재하고
 
 구매자와 판매자가 정보의 불균형으로 인한 피해가 최대한 없도록 구성했습니다.
+
+<br />
 
 ### 📝 슈룹의 안전거래
 
@@ -72,25 +78,35 @@
 
 ![Group 9](https://github.com/EASYPEACH/shroop/assets/72537762/c533888e-7207-4cad-80ad-191cb4e8d4f7)
 
+<br />
+
 💡 `슈룹 방울`로 거래하면 구매자가 결제 후 구매자의 방울은, 판매자에게 바로 송금되는 것이 아닌 `슈룹 보관소`에 저장하고 있습니다.
 
 > 거래가 완전히 완료 된 후에 판매자에게 포인트가 전달 되므로, 돈이 입급되었지만 상품이 배달되지 않거나 하는 사기피해를 방지할 수 있습니다.
 
 ![거래2 (1)](https://github.com/EASYPEACH/shroop/assets/72537762/e60c45bd-bc29-4fa6-8222-8d61172a03f3)
 
+<br />
+
 💡 판매자는 구매신청이 오면 `문자로 알림`이 오고, 전달받은 구매자 정보를 바탕으로 배송등록을 합니다.
 
 ![Group 17](https://github.com/EASYPEACH/shroop/assets/72537762/f7c5af72-a2b0-4291-859c-0bb7675c0b77)
 
+<br />
+
 💡 배송이 완료되면 구매자는 상품을 확인 후, 상품이 마음에 들면 `구매확정`을 하여 거래를 완료합니다.
 
 ![거래4](https://github.com/EASYPEACH/shroop/assets/72537762/25650db9-55b7-4e58-8266-e6af46fcf601)
+
+<br />
 
 💡 `구매확정`이 되면 슈룹이 보관하고 있던 `구매자의 방울 포인트`가 판매자에게 자동으로 전달 됩니다.
 
 ![거래5](https://github.com/EASYPEACH/shroop/assets/72537762/b1fc78f5-8b5f-4c6f-a35c-589bdd0bf07f)
 
 </div>
+
+<br />
 
 ### 📝 슈룹의 중재신청
 
@@ -138,20 +154,10 @@
 
 <!-- 지윤 -->
 
-<div>
-<div class="member" style="display: flex;
-        align-items: center;
-        gap: 10px;">
-<img class="profile" style="width: 30px;
-        height: 30px;
-        border-radius:50%;" src="https://avatars.githubusercontent.com/u/72537762?v=4" width=400px alt="지윤"/>
-<h3 class="name">
-<a href="https://github.com/Jiyun-Parkk"  style="ont-size: inherit;
-      display:flex;
-      align-items:center;" target="_blank">박지윤</a>
-</h3>
-</div>
-<div>
+<a href="https://github.com/Jiyun-Parkk" target="_blank">
+<img  width="30px"  src="https://avatars.githubusercontent.com/u/72537762?v=4" width=400px alt="지윤"/>
+박지윤
+</a>
 
 ### 👩‍💻 [수행 역할]
 
@@ -179,51 +185,26 @@
 - 프론트 & 백엔드 https 적용
 - 프론트엔드 시스템 아키텍처 구축
 
-</div>
-
-</div>
+<br />
 
 <!-- 진영 -->
 
-<div class="member" style="display: flex;
-        align-items: center;
-        gap: 10px;">
-<img  class="profile"  style="width: 30px;
-        height: 30px;
-        border-radius:50%;"src="https://avatars.githubusercontent.com/u/122027452?v=4" width=400px alt="진영"/>
-<h3 class="name">
-<a href="https://github.com/jiny798" style="ont-size: inherit;
-      display:flex;
-      align-items:center;" target="_blank">박진영</a>
-</h3>
-</div>
+<a href="https://github.com/jiny798" style="font-size: inherit;display:flex;align-items:center;" target="_blank">
+<img width="30px" src="https://avatars.githubusercontent.com/u/122027452?v=4" width=400px alt="진영"/>
+박진영
+</a>
 
+<br />
 <!-- 종민 -->
 
-<div class="member" style="display: flex;
-        align-items: center;
-        gap: 10px;">
-<img class="profile" style="width: 30px;
-        height: 30px;
-        border-radius:50%;" src="https://avatars.githubusercontent.com/u/92674967?v=4" width=400px alt="종민"/>
-<h3 class="name">
-<a href="https://github.com/2onin" style="ont-size: inherit;
-      display:flex;
-      align-items:center;" target="_blank">이종민</a>
-</h3>
-</div>
+<a href="https://github.com/2onin" style="font-size: inherit;display:flex;align-items:center;" target="_blank">
+<img  width="30px"  src="https://avatars.githubusercontent.com/u/92674967?v=4" width=400px alt="종민"/>
+이종민</a>
+
+<br />
 
 <!-- 태식 -->
 
-<div class="member" style="display: flex;
-        align-items: center;
-        gap: 10px;">
-<img  class="profile" style="width: 30px;
-        height: 30px;
-        border-radius:50%;" src="https://avatars.githubusercontent.com/u/81614820?v=4" width=400px alt="태식"/>
-<h3 class="name">
-<a href="https://github.com/xotlr333" style="ont-size: inherit;
-      display:flex;
-      align-items:center;" target="_blank">공태식</a>
-</h3>
-</div>
+<a href="https://github.com/xotlr333" target="_blank">
+<img  width="30px"  src="https://avatars.githubusercontent.com/u/81614820?v=4" width=400px alt="태식"/>
+공태식</a>
