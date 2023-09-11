@@ -189,6 +189,15 @@ public class TransactionService {
 		Transaction transaction = findByProductId(productId);
 		transactionRepository.delete(transaction);
 
+		Long price = transaction.getProduct().getPrice();
+		Long commission = Math.round(price * 0.035);
+		Member shroopAdmin = memberService.findById(ShroopMember.SHROOP_ID.getId());
+
+		// 구매자 포인트 환불
+		transaction.getBuyer().addPoint(price + commission);
+		shroopAdmin.subtractPoint(price);
+		bankService.subtractMoney(new PointRequest(commission), shroopAdmin);
+
 		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
 			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
 		String message = "'" + productTitle + "'의 구매가 취소 되었습니다.";
