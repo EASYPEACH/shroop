@@ -6,6 +6,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.easypeach.shroop.modules.auth.exception.AuthFailCountException;
+import com.easypeach.shroop.modules.auth.exception.AuthTimeOutException;
 import com.easypeach.shroop.modules.auth.exception.NoSuchPhoneAuthException;
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthFailException;
 import com.easypeach.shroop.modules.auth.exception.UnAuthorizedAccessException;
@@ -74,6 +76,24 @@ public class ExceptionControllerAdvice {
 		String errorMessage = e.getMessage();
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 		return ResponseEntity.status(403).body(errorResponse);
+	}
+
+	@ExceptionHandler({
+		AuthTimeOutException.class
+	})
+	public ResponseEntity<ErrorResponse> handleTimeOutException(final RuntimeException e) {
+		String errorMessage = e.getMessage();
+		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+		return ResponseEntity.status(410).body(errorResponse);
+	}
+
+	@ExceptionHandler({
+		AuthFailCountException.class
+	})
+	public ResponseEntity<ErrorResponse> handleTooManyRequestException(final RuntimeException e) {
+		String errorMessage = e.getMessage();
+		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+		return ResponseEntity.status(429).body(errorResponse);
 	}
 
 	@ExceptionHandler
