@@ -37,20 +37,7 @@ public class ExceptionControllerAdvice {
 		FieldError firstFieldError = e.getFieldErrors().get(0);
 		String errorMessage = firstFieldError.getDefaultMessage();
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
-
 		return ResponseEntity.badRequest().body(errorResponse);
-	}
-
-	@ExceptionHandler({
-		NoSuchMemberException.class,
-		NoSuchPhoneAuthException.class,
-		NoSuchCategoryException.class,
-		NoSuchBankException.class,
-	})
-	public ResponseEntity<ErrorResponse> handleNoSuchException(final RuntimeException e) {
-		String errorMessage = e.getMessage();
-		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
-		return ResponseEntity.status(404).body(errorResponse);
 	}
 
 	@ExceptionHandler({
@@ -78,6 +65,18 @@ public class ExceptionControllerAdvice {
 		String errorMessage = e.getMessage();
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 		return ResponseEntity.status(403).body(errorResponse);
+	}
+
+	@ExceptionHandler({
+		NoSuchMemberException.class,
+		NoSuchPhoneAuthException.class,
+		NoSuchCategoryException.class,
+		NoSuchBankException.class,
+	})
+	public ResponseEntity<ErrorResponse> handleNoSuchException(final RuntimeException e) {
+		String errorMessage = e.getMessage();
+		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+		return ResponseEntity.status(404).body(errorResponse);
 	}
 
 	@ExceptionHandler({
