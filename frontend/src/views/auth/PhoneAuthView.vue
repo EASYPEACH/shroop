@@ -62,8 +62,8 @@ const phoneAuthNumber = ref("");
 const authResult = ref(true);
 const authResultMsg = ref("");
 const userStore = useUserStore();
-const time = ref(0);
-const timeOrigin = ref(0);
+const time = ref(30);
+const timeOrigin = ref(30);
 const timerInterval = ref(null);
 const minute = ref(0);
 const second = ref(0);
@@ -108,11 +108,14 @@ onBeforeMount(() => {
   if (userStore.loginId === "") {
     router.push("/signup");
   }
-  time.value = cookies.get("seconds");
-  timeOrigin.value = cookies.get("seconds");
 });
 
 onMounted(() => {
+  const cookieTime = cookies.get("seconds");
+  if (cookieTime) {
+    time.value = cookieTime;
+    timeOrigin.value = cookieTime;
+  }
   if (time.value > 0) {
     timerInterval.value = setInterval(() => {
       time.value--;
@@ -125,7 +128,7 @@ watchEffect(() => {
     clearInterval(timerInterval.value);
   }
 
-  if (time.value === timeOrigin.value - 2) {
+  if (time.value <= timeOrigin.value - 2) {
     replyisValid.value = true;
   }
 
@@ -138,7 +141,6 @@ watchEffect(() => {
 
 const requestAuthNumber = async () => {
   //재요청 버튼 비활성화
-
   try {
     replyisValid.value = false;
     clearInterval(timerInterval.value);
