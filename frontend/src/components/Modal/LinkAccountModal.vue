@@ -69,6 +69,9 @@
 import { postApi } from "@/api/modules";
 import { ref } from "vue";
 import { defaultTextRule } from "@/components/Form/data/formRules";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 const name = ref("");
 const account = ref("");
 const password = ref("");
@@ -94,6 +97,7 @@ const saveAccountHandler = async () => {
     account.value = "";
     password.value = "";
     emits("handle-cancle-modal");
+    router.go(0);
   } catch (error) {
     console.log(error);
     alert(error.response.data.message);
