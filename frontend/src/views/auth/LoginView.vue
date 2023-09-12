@@ -7,19 +7,25 @@
       rounded="lg"
       variant="plain"
     >
-      <v-form v-model="isValid" @submit.prevent="handleSubmitLogin">
+      <v-form
+        v-model="isValid"
+        @submit.prevent="handleSubmitLogin"
+        data-cy="loginForm"
+      >
         <custom-text-input
           label="아이디"
           placeholder-text="아이디를 입력해주세요"
           v-model="id"
           :rules="[idRule.required]"
           icon="mdi-account-outline"
+          data-cy="loginId"
         />
         <password-input
           :visible="visible"
           @toggle-visible="visible = !visible"
           v-model="password"
           :rules="[passwordRule.required]"
+          data-cy="loginPassword"
         />
         <v-btn
           block
@@ -28,6 +34,7 @@
           size="large"
           variant="tonal"
           :disabled="!isValid"
+          data-cy="loginBtn"
         >
           로그인
         </v-btn>
