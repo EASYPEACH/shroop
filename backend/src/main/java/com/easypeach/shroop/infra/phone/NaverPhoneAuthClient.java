@@ -30,12 +30,13 @@ public class NaverPhoneAuthClient {
 	@Value("${spring.phone.sender}")
 	private String sender;
 
-	String time = String.valueOf(System.currentTimeMillis());
+	String time;
 
 	public PhoneAuthResponse makeSignature() throws
 		UnsupportedEncodingException,
 		InvalidKeyException,
 		NoSuchAlgorithmException {
+		time = String.valueOf(System.currentTimeMillis());
 		String space = " ";                    // one space
 		String newLine = "\n";                    // new line
 		String method = "POST";                    // method
