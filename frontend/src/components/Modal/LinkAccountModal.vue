@@ -1,7 +1,7 @@
 <template>
   <v-dialog :v-model="dialog" width="500">
     <v-card>
-      <v-form v-model="isValid">
+      <v-form v-model="isValid" @submit.prevent="saveAccountHandler">
         <v-card-text>
           <v-container>
             <v-row>
@@ -49,7 +49,6 @@
             type="submit"
             variant="text"
             :disabled="!isValid"
-            @click="saveAccountHandler"
           >
             연동하기
           </v-btn>
@@ -90,11 +89,11 @@ const saveAccountHandler = async () => {
     });
 
     alert("계좌 연동에 성공했습니다.");
+    console.log("A");
     name.value = "";
     account.value = "";
     password.value = "";
     emits("handle-cancle-modal");
-    window.location.reload();
   } catch (error) {
     console.log(error);
     alert(error.response.data.message);
