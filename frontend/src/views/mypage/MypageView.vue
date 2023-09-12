@@ -8,7 +8,7 @@
           :density="isTablet ? 'compact' : 'default'"
           :show-arrows="isTablet ? true : false"
           :stacked="isTablet ? true : false"
-          color="subBlue"
+          color="#166678"
         >
           <v-tab
             v-for="t in tabList"
@@ -178,7 +178,7 @@ const handleTabClick = (path) => {
       padding: 0 20px;
       text-align: center;
       .v-icon {
-        color: rgb(var(--v-theme-subBlue));
+        color: rgb(var(--v-theme-subGreen));
       }
     }
   }

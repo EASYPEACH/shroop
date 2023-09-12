@@ -12,7 +12,8 @@ defineProps({
 
 <style lang="scss" scoped>
 .v-btn {
-  color: rgb(var(--v-theme-subBlue));
+  padding: 5px;
+  color: rgb(var(--v-theme-subGreen));
   height: fit-content;
 }
 </style>

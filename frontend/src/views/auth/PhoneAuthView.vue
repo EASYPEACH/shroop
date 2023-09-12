@@ -197,7 +197,7 @@ const requestAuthNumber = async () => {
   margin-top: 22px;
 }
 .guide_button {
-  color: rgb(var(--v-theme-subBlue));
+  color: rgb(var(--v-theme-subGreen));
 }
 
 .auth-result {

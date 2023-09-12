@@ -8,7 +8,7 @@
   >
     <template v-slot:label>
       {{ agreementStatement }}
-      <v-btn @click="$emit('show-dialog')" variant="plain" color="subBlue"
+      <v-btn @click="$emit('show-dialog')" variant="plain" color="subGreen"
         >약관확인</v-btn
       >
     </template>

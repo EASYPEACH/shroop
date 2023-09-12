@@ -93,7 +93,7 @@ const handleSubmitLogin = async () => {
   color: rgb(var(--v-theme-mainGray));
 }
 .guide_button {
-  color: rgb(var(--v-theme-subBlue));
+  color: rgb(var(--v-theme-subGreen));
 }
 
 .auth-result {

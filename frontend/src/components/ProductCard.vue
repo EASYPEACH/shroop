@@ -99,7 +99,7 @@ defineEmits(["handle-click-like"]);
   padding-left: 1rem;
   color: gray;
   span {
-    color: rgb(var(--v-theme-subBlue));
+    color: rgb(var(--v-theme-mainGreen));
   }
 }
 

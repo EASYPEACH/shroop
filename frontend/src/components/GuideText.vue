@@ -19,7 +19,7 @@ defineProps({
   padding: 10px 0;
   color: gray;
   h5 {
-    color: rgb(var(--v-theme-subBlue));
+    color: rgb(var(--v-theme-subGreen));
   }
 }
 </style>

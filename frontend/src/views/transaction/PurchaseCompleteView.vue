@@ -106,7 +106,7 @@ onBeforeMount(async () => {
   padding: 10px 0;
   font-weight: 600;
   font-size: 17px;
-  color: rgb(var(--v-theme-subBlue));
+  color: rgb(var(--v-theme-subGreen));
 }
 .payment {
   display: flex;
