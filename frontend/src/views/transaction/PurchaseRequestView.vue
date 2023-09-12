@@ -270,12 +270,11 @@ const handleRequestPurchase = async () => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 50px;
 }
 .payment {
   width: 400px;
   place-self: flex-end;
-  margin: 50px 0;
+  margin: 120px 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
