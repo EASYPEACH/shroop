@@ -9,9 +9,7 @@
       <v-card-title class="text-h5 text-sm bg-grey-lighten-3">
         {{ title }}
       </v-card-title>
-      <v-card-text>
-        {{ contentText }}
-      </v-card-text>
+      <v-card-text v-html="contentText"> </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-btn variant="text" @click="$emit('change-to-disagree')">
