@@ -337,7 +337,7 @@ const handleRequestPurchase = async () => {
   gap: 20px;
 
   .drop {
-    color: rgb(var(--v-theme-subBlue));
+    color: rgb(var(--v-theme-subGreen));
   }
 }
 .postCode__box {

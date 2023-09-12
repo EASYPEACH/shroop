@@ -28,7 +28,7 @@
           <p>{{ buyerInfo.phoneNumber }}</p>
         </li>
       </ul>
-      <v-btn color="subBlue" block @click="$emit('handleConfirm')">확인</v-btn>
+      <v-btn color="subGreen" block @click="$emit('handleConfirm')">확인</v-btn>
     </div>
   </v-dialog>
 </template>

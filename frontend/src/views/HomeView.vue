@@ -96,7 +96,7 @@
         <v-btn
           class="plusbtn"
           variant="outlined"
-          color="subBlue"
+          color="mainGreen"
           @click="() => $router.push('/products')"
         >
           더보기 <v-icon icon="mdi-chevron-right"></v-icon>
@@ -210,7 +210,7 @@ section {
       }
     }
     .color-text {
-      color: rgb(var(--v-theme-subBlue));
+      color: rgb(var(--v-theme-subGreen));
       &.service-title {
         font-size: 55px;
       }
@@ -258,7 +258,7 @@ section {
       z-index: 20;
 
       span {
-        color: rgb(var(--v-theme-subBlue));
+        color: rgb(var(--v-theme-subGreen));
       }
       &.right {
         text-align: right;

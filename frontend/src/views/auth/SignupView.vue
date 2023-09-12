@@ -63,7 +63,11 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :disabled="!isValid || isDuplId || isDuplNickname || isDuplPhone" type="submit" color="subBlue">
+          <v-btn
+            :disabled="!isValid || isDuplId || isDuplNickname || isDuplPhone"
+            type="submit"
+            color="subGreen"
+          >
             다음
           </v-btn>
         </v-card-actions>
@@ -209,7 +213,6 @@ const checkDuplication = async (param) => {
       param.dataRef.value = true;
     } else {
       param.dataRef.value = false;
-      
     }
   } catch (error) {
     console.error(error);

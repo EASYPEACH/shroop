@@ -19,7 +19,7 @@
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          color="subBlue"
+          color="subGreen"
           variant="tonal"
           @click="$emit('change-to-agree')"
         >

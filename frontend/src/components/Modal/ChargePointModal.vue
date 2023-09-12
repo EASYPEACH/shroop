@@ -16,7 +16,7 @@
             v-model="point"
             :rules="[pointRule.required, pointRule.check, pointRule.amount]"
           />
-          <v-btn type="submit" color="subBlue" block :disabled="!isValid"
+          <v-btn type="submit" color="mainGreen" block :disabled="!isValid"
             >확인</v-btn
           >
         </v-form>

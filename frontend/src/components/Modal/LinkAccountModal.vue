@@ -49,7 +49,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="blue-darken-1"
+            color="mainGreen"
             type="submit"
             variant="text"
             :disabled="!isValid"
@@ -57,7 +57,7 @@
             연동하기
           </v-btn>
           <v-btn
-            color="blue-darken-1"
+            color="mainGreen"
             variant="text"
             @click="$emit('handle-cancle-modal')"
           >
@@ -72,11 +72,7 @@
 <script setup>
 import { postApi } from "@/api/modules";
 import { ref } from "vue";
-import {
-  defaultTextRule,
-  pointRule,
-  accountRule,
-} from "@/components/Form/data/formRules";
+import { defaultTextRule, accountRule } from "@/components/Form/data/formRules";
 import { useRouter } from "vue-router";
 
 const router = useRouter();

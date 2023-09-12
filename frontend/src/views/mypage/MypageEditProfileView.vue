@@ -386,7 +386,7 @@ section {
 }
 
 .auth-success {
-  color: rgb(var(--v-theme-subBlue));
+  color: rgb(var(--v-theme-subGreen));
 }
 .auth-fail {
   color: rgb(var(--v-theme-heartRed));

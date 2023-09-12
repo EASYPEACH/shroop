@@ -15,7 +15,7 @@
         v-model="isSelling"
         :checked="isSelling"
         label="판매중"
-        color="mainGray"
+        color="mainGreen"
         hide-details
       ></v-checkbox>
     </div>
@@ -48,7 +48,7 @@
 </template>
 <script setup>
 import { ref, watch, onBeforeMount } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
 import { toggleLikesProduct } from "@/utils";
@@ -59,7 +59,6 @@ import ContentLayout from "@/layouts/ContentLayout.vue";
 import { InfoAlert } from "@/components/Alert";
 
 const router = useRouter();
-const route = useRoute();
 const display = useDisplay();
 const searchProductStore = useSearchProduct();
 

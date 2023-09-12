@@ -34,7 +34,7 @@ defineEmits(["update:checked"]);
       font-weight: bold;
     }
     &:nth-child(2) {
-      color: rgb(var(--v-theme-subBlue));
+      color: rgb(var(--v-theme-subGreen));
     }
   }
 }

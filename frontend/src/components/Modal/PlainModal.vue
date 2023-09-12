@@ -13,7 +13,7 @@
       <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
       <v-card-text v-html="modalText" />
       <v-card-actions>
-        <v-btn color="subBlue" block @click="$emit('handleConfirm')"
+        <v-btn color="subGreen" block @click="$emit('handleConfirm')"
           >확인</v-btn
         >
       </v-card-actions>

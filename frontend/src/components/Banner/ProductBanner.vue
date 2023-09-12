@@ -75,7 +75,7 @@ defineEmits(["handle-click-like"]);
       color: gray;
     }
     span:nth-child(2) {
-      color: rgba(var(--v-theme-subBlue));
+      color: rgba(var(--v-theme-subGreen));
     }
   }
   .banner__content {

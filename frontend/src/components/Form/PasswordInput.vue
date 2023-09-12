@@ -3,7 +3,7 @@
     <div
       class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between"
     >
-      {{title}}
+      {{ title }}
     </div>
     <v-text-field
       :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
@@ -25,13 +25,13 @@ defineProps({
   modelValue: String,
   visible: Boolean,
   rules: Object,
-  title: String
+  title: String,
 });
 defineEmits(["update:modelValue", "toggle-visible"]);
 </script>
 
 <style lang="scss" scoped>
 .guide_button {
-  color: rgb(var(--v-theme-subBlue));
+  color: rgb(var(--v-theme-subGreen));
 }
 </style>
