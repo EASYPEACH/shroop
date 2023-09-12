@@ -1,5 +1,5 @@
 <template>
-  <content-layout>
+  <content-layout style="padding: 0">
     <ul>
       <info-alert
         v-if="purchaseList.length === 0"

@@ -1,5 +1,5 @@
 <template>
-  <content-layout>
+  <content-layout style="padding: 0">
     <section>
       <div class="mypage__profile">
         <div class="profile__img">
