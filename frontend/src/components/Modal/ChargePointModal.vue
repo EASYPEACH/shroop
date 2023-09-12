@@ -10,9 +10,15 @@
     </v-btn>
     <v-card>
       <v-card-text>
-        <v-form @submit.prevent="handleConfirm">
-          <v-text-field :label="label" v-model="point" />
-          <v-btn type="submit" color="subBlue" block>확인</v-btn>
+        <v-form v-model="isValid" @submit.prevent="handleConfirm">
+          <v-text-field
+            :label="label"
+            v-model="point"
+            :rules="[pointRule.required, pointRule.check, pointRule.amount]"
+          />
+          <v-btn type="submit" color="subBlue" block :disabled="!isValid"
+            >확인</v-btn
+          >
         </v-form>
       </v-card-text>
     </v-card>
@@ -22,7 +28,9 @@
 <script setup>
 import { patchApi } from "@/api/modules";
 import { ref } from "vue";
+import { pointRule } from "@/components/Form/data/formRules";
 const point = ref("");
+const isValid = ref(false);
 const props = defineProps({
   dialog: Boolean,
   label: String,
