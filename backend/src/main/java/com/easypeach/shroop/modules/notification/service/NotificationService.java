@@ -34,7 +34,7 @@ public class NotificationService {
 
 		Notification notification = Notification.createNotification(member, title, link, message, false);
 
-		// phoneAuthService.sendSms(member.getPhoneNumber(), message);
+		phoneAuthService.sendSms(member.getPhoneNumber(), message); // 문자 발송
 
 		notificationRepository.save(notification);
 	}

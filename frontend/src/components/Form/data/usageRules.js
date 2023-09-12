@@ -4,20 +4,57 @@ const rules = [
   {
     id: AGREE.SHROOP,
     title: "슈룹 이용약관(필수)",
-    contentText:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente quo quis ab consequatur et mollitia eos! Provident omnis exercitationem fuga, impedit nesciunt fugiat iste in voluptatum quisquam optio! Porro, at!",
+    contentText: `회원가입 약관 동의 <br/>  <br/>
+    <b>제 1조 (목적)</b> <br/>
+      본 약관은 서비스 이용자(이하 "회원"이라 함)가 회사(이하 "회사"라 함)에서 제공하는 서비스를 이용함에 있어 회사와 회원간의 권리, 의무 및 책임사항, 기타 필요한 사항을 정하는 것을 목적으로 합니다.<br/>
+      <br/>
+      <b>제 2조 (약관의 효력과 변경)</b><br/>
+    
+      본 약관은 이용자가 본 서비스를 신청하여 이용할 때 그 효력을 발생합니다.<br/>
+      회사는 합리적인 사유가 발생할 경우 언제든지 본 약관을 변경할 수 있으며, 변경된 약관은 개정된 내용과 함께 초기화면에 게시하거나 기타의 방법으로 공지합니다.<br/>
+      변경된 약관은 게시 또는 공지한 시점부터 그 효력이 발생하며, 기존 회원들도 동일하게 적용됩니다.<br/><br/>
+      <b>제 3조 (개인정보 수집 및 이용)</b><br/>
+      회사는 서비스 제공을 위해 최소한의 개인정보를 수집합니다.<br/>
+      개인정보 처리에 대해서는 관련 법령 및 개인정보 처리 방침에서 정하는 바에 따릅니다.<br/>
+      <br/>
+      <b>제 4조 (회원 가입 절차)</b><br/>
+      
+      이용자는 본인의 개인정보를 정확히 입력하여 회원 가입 절차를 완료해야 합니다.<br/>
+      가입된 계정 정보와 비밀번호 관리는 해당 이용자에게 책임이 있으며, 타인에게 계정 정보와 비밀번호를 누설해서는 안 됩니다.<br/>
+      <br/>
+      <b>제 5조 (서비스 제공 및 중단)</b><br/>
+      회사는 이용자에게 다양한 서비스를 제공합니다.<br/>
+      시스템 점검, 보수 또는 장애 등 부득이한 사유로 인해 일시적으로 서비스를 중단할 수 있습니다.<br/>`,
   },
   {
     id: AGREE.PERSONAL,
     title: "개인정보 수집 이용 동의(필수)",
-    contentText:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente quo quis ab consequatur et mollitia eos! Provident omnis exercitationem fuga, impedit nesciunt fugiat iste in voluptatum quisquam optio! Porro, at!",
+    contentText: `
+    [개인정보 수집 및 이용 동의] <br/> <br/>
+    <b> 개인정보의 수집 및 이용 목적 회사는 다음과 같은 목적을 위해 개인정보를 수집하고 이용합니다: </b> <br/>
+- 회원 가입, 서비스 제공, 고객 지원 등을 위한 정보 확인 및 관리 <br/> 
+- 서비스 제공과 관련된 공지사항 전달  <br/> <br/>
+<b>수집하는 개인정보 항목 회사는 다음과 같은 개인정보 항목을 수집할 수 있습니다:</b> <br/> 
+- 성명, 연락처(전화번호, 이메일 등), 주소 등 <br/> <br/>
+<b>개인정보 보유 및 이용 기간 </b><br/>
+회사는 원칙적으로 회원 탈퇴 시 또는 정보 제공 동의 철회 시까지 개인정보를 보유하며, 해당 기간이 경과한 후에는 지체 없이 파기합니다. <br/> <br/>
+<b>동의 거부 권리와 동의 철회 방법</b> <br/>
+개인정보 제공에 대한 동의는 자율적이며 거부할 권리가 있습니다. 또한, 언제든지 동의를 철회할 수 있으며 회사로 연락하여 요청할 경우 즉시 처리됩니다. <br/>
+      `,
   },
   {
     id: AGREE.IDENTIFY,
     title: "휴대폰 본인확인 서비스 동의(필수)",
-    contentText:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente quo quis ab consequatur et mollitia eos! Provident omnis exercitationem fuga, impedit nesciunt fugiat iste in voluptatum quisquam optio! Porro, at!",
+    contentText: `
+      [휴대폰 본인확인 서비스 동의] <br/> <br/> 
+      
+      <b>개인정보의 수집 및 이용 목적 회사는 다음과 같은 목적을 위해 휴대폰 본인확인 서비스를 제공하고 개인정보를 수집하며 이용합니다:</b> <br/>
+      - 회원 가입 시 실명 인증 및 부정한 가입 방지 <br/> 
+      - 안전하고 정확한 서비스 제공 <br/> <br/>
+      <b>수집하는 개인정보 항목 회사는 다음과 같은 개인정보 항목을 휴대폰 본인확인을 위해 수집할 수 있습니다:</b> <br/>
+      - 휴대전화 번호, 이름 등 <br/> <br/>
+      <b>개인정보 보유 및 이용 기간</b> <br/>
+      회사는 원칙적으로 휴대폰 본인확인이 완료된 후 해당 정보를 즉시 파기합니다.`,
   },
 ];
 
