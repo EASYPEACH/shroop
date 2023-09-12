@@ -35,7 +35,7 @@ public class PhoneAuthService {
 		PhoneAuth phoneAuth = PhoneAuth.createPhoneAuth(phoneNumber,
 			new Date(now.getTime() + authExpDateInMilliseconds));
 		phoneAuthRepository.save(phoneAuth);
-		//sms.sendSms(phoneNumber,phoneAuth.getAuthNumber());
+		sms.sendSms(phoneNumber, phoneAuth.getAuthNumber()); // 문자 발송
 		log.info("인증 번호 전달 {}", phoneAuth.getAuthNumber()); // 인증 번호 로그로 전달
 
 		PhoneAuthUUID phoneAuthUUID = new PhoneAuthUUID(phoneAuth.getId(), authExpDateInMilliseconds / 1000);
