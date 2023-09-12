@@ -41,7 +41,6 @@ export const defaultTextRule = {
   required: (value) => !!value || "필수 사항 입니다",
   min: (value) => value.length >= 5 || "최소 5자 이상 입력해주세요",
   customMinLength: (value, minNumber) => {
-    console.log(value, minNumber);
     return value.length >= minNumber || `최소 ${minNumber}자 이상 입력해주세요`;
   },
 };
