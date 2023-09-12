@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.easypeach.shroop.modules.auth.exception.NoSuchPhoneAuthException;
 import com.easypeach.shroop.modules.auth.exception.PhoneAuthFailException;
 import com.easypeach.shroop.modules.auth.exception.UnAuthorizedAccessException;
+import com.easypeach.shroop.modules.bank.exception.AccountMismatchException;
 import com.easypeach.shroop.modules.bank.exception.MinusMoneyException;
 import com.easypeach.shroop.modules.bank.exception.NoSuchBankException;
 import com.easypeach.shroop.modules.global.exception.dto.ErrorResponse;
@@ -59,7 +60,8 @@ public class ExceptionControllerAdvice {
 		PasswordNotMatchException.class,
 		PhoneAuthFailException.class,
 		LackOfPointException.class,
-		ProductException.class
+		ProductException.class,
+		AccountMismatchException.class
 	})
 	public ResponseEntity<ErrorResponse> handleBadRequestException(final RuntimeException e) {
 		String errorMessage = e.getMessage();
