@@ -69,6 +69,27 @@ export const trackingNumberRule = {
   required: (value) => !!value || "운송장번호를 입력해주세요",
   check: (value) => {
     const pattern = /^[0-9]*$/;
-    return pattern.test(value) || "숫자만 해주세요";
+    return pattern.test(value) || "숫자만 입력해주세요";
+  },
+};
+export const pointRule = {
+  required: (value) => !!value || "포인트를 입력해주세요",
+  check: (value) => {
+    const pattern = /^[0-9]*$/;
+    return pattern.test(value) || "숫자만 입력해주세요";
+  },
+  amount: (value) =>
+    Number(value.split(",").join("")) >= 100 || "100원 이상 입력해주세요",
+};
+
+export const accountRule = {
+  required: (value) => !!value || "",
+  checkNum: (value) => {
+    const pattern = /^[0-9]*$/;
+    return pattern.test(value) || "숫자만 입력해주세요";
+  },
+  checkChar: (value) => {
+    const pattern = /^[가-힣]+$/;
+    return pattern.test(value) || "문자만 입력해주세요";
   },
 };

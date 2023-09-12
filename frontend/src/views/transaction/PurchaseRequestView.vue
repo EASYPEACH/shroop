@@ -123,7 +123,6 @@ import { ref, watch, onBeforeMount } from "vue";
 import {
   defaultTextRule,
   phoneNumberRule,
-  agreeRule,
 } from "@/components/Form/data/formRules";
 import { getApi, postApi } from "@/api/modules";
 import { useRoute, useRouter } from "vue-router";

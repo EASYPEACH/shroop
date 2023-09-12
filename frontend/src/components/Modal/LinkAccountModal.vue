@@ -9,6 +9,7 @@
                 <v-text-field
                   :rules="[
                     defaultTextRule.required,
+                    accountRule.checkChar,
                     (value) => defaultTextRule.customMinLength(value, 2),
                   ]"
                   label="이름"
@@ -20,6 +21,7 @@
                 <v-text-field
                   :rules="[
                     defaultTextRule.required,
+                    accountRule.checkNum,
                     (value) => defaultTextRule.customMinLength(value, 11),
                   ]"
                   label="계좌번호"
@@ -31,6 +33,8 @@
                 <v-text-field
                   :rules="[
                     defaultTextRule.required,
+                    ,
+                    accountRule.checkNum,
                     (value) => defaultTextRule.customMinLength(value, 4),
                   ]"
                   label="비밀번호"
@@ -68,7 +72,11 @@
 <script setup>
 import { postApi } from "@/api/modules";
 import { ref } from "vue";
-import { defaultTextRule } from "@/components/Form/data/formRules";
+import {
+  defaultTextRule,
+  pointRule,
+  accountRule,
+} from "@/components/Form/data/formRules";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
