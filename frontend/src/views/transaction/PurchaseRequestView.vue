@@ -50,7 +50,7 @@
         <custom-text-input
           :rules="[
             defaultTextRule.required,
-            (value) => defaultTextRule.customMinLength(value, 5),
+            (value) => defaultTextRule.customMinLength(value, 2),
           ]"
           placeholderText="상세주소"
           v-model="detailLocation"
@@ -99,7 +99,6 @@
             <div class="caution__block-all-agree__text">전체 동의</div>
             <div>
               <v-checkbox
-                :rules="[agreeRule.required]"
                 v-model="allCheckboxesChecked"
                 @change="toggleAllCheckboxes"
               />

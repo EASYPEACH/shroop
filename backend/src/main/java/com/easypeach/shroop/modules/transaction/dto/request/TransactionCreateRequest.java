@@ -30,6 +30,6 @@ public class TransactionCreateRequest {
 	private String buyerLocation;
 
 	@NotBlank
-	@Size(min = 5, max = 255, message = "최소 5자 이상 입력해주세요")
+	@Size(min = 2, max = 255, message = "최소 2자 이상 입력해주세요")
 	private String buyerDetailLocation;
 }
