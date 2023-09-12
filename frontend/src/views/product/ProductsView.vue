@@ -15,7 +15,7 @@
         v-model="isSelling"
         :checked="isSelling"
         label="판매중"
-        color="indigo"
+        color="mainGray"
         hide-details
       ></v-checkbox>
     </div>

@@ -67,25 +67,28 @@
           />
         </div>
 
-        <div class="payment">
-          <div class="payment-text">
-            <p>상품 금액:</p>
-            <p>안전 결제 수수료:</p>
-            <p>총 결제금액:</p>
-          </div>
-          <div class="payment-price">
+        <ul class="payment">
+          <li>
+            <h3>상품 금액:</h3>
             <p>{{ product.price.toLocaleString() }} 원</p>
+          </li>
+          <li>
+            <h3>안전 결제 수수료:</h3>
             <p>
               {{ fee.toLocaleString() }}
               원
             </p>
+          </li>
+          <v-divider />
+          <li>
+            <h3>총 결제금액:</h3>
             <p>
               {{ (product.price + fee).toLocaleString() }}
               원
             </p>
-          </div>
-        </div>
-
+          </li>
+        </ul>
+        <v-divider />
         <div class="caution">
           <h2>주의 사항</h2>
           <caution-block
@@ -263,28 +266,44 @@ const handleRequestPurchase = async () => {
     opacity: 0.7;
   }
 }
-.payment {
+.v-form {
   display: flex;
-  justify-content: end;
-  height: 200px;
-  .payment-text {
+  flex-direction: column;
+  justify-content: center;
+  gap: 50px;
+}
+.payment {
+  width: 400px;
+  place-self: flex-end;
+  margin: 50px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  li {
     display: flex;
-    flex-direction: column;
-    align-items: start;
-    height: 200px;
-    justify-content: space-around;
-    padding: 50px;
+    justify-content: space-between;
+    gap: 10px;
+    h3 {
+      font-weight: 600;
+    }
   }
-  .payment-price {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: space-around;
-    height: 200px;
-    padding: 50px;
-    p:nth-child(3) {
-      font-weight: bold;
-      color: tomato;
+  li:last-child {
+    p {
+      color: rgb(var(--v-theme-heartRed));
+    }
+    font-weight: 600;
+  }
+
+  @media (max-width: 750px) {
+    width: 100%;
+    place-self: center;
+
+    .payment-text {
+      padding: 0px;
+    }
+    .payment-price {
+      padding: 0px;
     }
   }
 }

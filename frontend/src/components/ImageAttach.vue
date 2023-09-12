@@ -4,6 +4,7 @@
       <div class="uploadFiles__form-attach">
         <label :for="attachName">
           <v-icon icon="mdi-camera"></v-icon>
+          <p>이미지 첨부</p>
         </label>
         <input
           type="file"
@@ -24,7 +25,7 @@
             class="thumb"
           ></div>
           <v-btn variant="text" @click="$emit('delete-image', idx)">
-            <v-icon icon="mdi-close-circle"></v-icon>
+            <v-icon icon="mdi-trash-can-outline"></v-icon>
           </v-btn>
         </div>
       </div>
@@ -58,13 +59,17 @@ defineExpose({
       font-size: 30px;
       padding: 30px 0 10px;
       label {
-        display: inline-flex;
+        display: flex;
+        flex-direction: column;
         width: 200px;
         height: 200px;
         align-items: center;
         justify-content: center;
         border: 2px dotted gray;
         cursor: pointer;
+        p {
+          font-size: 15px;
+        }
       }
       input {
         height: 0;
@@ -76,6 +81,9 @@ defineExpose({
         label {
           width: 100px;
           height: 100px;
+          p {
+            font-size: 13px;
+          }
         }
       }
     }
@@ -91,7 +99,6 @@ defineExpose({
         .thumb {
           width: 200px;
           height: 200px;
-          border-radius: 10px;
         }
         button {
           position: absolute;
@@ -99,9 +106,10 @@ defineExpose({
           min-height: 30px;
           aspect-ratio: 1 / 1;
           padding: 0;
-          top: -17px;
-          right: -17px;
-          font-size: 30px;
+          top: -2px;
+          right: -1px;
+          font-size: 18px;
+          color: #fff;
         }
       }
       @media (max-width: 980px) {
@@ -109,6 +117,9 @@ defineExpose({
           .thumb {
             width: 100px;
             height: 100px;
+          }
+          button {
+            font-size: 13px;
           }
         }
       }

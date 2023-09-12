@@ -10,7 +10,8 @@
         <div class="profile__info-img">
           <img :src="imageThumb" />
           <label for="profile_image" class="profile__info-edit">
-            <v-icon icon="mdi-camera" />
+            <div />
+            <span> <v-icon icon="mdi-camera-outline" /> </span>
           </label>
           <input
             @change="handleChangeProfile"
@@ -301,7 +302,7 @@ section {
         width: 200px;
         height: 200px;
         border-radius: 50%;
-        border: 5px solid rgb(var(--v-theme-mainGray), 0.3);
+        border: 5px solid rgb(var(--v-theme-mainGray), 0.8);
         margin-bottom: 1rem;
         object-fit: cover;
         object-position: center;
@@ -312,9 +313,26 @@ section {
       }
       label {
         position: absolute;
-        bottom: 33px;
-        right: 20px;
+        bottom: 81px;
+        right: 74px;
         font-size: 20px;
+        cursor: pointer;
+        color: #fff;
+
+        > div {
+          background: rgb(var(--v-theme-mainGray), 0.8);
+          height: 100%;
+          padding: 50px;
+          position: absolute;
+          border-radius: 50%;
+          clip-path: ellipse(100px 100px at -28% -40%);
+        }
+        span {
+          position: absolute;
+          top: 11px;
+          left: 18px;
+          font-size: 14px;
+        }
       }
     }
   }
