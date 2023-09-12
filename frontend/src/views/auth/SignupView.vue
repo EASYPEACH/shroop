@@ -193,6 +193,7 @@ const requestAuthNumber = async () => {
       },
     });
     cookies.set("uuid", data.uuid);
+    cookies.set("seconds", data.seconds);
   } catch (error) {
     console.error(error);
   }
