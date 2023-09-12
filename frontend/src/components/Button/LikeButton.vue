@@ -1,7 +1,7 @@
 <template>
   <v-btn :variant="variant" @click="$emit('handle-click-like')">
     <v-icon :icon="product.isLike ? 'mdi-heart' : 'mdi-heart-outline'" />
-    <span>{{ product.likesCount }}</span>
+    <span v-if="!noCountText">{{ product.likesCount }}</span>
   </v-btn>
 </template>
 
@@ -15,6 +15,7 @@ defineProps({
     type: String,
     default: "text",
   },
+  noCountText: Boolean,
 });
 defineEmits(["handle-click-like"]);
 </script>

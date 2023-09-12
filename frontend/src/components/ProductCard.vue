@@ -1,54 +1,48 @@
 <template>
-  <v-card class="mx-auto rounded-0" min-width="250">
-    <v-img
-      class="align-end text-white"
-      height="200"
-      :src="
-        productCardData.productImgList !== undefined
-          ? productCardData.productImgList.filter((img) => !img.isDefect)[0]
-              .productImgUrl
-          : productCardData.productImgUrl
-      "
+  <div class="wrapper">
+    <v-card
+      class="mx-auto rounded-0"
+      min-width="250"
       @click="() => $router.push(`/detail/${productCardData.id}`)"
-      contain
     >
-    </v-img>
-
-    <v-divider />
-    <v-card-text class="pt-3">
-      상품등록일<br />
-      {{ formatDate(productCardData.createDate) }}
-      <span
-        >&nbsp;
-        {{
-          productCardData.categoryName !== undefined
-            ? productCardData.categoryName
-            : productCardData.category.name
-        }}</span
+      <v-img
+        cover
+        class="align-end text-white"
+        height="200"
+        :src="
+          productCardData.productImgList !== undefined
+            ? productCardData.productImgList.filter((img) => !img.isDefect)[0]
+                .productImgUrl
+            : productCardData.productImgUrl
+        "
       >
-    </v-card-text>
-    <v-card-subtitle>
-      <p>{{ productCardData.title }}</p>
-    </v-card-subtitle>
-    <div class="product-status">
-      <transaction-badge v-if="productCardData.transactionStatus !== null" />
-      <p>{{ productCardData.price.toLocaleString() }} 원</p>
-    </div>
-    <v-card-actions>
-      <div>
-        <like-button
-          :product="productCardData"
-          @handle-click-like="$emit('handle-click-like')"
-        />
+      </v-img>
+      <v-divider />
+      <v-card-text class="pt-3">
+        {{ formatDate(productCardData.createDate) }}
+        <span
+          >&nbsp;
+          {{
+            productCardData.categoryName !== undefined
+              ? productCardData.categoryName
+              : productCardData.category.name
+          }}</span
+        >
+      </v-card-text>
+      <v-card-subtitle>
+        <p>{{ productCardData.title }}</p>
+      </v-card-subtitle>
+      <div class="product-status">
+        <transaction-badge v-if="productCardData.transactionStatus !== null" />
+        <p>{{ productCardData.price.toLocaleString() }} 원</p>
       </div>
-      <v-btn
-        color="subBlue"
-        @click="() => $router.push(`/detail/${productCardData.id}`)"
-      >
-        상세보기
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+    </v-card>
+    <like-button
+      class="like-btn"
+      :product="productCardData"
+      @handle-click-like="$emit('handle-click-like')"
+    />
+  </div>
 </template>
 
 <script setup>
@@ -62,14 +56,24 @@ defineEmits(["handle-click-like"]);
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  position: relative;
+}
+.like-btn {
+  position: absolute;
+  top: 0;
+  color: #fff;
+  right: 0;
+}
 .v-img {
   background-color: #fff;
 }
 .v-card {
-  padding: 0;
+  padding: 0 0 20px 0;
+  cursor: pointer;
 }
 .v-card-subtitle {
-  width: 180px;
+  width: 250px;
   color: black;
   opacity: 1;
   font-size: 18px;
@@ -88,7 +92,7 @@ defineEmits(["handle-click-like"]);
   justify-content: flex-end;
   align-items: center;
   padding: 0 15px;
-  text-align: right;
+  font-size: 20px;
 }
 .v-card-text {
   padding-bottom: 0;

@@ -1,41 +1,25 @@
 <template>
   <div>
-    <v-carousel
-      color="white"
-      delimiter-icon="mdi-circle-outline"
+    <product-swiper
       v-if="productImgs.length > 0 && isMobile"
-      :class="{ isMobile: isMobile }"
-      height="450"
-    >
-      <v-carousel-item
-        v-for="productImg in productImgs"
-        :key="productImg.id"
-        :src="productImg.productImgUrl"
-        @click="() => showImageModal(productImg.productImgUrl)"
-        contain
-        eager
-      >
-      </v-carousel-item>
-    </v-carousel>
+      :product-content="productContent"
+      :product-imgs="productImgs"
+      @show-image-modal="(imgUrl) => showImageModal(imgUrl)"
+    />
+
     <content-layout>
-      <div class="imgSlide">
-        <v-carousel
-          color="white"
-          delimiter-icon="mdi-circle-outline"
+      <p class="category">
+        <span>{{ productContent.category?.name }}</span>
+        <v-icon icon="mdi-chevron-right" />
+      </p>
+      <div class="product__top">
+        <product-swiper
           v-if="productImgs.length > 0 && !isMobile"
-          height="450"
-        >
-          <v-carousel-item
-            v-for="productImg in productImgs"
-            :key="productImg.id"
-            :src="productImg.productImgUrl"
-            @click="() => showImageModal(productImg.productImgUrl)"
-            contain
-            eager
-          >
-          </v-carousel-item>
-        </v-carousel>
-        <div class="productContent">
+          :product-content="productContent"
+          :product-imgs="productImgs"
+          @show-image-modal="(imgUrl) => showImageModal(imgUrl)"
+        />
+        <div class="product__top-content">
           <v-card-item>
             <div>
               <div class="productContent__item">
@@ -45,102 +29,96 @@
                     v-if="productContent.transactionStatus !== null"
                   />
                 </div>
-                <div class="productContent__side-tooltips">
-                  <v-menu transition="scale-transition">
-                    <template v-slot:activator="{ props }">
-                      <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
-                    </template>
-                    <ul>
-                      <li
-                        class="font-weight-bold"
-                        v-if="loginCheckStore.id !== profile.id"
-                        @click="
-                          () => $router.push(`/report/${route.params.id}`)
-                        "
-                      >
-                        신고하기
-                      </li>
-                      <li
-                        class="font-weight-bold"
-                        v-if="
-                          loginCheckStore.id === profile.id &&
-                          !TRANSACTION_STATUS[productContent.transactionStatus]
-                        "
-                        @click="handleClickDeleteButton"
-                      >
-                        삭제하기
-                      </li>
-                      <li
-                        class="font-weight-bold"
-                        v-if="loginCheckStore.id === profile.id"
-                        @click="() => $router.push(`/edit/${$route.params.id}`)"
-                      >
-                        수정하기
-                      </li>
-                    </ul>
-                  </v-menu>
+
+                <div class="productContent__side">
+                  <div class="productContent__side-heart">
+                    <v-icon icon="mdi-heart" color="heartRed" />
+                    <span>{{ productContent.likesCount }}</span>
+                  </div>
                 </div>
               </div>
-              <div class="productContent__price">
-                <div class="text-h5 mb-1">
-                  {{ productContent.price?.toLocaleString() }}원
-                </div>
-                <div
-                  v-if="productContent.isCheckedDeliveryFee"
-                  class="text-caption mb-1"
-                >
-                  배송비 포함
-                </div>
-                <div v-else class="text-caption mb-1">배송비 미포함</div>
-              </div>
-              <v-table class="mt-2">
-                <tbody>
-                  <tr>
-                    <td class="text-subtitle-2">
-                      <v-icon icon="mdi-vector-point"></v-icon>카테고리
-                    </td>
-                    <td>{{ productContent.category?.name }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-subtitle-2">
-                      <v-icon icon="mdi-vector-point"></v-icon>생성일자
-                    </td>
-                    <td>{{ formatDate(productContent.createDate) }}</td>
-                  </tr>
-                </tbody>
-              </v-table>
+              <p class="productContent__price">
+                <span>{{ productContent.price?.toLocaleString() }}</span> 원
+              </p>
             </div>
           </v-card-item>
-          <v-divider class="border-opacity-25 mb-5"></v-divider>
           <div class="productContent__profile">
-            <div class="productContent__profile-content">
-              <v-avatar>
-                <v-img :src="profile.imgUrl" :alt="profile.nickName"></v-img>
-              </v-avatar>
-              <div class="text-h5">{{ profile.nickName }}</div>
-            </div>
-            <div class="productContent__profile-grade">
-              <v-icon :icon="profile.rank" />
-            </div>
-          </div>
-
-          <v-card-actions>
-            <like-button
-              :product="productContent"
-              variant="outlined"
-              @handle-click-like="handleClickLike"
-            />
+            <aside>
+              <div class="productContent__profile-content">
+                <v-avatar>
+                  <v-img
+                    :src="profile.profileImg"
+                    :alt="profile.nickName"
+                  ></v-img>
+                </v-avatar>
+                <h5>{{ profile.nickName }}</h5>
+              </div>
+              <div class="productContent__profile-grade">
+                <v-icon :icon="profile.rank" />
+                {{ profile.gradeScore }} 점
+              </div>
+            </aside>
             <v-btn
+              variant="text"
+              v-if="loginCheckStore.id !== profile.id"
+              @click="() => $router.push(`/report/${route.params.id}`)"
+              >이 게시물 신고하기</v-btn
+            >
+          </div>
+          <v-divider class="border-opacity-25 mb-5"></v-divider>
+          <ul class="sell-details">
+            <li>
+              <h3>배송비</h3>
+              <span>
+                {{
+                  productContent.isCheckedDeliveryFee
+                    ? "배송비 포함"
+                    : "배송비 미포함"
+                }}
+              </span>
+            </li>
+            <li>
+              <h3>교환여부</h3>
+              <span> 교환 불가 </span>
+            </li>
+            <li>
+              <h3>등록일</h3>
+              <span> {{ formatDate(productContent.createDate) }} </span>
+            </li>
+          </ul>
+
+          <div class="product__buttons">
+            <like-button
+              v-if="loginCheckStore.id !== profile.id"
+              class="product__buttons-common"
+              height="auto"
+              :product="productContent"
+              @handle-click-like="handleClickLike"
+              no-count-text
+            />
+
+            <v-btn
+              class="product__buttons-common"
               v-if="
-                loginCheckStore.id !== profile.id &&
-                !TRANSACTION_STATUS[productContent.transactionStatus]
+                !TRANSACTION_STATUS[productContent.transactionStatus] &&
+                loginCheckStore.id !== profile.id
               "
-              variant="outlined"
+              height="auto"
+              variant="text"
               @click="handlePurchase"
             >
               구매하기
             </v-btn>
-          </v-card-actions>
+            <v-btn
+              v-if="loginCheckStore.id === profile.id"
+              class="product__buttons-common product__buttons-manage"
+              height="auto"
+              variant="text"
+              @click="() => $router.push('/mypage/sellList')"
+            >
+              내 상품 관리하기
+            </v-btn>
+          </div>
         </div>
       </div>
 
@@ -233,7 +211,6 @@
 import { onBeforeMount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getApi, deleteApi, postApi } from "@/api/modules";
-import { formatDate } from "@/utils/formatDate";
 import { PRODUCT_GRADE_EN } from "@/consts/productGrade";
 import { useCheckLogin } from "@/store/modules";
 import TRANSACTION_STATUS from "@/consts/status";
@@ -244,17 +221,15 @@ import TransactionBadge from "@/components/TransactionBadge.vue";
 import { ProductTitle } from "@/components/Title";
 import { PlainModal, ImageThumbModal } from "@/components/Modal";
 import { LikeButton } from "@/components/Button";
+import { formatDate } from "@/utils";
+import ProductSwiper from "@/components/ProductSwiper.vue";
 
 const loginCheckStore = useCheckLogin();
 const route = useRoute();
 const router = useRouter();
 const productImgs = ref([]);
 const defectImgs = ref([]);
-const profile = ref({
-  id: 0,
-  nickName: "",
-  imgUrl: "",
-});
+const profile = ref({});
 
 const productContent = ref({});
 const deleteModal = ref(false);
@@ -274,10 +249,7 @@ onBeforeMount(async () => {
     productImgs.value = data.productImgList.filter((img) => !img.isDefect);
     defectImgs.value = data.productImgList.filter((img) => img.isDefect);
 
-    profile.value.nickName = data.seller.nickName;
-    profile.value.id = data.seller.id;
-    profile.value.imgUrl = data.seller.profileImg;
-    profile.value.score = data.seller.gradeScore;
+    profile.value = data.seller;
 
     handleScoreToRankIcon(data.seller.gradeScore);
   } catch (err) {
@@ -338,11 +310,6 @@ const handlePurchase = async () => {
   }
 };
 
-// 상품 삭제하기 - 확인모달노출
-const handleClickDeleteButton = async () => {
-  deleteModal.value = true;
-};
-
 // 상품 삭제하기 확인모달 취소 - 삭제 취소
 const handleClickCancle = async () => {
   deleteModal.value = false;
@@ -368,12 +335,31 @@ const showImageModal = (imgUrl) => {
 </script>
 
 <style lang="scss" scoped>
-.imgSlide {
+.category {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 600;
+  width: fit-content;
+  padding: 2px 10px;
+  border-radius: 3px;
+  color: #494949;
+  font-size: 15px;
+  @media (max-width: 750px) {
+    padding: 0;
+  }
+}
+.product__top {
   display: flex;
   justify-content: space-between;
   gap: 50px;
 
-  .productContent {
+  &-slide {
+    width: 450px;
+    height: 450px;
+  }
+
+  &-content {
     flex: 1;
     display: flex;
     justify-content: space-between;
@@ -381,12 +367,19 @@ const showImageModal = (imgUrl) => {
     gap: 20px;
     overflow: visible;
     .productContent__price {
-      margin: 15px 0;
-      display: flex;
-      align-items: flex-end;
-      gap: 20px;
+      margin: 5px 0;
+      span {
+        font-size: 35px;
+      }
+      font-weight: 600;
+      @media (max-width: 750px) {
+        span {
+          font-size: 20px;
+        }
+      }
     }
     .v-card-item {
+      padding: 0;
       .productContent__item {
         display: flex;
         justify-content: space-between;
@@ -402,35 +395,33 @@ const showImageModal = (imgUrl) => {
             font-size: 25px;
             font-weight: 600;
           }
+          @media (max-width: 750px) {
+            h2 {
+              font-size: 16px;
+            }
+          }
         }
-        .productContent__side-tooltips {
+        .productContent__side {
+          display: flex;
+          align-items: center;
+
+          &-heart {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
           .v-btn {
             box-shadow: none;
           }
         }
       }
+    }
 
-      .v-table {
-        width: 70%;
-        td {
-          padding: 0;
-          border: none;
-          color: gray;
-        }
-      }
+    @media (max-width: 960px) {
+      width: 100%;
     }
   }
-  .productContent__profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 
-    .productContent__profile-content {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-  }
   @media (max-width: 960px) {
     flex-direction: column;
     align-items: center;
@@ -438,29 +429,65 @@ const showImageModal = (imgUrl) => {
       width: 100%;
     }
   }
+  .sell-details {
+    li + li {
+      margin-top: 10px;
+    }
+    li {
+      display: flex;
+      h3 {
+        width: 20%;
+      }
+    }
+  }
+  .productContent__profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+
+    aside {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+      width: 100%;
+      .productContent__profile-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+
+    .v-btn {
+      text-decoration: underline;
+      padding: 0;
+    }
+  }
 }
 
-.v-carousel {
-  flex-basis: 50%;
-  .v-carousel-item {
-    background-color: #000;
-  }
-  @media (max-width: 960px) {
-    padding-top: 50px;
-    width: 100%;
-  }
-}
+.product__buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 
-.v-card-actions {
-  justify-content: space-between;
-  gap: 20px;
-  .v-btn {
-    width: 100%;
+  &-common {
+    flex-basis: 50%;
+    background: rgb(var(--v-theme-mainGray));
+    font-weight: 600;
+    font-size: 20px;
+    color: #fff;
+    padding: 10px 0;
+    transition: 0.5s all;
+    &:hover {
+      transform: scale(1.05);
+    }
+    @media (max-width: 750px) {
+      font-size: 16px;
+    }
+  }
+  &-manage {
     flex: 1;
-  }
-  .v-btn-toggle {
-    height: 36px;
-    border: thin solid currentColor;
   }
 }
 

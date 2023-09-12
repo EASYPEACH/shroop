@@ -142,7 +142,8 @@ header {
     .search__box {
       position: absolute;
       width: 40%;
-      border: 2px solid rgb(var(--v-theme-mainGray));
+      border: 1px solid rgb(var(--v-theme-mainGray));
+      border-radius: 5px;
       top: 50%;
       height: 40px;
       left: calc(50% - 20px);

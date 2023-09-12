@@ -39,6 +39,9 @@ watch(isMobile, (check) => {
   if (!check && mobileNavStore.isMobileNav) {
     mobileNavStore.setIsMobileNav(false);
   }
+  if (!check) {
+    toShowMobileAppBar.value = false;
+  }
 });
 
 watchEffect(() => {

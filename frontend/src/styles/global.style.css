@@ -1,6 +1,9 @@
 * {
   font-family: "Noto Sans KR", sans-serif;
 }
+:root {
+  --swiper-theme-color: #fff;
+}
 html,
 body {
   height: 100%;

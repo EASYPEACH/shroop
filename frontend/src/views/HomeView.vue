@@ -4,7 +4,8 @@
       <div>
         <div>
           <h2>
-            <span class="color-text">슈룹</span>: <br />중고거래의 안심우산
+            <span class="color-text service-title">슈룹</span>: <br />중고거래의
+            안심우산
           </h2>
           <br />
           <p><span class="color-text">슈룹</span>은 우산의 순 우리말 입니다</p>
@@ -46,7 +47,7 @@
         data-aos-easing="linear"
         data-aos-duration="500"
       >
-        <p>믿고거래 할 수 있는</p>
+        <p>믿고 거래 할 수 있는</p>
         <p>상품 상세 정보</p>
       </div>
       <img
@@ -64,7 +65,7 @@
         data-aos-easing="linear"
         data-aos-duration="500"
       >
-        <p>믿고거래 할 수 있는</p>
+        <p>믿고 거래 할 수 있는</p>
         <p>상품 상세 정보</p>
       </div>
     </section>
@@ -94,7 +95,7 @@
         </ul>
         <v-btn
           class="plusbtn"
-          variant="elevated"
+          variant="outlined"
           color="subBlue"
           @click="() => $router.push('/products')"
         >
@@ -210,6 +211,9 @@ section {
     }
     .color-text {
       color: rgb(var(--v-theme-subBlue));
+      &.service-title {
+        font-size: 55px;
+      }
     }
     @media (max-width: 960px) {
       padding: 50px 30px;
@@ -310,6 +314,7 @@ section {
     padding: 0 20px;
     font-weight: 600;
   }
+
   @media (max-width: 960px) {
     .products__list {
       display: flex;

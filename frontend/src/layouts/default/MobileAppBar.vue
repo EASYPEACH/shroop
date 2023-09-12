@@ -19,7 +19,6 @@ header {
   left: 0;
   z-index: 20;
   color: #000;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 1);
 }
 </style>

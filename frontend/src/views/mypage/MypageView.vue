@@ -1,5 +1,5 @@
 <template>
-  <content-layout>
+  <content-layout style="padding: 0">
     <v-card variant="plain" class="mypage">
       <div class="mypage__content">
         <v-tabs

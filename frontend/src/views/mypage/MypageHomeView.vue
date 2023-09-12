@@ -1,19 +1,19 @@
 <template>
-  <content-layout>
+  <content-layout style="padding: 0">
     <section>
       <div class="mypage__profile">
         <div class="profile__img">
           <img :src="profile.imagePath ? profile.imagePath : basicProfile" />
-        </div>
-
-        <div class="profile__infoBox">
-          <aside class="profile__infoBox-details">
+          <aside>
+            <p class="profile__info-name">
+              <span>{{ profile.nickName }}</span
+              >님
+            </p>
             <div class="profile__info-rank">
               <div class="score">{{ profile.score }} 점</div>
-              <v-icon :icon="profile.rank" class="profile__name-rank" />
-              <v-btn variant="plain" class="rank-help">
-                <v-icon icon="mdi-help" />
-                <v-tooltip activator="parent" location="end">
+              <v-btn variant="elevated" class="rank-help">
+                <v-icon :icon="profile.rank" class="profile__name-rank" />
+                <v-tooltip activator="parent" location="bottom">
                   <p>슈룹 안심거래 등급</p>
                   <ul>
                     <li>
@@ -28,52 +28,47 @@
                 </v-tooltip>
               </v-btn>
             </div>
-            <p class="profile__info-name">
-              <span>{{ profile.nickName }}</span
-              >님
-            </p>
-          </aside>
-          <aside class="profile__account-box">
-            <div class="profile__account-points">
-              <div>
-                {{ profile.point }}
-                <v-icon icon="mdi-water" />
-              </div>
-              <div class="account__buttons">
-                <mini-button
-                  variant="outlined"
-                  text="충전"
-                  @click="showChargePointModal = true"
-                />
-                <mini-button
-                  variant="outlined"
-                  text="환전"
-                  @click="showExchangePointModal = true"
-                />
-              </div>
-            </div>
-            <v-divider :vertical="true" />
-            <div>
-              <div
-                class="profile__account-link"
-                v-if="profile.account !== null"
-              >
-                <h4>연결 계좌</h4>
-                <p>
-                  {{ profile.account }}
-                </p>
-              </div>
-              <v-btn
-                color="subBlue"
-                variant="outlined"
-                class="account__buttons-link"
-                @click="showLinkAccountModal = true"
-                >계좌 연동하기</v-btn
-              >
-            </div>
           </aside>
         </div>
+
+        <div class="profile__account">
+          <div class="profile__account-points">
+            <div>
+              {{ profile.point }}
+              <v-icon icon="mdi-water" />
+            </div>
+            <div class="account__buttons">
+              <mini-button
+                color="mainGray"
+                variant="elevated"
+                text="충전"
+                @click="showChargePointModal = true"
+              />
+              <mini-button
+                color="mainGray"
+                variant="elevated"
+                text="환전"
+                @click="showExchangePointModal = true"
+              />
+            </div>
+          </div>
+          <div class="profile__account-link">
+            <div v-if="profile.account !== null">
+              <h4>연결 계좌</h4>
+              <p>
+                {{ profile.account }}
+              </p>
+            </div>
+            <v-btn
+              color="mainGray"
+              variant="elevated"
+              @click="showLinkAccountModal = true"
+              >계좌 연동하기</v-btn
+            >
+          </div>
+        </div>
       </div>
+
       <v-divider />
       <div class="mypage__like">
         <h3>좋아요 <v-icon icon="mdi-heart" class="like-icon" /></h3>
@@ -173,7 +168,7 @@ const handleGetUserData = async () => {
   profile.value.point = userData.point;
   profile.value.account = userData.account;
   profile.value.score = userData.gradeScore;
-  
+
   handleScoreToRankIcon(userData.gradeScore);
 
   likeList.value = userData.page.content.map((data) => {
@@ -243,68 +238,88 @@ const handleSaveAccount = async () => {
 .mypage__profile {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 30px;
-  margin: 20px 0 100px;
+  margin: 20px 0 50px 0;
   .profile__img {
     display: flex;
     align-items: center;
-    flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 
     img {
+      border: 1px solid rgba(0, 0, 0, 0.2);
       width: 150px;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       object-fit: cover;
       object-position: center;
     }
+    .profile__info-rank {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      .rank-help {
+        min-width: 10px;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        padding: 0;
+        font-size: 12px;
+      }
+      .v-btn {
+        font-size: 16px;
+        color: #000;
+        background: rgb(var(--v-theme-mainGray));
+        color: #fff;
+      }
+    }
   }
 
-  .profile__infoBox {
+  .profile__account {
     display: flex;
     align-items: center;
+    gap: 30px;
 
-    @media (max-width: 960px) {
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    aside {
-      display: flex;
-      align-items: center;
-    }
-
-    @media (max-width: 960px) {
-      flex-direction: column;
-      gap: 20px;
-    }
-    .profile__infoBox-details {
-      margin-top: 20px;
+    > div {
+      height: 130px;
+      color: #000;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 20px;
-      @media (max-width: 960px) {
-        flex-direction: column;
-        gap: 20px;
+      text-align: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    &-points {
+      .v-icon {
+        color: rgb(var(--v-theme-subBlue));
       }
-
-      .profile__info-name {
-        font-size: small;
-        span {
-          font-weight: 600;
-          font-size: 18px;
-        }
-      }
-      .profile__info-rank {
+      .account__buttons {
         display: flex;
-        .rank-help {
-          min-width: 10px;
-          aspect-ratio: 1 / 1;
-          border-radius: 50%;
-          padding: 0;
-          font-size: 12px;
+        gap: 10px;
+      }
+    }
+
+    &-link {
+      width: 100%;
+      > div {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        h4 {
+          font-weight: 600;
+          padding: 5px 0;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
         }
+        p {
+          margin: 10px 0;
+          padding: 5px;
+          border-radius: 5px;
+        }
+      }
+
+      .v-btn {
+        padding: 0;
+        width: 100%;
       }
     }
   }
@@ -328,40 +343,6 @@ const handleSaveAccount = async () => {
 }
 .v-pagination {
   margin: 0 auto;
-}
-
-.profile__account-box {
-  text-align: center;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-
-  .profile__account-points {
-    text-align: center;
-    .v-icon {
-      color: rgb(var(--v-theme-subBlue));
-    }
-    .account__buttons {
-      display: flex;
-      gap: 10px;
-    }
-  }
-
-  .profile__account-link {
-    .account__buttons-link {
-      padding: 10px 0;
-    }
-    h4 {
-      font-weight: 600;
-    }
-    p {
-      background: rgb(var(--v-theme-subBlue));
-      margin: 10px 0;
-      padding: 5px;
-      color: #fff;
-      border-radius: 5px;
-    }
-  }
 }
 
 .score {

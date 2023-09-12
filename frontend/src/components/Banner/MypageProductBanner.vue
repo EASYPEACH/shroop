@@ -130,6 +130,13 @@ const MYPAGE = [
     CLICK_EVENT: () => (dialogList.value[2].value = true),
   },
   {
+    ACTION: "수정하기",
+    STATUS: (status) => {
+      return props.isSeller && status === TRANSACTION_STATUS.SELLING;
+    },
+    CLICK_EVENT: (id) => router.push(`/edit/${id}`),
+  },
+  {
     ACTION: "구매취소",
     STATUS: (status) => {
       return !props.isSeller && status === TRANSACTION_STATUS.PURCHASE_REQUEST;
