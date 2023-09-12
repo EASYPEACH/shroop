@@ -19,6 +19,7 @@ import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneNumber;
 import com.easypeach.shroop.modules.auth.dto.request.SignUpRequest;
 import com.easypeach.shroop.modules.auth.dto.response.LoginCheckResponse;
+import com.easypeach.shroop.modules.auth.dto.response.PhoneAuthUUID;
 import com.easypeach.shroop.modules.common.ControllerTest;
 import com.easypeach.shroop.modules.member.domain.Member;
 
@@ -30,7 +31,7 @@ class AuthControllerTest extends ControllerTest {
 	@Test
 	void getAuthNumber() throws Exception {
 		// given
-		given(phoneAuthService.sendAuthNumber("01012341234")).willReturn(1L);
+		given(phoneAuthService.sendAuthNumber("01012341234")).willReturn(new PhoneAuthUUID(1L, 20L));
 		PhoneNumber phoneAuthRequest = new PhoneNumber("01012341234");
 
 		// when & then
@@ -49,7 +50,8 @@ class AuthControllerTest extends ControllerTest {
 					fieldWithPath("phoneNumber").description("휴대전화번호")
 				),
 				responseFields(
-					fieldWithPath("uuid").description("쿠키에 저장할 UUID 전달")
+					fieldWithPath("uuid").description("쿠키에 저장할 UUID 전달"),
+					fieldWithPath("seconds").description("인증 제한 시간 (초)")
 				)))
 			.andReturn();
 	}
@@ -187,7 +189,7 @@ class AuthControllerTest extends ControllerTest {
 	@Test
 	void login_Check() throws Exception {
 		//given
-		LoginCheckResponse loginCheckResponse = new LoginCheckResponse(1L,"loginId","nickname",true);
+		LoginCheckResponse loginCheckResponse = new LoginCheckResponse(1L, "loginId", "nickname", true);
 		given(authService.checkLogin(any())).willReturn(loginCheckResponse);
 
 		// when & then
