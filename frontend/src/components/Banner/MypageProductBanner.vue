@@ -173,6 +173,7 @@ const handleConfirmPurchase = async () => {
       url: `/api/buying/confirm/${props.product.id}`,
     });
     emits("handle-get-purchaseHistory");
+    dialogList.value[0].value = false;
   } catch (error) {
     console.log(error);
   }
@@ -184,6 +185,7 @@ const handleCanclePurchaseRequest = async () => {
       url: `/api/buying/${props.product.id}`,
     });
     emits("handle-get-purchaseHistory");
+    dialogList.value[3].value = false;
   } catch (error) {
     console.log(error);
   }
@@ -195,6 +197,7 @@ const handleReturnRequestConfirm = async () => {
       url: `/api/buying/return/confirm/${props.product.id}`,
     });
     emits("handle-get-sellHistory");
+    dialogList.value[1].value = false;
   } catch (error) {
     console.log(error);
   }
@@ -224,6 +227,7 @@ const handleDeleteProduct = async () => {
       url: `/api/products/${props.product.id}`,
     });
     emits("handle-get-sellHistory");
+    dialogList.value[2].value = false;
   } catch (error) {
     console.error(error);
   }
