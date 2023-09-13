@@ -61,7 +61,7 @@
       <div
         v-if="isLaptop"
         class="subContent-text right"
-        data-aos="fade-up"
+        data-aos="fade-left"
         data-aos-easing="linear"
         data-aos-duration="500"
       >

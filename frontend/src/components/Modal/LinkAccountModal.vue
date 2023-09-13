@@ -6,42 +6,49 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field
+                <div class="text-subtitle-1 text-medium-emphasis">은행사</div>
+                <v-select
+                  :rules="[selectRule.required]"
+                  :items="bankList"
+                  v-model="selectedBank"
+                  label="은행사"
+                ></v-select>
+              </v-col>
+
+              <v-divider></v-divider>
+
+              <v-col cols="12">
+                <h2 style="margin: 10px 0 30px 0; font-size: 20px">계좌정보</h2>
+                <custom-text-input
+                  placeholder-text="이름"
+                  label="계좌 소유주"
+                  v-model="name"
                   :rules="[
                     defaultTextRule.required,
                     accountRule.checkChar,
                     (value) => defaultTextRule.customMinLength(value, 2),
                   ]"
-                  label="이름"
-                  v-model="name"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
+                />
+                <custom-text-input
+                  label="계좌번호"
+                  v-model="account"
                   :rules="[
                     defaultTextRule.required,
                     accountRule.checkNum,
                     (value) => defaultTextRule.customMinLength(value, 11),
                   ]"
-                  label="계좌번호"
-                  v-model="account"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
+                />
+                <password-input
+                  title="계좌 비밀번호"
+                  v-model="password"
                   :rules="[
                     defaultTextRule.required,
-                    ,
                     accountRule.checkNum,
                     (value) => defaultTextRule.customMinLength(value, 4),
                   ]"
-                  label="비밀번호"
-                  type="password"
-                  v-model="password"
-                  required
-                ></v-text-field>
+                  :visible="isVisible"
+                  @toggle-visible="isVisible = !isVisible"
+                />
               </v-col>
             </v-row>
           </v-container>
@@ -72,14 +79,22 @@
 <script setup>
 import { postApi } from "@/api/modules";
 import { ref } from "vue";
-import { defaultTextRule, accountRule } from "@/components/Form/data/formRules";
+import {
+  defaultTextRule,
+  accountRule,
+  selectRule,
+} from "@/components/Form/data/formRules";
 import { useRouter } from "vue-router";
+import { CustomTextInput, PasswordInput } from "../Form";
 
 const router = useRouter();
 const name = ref("");
 const account = ref("");
 const password = ref("");
 const isValid = ref(false);
+const isVisible = ref(false);
+const bankList = ref(["슈룹"]);
+const selectedBank = ref("슈룹");
 
 defineProps({ dialog: Boolean });
 const emits = defineEmits(["handle-cancle-modal"]);
