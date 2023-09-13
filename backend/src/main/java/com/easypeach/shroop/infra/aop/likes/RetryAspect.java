@@ -17,6 +17,8 @@ public class RetryAspect {
 	public Object doRetry(ProceedingJoinPoint joinPoint, Retry retry) throws Throwable {
 		int maxRetry = retry.value();
 
+		log.info("[maxRetry] {}", maxRetry);
+
 		Exception exceptionHolder = null;
 		for (int retryCount = 1; retryCount <= maxRetry; retryCount++) {
 			try {
