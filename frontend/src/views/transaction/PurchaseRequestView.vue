@@ -46,6 +46,7 @@
           placeholderText="주소"
           v-model="location"
           :disabled="true"
+          data-cy="address-input"
         />
         <custom-text-input
           :rules="[
