@@ -36,7 +36,7 @@ public class PhoneAuthService {
 			new Date(now.getTime() + authExpDateInMilliseconds));
 		phoneAuthRepository.save(phoneAuth);
 		String authNumber = phoneAuth.getAuthNumber();
-		String message = "슈룹 인증 번호 : " + authNumber;
+		String message = "[슈룹] 인증 번호 : " + authNumber + "\n인증번호를 입력해 주세요.";
 
 		sms.sendSms(phoneNumber, message); // 문자 발송
 		log.info("인증 번호 전달 {}", authNumber); // 인증 번호 로그로 전달
