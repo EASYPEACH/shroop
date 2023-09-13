@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.easypeach.shroop.infra.aop.likes.Retry;
 import com.easypeach.shroop.modules.likes.domain.LikeRepository;
 import com.easypeach.shroop.modules.likes.domain.Likes;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -23,6 +24,7 @@ public class LikeService {
 	private final LikeRepository likeRepository;
 	private final ProductRepository productRepository;
 
+	@Retry
 	@Transactional
 	public Long saveLikes(final Member member, final Long productId) {
 		Product product = productRepository.getById(productId);
@@ -36,6 +38,7 @@ public class LikeService {
 		return totalLikes;
 	}
 
+	@Retry
 	@Transactional
 	public Long deleteLikes(final Member member, final Long productId) {
 		Product product = productRepository.getById(productId);
@@ -49,7 +52,7 @@ public class LikeService {
 		return totalLikes;
 	}
 
-	public Page<Likes> getLikesPage(Member member, Pageable pageable){
-		return likeRepository.findLikesPage(member,pageable);
+	public Page<Likes> getLikesPage(Member member, Pageable pageable) {
+		return likeRepository.findLikesPage(member, pageable);
 	}
 }
