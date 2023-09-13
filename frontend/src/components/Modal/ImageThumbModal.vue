@@ -9,11 +9,12 @@
   </v-dialog>
 </template>
 <script setup>
-defineProps({
+const props = defineProps({
   dialog: Boolean,
   imgSrc: String,
 });
 defineEmits(["handle-close-modal"]);
+console.log(props.imgSrc);
 </script>
 
 <style lang="scss" scoped>
@@ -30,7 +31,9 @@ defineEmits(["handle-close-modal"]);
 .v-card {
   width: 100%;
   img {
-    width: 100%;
+    width: 70vh;
+    height: 70vh;
+    object-fit: cover;
   }
 }
 </style>

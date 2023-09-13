@@ -362,7 +362,7 @@ const handleSaveAccount = async () => {
       font-weight: 600;
     }
     p {
-      background: rgb(var(--v-theme-subGreen));
+      background: rgb(var(--v-theme-mainGreen));
       margin: 10px 0;
       padding: 5px;
       color: #fff;
