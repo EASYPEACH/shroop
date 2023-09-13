@@ -50,7 +50,6 @@ const handleConfirm = async () => {
         point: point.value,
       },
     });
-    console.log(response);
     emits("handleReturnPointResult", response.point);
     emits("handleCancel");
     point.value = "";
