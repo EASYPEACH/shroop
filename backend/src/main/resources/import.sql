@@ -28,35 +28,35 @@ insert into category(id, name) values(4, '티켓');
 insert into category(id, name) values(5, '도서');
 insert into category(id, name) values(6, '생활/주방');
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (1, 6, 1, '갤럭시 탭 S7 FE 중고 판매합니다.', 'MIDDLE', '삼성 / 갤럭시탭 S7 FE', 250000, false, '램 4GB 용량 64GB입니다.\n1년정도 썼고요 상태는 매우 양호합니다.\n펜이랑 필름, 케이스 다 부착되있습니다.', '2021-10-07', false, '다른 테블릿을 선물 받아서 이전에 사용하던 테블릿이 필요없어졌습니다.', 21, '2022-11-15 07:29:08', '2023-01-08 20:42:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (1, 6, 1, '갤럭시 탭 S7 FE 중고 판매합니다.', 'MIDDLE', '삼성 / 갤럭시탭 S7 FE', 250000, false, '램 4GB 용량 64GB입니다.\n1년정도 썼고요 상태는 매우 양호합니다.\n펜이랑 필름, 케이스 다 부착되있습니다.', '2021-10-07', false, '다른 테블릿을 선물 받아서 이전에 사용하던 테블릿이 필요없어졌습니다.', 0, '2022-11-15 07:29:08', '2023-01-08 20:42:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/6-1.webp', 1);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/6-2.webp', 1);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (2, 7, 1, '써큘레이터 선풍기 팝니다.', 'UPPER', '모름', 34000, false, '다이슨 구매해서 안쓰는 써큘레이터 선풍기 버리기 아까워서 처분해요.\n진짜 쓰실분 가져가시라는 의미로 소액 판매해요!', '2020-03-20', false, '다이슨 구매해서 안쓰는 써큘레이터 선풍기 버리기 아까워서 처분해요.', 15, '2023-07-02 09:15:25', '2022-10-04 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (2, 7, 1, '써큘레이터 선풍기 팝니다.', 'UPPER', '모름', 34000, false, '다이슨 구매해서 안쓰는 써큘레이터 선풍기 버리기 아까워서 처분해요.\n진짜 쓰실분 가져가시라는 의미로 소액 판매해요!', '2020-03-20', false, '다이슨 구매해서 안쓰는 써큘레이터 선풍기 버리기 아까워서 처분해요.', 0, '2023-07-02 09:15:25', '2022-10-04 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/7-1.webp', 2);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/7-2.webp', 2);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/7-3.webp', 2);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (3, 8, 5, '도레미곰 45권 + CD6장 + 도레미 송북 팝니다.', 'UPPER', '도레미', 90000, true, '풀세트입니다.\n책을 너무 늦게 들여서 별로 활용을 못해서 상태 아주아주 깨끗하고 좋아요.\n세이펜 스티커는 책 표지에 이쁘게 붙여 두었습니다.', '2022-11-07', false, '책을 너무 늦게 들여서 별로 활용을 못해서 팝니다.', 4, '2022-12-02 09:15:25', '2023-01-04 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (3, 8, 5, '도레미곰 45권 + CD6장 + 도레미 송북 팝니다.', 'UPPER', '도레미', 90000, true, '풀세트입니다.\n책을 너무 늦게 들여서 별로 활용을 못해서 상태 아주아주 깨끗하고 좋아요.\n세이펜 스티커는 책 표지에 이쁘게 붙여 두었습니다.', '2022-11-07', false, '책을 너무 늦게 들여서 별로 활용을 못해서 팝니다.', 0, '2022-12-02 09:15:25', '2023-01-04 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/8-1.webp', 3);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/8-2.webp', 3);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/8-3.webp', 3);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/8-4.webp', 3);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (4, 9, 2, '스토케 트립트랩 화이트 팝니다.', 'UPPER', '스토케 트립트랩', 200000, true, '스토케 트립트랩 화이트예요\n상태 좋아요\n하지만 예민하신분은 패스해주세요', '2023-01-23', false, '다른 의자를 사서 팝니다.', 8, '2023-04-13 09:15:25', '2023-05-07 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (4, 9, 2, '스토케 트립트랩 화이트 팝니다.', 'UPPER', '스토케 트립트랩', 200000, true, '스토케 트립트랩 화이트예요\n상태 좋아요\n하지만 예민하신분은 패스해주세요', '2023-01-23', false, '다른 의자를 사서 팝니다.', 0, '2023-04-13 09:15:25', '2023-05-07 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/9-1.webp', 4);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/9-2.webp', 4);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/9-3.webp', 4);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/9-4.webp', 4);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/9-5.webp', 4);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (5, 10, 1, 'lg와이드모니터 팝니다.', 'UPPER', 'lg / 와이드모니터', 30000, false, '사진상 내용 이구요.\n목 디스크 돌아가지\n않습니다. 새걸로 바꾸면서\n내놓습니다', '2019-05-10', true, '새걸로 바꾸면서 내놓습니다.', 3, '2023-06-20 09:15:25', '2023-06-21 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (5, 10, 1, 'lg와이드모니터 팝니다.', 'UPPER', 'lg / 와이드모니터', 30000, false, '사진상 내용 이구요.\n목 디스크 돌아가지\n않습니다. 새걸로 바꾸면서\n내놓습니다', '2019-05-10', true, '새걸로 바꾸면서 내놓습니다.', 0, '2023-06-20 09:15:25', '2023-06-21 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/10-1.webp', 5);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/10-2.webp', 5);
 insert into product_img(is_defect, product_img_url, product_id) values(true, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/10-3.webp', 5);
 insert into product_img(is_defect, product_img_url, product_id) values(true, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/10-4.webp', 5);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (6, 11, 1, '다이슨 V8 카본 파이퍼 청소기 팝니다.', 'MIDDLE', '다이슨 / v8', 30000, false, '다이슨 V8 카본 파이퍼 청소기 팝니다\n현재 배터리는 고장난상태로 풀 충전해도 지속시간 약 5초가량입니다\n다이슨에서 배터리 교체비용 약 9.9만원으로 확인하였습니다\n(배터리 배송오면 직접 교체해야된다고 했습니다)\n구매가 약 48만원이며 구매시기 20년 12월입니다\n부속품 다 있고(3번째 사진), 다이슨 가방도 있습니다\n부속품은 아예 사용하지않아서 다 새거입니다\n본체의 흠집부분은 참고하세요~(2번째 사진)', '2020-12-10', true, '새걸로 바꾸면서 내놓습니다.', 50, '2023-06-02 09:15:25', '2023-06-21 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (6, 11, 1, '다이슨 V8 카본 파이퍼 청소기 팝니다.', 'MIDDLE', '다이슨 / v8', 30000, false, '다이슨 V8 카본 파이퍼 청소기 팝니다\n현재 배터리는 고장난상태로 풀 충전해도 지속시간 약 5초가량입니다\n다이슨에서 배터리 교체비용 약 9.9만원으로 확인하였습니다\n(배터리 배송오면 직접 교체해야된다고 했습니다)\n구매가 약 48만원이며 구매시기 20년 12월입니다\n부속품 다 있고(3번째 사진), 다이슨 가방도 있습니다\n부속품은 아예 사용하지않아서 다 새거입니다\n본체의 흠집부분은 참고하세요~(2번째 사진)', '2020-12-10', true, '새걸로 바꾸면서 내놓습니다.', 0, '2023-06-02 09:15:25', '2023-06-21 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/11-1.webp', 6);
 insert into product_img(is_defect, product_img_url, product_id) values(true, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/11-2.webp', 6);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/11-3.webp', 6);
@@ -69,7 +69,7 @@ insert into product_img(is_defect, product_img_url, product_id) values(false, 'h
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/12-3.webp', 7);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/12-4.webp', 7);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (8, 7, 3, '정품 나이키 바람막이 팝니다.', 'UPPER', '나이키 / 바람막이', 20000, true, '2022년형 여성 바람막이입니다.\n잊고 드라이를 못해 군데군데 오염이 있어요\n깨끗히 드라이하셔서 입거나 운동하실 때 편하게 입으실 분 운포로 드려요\n여자 m size 로 프리사이즈 총장 59정도입니다.', '2015-08-16', false, '이제 안입어서 내놓습니다.', 34, '2023-05-22 09:15:25', '2023-06-21 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (8, 7, 3, '정품 나이키 바람막이 팝니다.', 'UPPER', '나이키 / 바람막이', 20000, true, '2022년형 여성 바람막이입니다.\n잊고 드라이를 못해 군데군데 오염이 있어요\n깨끗히 드라이하셔서 입거나 운동하실 때 편하게 입으실 분 운포로 드려요\n여자 m size 로 프리사이즈 총장 59정도입니다.', '2015-08-16', false, '이제 안입어서 내놓습니다.', 0, '2023-05-22 09:15:25', '2023-06-21 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/16-1.webp', 8);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/16-2.webp', 8);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/16-3.webp', 8);
@@ -84,12 +84,22 @@ insert into product_img(is_defect, product_img_url, product_id) values(true, 'ht
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/17-5.webp', 9);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/17-6.webp', 9);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (10, 9, 3, '에르메스 바운싱', 'UPPER', '에르메스 / 바운싱', 680000, true, '43사이즈 풀박스 오렌지 색상 바운싱 상태최고', '2023-03-02', false, '안신어서 샀습니다.', 5, '2023-09-08 09:15:25', '2023-09-11 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (10, 9, 3, '에르메스 바운싱', 'UPPER', '에르메스 / 바운싱', 680000, true, '43사이즈 풀박스 오렌지 색상 바운싱 상태최고', '2023-03-02', false, '안신어서 샀습니다.', 3, '2023-09-08 09:15:25', '2023-09-11 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/18-1.webp', 10);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/18-2.webp', 10);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (11, 10, 6, '울샴푸 새거 5리터', 'UPPER', '애경 / 울샴푸', 3000, false, '사진 첨부하였듯이 2019년에 구매\n뚜껑도 안딴 새거입니다\n사용 가능 기한은 잘 모르겠어요 ㅠ\n참고하셔서 구매주십시오!', '2019-12-20', false, '쓸일이 없어서 팔아요', 1, '2023-09-01 09:15:25', '2023-09-09 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (11, 10, 6, '울샴푸 새거 5리터', 'UPPER', '애경 / 울샴푸', 3000, false, '사진 첨부하였듯이 2019년에 구매\n뚜껑도 안딴 새거입니다\n사용 가능 기한은 잘 모르겠어요 ㅠ\n참고하셔서 구매주십시오!', '2019-12-20', false, '쓸일이 없어서 팔아요', 5, '2023-09-01 09:15:25', '2023-09-09 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/19-1.webp', 11);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/19-2.webp', 11);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/19-3.webp', 11);
 
+insert into likes(member_id, product_id) values (6, 11);
+insert into likes(member_id, product_id) values (7, 11);
+insert into likes(member_id, product_id) values (8, 11);
+insert into likes(member_id, product_id) values (9, 11);
+insert into likes(member_id, product_id) values (10, 11);
+insert into likes(member_id, product_id) values (6, 10);
+insert into likes(member_id, product_id) values (7, 10);
+insert into likes(member_id, product_id) values (8, 10);
+insert into likes(member_id, product_id) values (9, 9);
+insert into likes(member_id, product_id) values (10, 9);
