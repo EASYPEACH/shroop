@@ -112,6 +112,7 @@ public class Product {
 		Product product = new Product();
 		product.seller = seller; //판매자 설정
 		product.category = category; // 카테고리 설정
+		product.likesCount = 0L;
 		product.setByProductRequest(productRequest); // 상품 내용 설정
 		for (ProductImg productImg : productImgs) { //이미지 설정
 			product.addProductImg(productImg);
