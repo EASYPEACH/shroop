@@ -28,16 +28,16 @@ public class PointController {
 	@PatchMapping(value = "/charging")
 	public ResponseEntity<PointResponse> chargePoint(@RequestBody final PointRequest pointRequest,
 		@LoginMember final Member member) {
-		bankService.subtractMoney(pointRequest, member);
-		PointResponse pointResponse = memberService.plusPoint(pointRequest, member);
+
+		PointResponse pointResponse = memberService.chargePoint(pointRequest, member);
 		return ResponseEntity.status(HttpStatus.OK).body(pointResponse);
 	}
 
 	@PatchMapping(value = "/exchanging")
 	public ResponseEntity<PointResponse> exchangePoint(@RequestBody final PointRequest pointRequest,
 		@LoginMember final Member member) {
-		PointResponse pointResponse = memberService.subtractPoint(pointRequest, member);
-		bankService.addMoney(pointRequest, member);
+
+		PointResponse pointResponse = memberService.exchangePoint(pointRequest, member);
 
 		return ResponseEntity.status(HttpStatus.OK).body(pointResponse);
 	}

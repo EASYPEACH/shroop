@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.easypeach.shroop.infra.s3.service.S3UploadService;
 import com.easypeach.shroop.modules.auth.dto.request.PhoneAuthRequest;
 import com.easypeach.shroop.modules.auth.service.PhoneAuthService;
+import com.easypeach.shroop.modules.bank.service.BankService;
 import com.easypeach.shroop.modules.likes.domain.Likes;
 import com.easypeach.shroop.modules.likes.service.LikeService;
 import com.easypeach.shroop.modules.member.domain.DuplicateCheckType;
@@ -43,6 +44,7 @@ public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final S3UploadService s3UploadService;
 	private final LikeService likeService;
+	private final BankService bankService;
 
 	public MyPageInfoResponse getMyInfo(final Long memberId, Pageable pageable) {
 		Member findMember = memberRepository.getById(memberId);
@@ -195,5 +197,19 @@ public class MemberService {
 		}
 
 		foundMember.updateRole(Role.ROLE_DELETE);
+	}
+
+	@Transactional
+	public PointResponse chargePoint(PointRequest pointRequest, Member member) {
+
+		bankService.subtractMoney(pointRequest, member);
+		return plusPoint(pointRequest, member);
+	}
+
+	@Transactional
+	public PointResponse exchangePoint(PointRequest pointRequest, Member member) {
+
+		bankService.addMoney(pointRequest, member);
+		return subtractPoint(pointRequest, member);
 	}
 }
