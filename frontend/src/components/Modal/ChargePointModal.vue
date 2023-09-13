@@ -15,6 +15,7 @@
             :label="label"
             v-model="point"
             :rules="[pointRule.required, pointRule.check, pointRule.amount]"
+            data-cy="point-input"
           />
           <v-btn type="submit" color="mainGreen" block :disabled="!isValid"
             >확인</v-btn
