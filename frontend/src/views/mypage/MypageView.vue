@@ -1,5 +1,5 @@
 <template>
-  <content-layout style="padding: 0">
+  <content-layout>
     <v-card variant="plain" class="mypage">
       <div class="mypage__content">
         <v-tabs
@@ -92,6 +92,11 @@ const handleTabClick = (path) => {
   .mypage__content {
     display: flex;
     margin-top: 80px;
+    .v-tabs {
+      border-right: 1px solid rgba(0, 0, 0, 0.2);
+      padding-right: 20px;
+    }
+
     @media (max-width: 960px) {
       flex-direction: column;
       .v-tabs {

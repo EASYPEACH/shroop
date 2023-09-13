@@ -1,5 +1,5 @@
 <template>
-  <content-layout style="padding: 0">
+  <mypage-layout>
     <ul>
       <info-alert
         v-if="purchaseList.length === 0"
@@ -20,7 +20,7 @@
       @click="handleGetPurchaseHistory"
     >
     </v-pagination>
-  </content-layout>
+  </mypage-layout>
 </template>
 
 <script setup>
@@ -29,7 +29,7 @@ import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
 import { InfoAlert } from "@/components/Alert";
 import { MypageProductBanner } from "@/components/Banner";
-import ContentLayout from "@/layouts/ContentLayout.vue";
+import MypageLayout from "@/layouts/MypageLayout.vue";
 
 const display = useDisplay();
 const isTablet = ref(display.smAndDown);

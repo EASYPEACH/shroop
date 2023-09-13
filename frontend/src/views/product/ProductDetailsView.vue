@@ -360,11 +360,6 @@ const showImageModal = (imgUrl) => {
   justify-content: space-between;
   gap: 50px;
 
-  &-slide {
-    width: 450px;
-    height: 450px;
-  }
-
   &-content {
     flex: 1;
     display: flex;

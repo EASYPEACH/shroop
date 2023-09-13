@@ -4,7 +4,7 @@
       <v-icon icon="mdi-close" />
     </v-btn>
     <v-card>
-      <img :src="imgSrc" width="100%" />
+      <v-img :src="imgSrc" cover />
     </v-card>
   </v-dialog>
 </template>
@@ -30,7 +30,7 @@ console.log(props.imgSrc);
 }
 .v-card {
   width: 100%;
-  img {
+  .v-img {
     width: 70vh;
     height: 70vh;
     object-fit: cover;
