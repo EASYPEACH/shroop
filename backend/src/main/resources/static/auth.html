@@ -527,9 +527,9 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 10
+Content-Length: 23
 
-{"uuid":1}</code></pre>
+{"seconds":20,"uuid":1}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -551,6 +551,11 @@ Content-Length: 10
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">쿠키에 저장할 UUID 전달</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>seconds</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인증 제한 시간 (초)</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -563,7 +568,7 @@ Content-Length: 10
 <h3 id="_request_2">Request</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/check?_csrf=4288bcef-92de-4c13-9eef-a377b180e5aa HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/check?_csrf=e99c46a4-34e0-4a5f-83e9-7fd5235a4557 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 63
@@ -765,7 +770,7 @@ Content-Length: 52
 <h3 id="_request_4">Request</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/sign-up?_csrf=d0535029-f9fa-4062-b6cc-db8050917521 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/sign-up?_csrf=411ad345-8c77-4f71-9d3e-50e0e5dcfd06 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 193
@@ -905,7 +910,7 @@ Content-Length: 70
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-09-08 19:50:43 +0900
+Last updated 2023-09-07 15:17:38 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
