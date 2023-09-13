@@ -120,6 +120,7 @@ public class Member {
 
 	public void addGradeScore(Long addScore) {
 		this.gradeScore += addScore;
+		this.gradeScore = Math.min(100L, this.gradeScore + addScore);
 	}
 
 	public void updatePassword(String password) {
