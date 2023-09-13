@@ -22,16 +22,15 @@
         <div class="product__top-content">
           <v-card-item>
             <div>
+              <transaction-badge
+                v-if="productContent.transactionStatus !== null"
+              />
               <div class="productContent__item">
                 <div class="productContent__item-title">
                   <h2>{{ productContent.title }}</h2>
-                  <transaction-badge
-                    v-if="productContent.transactionStatus !== null"
-                  />
                 </div>
-
                 <div class="productContent__side">
-                  <div class="productContent__side-heart">
+                  <div class="productContent__side-heart" v-if="!isMobile">
                     <v-icon icon="mdi-heart" color="heartRed" />
                     <span>{{ productContent.likesCount }}</span>
                   </div>
@@ -94,20 +93,24 @@
               height="auto"
               :product="productContent"
               @handle-click-like="handleClickLike"
-              no-count-text
+              :no-count-text="!isMobile"
             />
 
             <v-btn
               class="product__buttons-common"
-              v-if="
-                !TRANSACTION_STATUS[productContent.transactionStatus] &&
-                loginCheckStore.id !== profile.id
+              v-if="loginCheckStore.id !== profile.id"
+              :disabled="
+                TRANSACTION_STATUS[productContent.transactionStatus] !== null
               "
               height="auto"
               variant="text"
               @click="handlePurchase"
             >
-              구매하기
+              {{
+                TRANSACTION_STATUS[productContent.transactionStatus]
+                  ? "품절"
+                  : "구매하기"
+              }}
             </v-btn>
             <v-btn
               v-if="loginCheckStore.id === profile.id"
@@ -176,6 +179,7 @@
               :src="defectImg.productImgUrl"
               :key="idx"
               @click="() => showImageModal(defectImg.productImgUrl)"
+              cover
             ></v-img>
           </div>
         </div>
@@ -329,6 +333,7 @@ const handleClickDeleteRequest = async () => {
 };
 
 const showImageModal = (imgUrl) => {
+  console.log(imgUrl);
   imageModalSrc.value = imgUrl;
   imageModalValue.value = true;
 };
@@ -430,6 +435,7 @@ const showImageModal = (imgUrl) => {
     }
   }
   .sell-details {
+    margin: 20px 0;
     li + li {
       margin-top: 10px;
     }
@@ -517,6 +523,7 @@ const showImageModal = (imgUrl) => {
   .productDetail__defect {
     margin-top: 60px;
     .v-img {
+      flex: none;
       width: 200px;
       height: 200px;
       cursor: pointer;

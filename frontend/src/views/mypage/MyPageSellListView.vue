@@ -1,5 +1,5 @@
 <template>
-  <content-layout>
+  <content-layout style="padding: 0">
     <ul>
       <info-alert v-if="sellList.length === 0" title="판매내역이 없습니다" />
       <li v-for="product in sellList" :key="product.id">

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <main-title title="프로필 수정" />
+    <main-title title="프로필 수정" style="padding-top: 0" />
     <v-form
       class="profile"
       @submit.prevent="handleSubmitRegister"

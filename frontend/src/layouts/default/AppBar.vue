@@ -168,7 +168,7 @@ header {
     section {
       width: 100%;
       .search__box {
-        left: 50%;
+        left: 53%;
       }
     }
   }
@@ -185,6 +185,7 @@ header {
     flex-direction: column;
     align-items: center;
     transform: translateX(20px);
+    margin-top: 7px;
     @media (max-width: 960px) {
       transform: translateX(10px);
     }

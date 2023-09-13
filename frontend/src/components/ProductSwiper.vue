@@ -15,7 +15,7 @@
         :aspect-ratio="1"
         :src="productImg.productImgUrl"
         :alt="productImg.title"
-        @click="$emit('show-image-modal', productContent.productImgUrl)"
+        @click="$emit('show-image-modal', productImg.productImgUrl)"
       >
       </v-img>
     </swiper-slide>
@@ -25,6 +25,7 @@
     <div class="swiper-button-next swiper-navigation">
       <v-icon icon="mdi-chevron-right" />
     </div>
+    fdsaf
   </swiper>
 </template>
 
@@ -36,9 +37,11 @@ defineProps({
 defineEmits(["show-image-modal"]);
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+
 const modules = [Navigation, Pagination, Scrollbar, A11y];
 </script>
 
@@ -46,12 +49,14 @@ const modules = [Navigation, Pagination, Scrollbar, A11y];
 .swiper {
   width: 450px;
   height: 450px;
+  position: relative;
 
   @media (max-width: 750px) {
     margin-top: 49px;
     width: 100%;
     height: 100%;
   }
+
   .swiper-slide {
     width: 450px;
     height: 450px;

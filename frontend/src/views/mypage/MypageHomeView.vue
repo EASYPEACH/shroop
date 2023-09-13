@@ -1,5 +1,5 @@
 <template>
-  <content-layout>
+  <content-layout style="padding: 0">
     <section>
       <div class="mypage__profile">
         <div class="profile__img">
@@ -362,7 +362,7 @@ const handleSaveAccount = async () => {
       font-weight: 600;
     }
     p {
-      background: rgb(var(--v-theme-subGreen));
+      background: rgb(var(--v-theme-mainGreen));
       margin: 10px 0;
       padding: 5px;
       color: #fff;
