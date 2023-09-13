@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.product.domain.Product;
@@ -15,7 +16,17 @@ import com.easypeach.shroop.modules.product.domain.Product;
 import lombok.Getter;
 import lombok.ToString;
 
-@Table(name = "likes")
+@Table(name = "likes",
+	uniqueConstraints = {
+		@UniqueConstraint(
+			name = "memberIdAndProductId",
+			columnNames = {
+				"member_id",
+				"product_id"
+			}
+		)
+	}
+)
 @Entity
 @Getter
 @ToString
