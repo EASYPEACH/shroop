@@ -35,8 +35,11 @@ public class PhoneAuthService {
 		PhoneAuth phoneAuth = PhoneAuth.createPhoneAuth(phoneNumber,
 			new Date(now.getTime() + authExpDateInMilliseconds));
 		phoneAuthRepository.save(phoneAuth);
-		sms.sendSms(phoneNumber, phoneAuth.getAuthNumber()); // 문자 발송
-		log.info("인증 번호 전달 {}", phoneAuth.getAuthNumber()); // 인증 번호 로그로 전달
+		String authNumber = phoneAuth.getAuthNumber();
+		String message = "[슈룹] 인증 번호 : " + authNumber + "\n인증번호를 입력해 주세요.";
+
+		sms.sendSms(phoneNumber, message); // 문자 발송
+		log.info("인증 번호 전달 {}", authNumber); // 인증 번호 로그로 전달
 
 		PhoneAuthUUID phoneAuthUUID = new PhoneAuthUUID(phoneAuth.getId(), authExpDateInMilliseconds / 1000);
 

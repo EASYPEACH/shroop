@@ -84,10 +84,9 @@ public class TransactionService {
 		bankService.addMoney(PointRequest.createPointRequest(fee),
 			memberService.findById(ShroopMember.SHROOP_ID.getId()));
 
-		String message = product.getSeller().getNickname() + "판매자님 " + product.getTitle() + "상품이 결제되었습니다.";
+		String message = product.getTitle() + " 상품이 판매 되었습니다.";
 		notificationService.saveNotification(product.getSeller().getId(), "결제완료", "/mypage/sellList", message);
 
-		log.info("{} 판매자님 {} 상품이 결제되었습니다.", product.getSeller().getNickname(), product.getTitle());
 	}
 
 	@Transactional
