@@ -1,5 +1,5 @@
 <template>
-  <content-layout style="padding: 0">
+  <mypage-layout>
     <section>
       <div class="mypage__profile">
         <div class="profile__img">
@@ -76,7 +76,6 @@
           </aside>
         </div>
       </div>
-      <v-divider />
       <div class="mypage__like">
         <h3>좋아요 <v-icon icon="mdi-heart" class="like-icon" /></h3>
         <ul>
@@ -123,20 +122,19 @@
       @handle-cancle-modal="showLinkAccountModal = !showLinkAccountModal"
       @handle-save-account="handleSaveAccount"
     />
-  </content-layout>
+  </mypage-layout>
 </template>
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useDisplay } from "vuetify";
 import { deleteApi, getApi, postApi } from "@/api/modules";
-import ContentLayout from "@/layouts/ContentLayout.vue";
 import basicProfile from "@/assets/image/basicProfile.jpeg";
-
 import { InfoAlert } from "@/components/Alert";
 import { MypageProductBanner } from "@/components/Banner";
 import { MiniButton } from "@/components/Button";
 import { ChargePointModal, LinkAccountModal } from "@/components/Modal";
+import MypageLayout from "@/layouts/MypageLayout.vue";
 
 const display = useDisplay();
 const showChargePointModal = ref(false);
@@ -288,6 +286,7 @@ const handleSaveAccount = async () => {
       flex-direction: column;
       align-items: center;
       padding: 0 20px;
+      gap: 10px;
       @media (max-width: 960px) {
         gap: 5px;
       }

@@ -92,9 +92,17 @@ const handleTabClick = (path) => {
   .mypage__content {
     display: flex;
     margin-top: 80px;
+    .v-tabs {
+      border-right: 1px solid rgba(0, 0, 0, 0.2);
+      padding-right: 20px;
+    }
+
     @media (max-width: 960px) {
       flex-direction: column;
       .v-tabs {
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
         margin-bottom: 50px;
       }
     }

@@ -47,7 +47,7 @@ const modules = [Navigation, Pagination, Scrollbar, A11y];
 
 <style lang="scss" scoped>
 .swiper {
-  width: 450px;
+  flex-basis: 50%;
   height: 450px;
   position: relative;
 

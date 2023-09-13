@@ -134,7 +134,7 @@ header {
   overflow: visible;
   section {
     display: flex;
-    width: 70%;
+    width: 60%;
     margin: 0 auto;
     align-items: center;
     justify-content: space-between;

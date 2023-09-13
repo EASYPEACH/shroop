@@ -1,5 +1,5 @@
 <template>
-  <content-layout style="padding: 0">
+  <mypage-layout>
     <ul>
       <info-alert v-if="sellList.length === 0" title="판매내역이 없습니다" />
       <li v-for="product in sellList" :key="product.id">
@@ -18,14 +18,14 @@
       @click="handleGetSellHistory"
     >
     </v-pagination>
-  </content-layout>
+  </mypage-layout>
 </template>
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useDisplay } from "vuetify";
 import { getApi } from "@/api/modules";
-import ContentLayout from "@/layouts/ContentLayout.vue";
+import MypageLayout from "@/layouts/MypageLayout.vue";
 import { InfoAlert } from "@/components/Alert";
 import { MypageProductBanner } from "@/components/Banner";
 
