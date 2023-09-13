@@ -37,6 +37,8 @@
         <h4 class="profile__info-name">패스워드</h4>
         <div class="info__input-box">
           <password-input
+            :visible="oldVisible"
+            @toggle-visible="oldVisible = !oldVisible"
             title="기존 패스워드"
             class="profile__info-input"
             placeholderText="기존 패스워드"
@@ -44,6 +46,8 @@
             type="password"
           />
           <password-input
+            :visible="newVisible"
+            @toggle-visible="newVisible = !newVisible"
             title="새로운 패스워드"
             class="profile__info-input"
             placeholderText="변경할 패스워드"
@@ -151,6 +155,8 @@ const profileImgRef = ref(null);
 const showPlainModal = ref(false);
 const modifyResultMsg = ref("");
 const isSignOutValid = ref(false);
+const oldVisible = ref(false);
+const newVisible = ref(false);
 
 // Image preview
 const handleChangeProfile = async (event) => {
