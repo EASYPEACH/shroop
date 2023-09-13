@@ -120,6 +120,9 @@ public class Member {
 
 	public void addGradeScore(Long addScore) {
 		this.gradeScore += addScore;
+		if (this.gradeScore + addScore > 100) {
+			this.gradeScore = 100L;
+		}
 	}
 
 	public void updatePassword(String password) {
