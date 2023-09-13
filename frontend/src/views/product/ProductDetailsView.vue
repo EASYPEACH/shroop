@@ -99,9 +99,7 @@
             <v-btn
               class="product__buttons-common"
               v-if="loginCheckStore.id !== profile.id"
-              :disabled="
-                TRANSACTION_STATUS[productContent.transactionStatus] !== null
-              "
+              :disabled="productContent.transactionStatus !== null"
               height="auto"
               variant="text"
               @click="handlePurchase"
@@ -299,18 +297,22 @@ const handleClickLike = async () => {
 
 // 구매하기
 const handlePurchase = async () => {
-  try {
-    const response = await getApi({
-      url: "/api/bank/checkingAccount",
-    });
-    if (response === false) {
-      alert("연동된 계좌가 없습니다.");
-      router.push("/mypage/home");
-    } else {
-      router.push(`/purchase/${route.params.id}`);
+  if (loginCheckStore.isLogin) {
+    try {
+      const response = await getApi({
+        url: "/api/bank/checkingAccount",
+      });
+      if (response === false) {
+        alert("연동된 계좌가 없습니다.");
+        router.push("/mypage/home");
+      } else {
+        router.push(`/purchase/${route.params.id}`);
+      }
+    } catch (error) {
+      alert(error.response.data.message);
     }
-  } catch (error) {
-    alert(error.response.data.message);
+  } else {
+    router.push("/login");
   }
 };
 
@@ -333,7 +335,6 @@ const handleClickDeleteRequest = async () => {
 };
 
 const showImageModal = (imgUrl) => {
-  console.log(imgUrl);
   imageModalSrc.value = imgUrl;
   imageModalValue.value = true;
 };
