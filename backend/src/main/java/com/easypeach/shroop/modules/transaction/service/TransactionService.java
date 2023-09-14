@@ -278,4 +278,21 @@ public class TransactionService {
 
 	}
 
+	@Transactional
+	public void resale(final Long productId) {
+
+		Transaction transaction = findByProductId(productId);
+		transactionRepository.delete(transaction);
+
+		Long sellerId = transaction.getSeller().getId();
+		String title = "상품 재판매";
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 상품이 판매로 전환되었습니다.";
+
+		// 판매자 알림
+		notificationService.saveNotification(sellerId, title, "/mypage/sellList", message);
+
+	}
+
 }

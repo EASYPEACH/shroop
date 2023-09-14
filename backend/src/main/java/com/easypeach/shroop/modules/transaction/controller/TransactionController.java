@@ -89,5 +89,15 @@ public class TransactionController {
 		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("반품 확정이 완료되었습니다."));
 	}
 
+	@PatchMapping("/resale/{productId}")
+	public ResponseEntity<BasicResponse> resale(final @LoginMember Member member,
+		final @PathVariable Long productId) {
+
+		transactionService.resale(productId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(new BasicResponse("재판매 전환이 완료되었습니다."));
+
+	}
+
 }
 
