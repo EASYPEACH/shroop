@@ -22,6 +22,7 @@ import com.easypeach.shroop.modules.member.exception.PasswordNotMatchException;
 import com.easypeach.shroop.modules.product.exception.NoSuchCategoryException;
 import com.easypeach.shroop.modules.product.exception.ProductException;
 import com.easypeach.shroop.modules.product.exception.ProductImgLengthException;
+import com.easypeach.shroop.modules.transaction.exception.DuplicateTrackingNumberException;
 import com.easypeach.shroop.modules.transaction.exception.LackOfPointException;
 import com.easypeach.shroop.modules.transaction.exception.SellerPurchaseException;
 
@@ -77,6 +78,15 @@ public class ExceptionControllerAdvice {
 		String errorMessage = e.getMessage();
 		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 		return ResponseEntity.status(404).body(errorResponse);
+	}
+
+	@ExceptionHandler({
+		DuplicateTrackingNumberException.class
+	})
+	public ResponseEntity<ErrorResponse> handleDuplicationException(final RuntimeException e) {
+		String errorMessage = e.getMessage();
+		ErrorResponse errorResponse = new ErrorResponse(errorMessage);
+		return ResponseEntity.status(409).body(errorResponse);
 	}
 
 	@ExceptionHandler({
