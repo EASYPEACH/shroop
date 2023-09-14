@@ -18,5 +18,7 @@ public interface ProductReturnRepository extends JpaRepository<ProductReturn, Lo
 	default ProductReturnResponse getByProductId(Long productId) {
 		return findByProductIdFetchJoin(productId).orElseThrow(ProductException::noSuchProductException);
 	}
+	
+	void deleteByProductId(Long productID);
 
 }

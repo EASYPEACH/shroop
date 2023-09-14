@@ -75,4 +75,12 @@ public class ProductReturnService {
 		return productReturnResponse;
 
 	}
+
+	@Transactional
+	public void deleteByProductId(final Long productId) {
+		productReturnRepository.deleteByProductId(productId);
+
+		Transaction transaction = transactionService.findByProductId(productId);
+		transaction.updateStatus(TransactionStatus.RETURN_REFUSE);
+	}
 }
