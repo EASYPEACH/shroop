@@ -125,7 +125,7 @@ const MYPAGE = [
     STATUS: (status) => {
       return props.isSeller && status === TRANSACTION_STATUS.RETURN_COMPLETE;
     },
-    CLICK_EVENT: (id) => router.push(`/purchaseComplete/${id}`),
+    CLICK_EVENT: (id) => handleReSale(id),
   },
   {
     ACTION: "구매영수증",
@@ -239,6 +239,17 @@ const handleDeleteProduct = async () => {
     });
     emits("handle-get-sellHistory");
     dialogList.value[2].value = false;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleReSale = async (id) => {
+  try {
+    await patchApi({
+      url: `/api/buying/resale/${id}`,
+    });
+    emits("handle-get-sellHistory");
   } catch (error) {
     console.error(error);
   }
