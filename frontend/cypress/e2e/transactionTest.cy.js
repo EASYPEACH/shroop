@@ -18,7 +18,6 @@ describe("거래를 한다.", () => {
     cy.get("#input-30").type("이종민");
     cy.get("#input-32").type("01050595727");
 
-    // cy.get(".postCode__box-input").type("07671", { force: true });
     cy.get(
       ".postCode__box-input>.v-input > .v-input__control > .v-field > .v-field__field > .v-field__input> input",
     )
