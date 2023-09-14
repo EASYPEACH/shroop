@@ -25,6 +25,10 @@
       </div>
       <product-title title="프로필 정보" />
       <div class="profile__info">
+        <h4 class="profile__info-name">아이디</h4>
+        <p>{{ loginId }}</p>
+      </div>
+      <div class="profile__info">
         <h4 class="profile__info-name">닉네임</h4>
         <custom-text-input
           class="profile__info-input"
@@ -91,9 +95,6 @@
           </div>
         </div>
       </div>
-      <!-- <div v-show="!authResult" class="auth-fail">
-        {{ modifyResultMsg }}
-      </div> -->
       <submit-button
         :disabled="!isValid"
         class="submit-button"
@@ -155,6 +156,7 @@ const cancelMembershipResult = ref(false);
 const cancelMembershipResultMsg = ref("");
 const phoneNumber = ref("");
 const phoneAuthNumber = ref("");
+const loginId = ref("");
 const nickname = ref("");
 const oldPassword = ref("");
 const newPassword = ref("");
@@ -194,9 +196,9 @@ onBeforeMount(async () => {
     );
     profileImgRef.value.files = profileImgTransfer.files;
     imageData.value = profileImgTransfer.files;
-    nickname.value = userData.nickname;
     phoneNumber.value = userData.phoneNumber;
     imageThumb.value = userData.profileImg;
+    loginId.value = userData.loginId;
   } catch (error) {
     console.error(error);
   }
@@ -221,12 +223,12 @@ const handleSubmitRegister = async () => {
   });
 
   multipartFormDataJson(formData, "editRequest", {
-    nickname: nickname.value,
-    oldPassword: oldPassword.value,
-    newPassword: newPassword.value,
+    nickname: nickname.value.trim(),
+    oldPassword: oldPassword.value.trim(),
+    newPassword: newPassword.value.trim(),
     uuid: cookies.get("uuid"),
-    phoneNumber: phoneNumber.value,
-    phoneAuthNumber: phoneAuthNumber.value,
+    phoneNumber: phoneNumber.value.trim(),
+    phoneAuthNumber: phoneAuthNumber.value.trim(),
   });
 
   try {
@@ -271,7 +273,7 @@ const requestAuthNumber = async () => {
     const data = await postApi({
       url: "/api/auth/phone",
       data: {
-        phoneNumber: phoneNumber.value,
+        phoneNumber: phoneNumber.value.trim(),
       },
     });
     cookies.set("uuid", data.uuid);
@@ -281,7 +283,7 @@ const requestAuthNumber = async () => {
     timerInterval.value = setInterval(() => {
       time.value--; //타이머 시간 감소
       if (time.value === 0) {
-        isTimeRest = false;
+        isTimeRest.value = false;
       }
     }, 1000);
   } catch (error) {
@@ -392,6 +394,10 @@ section {
     display: flex;
     margin: 20px 0;
     position: relative;
+
+    > p {
+      align-self: center;
+    }
 
     @media (max-width: 720px) {
       flex-direction: column;

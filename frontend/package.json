@@ -16,7 +16,6 @@
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "core-js": "^3.29.0",
-    "cypress": "^13.1.0",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
     "start-server-and-test": "^2.0.0",
@@ -30,6 +29,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.2.96",
+    "cypress": "^13.1.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^9.0.0",
