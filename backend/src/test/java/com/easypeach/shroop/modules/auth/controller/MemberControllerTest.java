@@ -113,7 +113,7 @@ public class MemberControllerTest extends ControllerTest {
 	@DisplayName("개인정보변경 화면 이동시 프로필 정보 불러오기")
 	@Test
 	void getProfile() throws Exception {
-		ProfileEditForm editForm = new ProfileEditForm("nickname", "01012341234", "profileImg");
+		ProfileEditForm editForm = new ProfileEditForm("loginId", "nickname", "01012341234", "profileImg");
 
 		// given
 		given(memberService.findProfile(any())).willReturn(editForm);
@@ -131,6 +131,7 @@ public class MemberControllerTest extends ControllerTest {
 			.andExpect(status().isOk())
 			.andDo(document("members/getProfile",
 				responseFields(
+					fieldWithPath("loginId").description("로그인 아이디"),
 					fieldWithPath("nickname").description("닉네임"),
 					fieldWithPath("phoneNumber").description("휴대전화번호"),
 					fieldWithPath("profileImg").description("프로필 이미지")
