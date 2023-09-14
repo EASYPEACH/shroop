@@ -15,8 +15,6 @@ import lombok.NoArgsConstructor;
 public class HistoryResponse {
 	private Long id;
 
-	private Long transaction_id;
-
 	private LocalDateTime transactionCreateDate;
 
 	private TransactionStatus transactionStatus;
@@ -31,11 +29,9 @@ public class HistoryResponse {
 		if (product.getTransaction() != null) {
 			this.transactionCreateDate = product.getTransaction().getCreateDate();
 			this.transactionStatus = product.getTransaction().getStatus();
-			this.transaction_id = product.getTransaction().getId();
 		} else {
 			this.transactionCreateDate = null;
 			this.transactionStatus = null;
-			this.transaction_id = null;
 		}
 		this.id = product.getId();
 		this.title = product.getTitle();
