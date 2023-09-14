@@ -69,7 +69,11 @@
               hide-details
               @keydown="handleInputChnageEvent"
             />
-            <v-btn @click="requestAuthNumber" class="profile__info-btn"
+
+            <v-btn
+              @click="requestAuthNumber"
+              class="profile__info-btn"
+              :disabled="!replyisValid"
               >인증 하기<br />
             </v-btn>
           </div>
@@ -80,6 +84,7 @@
               v-model="phoneAuthNumber"
               hide-details
             />
+            <span v-if="isTimeRest">{{ `0${minute}:${second}` }}</span>
           </div>
         </div>
       </div>
@@ -122,7 +127,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watchEffect } from "vue";
 import {
   changeImageToData,
   multipartFormDataJson,
@@ -158,6 +163,15 @@ const isSignOutValid = ref(false);
 const oldVisible = ref(false);
 const newVisible = ref(false);
 
+//휴대전화인증
+const time = ref(120);
+const timeOrigin = ref(120);
+const timerInterval = ref(null);
+const minute = ref(0);
+const second = ref(0);
+const replyisValid = ref(false);
+const isTimeRest = ref(false);
+
 // Image preview
 const handleChangeProfile = async (event) => {
   isValid.value = true;
@@ -187,6 +201,7 @@ onBeforeMount(async () => {
 
 // input event
 const handleInputChnageEvent = () => {
+  replyisValid.value = true;
   isValid.value = true;
 };
 
@@ -228,9 +243,28 @@ const handleSubmitRegister = async () => {
   newPassword.value = "";
 };
 
+watchEffect(() => {
+  if (time.value === 0) {
+    clearInterval(timerInterval.value);
+  }
+
+  if (time.value <= timeOrigin.value - 2) {
+    replyisValid.value = true;
+  }
+
+  minute.value = Math.floor(time.value / 60);
+  second.value = time.value - Math.floor(time.value / 60) * 60;
+  if (second.value < 10) {
+    second.value = "0" + second.value;
+  }
+});
+
 // 인증번호 요청
 const requestAuthNumber = async () => {
   try {
+    isTimeRest.value = true;
+    replyisValid.value = false;
+    clearInterval(timerInterval.value);
     const data = await postApi({
       url: "/api/auth/phone",
       data: {
@@ -238,6 +272,15 @@ const requestAuthNumber = async () => {
       },
     });
     cookies.set("uuid", data.uuid);
+    time.value = data.seconds;
+    authResult.value = false;
+    modifyResultMsg.value = "인증번호를 전송하였습니다";
+    timerInterval.value = setInterval(() => {
+      time.value--; //타이머 시간 감소
+      if (time.value === 0) {
+        isTimeRest = false;
+      }
+    }, 1000);
   } catch (error) {
     console.error(error);
   }
@@ -355,8 +398,16 @@ section {
       display: flex;
       gap: 20px;
       align-items: center;
+      position: relative;
       .profile__info-input {
         flex-basis: 50%;
+      }
+      span {
+        position: absolute;
+        top: 50%;
+        right: -1px;
+        transform: translate(-50%, -50%);
+        color: rgb(var(--v-theme-heartRed));
       }
     }
     .info__input-box {
