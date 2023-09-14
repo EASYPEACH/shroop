@@ -7,6 +7,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,30 +35,27 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductConcurrencyTest {
 	@Autowired
 	private MemberService memberService;
-
 	@Autowired
 	private LikeService likeService;
-
 	@Autowired
 	private ProductRepository productRepository;
-
 	@Autowired
 	private ProductService productService;
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	private Long productId;
 
 	@DisplayName("좋아요 동시성 테스트")
 	@Test
 	void LikeConcurrencyTest() throws InterruptedException {
 		Member member1 = memberService.findByNickname("test111111");
 		Member member2 = memberService.findByNickname("test222222");
-
+		productId = saveProduct(member1.getId());
 		ExecutorService executorService = Executors.newFixedThreadPool(2);
-
 		CountDownLatch latch = new CountDownLatch(2);
-		Long productId = saveProduct(member1.getId()); // 상품 저장
 
 		Product product = productRepository.getById(productId);
-
-		long likeCount = product.getLikesCount(); // 처음에는 0 개
 
 		executorService.execute(() -> {
 			try {
@@ -74,12 +74,13 @@ public class ProductConcurrencyTest {
 			}
 			latch.countDown();
 		});
-
 		latch.await();
 		Product findProduct = productRepository.getById(productId);
 
 		// 동시에 눌러도 좋아요는 2개가 업되어야 한다
 		Assertions.assertThat(findProduct.getLikesCount()).isEqualTo(2);
+		productRepository.delete(product);
+
 	}
 
 	Long saveProduct(Long memberId) {
@@ -106,7 +107,9 @@ public class ProductConcurrencyTest {
 		productImgList.add(file1);
 		productImgList.add(file2);
 
-		return productService.saveProduct(memberId, productRequest, productImgList, defectImgList);
+		Long productId = productService.saveProduct(memberId, productRequest, productImgList, defectImgList);
+
+		return productId;
 	}
 
 }

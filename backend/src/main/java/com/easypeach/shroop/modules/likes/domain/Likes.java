@@ -11,6 +11,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.easypeach.shroop.modules.member.domain.Member;
 import com.easypeach.shroop.modules.product.domain.Product;
 
@@ -42,6 +45,7 @@ public class Likes {
 	private Member member;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
