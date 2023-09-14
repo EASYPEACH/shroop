@@ -30,6 +30,7 @@
                   ]"
                 />
                 <custom-text-input
+                  placeholder-text="계좌번호(하이픈 빼고 입력)"
                   label="계좌번호"
                   v-model="account"
                   :rules="[
