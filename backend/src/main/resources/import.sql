@@ -63,7 +63,7 @@ insert into product_img(is_defect, product_img_url, product_id) values(false, 'h
 insert into product_img(is_defect, product_img_url, product_id) values(true, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/11-4.webp', 6);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/11-5.webp', 6);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (7, 6, 1, '삼성 냉장고 255L 팝니다.', 'UPPER', '삼성 / 냉장고 255L', 150000, true, '가게에서 음료만 사용했습니다\n크게들어가고 깻낀데 없어요\n쿨거래 희망합니다', '2015-08-16',  false, '새걸로 바꾸면서 내놓습니다.', 5, '2023-04-02 09:15:25', '2023-06-21 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (7, 6, 1, '삼성 냉장고 255L 팝니다.', 'UPPER', '삼성 / 냉장고 255L', 150000, true, '가게에서 음료만 사용했습니다\n크게들어가고 깻낀데 없어요\n쿨거래 희망합니다', '2015-08-16',  false, '새걸로 바꾸면서 내놓습니다.', 0, '2023-04-02 09:15:25', '2023-06-21 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/12-1.webp', 7);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/12-2.webp', 7);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/12-3.webp', 7);
@@ -76,7 +76,7 @@ insert into product_img(is_defect, product_img_url, product_id) values(false, 'h
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/16-4.webp', 8);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/16-5.webp', 8);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (9, 8, 1, '삼성스마트티비 48인치 팝니다.', 'UPPER', '삼성 / 스마트티비', 60000, true, '*삼성 스마트티비\n48인치 사진대로 잘 나옵니다.\n다만 화면 우측 작은 섬광 나타나서 싸게 내놓아요.\n보는데 지장없지만 예민한분 피해주세요.\n(사진 3,4번 참고)\n*18일 드릴수 있습니다\n*환불불가입니다', '2017-03-02', true, '더 큰 티비를 샀습니다.', 2, '2023-06-01 09:15:25', '2023-06-11 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (9, 8, 1, '삼성스마트티비 48인치 팝니다.', 'UPPER', '삼성 / 스마트티비', 60000, true, '*삼성 스마트티비\n48인치 사진대로 잘 나옵니다.\n다만 화면 우측 작은 섬광 나타나서 싸게 내놓아요.\n보는데 지장없지만 예민한분 피해주세요.\n(사진 3,4번 참고)\n*18일 드릴수 있습니다\n*환불불가입니다', '2017-03-02', true, '더 큰 티비를 샀습니다.', 0, '2023-06-01 09:15:25', '2023-06-11 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/17-1.webp', 9);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/17-2.webp', 9);
 insert into product_img(is_defect, product_img_url, product_id) values(true, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/17-3.webp', 9);
@@ -84,22 +84,12 @@ insert into product_img(is_defect, product_img_url, product_id) values(true, 'ht
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/17-5.webp', 9);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/17-6.webp', 9);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (10, 9, 3, '에르메스 바운싱', 'UPPER', '에르메스 / 바운싱', 680000, true, '43사이즈 풀박스 오렌지 색상 바운싱 상태최고', '2023-03-02', false, '안신어서 샀습니다.', 3, '2023-09-08 09:15:25', '2023-09-11 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (10, 9, 3, '에르메스 바운싱', 'UPPER', '에르메스 / 바운싱', 680000, true, '43사이즈 풀박스 오렌지 색상 바운싱 상태최고', '2023-03-02', false, '안신어서 샀습니다.', 0, '2023-09-08 09:15:25', '2023-09-11 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/18-1.webp', 10);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/18-2.webp', 10);
 
-insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (11, 10, 6, '울샴푸 새거 5리터', 'UPPER', '애경 / 울샴푸', 3000, false, '사진 첨부하였듯이 2019년에 구매\n뚜껑도 안딴 새거입니다\n사용 가능 기한은 잘 모르겠어요 ㅠ\n참고하셔서 구매주십시오!', '2019-12-20', false, '쓸일이 없어서 팔아요', 5, '2023-09-01 09:15:25', '2023-09-09 14:34:17');
+insert into product (id, seller_id, category_id, title, product_grade, brand, price, is_checked_delivery_fee, content, purchase_date, is_defect, sale_reason, likes, create_date, update_date) values (11, 10, 6, '울샴푸 새거 5리터', 'UPPER', '애경 / 울샴푸', 3000, false, '사진 첨부하였듯이 2019년에 구매\n뚜껑도 안딴 새거입니다\n사용 가능 기한은 잘 모르겠어요 ㅠ\n참고하셔서 구매주십시오!', '2019-12-20', false, '쓸일이 없어서 팔아요', 0, '2023-09-01 09:15:25', '2023-09-09 14:34:17');
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/19-1.webp', 11);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/19-2.webp', 11);
 insert into product_img(is_defect, product_img_url, product_id) values(false, 'https://shroop-s3.s3.ap-northeast-2.amazonaws.com/19-3.webp', 11);
 
-insert into likes(member_id, product_id) values (6, 11);
-insert into likes(member_id, product_id) values (7, 11);
-insert into likes(member_id, product_id) values (8, 11);
-insert into likes(member_id, product_id) values (9, 11);
-insert into likes(member_id, product_id) values (10, 11);
-insert into likes(member_id, product_id) values (6, 10);
-insert into likes(member_id, product_id) values (7, 10);
-insert into likes(member_id, product_id) values (8, 10);
-insert into likes(member_id, product_id) values (9, 9);
-insert into likes(member_id, product_id) values (10, 9);
