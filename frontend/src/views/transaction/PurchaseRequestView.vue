@@ -8,7 +8,9 @@
           :rules="[
             defaultTextRule.required,
             (value) => defaultTextRule.customMinLength(value, 2),
+            (v) => defaultTextRule.customMaxLength(v, 10),
           ]"
+          @input="limitBuyerNameCount"
           placeholderText="이름을 입력해주세요."
           v-model="buyerName"
         />
@@ -55,6 +57,7 @@
           ]"
           placeholderText="상세주소"
           v-model="detailLocation"
+          @input="limitAddressCount"
         />
         <div class="profile__point">
           <div class="profile__point-count">
@@ -201,6 +204,18 @@ const toggleAllCheckboxes = () => {
       list.value = false;
       return list;
     });
+  }
+};
+
+const limitBuyerNameCount = () => {
+  if (buyerName.value.length >= 30) {
+    buyerName.value = buyerName.value.substring(0, 30);
+  }
+};
+
+const limitAddressCount = () => {
+  if (location.value.length >= 30) {
+    location.value = location.value.substring(0, 255);
   }
 };
 

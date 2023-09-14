@@ -17,7 +17,7 @@
           placeholder-text="아이디를 입력해주세요"
           v-model="id"
           :rules="[idRule.required]"
-          icon="mdi-account-outline"
+          preppend-icon="mdi-account-outline"
           data-cy="loginId"
         />
         <password-input
