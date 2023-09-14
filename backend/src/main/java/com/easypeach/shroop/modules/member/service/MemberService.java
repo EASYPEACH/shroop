@@ -53,6 +53,7 @@ public class MemberService {
 		Page<LikeProductInfo> likedProductList = likedList.map(likes -> new LikeProductInfo(likes));
 
 		MyPageInfoResponse myPageInfo = new MyPageInfoResponse(
+			findMember.getLoginId(),
 			findMember.getProfileImg(),
 			findMember.getNickname(),
 			findMember.getPoint(),

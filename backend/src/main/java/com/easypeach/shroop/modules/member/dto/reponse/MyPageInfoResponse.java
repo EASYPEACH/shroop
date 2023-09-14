@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyPageInfoResponse {
+	private String loginId;
 	private String userImg;
 	private String nickname;
 	private Long point;
