@@ -9,6 +9,7 @@ import com.easypeach.shroop.modules.transaction.domain.DeliveryRepository;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
 import com.easypeach.shroop.modules.transaction.dto.request.DeliveryRequest;
+import com.easypeach.shroop.modules.transaction.exception.DuplicateTrackingNumberException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,11 @@ public class DeliveryService {
 	public void saveDelivery(final Long productId, final DeliveryRequest deliveryRequest) {
 		String trackingNumber = deliveryRequest.getTrackingNumber();
 		String parcel = deliveryRequest.getParcel();
+
+		// 운송장번호 중복 검사
+		if (duplicateCheckTrackingNumber(trackingNumber)) {
+			throw new DuplicateTrackingNumberException("운송장번호가 이미 존재합니다.");
+		}
 
 		Delivery delivery = Delivery.createDelivery(trackingNumber, parcel);
 		Delivery newDelivery = deliveryRepository.save(delivery);
