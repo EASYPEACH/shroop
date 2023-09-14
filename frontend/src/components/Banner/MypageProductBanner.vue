@@ -73,7 +73,7 @@ const emits = defineEmits([
 
 const router = useRouter();
 const showBuyerInfoDialog = ref(false);
-const showReturnResultDialog = ref(false);
+
 const buyeInfo = ref({
   name: "",
   phoneNumber: "",
@@ -83,17 +83,20 @@ const buyeInfo = ref({
 });
 const MYPAGE = [
   {
-    ACTION: "중재하기",
+    ACTION: "중재신청",
     STATUS: (status) => {
       return !(
         status === TRANSACTION_STATUS.SELLING ||
         status === TRANSACTION_STATUS.PURCHASE_REQUEST ||
-        status === TRANSACTION_STATUS.MEDIATE_REQUEST
+        status === TRANSACTION_STATUS.MEDIATE_REQUEST ||
+        (status === TRANSACTION_STATUS.COMPLETE && props.isSeller) ||
+        status === TRANSACTION_STATUS.PURCHASE_CONFIRM ||
+        status === TRANSACTION_STATUS.RETURN_REQUEST ||
+        status === TRANSACTION_STATUS.RETURN_COMPLETE
       );
     },
     CLICK_EVENT: (id) => router.push(`/mediate/${id}`),
   },
-
   {
     ACTION: "반품신청",
     STATUS: (status) => {
@@ -101,11 +104,41 @@ const MYPAGE = [
         !props.isSeller &&
         !(
           status === TRANSACTION_STATUS.PURCHASE_REQUEST ||
-          status === TRANSACTION_STATUS.RETURN_COMPLETE
+          status === TRANSACTION_STATUS.RETURN_COMPLETE ||
+          status === TRANSACTION_STATUS.MEDIATE_REQUEST ||
+          status === TRANSACTION_STATUS.PURCHASE_CONFIRM ||
+          status === TRANSACTION_STATUS.RETURN_REQUEST
         )
       );
     },
     CLICK_EVENT: (id) => router.push(`/return/${id}`),
+  },
+  {
+    ACTION: "반품사유",
+    STATUS: (status) => {
+      return props.isSeller && status === TRANSACTION_STATUS.RETURN_REQUEST;
+    },
+    CLICK_EVENT: (id) => router.push(`/returnResult/${id}`),
+  },
+  {
+    ACTION: "재판매하기",
+    STATUS: (status) => {
+      return props.isSeller && status === TRANSACTION_STATUS.RETURN_COMPLETE;
+    },
+    CLICK_EVENT: (id) => handleReSale(id),
+  },
+  {
+    ACTION: "구매영수증",
+    STATUS: (status) => {
+      return (
+        !props.isSeller &&
+        !(
+          status === TRANSACTION_STATUS.MEDIATE_REQUEST ||
+          status === TRANSACTION_STATUS.RETURN_COMPLETE
+        )
+      );
+    },
+    CLICK_EVENT: (id) => router.push(`/purchaseComplete/${id}`),
   },
   {
     ACTION: "구매확정",
@@ -114,14 +147,6 @@ const MYPAGE = [
     },
     CLICK_EVENT: () => (dialogList.value[0].value = true),
   },
-  {
-    ACTION: "반품확정",
-    STATUS: (status) => {
-      return props.isSeller && status === TRANSACTION_STATUS.RETURN_REQUEST;
-    },
-    CLICK_EVENT: () => (dialogList.value[1].value = true),
-  },
-
   {
     ACTION: "삭제하기",
     STATUS: (status) => {
@@ -144,16 +169,13 @@ const MYPAGE = [
     CLICK_EVENT: () => (dialogList.value[3].value = true),
   },
   {
-    ACTION: "반품결과",
-    STATUS: (status) => {
-      return props.isSeller && status === TRANSACTION_STATUS.RETURN_COMPLETE;
-    },
-    CLICK_EVENT: () => (showReturnResultDialog.value = true),
-  },
-  {
     ACTION: "구매자정보",
     STATUS: (status) => {
-      return props.isSeller && status !== TRANSACTION_STATUS.SELLING;
+      return (
+        props.isSeller &&
+        status !== TRANSACTION_STATUS.SELLING &&
+        status !== TRANSACTION_STATUS.RETURN_COMPLETE
+      );
     },
     CLICK_EVENT: () => handleShowBuyerInfo(),
   },
@@ -190,18 +212,7 @@ const handleCanclePurchaseRequest = async () => {
     console.log(error);
   }
 };
-// 반품확정
-const handleReturnRequestConfirm = async () => {
-  try {
-    await patchApi({
-      url: `/api/buying/return/confirm/${props.product.id}`,
-    });
-    emits("handle-get-sellHistory");
-    dialogList.value[1].value = false;
-  } catch (error) {
-    console.log(error);
-  }
-};
+
 // 구매자정보보기
 const handleShowBuyerInfo = async () => {
   try {
@@ -233,6 +244,17 @@ const handleDeleteProduct = async () => {
   }
 };
 
+const handleReSale = async (id) => {
+  try {
+    await patchApi({
+      url: `/api/buying/resale/${id}`,
+    });
+    emits("handle-get-sellHistory");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const dialogList = ref([
   {
     id: 1,
@@ -242,18 +264,12 @@ const dialogList = ref([
   },
   {
     id: 2,
-    text: "반품을 확정 하시겠습니까?",
-    value: false,
-    callback: handleReturnRequestConfirm,
-  },
-  {
-    id: 3,
     text: "상품을 삭제하시겠습니까?",
     value: false,
     callback: handleDeleteProduct,
   },
   {
-    id: 4,
+    id: 3,
     text: "구매신청을 취소하시겠습니까?",
     value: false,
     callback: handleCanclePurchaseRequest,
