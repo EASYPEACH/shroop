@@ -86,11 +86,14 @@
             />
             <span v-if="isTimeRest">{{ `0${minute}:${second}` }}</span>
           </div>
+          <div v-show="!authResult" class="auth-fail">
+            {{ modifyResultMsg }}
+          </div>
         </div>
       </div>
-      <div v-show="!authResult" class="auth-fail">
+      <!-- <div v-show="!authResult" class="auth-fail">
         {{ modifyResultMsg }}
-      </div>
+      </div> -->
       <submit-button
         :disabled="!isValid"
         class="submit-button"
@@ -447,6 +450,7 @@ section {
 }
 .auth-fail {
   color: rgb(var(--v-theme-heartRed));
+  font-size: 15px;
 }
 
 .v-pagination {
