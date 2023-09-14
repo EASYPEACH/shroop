@@ -14,14 +14,14 @@ describe("template spec", () => {
       ":nth-child(2) > .wrapper > .v-card > .v-responsive > .v-img__img",
     ).click();
     cy.get(".productContent__profile > .v-btn > .v-btn__content").click();
-    cy.get("#input-30").clear("rp");
-    cy.get("#input-30").type("게시물을 신고합니다");
-    cy.get("#input-33").click();
-    cy.get("#input-33").type(
+    cy.get(
+      ".v-form > :nth-child(2) > .v-input > .v-input__control > .v-field > .v-field__field > .v-field__input",
+    ).type("게시물을 신고합니다");
+    cy.get("#input-32").type(
       "신고합니다. 이 게시물은 부적적한 물건을 판매하고 있습니다.",
     );
     cy.get(".v-main > section > .v-form > .v-btn > .v-btn__content").click();
     cy.get(".v-card-actions > .v-btn > .v-btn__content").click();
-    cy.get(".v-card-actions > .v-btn").click();
+    cy.get(".v-card-actions > .v-btn > .v-btn__content").click();
   });
 });
