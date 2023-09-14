@@ -36,7 +36,7 @@
           <aside class="profile__account-box">
             <div class="profile__account-points">
               <div>
-                {{ profile.point }}
+                {{ profile.point?.toLocaleString() }}
                 <v-icon icon="mdi-water" />
               </div>
               <div class="account__buttons">
