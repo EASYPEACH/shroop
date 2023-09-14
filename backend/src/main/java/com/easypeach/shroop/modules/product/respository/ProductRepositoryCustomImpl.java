@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.easypeach.shroop.modules.likes.domain.QLikes;
+import com.easypeach.shroop.modules.member.domain.Role;
 import com.easypeach.shroop.modules.product.domain.QProductImg;
 import com.easypeach.shroop.modules.product.dto.response.ProductOneImgResponse;
 import com.querydsl.core.types.Projections;
@@ -57,7 +58,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 						.select(subProductImg.id.min())
 						.from(subProductImg)
 						.where(subProductImg.product.id.eq(product.id))
-				)
+				),
+				product.seller.role.eq(Role.ROLE_USER).or(product.seller.role.eq(Role.ROLE_ADMIN))
 			)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
@@ -76,7 +78,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 						.select(subProductImg.id.min())
 						.from(subProductImg)
 						.where(subProductImg.product.id.eq(product.id))
-				))
+				),
+				product.seller.role.eq(Role.ROLE_USER).or(product.seller.role.eq(Role.ROLE_ADMIN))
+			)
 			.fetchOne();
 
 		return new PageImpl<>(content, pageable, count);
