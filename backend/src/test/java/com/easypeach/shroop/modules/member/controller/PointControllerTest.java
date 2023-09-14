@@ -28,8 +28,7 @@ class PointControllerTest extends ControllerTest {
 		PointRequest pointRequest = PointRequest.createPointRequest(100000L);
 		PointResponse pointResponse = PointResponse.createPointResponse(100000L);
 
-		doNothing().when(bankService).subtractMoney(any(), any());
-		given(memberService.plusPoint(any(), any())).willReturn(pointResponse);
+		given(memberService.chargePoint(any(), any())).willReturn(pointResponse);
 		String json = objectMapper.writeValueAsString(pointRequest);
 
 		mockMvc.perform(MockMvcRequestBuilders.patch("/api/point/charging")
@@ -58,8 +57,7 @@ class PointControllerTest extends ControllerTest {
 		PointRequest pointRequest = PointRequest.createPointRequest(100000L);
 		PointResponse pointResponse = PointResponse.createPointResponse(100000L);
 
-		given(memberService.subtractPoint(any(), any())).willReturn(pointResponse);
-		doNothing().when(bankService).addMoney(any(), any());
+		given(memberService.exchangePoint(any(), any())).willReturn(pointResponse);
 
 		String json = objectMapper.writeValueAsString(pointRequest);
 		mockMvc.perform(MockMvcRequestBuilders.patch("/api/point/exchanging")
