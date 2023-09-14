@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.Getter;
+
+@Getter
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "product_return_img")
 @Entity

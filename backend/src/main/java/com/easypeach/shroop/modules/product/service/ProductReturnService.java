@@ -10,6 +10,9 @@ import com.easypeach.shroop.modules.notification.service.NotificationService;
 import com.easypeach.shroop.modules.product.domain.Product;
 import com.easypeach.shroop.modules.product.domain.ProductReturn;
 import com.easypeach.shroop.modules.product.dto.request.ProductReturnRequest;
+import com.easypeach.shroop.modules.product.dto.response.ProductReturnImgResponse;
+import com.easypeach.shroop.modules.product.dto.response.ProductReturnResponse;
+import com.easypeach.shroop.modules.product.respository.ProductReturnImgRepository;
 import com.easypeach.shroop.modules.product.respository.ProductReturnRepository;
 import com.easypeach.shroop.modules.transaction.domain.Transaction;
 import com.easypeach.shroop.modules.transaction.domain.TransactionStatus;
@@ -31,6 +34,8 @@ public class ProductReturnService {
 	private final TransactionService transactionService;
 
 	private final NotificationService notificationService;
+
+	private final ProductReturnImgRepository productReturnImgRepository;
 
 	@Transactional
 	public void saveProductReturn(final Long memberId, final Long productId,
@@ -57,6 +62,17 @@ public class ProductReturnService {
 
 		// 구매자 알림
 		notificationService.saveNotification(buyerId, title, "/mypage/purchaseList", message);
+
+	}
+
+	public ProductReturnResponse findById(final Long productId) {
+		ProductReturnResponse productReturnResponse = productReturnRepository.getByProductId(productId);
+		List<ProductReturnImgResponse> productReturnImgResponseList = productReturnImgRepository.findByProductReturnId(
+			productReturnResponse.getId());
+
+		productReturnResponse.updateProductReturnImgResponseList(productReturnImgResponseList);
+
+		return productReturnResponse;
 
 	}
 }
