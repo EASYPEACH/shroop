@@ -20,7 +20,7 @@ public class ProfileEditRequest {
 	private String newPassword;
 	private long uuid;
 	@NotBlank
-	@Pattern(regexp = "^0\\d{1,2}\\d{3,4}\\d{4}$")
+	@Pattern(regexp = "^0\\d{1,2}\\d{3,4}\\d{4}$", message = "휴대전화번호 형식이 잘못되었습니다")
 	private String phoneNumber;
 	private String phoneAuthNumber;
 
