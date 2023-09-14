@@ -96,7 +96,8 @@ onBeforeMount(async () => {
   display: flex;
   padding: 10px 0;
   h4 {
-    flex-basis: 20%;
+    white-space: nowrap;
+    flex-basis: 30%;
     font-weight: 600;
   }
 }
@@ -117,6 +118,7 @@ onBeforeMount(async () => {
     flex-direction: column;
     align-items: start;
     gap: 20px;
+    font-weight: 600;
   }
   .payment-price {
     display: flex;
@@ -128,6 +130,10 @@ onBeforeMount(async () => {
       font-weight: bold;
       color: tomato;
     }
+  }
+
+  @media (max-width: 750px) {
+    justify-content: space-between;
   }
 }
 </style>

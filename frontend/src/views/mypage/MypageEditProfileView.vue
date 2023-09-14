@@ -392,14 +392,21 @@ section {
   }
   .profile__info {
     display: flex;
-    margin: 20px 0;
-    position: relative;
+    margin-bottom: 20px;
+    gap: 10px;
+
+    & + & {
+      margin-top: 20px;
+    }
 
     > p {
       align-self: center;
     }
 
     @media (max-width: 720px) {
+      > p {
+        align-self: flex-start;
+      }
       flex-direction: column;
     }
     .identify__phoneNumber {
@@ -424,7 +431,6 @@ section {
     }
     .profile__info-title {
       display: flex;
-      margin: 12px;
       font-weight: 600;
       font-size: 20px;
       flex-basis: 20%;
@@ -435,7 +441,6 @@ section {
     }
     .profile__info-name {
       display: flex;
-      margin: 12px;
       font-weight: 600;
       font-size: 18px;
       flex-basis: 15%;
