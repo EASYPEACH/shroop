@@ -11,8 +11,14 @@
         <custom-text-input
           placeholder-text="제목을 입력해주세요"
           v-model="title"
-          :rules="[defaultTextRule.required, defaultTextRule.min]"
+          :rules="[
+            defaultTextRule.required,
+            defaultTextRule.min,
+            (v) => defaultTextRule.customMaxLength(v, 30),
+          ]"
+          @input="limitTitleCount"
         />
+        <p>{{ title.length }} / 30</p>
         <product-title title="상품 이미지" />
         <image-attach
           ref="productRef"
@@ -135,8 +141,9 @@
           placeholder-text="상품 판매 이유"
           v-model="saleReason"
           :rules="[defaultTextRule.required, defaultTextRule.min]"
+          @input="limitSaleReason"
         />
-
+        <p>{{ saleReason.length }} / 50</p>
         <guide-text
           title="상세 조건 가이드"
           :guide-list="[
@@ -147,8 +154,12 @@
         />
 
         <product-title title="상품 상세조건" />
-        <custom-text-area v-model="content" label="상세조건" />
-        <p>{{ content.length }} / 200</p>
+        <custom-text-area
+          v-model="content"
+          @input="limitContentCount"
+          label="상세조건"
+        />
+        <p>{{ content.length }} / 255</p>
         <div class="agreement">
           <label for="agree">
             <warn-alert
@@ -285,6 +296,24 @@ onMounted(async () => {
     }
   }
 });
+
+const limitTitleCount = () => {
+  if (title.value.length >= 30) {
+    title.value = title.value.substring(0, 30);
+  }
+};
+
+const limitSaleReason = () => {
+  if (saleReason.value.length >= 50) {
+    saleReason.value = saleReason.value.substring(0, 50);
+  }
+};
+
+const limitContentCount = () => {
+  if (content.value.length >= 255) {
+    content.value = content.value.substring(0, 255);
+  }
+};
 
 // 상품등록/수정 핸들러
 const handleSubmitRegister = async () => {

@@ -43,6 +43,9 @@ export const defaultTextRule = {
   customMinLength: (value, minNumber) => {
     return value.length >= minNumber || `최소 ${minNumber}자 이상 입력해주세요`;
   },
+  customMaxLength: (value, maxNumber) => {
+    return value.length <= maxNumber || false;
+  },
 };
 
 export const priceRule = {
