@@ -52,6 +52,7 @@ public class MemberControllerTest extends ControllerTest {
 		Page<LikeProductInfo> page = new PageImpl<>(list);
 
 		MyPageInfoResponse info = new MyPageInfoResponse(
+			"loginId",
 			"userImg",
 			"nickname",
 			100L,
@@ -79,6 +80,7 @@ public class MemberControllerTest extends ControllerTest {
 			.andDo(document("members/getMyInfo",
 				responseFields(
 					fieldWithPath("userImg").description("유저이미지 링크"),
+					fieldWithPath("loginId").description("로그인 아이디"),
 					fieldWithPath("nickname").description("닉네임"),
 					fieldWithPath("point").description("포인트"),
 					fieldWithPath("account").description("계좌번호"),
