@@ -67,7 +67,11 @@ public class MemberService {
 
 	public ProfileEditForm findProfile(final Long memberId) {
 		Member findMember = memberRepository.getById(memberId);
-		return new ProfileEditForm(findMember.getNickname(), findMember.getPhoneNumber(), findMember.getProfileImg());
+		return new ProfileEditForm(
+			findMember.getLoginId(),
+			findMember.getNickname(),
+			findMember.getPhoneNumber(),
+			findMember.getProfileImg());
 	}
 
 	@Transactional
