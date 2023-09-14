@@ -25,6 +25,7 @@ import {
   ReturnRequestView,
   DeliveryRegistView,
   PurchaseCompleteView,
+  ReturnRequestResultView,
 } from "@/views/transaction";
 
 const routes = [
@@ -108,6 +109,12 @@ const routes = [
         path: "/return/:id(\\d+)",
         name: "Return",
         component: ReturnRequestView,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "/returnResult/:id(\\d+)",
+        name: "ReturnResult",
+        component: ReturnRequestResultView,
         meta: { requiresAuth: true },
       },
       {
