@@ -177,7 +177,7 @@
           필수 사항을 확인 해주세요
         </p>
         <submit-button
-          :disabled="!isValid"
+          :disabled="!isValid || loadingStore.isLoading"
           :text="isRegister ? '상품 등록' : '상품 수정'"
         />
       </v-form>
@@ -199,9 +199,11 @@ import {
   multipartFormDataFile,
   multipartFormDataJson,
   changeUrlToFiles,
+  compressImage,
 } from "@/utils";
 import { PRODUCT_GRADE, PRODUCT_GRADE_EN } from "@/consts/productGrade.js";
 import { multipartPostApi, multipartPatchApi, getApi } from "@/api/modules";
+import { useApiLoading } from "@/store/modules";
 
 import { CustomTextInput, CustomTextArea } from "@/components/Form";
 import { MainTitle, ProductTitle } from "@/components/Title";
@@ -213,6 +215,7 @@ import ContentLayout from "@/layouts/ContentLayout.vue";
 
 const router = useRouter();
 const route = useRoute();
+const loadingStore = useApiLoading();
 
 const isValid = ref(false);
 const isRegister = ref(false);
@@ -371,6 +374,7 @@ const handleSubmitRegister = async () => {
           router.push(`/detail/${data.productId}`);
         }
       } catch (err) {
+        alert(err.response.data.message);
         console.error(err);
       }
     }
@@ -378,10 +382,14 @@ const handleSubmitRegister = async () => {
 };
 
 // 이미지 첨부시 미리보기 이미지 추가 삭제
+
 const handleAttachProductImage = (files) => {
+  compressImage(files, productRef);
   changeFiles(files, productRef, productImages, productImagesData);
 };
+
 const handleAttachDefectedImage = (files) => {
+  compressImage(files, defectedtRef);
   changeFiles(files, defectedtRef, defectedImages, defectedImagesData);
 };
 const handleDeleteProductImage = (idx) => {

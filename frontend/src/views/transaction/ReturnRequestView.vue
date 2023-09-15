@@ -44,6 +44,7 @@ import {
   deleteImage,
   multipartFormDataFile,
   multipartFormDataJson,
+  compressImage,
 } from "@/utils";
 import { getApi, multipartPostApi } from "@/api/modules";
 import { SubmitButton } from "@/components/Button";
@@ -64,6 +65,7 @@ const requestImageRef = ref(null);
 const returnReasonText = ref("");
 
 const handleAttachProductImage = (files) => {
+  compressImage(files, requestImageRef);
   changeFiles(
     files,
     requestImageRef,

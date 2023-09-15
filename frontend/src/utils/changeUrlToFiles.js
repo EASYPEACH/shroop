@@ -5,7 +5,7 @@ export const changeUrlToFiles = async (imglist) => {
       cache: "no-cache",
     });
     const blob = await response.blob();
-    const file = new File([blob], `image${i}.jpg`, { type: blob.type });
+    const file = new File([blob], `image${i}.jpeg`, { type: blob.type });
     transfer.items.add(file).getAsFile();
   }
   return transfer;

@@ -61,6 +61,7 @@ import {
   deleteImage,
   multipartFormDataFile,
   multipartFormDataJson,
+  compressImage,
 } from "@/utils";
 import { multipartPostApi, getApi } from "@/api/modules";
 import { MainTitle, ProductTitle } from "@/components/Title";
@@ -99,6 +100,7 @@ const limitContentCount = () => {
 };
 
 const handleAttachProductImage = (files) => {
+  compressImage(files, productRef);
   changeFiles(files, productRef, productImagesThumb, imageData);
 };
 const handleDeleteProductImage = (idx) => {
