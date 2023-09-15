@@ -11,7 +11,7 @@ export const compressImage = (files, inputRef) => {
       new Compressor(file, {
         minWidth: 450,
         minHeight: 450,
-        quality: 0.1,
+        quality: 0.3,
         convertTypes: ["image/png", "image/webp"],
         mimeType: "image/webp",
         convertSize: 1000000,
