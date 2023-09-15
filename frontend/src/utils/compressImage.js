@@ -15,11 +15,6 @@ export const compressImage = (files, inputRef) => {
         mimeType: "image/webp",
         convertSize: 500,
         success: function (result) {
-          if (result.size > 5 * 1024 * 1024) {
-            // 리사이징 했는데도 용량이 큰 경우
-            alert("파일 용량이 초과되어 업로드가 불가 합니다.");
-            return;
-          }
           const newFile = new File([result], `image${new Date().getTime()}`, {
             type: result.type,
           });
