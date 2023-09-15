@@ -20,7 +20,7 @@ export const compressImage = (files, inputRef) => {
             type: result.type,
           });
           transfer.items.add(newFile).getAsFile();
-          if (inputRef.value.input !== null) {
+          if (inputRef.value.input) {
             inputRef.value.input.files = transfer.files;
           } else {
             inputRef.value.files = transfer.files;
