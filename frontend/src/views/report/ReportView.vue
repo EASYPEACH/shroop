@@ -36,7 +36,10 @@
       </div>
       <product-title v-if="isReport" title="신고사유" isRequired />
       <product-title v-else title="중재사유" isRequired />
-      <CustomTextArea v-model="reportReason" @input="limitContentCount" />
+      <CustomTextArea
+        v-model="reportReason"
+        @update-value="limitContentCount"
+      />
       <p>{{ reportReason.length }} / 255</p>
       <submit-button v-if="isReport" :disabled="!isVailed" text="신고접수" />
       <submit-button v-else :disabled="!isVailed" text="중재접수" />
@@ -92,11 +95,8 @@ const limitTitleCount = () => {
   }
 };
 
-const limitContentCount = () => {
-  if (reportReason.value.length >= 255) {
-    reportReason.value = reportReason.value.substring(0, 255);
-    console.log(reportReason.value.length);
-  }
+const limitContentCount = (value) => {
+  reportReason.value = value;
 };
 
 const handleAttachProductImage = (files) => {

@@ -155,8 +155,9 @@
 
         <product-title title="상품 상세조건" />
         <custom-text-area
+          ref="textAreaRef"
           v-model="content"
-          @input="limitContentCount"
+          @update-value="limitContentCount"
           label="상세조건"
         />
         <p>{{ content.length }} / 255</p>
@@ -239,6 +240,7 @@ const productGradeValue = ref("");
 const content = ref("");
 const saleReason = ref("");
 const brandModel = ref("");
+const textAreaRef = ref(null);
 
 onMounted(async () => {
   const categoryData = await getApi({
@@ -312,10 +314,8 @@ const limitSaleReason = () => {
   }
 };
 
-const limitContentCount = () => {
-  if (content.value.length >= 255) {
-    content.value = content.value.substring(0, 255);
-  }
+const limitContentCount = (value) => {
+  content.value = value;
 };
 
 // 상품등록/수정 핸들러
