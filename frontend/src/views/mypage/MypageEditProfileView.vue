@@ -140,6 +140,7 @@ import {
 import { getApi, postApi, multipartPatchApi, deleteApi } from "@/api/modules";
 import { useCookies } from "vue3-cookies";
 import { useRouter } from "vue-router";
+import { compressImage } from "@/utils";
 
 import { SubmitButton } from "@/components/Button";
 import { MainTitle, ProductTitle } from "@/components/Title";
@@ -181,6 +182,7 @@ const isTimeRest = ref(false);
 const handleChangeProfile = async (event) => {
   isValid.value = true;
   imageData.value = event.target.files[0];
+  compressImage(event.target.files, profileImgRef);
   imageThumb.value = await changeImageToData(imageData.value);
 };
 
@@ -198,6 +200,7 @@ onBeforeMount(async () => {
     imageData.value = profileImgTransfer.files;
     phoneNumber.value = userData.phoneNumber;
     imageThumb.value = userData.profileImg;
+    nickname.value = userData.nickname;
     loginId.value = userData.loginId;
   } catch (error) {
     console.error(error);

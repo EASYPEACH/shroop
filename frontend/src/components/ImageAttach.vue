@@ -93,7 +93,7 @@ defineExpose({
       display: flex;
       flex: 1;
       gap: 20px;
-      overflow-x: scroll;
+      overflow-x: auto;
       > div {
         position: relative;
         .thumb {

@@ -5,6 +5,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.easypeach.shroop.modules.auth.exception.AuthFailCountException;
 import com.easypeach.shroop.modules.auth.exception.AuthTimeOutException;
@@ -107,10 +108,18 @@ public class ExceptionControllerAdvice {
 		return ResponseEntity.status(429).body(errorResponse);
 	}
 
+	@ExceptionHandler({
+		MaxUploadSizeExceededException.class
+	})
+	public ResponseEntity<ErrorResponse> handleSizeException(final Exception e) {
+		ErrorResponse errorResponse = new ErrorResponse("첨부 용량을 초과했습니다");
+		return ResponseEntity.status(400).body(errorResponse);
+	}
+
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleServerException(final Exception e) {
-		String errorMessage = e.getMessage();
 		log.error("ERROR {}", e);
+
 		ErrorResponse errorResponse = new ErrorResponse("내부 서버에 문제가 발생하여 확인 중 입니다");
 		return ResponseEntity.internalServerError().body(errorResponse);
 	}

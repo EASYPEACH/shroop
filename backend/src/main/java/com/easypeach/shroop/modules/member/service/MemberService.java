@@ -82,6 +82,12 @@ public class MemberService {
 			req.getPhoneNumber(),
 			req.getPhoneAuthNumber()
 		);
+
+		String getImgName = findMember.getProfileImg().substring(50);
+		if (!getImgName.equals("basicProfile.jpeg")) {
+			s3UploadService.deleteImage(getImgName);
+		}
+
 		updateImgUrl(findMember, profileImg);
 		updateNickname(findMember, req.getNickname());
 		updatePassword(findMember, req.getOldPassword(), req.getNewPassword());

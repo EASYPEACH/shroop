@@ -6,3 +6,4 @@ export { multipartFormDataFile } from "./multipartFormDataFile";
 export { multipartFormDataJson } from "./multipartFormDataJson";
 export { formatDate } from "./formatDate";
 export { changeUrlToFiles } from "./changeUrlToFiles";
+export { compressImage } from "./compressImage";

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.easypeach.shroop.infra.s3.service.S3UploadService;
 import com.easypeach.shroop.modules.auth.exception.UnAuthorizedAccessException;
 import com.easypeach.shroop.modules.likes.domain.LikeRepository;
 import com.easypeach.shroop.modules.member.domain.Member;
@@ -40,6 +41,7 @@ public class ProductService {
 	private final TransactionRepository transactionRepository;
 	private final LikeRepository likeRepository;
 	private final ProductImgService productImgService;
+	private final S3UploadService s3UploadService;
 
 	public ProductResponse getProductInfo(final Member member, final Long productId) {
 		Product product = productRepository.findProductFetch(productId);
@@ -104,6 +106,10 @@ public class ProductService {
 		}
 		if (loginMember != productOwnerMember) {
 			throw new UnAuthorizedAccessException("삭제 권한이 없습니다");
+		}
+		for (int i = 0; i < product.getProductImgList().size(); i++) {
+			String getName = product.getProductImgList().get(i).getProductImgUrl().substring(50);
+			s3UploadService.deleteImage(getName);
 		}
 		productRepository.delete(product);
 	}
