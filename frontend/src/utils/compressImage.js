@@ -25,6 +25,7 @@ export const compressImage = (files, inputRef) => {
             inputRef.value.files = transfer.files;
           }
           console.log(newFile);
+
           loadingStore.setIsLoading(false);
         },
         error: function (err) {
