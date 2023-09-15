@@ -19,11 +19,13 @@ export const compressImage = (files, inputRef) => {
             type: result.type,
           });
           transfer.items.add(newFile).getAsFile();
-          if (inputRef.value.input) {
+          if (inputRef.value.input !== null) {
             inputRef.value.input.files = transfer.files;
           } else {
             inputRef.value.files = transfer.files;
           }
+          console.log(newFile);
+
           loadingStore.setIsLoading(false);
         },
         error: function (err) {
