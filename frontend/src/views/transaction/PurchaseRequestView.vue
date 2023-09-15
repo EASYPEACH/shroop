@@ -236,6 +236,8 @@ watch(cautionInfoList.value, (caution) => {
 
 const handleRequestPurchase = async () => {
   try {
+    isValid.value = false;
+
     await postApi({
       url: `/api/buying/${route.params.id}`,
       data: {
@@ -246,6 +248,7 @@ const handleRequestPurchase = async () => {
         buyerDetailLocation: detailLocation.value,
       },
     });
+
     router.push(`/PurchaseComplete/${route.params.id}`);
   } catch (error) {
     alert(error.response.data.message);

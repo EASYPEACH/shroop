@@ -41,7 +41,7 @@ public class Transaction {
 	private Member seller;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id", nullable = false)
+	@JoinColumn(name = "product_id", nullable = false, unique = true)
 	private Product product;
 
 	@OneToOne(fetch = FetchType.LAZY)
