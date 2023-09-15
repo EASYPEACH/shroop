@@ -11,16 +11,17 @@ export const compressImage = (files, inputRef) => {
       new Compressor(file, {
         minWidth: 450,
         minHeight: 450,
-        quality: 0.3,
+        quality: 0.1,
         convertTypes: ["image/png", "image/webp"],
         mimeType: "image/webp",
-        convertSize: 1000000,
+        convertSize: 5000000,
         success: function (result) {
           const newFile = new File([result], `image${new Date().getTime()}`, {
             type: result.type,
           });
           transfer.items.add(newFile).getAsFile();
-          if (inputRef.value.input) {
+
+          if (inputRef.value.input !== undefined) {
             inputRef.value.input.files = transfer.files;
           } else {
             inputRef.value.files = transfer.files;
