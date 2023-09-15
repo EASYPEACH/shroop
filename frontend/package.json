@@ -17,6 +17,7 @@
     "axios": "^1.4.0",
     "compressorjs": "^1.2.1",
     "core-js": "^3.29.0",
+    "heic2any": "^0.0.4",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
     "start-server-and-test": "^2.0.0",
