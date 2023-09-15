@@ -152,7 +152,7 @@ const MYPAGE = [
     STATUS: (status) => {
       return props.isSeller && status === TRANSACTION_STATUS.SELLING;
     },
-    CLICK_EVENT: () => (dialogList.value[2].value = true),
+    CLICK_EVENT: () => (dialogList.value[1].value = true),
   },
   {
     ACTION: "수정하기",
@@ -166,7 +166,7 @@ const MYPAGE = [
     STATUS: (status) => {
       return !props.isSeller && status === TRANSACTION_STATUS.PURCHASE_REQUEST;
     },
-    CLICK_EVENT: () => (dialogList.value[3].value = true),
+    CLICK_EVENT: () => (dialogList.value[2].value = true),
   },
   {
     ACTION: "구매자정보",
@@ -207,7 +207,7 @@ const handleCanclePurchaseRequest = async () => {
       url: `/api/buying/${props.product.id}`,
     });
     emits("handle-get-purchaseHistory");
-    dialogList.value[3].value = false;
+    dialogList.value[2].value = false;
   } catch (error) {
     console.log(error);
   }
