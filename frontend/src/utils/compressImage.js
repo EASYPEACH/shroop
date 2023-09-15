@@ -12,8 +12,9 @@ export const compressImage = (files, inputRef) => {
         minWidth: 450,
         minHeight: 450,
         quality: 0.3,
+        convertTypes: ["image/png", "image/webp"],
         mimeType: "image/webp",
-        convertSize: 500,
+        convertSize: 1000000,
         success: function (result) {
           const newFile = new File([result], `image${new Date().getTime()}`, {
             type: result.type,
