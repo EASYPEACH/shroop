@@ -15,8 +15,8 @@ export const compressImage = (files, inputRef) => {
         heic2any({ blob: file, toType: "image/jpeg" }).then(
           function (resultBlob) {
             //file에 새로운 파일 데이터를 씌웁니다.
-            file = new File([resultBlob], file.name.split(".")[0] + ".jpg", {
-              type: "image/jpeg",
+            file = new File([resultBlob], file.name.split(".")[0] + ".png", {
+              type: "image/png",
               lastModified: new Date().getTime(),
             });
             returnCompressor(file, transfer, inputRef, loadingStore);
@@ -33,10 +33,9 @@ const returnCompressor = (file, transfer, inputRef, loadingStore) => {
   return new Compressor(file, {
     minWidth: 450,
     minHeight: 450,
-    quality: 0.8,
+    quality: 0.3,
     convertTypes: ["image/png", "image/webp"],
     mimeType: "image/webp",
-    convertSize: 500,
     success: function (result) {
       const newFile = new File([result], `image${new Date().getTime()}`, {
         type: result.type,
