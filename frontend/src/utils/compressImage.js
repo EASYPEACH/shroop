@@ -1,7 +1,7 @@
 import { useApiLoading } from "@/store/modules";
 import Compressor from "compressorjs";
 import heic2any from "heic2any";
-
+// 테스트
 export const compressImage = (files, inputRef) => {
   console.log(files);
   if (files.length > 0) {
