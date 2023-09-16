@@ -8,10 +8,13 @@
           :rules="[
             defaultTextRule.required,
             (value) => defaultTextRule.customMinLength(value, 2),
+            (v) => defaultTextRule.customMaxLength(v, 10),
           ]"
+          @input="limitBuyerNameCount"
           placeholderText="이름을 입력해주세요."
           v-model="buyerName"
         />
+        <p>{{ buyerName.length }} / 10</p>
         <product-title title="휴대폰 번호" isRequired />
         <custom-text-input
           :rules="[
@@ -55,6 +58,7 @@
           ]"
           placeholderText="상세주소"
           v-model="detailLocation"
+          @input="limitAddressCount"
         />
         <div class="profile__point">
           <div class="profile__point-count">
@@ -140,7 +144,9 @@ import { ChargePointModal } from "@/components/Modal";
 import CautionBlock from "@/components/CautionBlock.vue";
 import { ProductBanner } from "@/components/Banner";
 import { computed } from "vue";
+import { useApiLoading } from "@/store/modules";
 
+const loadingStore = useApiLoading();
 const router = useRouter();
 const route = useRoute();
 const isValid = ref(false);
@@ -204,6 +210,18 @@ const toggleAllCheckboxes = () => {
   }
 };
 
+const limitBuyerNameCount = () => {
+  if (buyerName.value.length >= 10) {
+    buyerName.value = buyerName.value.substring(0, 10);
+  }
+};
+
+const limitAddressCount = () => {
+  if (location.value.length >= 30) {
+    location.value = location.value.substring(0, 255);
+  }
+};
+
 onBeforeMount(async () => {
   try {
     const response = await getApi({
@@ -237,7 +255,7 @@ watch(cautionInfoList.value, (caution) => {
 const handleRequestPurchase = async () => {
   try {
     isValid.value = false;
-
+    loadingStore.setIsLoading(true);
     await postApi({
       url: `/api/buying/${route.params.id}`,
       data: {
@@ -248,7 +266,7 @@ const handleRequestPurchase = async () => {
         buyerDetailLocation: detailLocation.value,
       },
     });
-
+    loadingStore.setIsLoading(false);
     router.push(`/PurchaseComplete/${route.params.id}`);
   } catch (error) {
     alert(error.response.data.message);

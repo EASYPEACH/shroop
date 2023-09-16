@@ -82,5 +82,18 @@ public class ProductReturnService {
 
 		Transaction transaction = transactionService.findByProductId(productId);
 		transaction.updateStatus(TransactionStatus.RETURN_REFUSE);
+
+		Long sellerId = transaction.getSeller().getId();
+		Long buyerId = transaction.getBuyer().getId();
+		String title = "반품 거부";
+		String productTitle = transaction.getProduct().getTitle().length() > 10 ?
+			transaction.getProduct().getTitle().substring(0, 10) + "..." : transaction.getProduct().getTitle();
+		String message = "'" + productTitle + "'의 반품이 거부되었습니다.";
+
+		// 판매자 알림
+		notificationService.saveNotification(sellerId, title, "/mypage/sellList", message);
+
+		// 구매자 알림
+		notificationService.saveNotification(buyerId, title, "/mypage/purchaseList", message);
 	}
 }

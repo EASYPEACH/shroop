@@ -21,8 +21,10 @@
       <product-title title="반품 사유" />
       <custom-text-area
         v-model="returnReasonText"
+        @update-value="limitContentCount"
         placeholder="반품사유를 최대한 상세하게 기재 부탁드리겠습니다"
       />
+      <p>{{ returnReasonText.length }} / 255</p>
       <submit-button :disabled="!isValid" text="반품신청" />
     </v-form>
     <plain-modal
@@ -44,6 +46,7 @@ import {
   deleteImage,
   multipartFormDataFile,
   multipartFormDataJson,
+  compressImage,
 } from "@/utils";
 import { getApi, multipartPostApi } from "@/api/modules";
 import { SubmitButton } from "@/components/Button";
@@ -64,6 +67,7 @@ const requestImageRef = ref(null);
 const returnReasonText = ref("");
 
 const handleAttachProductImage = (files) => {
+  compressImage(files, requestImageRef);
   changeFiles(
     files,
     requestImageRef,
@@ -71,6 +75,11 @@ const handleAttachProductImage = (files) => {
     returnRequestImageData,
   );
 };
+
+const limitContentCount = (value) => {
+  returnReasonText.value = value;
+};
+
 const handleDeleteProductImage = (idx) => {
   deleteImage(idx, requestImageRef, returnRequestThumb, returnRequestImageData);
 };

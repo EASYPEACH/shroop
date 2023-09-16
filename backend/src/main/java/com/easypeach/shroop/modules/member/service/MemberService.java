@@ -67,7 +67,11 @@ public class MemberService {
 
 	public ProfileEditForm findProfile(final Long memberId) {
 		Member findMember = memberRepository.getById(memberId);
-		return new ProfileEditForm(findMember.getNickname(), findMember.getPhoneNumber(), findMember.getProfileImg());
+		return new ProfileEditForm(
+			findMember.getLoginId(),
+			findMember.getNickname(),
+			findMember.getPhoneNumber(),
+			findMember.getProfileImg());
 	}
 
 	@Transactional
@@ -78,6 +82,12 @@ public class MemberService {
 			req.getPhoneNumber(),
 			req.getPhoneAuthNumber()
 		);
+
+		String getImgName = findMember.getProfileImg().substring(50);
+		if (!getImgName.equals("basicProfile.jpeg")) {
+			s3UploadService.deleteImage(getImgName);
+		}
+
 		updateImgUrl(findMember, profileImg);
 		updateNickname(findMember, req.getNickname());
 		updatePassword(findMember, req.getOldPassword(), req.getNewPassword());

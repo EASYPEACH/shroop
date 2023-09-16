@@ -9,10 +9,16 @@
     >
       <product-title title="제목" isRequired />
       <custom-text-input
-        :rules="[defaultTextRule.required]"
+        :rules="[
+          defaultTextRule.required,
+          (v) => defaultTextRule.customMinLength(v, 2),
+          (v) => defaultTextRule.customMaxLength(v, 30),
+        ]"
         placeholderText="제목"
+        @input="limitTitleCount"
         v-model="title"
       />
+      <p>{{ title.length }} / 30</p>
       <product-title v-if="isReport" title="신고대상 게시물" />
       <product-title v-else title="중재대상 게시물" />
       <p>{{ productName }}</p>
@@ -30,7 +36,11 @@
       </div>
       <product-title v-if="isReport" title="신고사유" isRequired />
       <product-title v-else title="중재사유" isRequired />
-      <CustomTextArea v-model="reportReason" />
+      <CustomTextArea
+        v-model="reportReason"
+        @update-value="limitContentCount"
+      />
+      <p>{{ reportReason.length }} / 255</p>
       <submit-button v-if="isReport" :disabled="!isVailed" text="신고접수" />
       <submit-button v-else :disabled="!isVailed" text="중재접수" />
     </v-form>
@@ -48,12 +58,13 @@
 <script setup>
 import { ref, onBeforeMount, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { defaultTextRule, selectRule } from "@/components/Form/data/formRules";
+import { defaultTextRule } from "@/components/Form/data/formRules";
 import {
   changeFiles,
   deleteImage,
   multipartFormDataFile,
   multipartFormDataJson,
+  compressImage,
 } from "@/utils";
 import { multipartPostApi, getApi } from "@/api/modules";
 import { MainTitle, ProductTitle } from "@/components/Title";
@@ -78,7 +89,18 @@ const isVailed = ref(false);
 const isMediate = ref(!isReport);
 const productRef = ref(null);
 
+const limitTitleCount = () => {
+  if (title.value.length >= 30) {
+    title.value = title.value.substring(0, 30);
+  }
+};
+
+const limitContentCount = (value) => {
+  reportReason.value = value;
+};
+
 const handleAttachProductImage = (files) => {
+  compressImage(files, productRef);
   changeFiles(files, productRef, productImagesThumb, imageData);
 };
 const handleDeleteProductImage = (idx) => {

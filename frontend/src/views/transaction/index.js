@@ -2,3 +2,4 @@ export { default as PurchaseCompleteView } from "@/views/transaction/PurchaseCom
 export { default as DeliveryRegistView } from "@/views/transaction/DeliveryRegistView.vue";
 export { default as PurchaseRequestView } from "@/views/transaction/PurchaseRequestView.vue";
 export { default as ReturnRequestView } from "@/views/transaction/ReturnRequestView.vue";
+export { default as ReturnRequestResultView } from "@/views/transaction/ReturnRequestResultView.vue";

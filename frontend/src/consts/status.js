@@ -6,5 +6,6 @@ const TRANSACTION_STATUS = {
   RETURN_COMPLETE: "반품완료",
   COMPLETE: "배송완료",
   MEDIATE_REQUEST: "중재신청",
+  RETURN_REFUSE: "반품반려",
 };
 export default TRANSACTION_STATUS;

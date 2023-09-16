@@ -111,26 +111,18 @@ const dialogList = ref([
 
 const handleSubmitDelivery = async () => {
   try {
-    const res = await getApi({
-      url: `/api/delivery/duplicate?trackingNumber=${deliveryNumber.value}`,
+    await postApi({
+      url: `/api/delivery/${route.params.id}`,
+      data: {
+        trackingNumber: deliveryNumber.value,
+        parcel: deliveryCompany.value,
+      },
     });
-
-    if (res.result === false) {
-      await postApi({
-        url: `/api/delivery/${route.params.id}`,
-        data: {
-          trackingNumber: deliveryNumber.value,
-          parcel: deliveryCompany.value,
-        },
-      });
-      dialogList.value[0].isShow = true;
-    } else {
-      dialogList.value[1].isShow = true;
-    }
+    dialogList.value[0].isShow = true;
   } catch (error) {
     const code = error.response.status;
     const msg = error.response.data.message;
-    if (code === 400) {
+    if (code === 409) {
       dialogList.value[2].isShow = true;
     } else {
       alert(msg);

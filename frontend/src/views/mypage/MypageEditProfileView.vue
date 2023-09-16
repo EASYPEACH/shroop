@@ -25,6 +25,10 @@
       </div>
       <product-title title="프로필 정보" />
       <div class="profile__info">
+        <h4 class="profile__info-name">아이디</h4>
+        <p>{{ loginId }}</p>
+      </div>
+      <div class="profile__info">
         <h4 class="profile__info-name">닉네임</h4>
         <custom-text-input
           class="profile__info-input"
@@ -69,7 +73,11 @@
               hide-details
               @keydown="handleInputChnageEvent"
             />
-            <v-btn @click="requestAuthNumber" class="profile__info-btn"
+
+            <v-btn
+              @click="requestAuthNumber"
+              class="profile__info-btn"
+              :disabled="!replyisValid"
               >인증 하기<br />
             </v-btn>
           </div>
@@ -80,11 +88,12 @@
               v-model="phoneAuthNumber"
               hide-details
             />
+            <span v-if="isTimeRest">{{ `0${minute}:${second}` }}</span>
+          </div>
+          <div v-show="!authResult" class="auth-fail">
+            {{ modifyResultMsg }}
           </div>
         </div>
-      </div>
-      <div v-show="!authResult" class="auth-fail">
-        {{ modifyResultMsg }}
       </div>
       <submit-button
         :disabled="!isValid"
@@ -122,7 +131,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watchEffect } from "vue";
 import {
   changeImageToData,
   multipartFormDataJson,
@@ -131,6 +140,7 @@ import {
 import { getApi, postApi, multipartPatchApi, deleteApi } from "@/api/modules";
 import { useCookies } from "vue3-cookies";
 import { useRouter } from "vue-router";
+import { compressImage } from "@/utils";
 
 import { SubmitButton } from "@/components/Button";
 import { MainTitle, ProductTitle } from "@/components/Title";
@@ -147,6 +157,7 @@ const cancelMembershipResult = ref(false);
 const cancelMembershipResultMsg = ref("");
 const phoneNumber = ref("");
 const phoneAuthNumber = ref("");
+const loginId = ref("");
 const nickname = ref("");
 const oldPassword = ref("");
 const newPassword = ref("");
@@ -158,10 +169,20 @@ const isSignOutValid = ref(false);
 const oldVisible = ref(false);
 const newVisible = ref(false);
 
+//휴대전화인증
+const time = ref(120);
+const timeOrigin = ref(120);
+const timerInterval = ref(null);
+const minute = ref(0);
+const second = ref(0);
+const replyisValid = ref(false);
+const isTimeRest = ref(false);
+
 // Image preview
 const handleChangeProfile = async (event) => {
   isValid.value = true;
   imageData.value = event.target.files[0];
+  compressImage(event.target.files, profileImgRef);
   imageThumb.value = await changeImageToData(imageData.value);
 };
 
@@ -177,9 +198,10 @@ onBeforeMount(async () => {
     );
     profileImgRef.value.files = profileImgTransfer.files;
     imageData.value = profileImgTransfer.files;
-    nickname.value = userData.nickname;
     phoneNumber.value = userData.phoneNumber;
     imageThumb.value = userData.profileImg;
+    nickname.value = userData.nickname;
+    loginId.value = userData.loginId;
   } catch (error) {
     console.error(error);
   }
@@ -187,6 +209,7 @@ onBeforeMount(async () => {
 
 // input event
 const handleInputChnageEvent = () => {
+  replyisValid.value = true;
   isValid.value = true;
 };
 
@@ -203,12 +226,12 @@ const handleSubmitRegister = async () => {
   });
 
   multipartFormDataJson(formData, "editRequest", {
-    nickname: nickname.value,
-    oldPassword: oldPassword.value,
-    newPassword: newPassword.value,
+    nickname: nickname.value.trim(),
+    oldPassword: oldPassword.value.trim(),
+    newPassword: newPassword.value.trim(),
     uuid: cookies.get("uuid"),
-    phoneNumber: phoneNumber.value,
-    phoneAuthNumber: phoneAuthNumber.value,
+    phoneNumber: phoneNumber.value.trim(),
+    phoneAuthNumber: phoneAuthNumber.value.trim(),
   });
 
   try {
@@ -228,16 +251,44 @@ const handleSubmitRegister = async () => {
   newPassword.value = "";
 };
 
+watchEffect(() => {
+  if (time.value === 0) {
+    clearInterval(timerInterval.value);
+  }
+
+  if (time.value <= timeOrigin.value - 2) {
+    replyisValid.value = true;
+  }
+
+  minute.value = Math.floor(time.value / 60);
+  second.value = time.value - Math.floor(time.value / 60) * 60;
+  if (second.value < 10) {
+    second.value = "0" + second.value;
+  }
+});
+
 // 인증번호 요청
 const requestAuthNumber = async () => {
   try {
+    isTimeRest.value = true;
+    replyisValid.value = false;
+    clearInterval(timerInterval.value);
     const data = await postApi({
       url: "/api/auth/phone",
       data: {
-        phoneNumber: phoneNumber.value,
+        phoneNumber: phoneNumber.value.trim(),
       },
     });
     cookies.set("uuid", data.uuid);
+    time.value = data.seconds;
+    authResult.value = false;
+    modifyResultMsg.value = "인증번호를 전송하였습니다";
+    timerInterval.value = setInterval(() => {
+      time.value--; //타이머 시간 감소
+      if (time.value === 0) {
+        isTimeRest.value = false;
+      }
+    }, 1000);
   } catch (error) {
     console.error(error);
   }
@@ -344,10 +395,21 @@ section {
   }
   .profile__info {
     display: flex;
-    margin: 20px 0;
-    position: relative;
+    margin-bottom: 20px;
+    gap: 10px;
+
+    & + & {
+      margin-top: 20px;
+    }
+
+    > p {
+      align-self: center;
+    }
 
     @media (max-width: 720px) {
+      > p {
+        align-self: flex-start;
+      }
       flex-direction: column;
     }
     .identify__phoneNumber {
@@ -355,8 +417,16 @@ section {
       display: flex;
       gap: 20px;
       align-items: center;
+      position: relative;
       .profile__info-input {
         flex-basis: 50%;
+      }
+      span {
+        position: absolute;
+        top: 50%;
+        right: -1px;
+        transform: translate(-50%, -50%);
+        color: rgb(var(--v-theme-heartRed));
       }
     }
     .info__input-box {
@@ -364,7 +434,6 @@ section {
     }
     .profile__info-title {
       display: flex;
-      margin: 12px;
       font-weight: 600;
       font-size: 20px;
       flex-basis: 20%;
@@ -375,7 +444,6 @@ section {
     }
     .profile__info-name {
       display: flex;
-      margin: 12px;
       font-weight: 600;
       font-size: 18px;
       flex-basis: 15%;
@@ -396,6 +464,7 @@ section {
 }
 .auth-fail {
   color: rgb(var(--v-theme-heartRed));
+  font-size: 15px;
 }
 
 .v-pagination {
