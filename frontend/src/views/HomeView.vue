@@ -19,54 +19,123 @@
       <div v-if="isLaptop">
         <img src="@/assets/image/logo-white.png" alt="슈룹 로고" />
       </div>
-    </section>
-    <section class="subContent">
-      <div
-        class="subContent-text left"
-        :data-aos="isLaptop ? 'fade-right' : 'fade-up'"
-        data-aos-easing="linear"
-        data-aos-duration="500"
-      >
-        <p>온라인에서 결제하는</p>
-        <p>안전한 중고거래</p>
+      <div class="arrowBtn" @click="handleGoContent">
+        <p>scroll</p>
+        <v-btn variant="plain">
+          <div>
+            <span></span>
+          </div>
+        </v-btn>
       </div>
-      <img
-        :data-aos="isLaptop ? 'fade-left' : 'fade-up'"
-        :data-aos-delay="isLaptop ? 500 : 300"
-        data-aos-easing="linear"
-        data-aos-duration="500"
-        :src="isLaptop ? purchaseImg : purchaseMobileImg"
-        alt="purchase"
-      />
     </section>
-    <section class="subContent">
-      <div
-        v-if="!isLaptop"
-        class="subContent-text right"
-        data-aos="fade-up"
-        data-aos-easing="linear"
-        data-aos-duration="500"
-      >
-        <p>믿고 거래 할 수 있는</p>
-        <p>상품 상세 정보</p>
+    <section class="subContent sc1" ref="contentRef">
+      <div class="textBox">
+        <p data-aos="fade-up">
+          <span class="color-text">슈룹 방울</span>과 함께 하는
+        </p>
+        <p data-aos="fade-up" data-aos-delay="100">
+          안전 <span class="text-orange">비대면 중고거래</span>
+        </p>
       </div>
-      <img
-        :data-aos="isLaptop ? 'fade-right' : 'fade-up'"
-        :data-aos-delay="isLaptop ? 500 : 300"
-        data-aos-easing="linear"
-        data-aos-duration="500"
-        :src="isLaptop ? productDetailImg : productDetailMobileImg"
-        alt="purchase"
-      />
-      <div
-        v-if="isLaptop"
-        class="subContent-text right"
-        data-aos="fade-left"
-        data-aos-easing="linear"
-        data-aos-duration="500"
-      >
-        <p>믿고 거래 할 수 있는</p>
-        <p>상품 상세 정보</p>
+      <div class="transactionBox">
+        <div
+          class="userBox"
+          data-aos="fade-down"
+          data-aos-delay="500"
+          data-aos-offset="-50"
+        >
+          <p>판매자</p>
+          <v-icon icon="mdi-account"></v-icon>
+        </div>
+        <v-icon
+          icon="mdi-arrow-left"
+          data-aos="fade-left"
+          data-aos-offset="-50"
+          data-aos-delay="250"
+        ></v-icon>
+        <div
+          class="shroop"
+          data-aos="fade-up"
+          data-aos-offset="100"
+          data-aos-delay="150"
+        >
+          <p>슈룹 방울</p>
+          <v-icon icon="mdi-water"></v-icon>
+        </div>
+        <v-icon
+          icon="mdi-arrow-right"
+          data-aos="fade-right"
+          data-aos-offset="-50"
+          data-aos-delay="250"
+        ></v-icon>
+        <div
+          class="userBox"
+          data-aos="fade-down"
+          data-aos-delay="500"
+          data-aos-offset="-50"
+        >
+          <p>구매자</p>
+          <v-icon icon="mdi-account"></v-icon>
+        </div>
+      </div>
+    </section>
+    <section class="subContent sc2">
+      <div class="textBox" data-aos="fade-up" data-aos-offset="100">
+        <span class="color-text">슈룹</span>은 <br />
+        <span class="text-orange">판매자</span>와
+        <span class="text-orange">구매자</span>
+        모두를 보호합니다
+      </div>
+      <div class="reportBox">
+        <div class="shroop" data-aos="flip-left" data-aos-delay="500">
+          <p>슈룹</p>
+          <img src="@/assets/image/logo-black.png" alt="슈룹 로고" />
+        </div>
+        <v-icon
+          v-if="isLaptop"
+          icon="mdi-arrow-right"
+          data-aos="fade-right"
+          data-aos-offset="50"
+          data-aos-delay="600"
+        ></v-icon>
+        <v-icon
+          v-if="!isLaptop"
+          icon="mdi-arrow-down"
+          data-aos="fade-down"
+          data-aos-offset="50"
+          data-aos-delay="500"
+        ></v-icon>
+        <div class="reportResultBox">
+          <div
+            :data-aos="isLaptop ? 'fade-right' : 'fade-up'"
+            data-aos-offset="50"
+            :data-aos-delay="isLaptop ? 700 : 500"
+          >
+            <p>
+              사기 피의 사용자
+              <v-icon color="red" icon="mdi-emoticon-devil-outline"></v-icon>
+            </p>
+            <p>
+              <span class="text-red">서비스 이용 및 추가 가입 차단</span>
+            </p>
+          </div>
+          <div
+            :data-aos="isLaptop ? 'fade-right' : 'fade-up'"
+            data-aos-offset="50"
+            :data-aos-delay="isLaptop ? 700 : 500"
+          >
+            <p>
+              사기 피해 사용자
+              <v-icon
+                color="light-blue"
+                icon="mdi-emoticon-sad-outline"
+              ></v-icon>
+            </p>
+            <p>
+              <span class="text-light-blue">피해 금액 복원</span>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -118,14 +187,10 @@ import ProductCard from "@/components/ProductCard.vue";
 import ContentLayout from "@/layouts/ContentLayout.vue";
 import { ProductBanner } from "@/components/Banner";
 
-import purchaseImg from "@/assets/image/purchase.png";
-import purchaseMobileImg from "@/assets/image/purchase-mobile.png";
-import productDetailImg from "@/assets/image/product-detail.png";
-import productDetailMobileImg from "@/assets/image/product-detail-mobile.png";
-
 const productCardData = ref([]);
 const display = useDisplay();
 const isLaptop = ref(display.mdAndUp);
+const contentRef = ref(null);
 
 onBeforeMount(async () => {
   try {
@@ -148,11 +213,33 @@ const handleClickLike = async (product) => {
     }
   }
 };
+
+// 컨텐트로 가는 이벤트
+const handleGoContent = () => {
+  contentRef.value.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
 </script>
 
 <style lang="scss" scoped>
 h2 {
   margin-top: 50px;
+}
+.userBox {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  .v-icon {
+    font-size: 60px;
+  }
+}
+.color-text {
+  color: rgb(var(--v-theme-subGreen));
+  &.service-title {
+    font-size: 55px;
+  }
 }
 
 section {
@@ -165,6 +252,7 @@ section {
     background: #151515;
   }
   &.main {
+    position: relative;
     width: 100%;
     height: 100vh;
     display: flex;
@@ -173,6 +261,56 @@ section {
     color: rgb(var(--v-theme-background));
     padding: 100px;
     background: #000;
+    .arrowBtn {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      @media (max-width: 750px) {
+        bottom: 20px;
+      }
+      .v-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        div {
+          width: 30px;
+          height: 40px;
+          border-radius: 20px;
+          border: 1px solid #fff;
+          position: relative;
+          padding: 5px;
+          span {
+            width: 5px;
+            height: 5px;
+            display: inline-block;
+            border-radius: 50%;
+            background: #fff;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: yoyo 2s linear infinite;
+          }
+        }
+      }
+
+      @keyframes yoyo {
+        0% {
+          top: 5px;
+        }
+        50% {
+          top: 30px;
+        }
+        100% {
+          top: 5px;
+        }
+      }
+    }
+
     h2 {
       font-weight: 600;
       font-size: 36px;
@@ -209,12 +347,7 @@ section {
         }
       }
     }
-    .color-text {
-      color: rgb(var(--v-theme-subGreen));
-      &.service-title {
-        font-size: 55px;
-      }
-    }
+
     @media (max-width: 960px) {
       padding: 50px 30px;
       h2 {
@@ -231,61 +364,104 @@ section {
   }
 
   &.subContent {
+    color: #fff;
     width: 100%;
     height: 100vh;
     display: flex;
     align-items: center;
-    gap: 100px;
     justify-content: center;
+    gap: 150px;
 
-    img {
-      width: 40%;
-    }
-
-    &:nth-child(1) {
-      background: #151515;
-    }
-
-    &:last-of-type {
-      background: #151515;
-    }
-
-    .subContent-text {
-      width: fit-content;
-      color: #fff;
-      font-weight: 600;
-      font-size: 50px;
-      z-index: 20;
-
-      span {
-        color: rgb(var(--v-theme-subGreen));
-      }
-      &.right {
-        text-align: right;
-      }
-      p {
-        width: 100%;
-        white-space: nowrap;
-      }
-    }
-
-    @media (max-width: 1300px) {
-      .subContent-text {
-        font-size: 35px;
-      }
-    }
-
-    @media (max-width: 960px) {
-      padding: 30px 0;
+    &.sc1 {
       flex-direction: column;
-      img {
-        width: 50%;
+
+      .textBox {
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        span {
+          font-size: 30px;
+          @media (max-width: 750px) {
+            font-size: 25px;
+          }
+        }
       }
 
-      .subContent-text {
-        text-align: center;
-        &.right {
+      .transactionBox {
+        display: flex;
+        align-items: center;
+        gap: 100px;
+
+        .shroop {
           text-align: center;
+          font-size: 20px;
+          .v-icon {
+            color: rgb(var(--v-theme-subGreen));
+          }
+        }
+      }
+    }
+
+    &.sc2 {
+      flex-direction: column;
+      .textBox {
+        font-size: 20px;
+        text-align: center;
+        span {
+          font-size: 30px;
+          @media (max-width: 750px) {
+            font-size: 25px;
+          }
+        }
+      }
+      .reportBox {
+        display: flex;
+        gap: 100px;
+        align-items: center;
+        text-align: center;
+
+        .shroop {
+          p {
+            color: rgb(var(--v-theme-subGreen));
+            font-weight: 600;
+            font-size: 20px;
+          }
+          img {
+            margin-top: 10px;
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            padding: 5px;
+          }
+        }
+      }
+      .reportResultBox {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        > div {
+          border: 1px dotted rgba(255, 255, 255, 0.5);
+          padding: 10px;
+          border-radius: 5px;
+        }
+      }
+    }
+
+    @media (max-width: 750px) {
+      gap: 80px;
+
+      &.sc1 {
+        .transactionBox {
+          gap: 20px;
+        }
+      }
+      &.sc2 {
+        .reportBox {
+          flex-direction: column;
+          gap: 20px;
         }
       }
     }
