@@ -254,6 +254,7 @@ watch(cautionInfoList.value, (caution) => {
 
 const handleRequestPurchase = async () => {
   try {
+    isValid.value = false;
     loadingStore.setIsLoading(true);
     await postApi({
       url: `/api/buying/${route.params.id}`,
