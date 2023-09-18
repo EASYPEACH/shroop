@@ -42,17 +42,19 @@ defineEmits(["handleConfirm", "handleCancle"]);
 </script>
 
 <style lang="scss" scoped>
-.close-btn {
-  font-size: 20px;
-  place-self: flex-end;
-  margin-right: -51px;
+.v-dialog {
+  .close-btn {
+    font-size: 20px;
+    place-self: flex-end;
+    margin-right: -17px;
+  }
 }
 
 .buyer-info {
-  width: 370px;
   background: rgb(var(--v-theme-surface));
   padding: 20px;
   border-radius: 20px;
+
   h4 {
     font-weight: 600;
     text-align: center;
