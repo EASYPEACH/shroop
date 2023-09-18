@@ -472,7 +472,7 @@ const showImageModal = (imgUrl) => {
   display: flex;
   gap: 10px;
   align-items: center;
-
+  width: calc(100% - 10px);
   &-common {
     flex-basis: 50%;
     background: rgb(var(--v-theme-mainGray));
