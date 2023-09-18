@@ -4,6 +4,10 @@
 :root {
   --swiper-theme-color: #fff;
 }
+
+.purchase-agree .v-label {
+  width: auto;
+}
 html,
 body {
   height: 100%;

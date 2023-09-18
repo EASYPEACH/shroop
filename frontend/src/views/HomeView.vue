@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="main">
-      <div>
+      <div class="main__content">
         <div>
           <h2>
             <span class="color-text service-title">슈룹</span>: <br />중고거래의
@@ -271,7 +271,7 @@ section {
       align-items: center;
       gap: 5px;
       @media (max-width: 750px) {
-        bottom: 20px;
+        bottom: 68px;
       }
       .v-btn {
         width: 60px;
@@ -349,7 +349,10 @@ section {
     }
 
     @media (max-width: 960px) {
-      padding: 50px 30px;
+      padding: 0px 30px;
+      .main__content {
+        margin-top: -100px;
+      }
       h2 {
         word-break: keep-all;
         margin: 0;
