@@ -18,6 +18,13 @@
 
 </div>
 
+## 슈룹 시연 영상
+
+<div align="center">
+
+        https://github.com/EASYPEACH/shroop/assets/72537762/52b005d7-1315-469a-a1e9-8fab7bfbbef8
+</div>
+
 ## ☂️ 슈룹 소개
 
 슈룹은 안전하게 중고거래를 할 수 있는 중고거래 플랫폼입니다.
