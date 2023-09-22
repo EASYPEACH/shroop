@@ -22,7 +22,8 @@
 
 <div align="center">
 
-        https://github.com/EASYPEACH/shroop/assets/72537762/52b005d7-1315-469a-a1e9-8fab7bfbbef8
+https://github.com/EASYPEACH/shroop/assets/72537762/52b005d7-1315-469a-a1e9-8fab7bfbbef8
+
 </div>
 
 ## ☂️ 슈룹 소개
