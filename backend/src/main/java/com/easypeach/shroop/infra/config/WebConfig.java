@@ -12,6 +12,6 @@ public class WebConfig implements WebMvcConfigurer {
 			.allowedMethods("*")
 			.allowCredentials(true)
 			.maxAge(3000)
-			.allowedOriginPatterns("http://13.209.16.112", "http://shroop.shop");
+			.allowedOriginPatterns("*");
 	}
 }
