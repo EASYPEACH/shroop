@@ -83,7 +83,7 @@ public class MemberService {
 			req.getPhoneAuthNumber()
 		);
 
-		String getImgName = findMember.getProfileImg().substring(50);
+		String getImgName = findMember.getProfileImg().substring(61);
 		if (!getImgName.equals("basicProfile.jpeg")) {
 			s3UploadService.deleteImage(getImgName);
 		}

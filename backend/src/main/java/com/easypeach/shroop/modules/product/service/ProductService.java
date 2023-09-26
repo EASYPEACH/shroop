@@ -108,7 +108,7 @@ public class ProductService {
 			throw new UnAuthorizedAccessException("삭제 권한이 없습니다");
 		}
 		for (int i = 0; i < product.getProductImgList().size(); i++) {
-			String getName = product.getProductImgList().get(i).getProductImgUrl().substring(50);
+			String getName = product.getProductImgList().get(i).getProductImgUrl().substring(61);
 			s3UploadService.deleteImage(getName);
 		}
 		productRepository.delete(product);
